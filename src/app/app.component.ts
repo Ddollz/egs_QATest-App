@@ -13,15 +13,19 @@ export class AppComponent implements OnInit {
   accountlist$!: Observable<any[]>;
 
   showHead: boolean = false;
+  showSide: boolean = false;
 
   constructor(private api: ApiService, private router: Router) {
     // on route change to '/login', set the variable showHead to false
     router.events.forEach((event) => {
       if (event instanceof NavigationStart) {
-        if (event['url'] == '/login' || event['url'] == '/register' ) {
+        if (event['url'] == '/login' || event['url'] == '/register') {
           this.showHead = false;
-        } else {
-          // console.log("NU")
+          this.showSide = false;
+        }else if (event['url'] == '/workspace' ){
+          this.showSide = true;
+          this.showHead = true;
+        }else {
           this.showHead = true;
         }
       }
