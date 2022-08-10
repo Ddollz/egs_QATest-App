@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { filter, Observable } from 'rxjs';
 import { ApiService } from './services/api.service';
-import { Router, NavigationStart } from '@angular/router';
+import { Router, NavigationStart, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -15,28 +15,10 @@ export class AppComponent implements OnInit {
   showHead: boolean = false;
   showSide: boolean = false;
 
-  constructor(private api: ApiService, private router: Router) {
-    // on route change to '/login', set the variable showHead to false
-    router.events.forEach((event) => {
-      if (event instanceof NavigationStart) {
-        if (event['url'] == '/login' || event['url'] == '/register') {
-          this.showHead = false;
-          this.showSide = false;
-        }else if (event['url'] == '/workspace' ){
-          this.showSide = true;
-          this.showHead = true;
-        }else {
-          this.showHead = true;
-        }
-      }
-    });
-
+  constructor(private api: ApiService, public router: Router) {
     //theme toggle
     document.body.classList.toggle("light-theme");
   }
-
-
-
   ngOnInit(): void {
 
     //Sample Post Methos
