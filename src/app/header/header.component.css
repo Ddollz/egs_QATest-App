@@ -1,0 +1,34 @@
+:host() {
+  z-index: 1000;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 2.5rem;
+  width: 100%;
+  box-shadow: 0 0 6px RGBA(0, 0, 0, 0.2);
+  padding: 0 1rem;
+}
+
+
+/* a {
+  font-weight: 500;
+  padding: 0.875rem 1rem;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 0.875rem;
+  vertical-align: top;
+  margin-left: 0.125rem;
+} */
+
+
+a,
+a:hover,
+a:focus,
+a:active {
+  color: inherit;
+  text-decoration: none;
+  font-size: 0.875rem;
+  vertical-align: top;
+  margin-left: 0.125rem;
+  font-weight: 500;
+}

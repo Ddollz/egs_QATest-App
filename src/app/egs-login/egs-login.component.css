@@ -1,0 +1,47 @@
+:host() {
+  display: flex;
+  width: 20rem;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+p {
+  margin: 0;
+  padding: 0;
+}
+
+.card {
+  border: none;
+
+}
+
+.card img {
+  width: 200px;
+
+}
+
+form{
+  width: 100%;
+}
+
+.btn-primary {
+  background-color: var(--bs-red) !important;
+  border-color: var(--bs-red) !important;
+}
+
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary.active,
+.open>.dropdown-toggle.btn-primary {
+  background-color: var(--bs-red) !important;
+  border-color: var(--bs-red) !important;
+  box-shadow: none;
+}
+
+.btn-primary:active,
+.btn-primary.active,
+.open>.dropdown-toggle.btn-primary {
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+}
