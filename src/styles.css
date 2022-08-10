@@ -1,7 +1,12 @@
 @import "~bootstrap-icons/font/bootstrap-icons.css";
 
 :root {
-  --bs-red: #e52325;
+  --bs-red-100: #e52325;
+  --bs-red-75: rgba(229, 36, 39, 0.25);
+  --bs-red-50: rgba(229, 35, 38, 0.25);
+  --bs-red-25: rgba(229, 35, 38, 0.25);
+  --bs-red-10: rgba(229, 35, 38, 0.25);
+  --bs-red-5: rgba(229, 35, 38, 0.25);
 
   --delimiter-color: rgb(240, 240, 240);
   --delimiter-color-secondary: rgb(229, 229, 229);
@@ -149,5 +154,31 @@ select {
 
 /* Forms  */
 .invalid-f p {
-  color: var(--bs-red);
+  color: var(--bs-red-100);
 }
+
+.form-control:focus
+{
+  box-shadow: 0 0 0 0.25rem var(--bs-red-5);
+  border-color: var(--bs-red-100);
+}
+.btn-primary {
+  background-color: var(--bs-red-100) !important;
+  border-color: var(--bs-red-100) !important;
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary.active,
+.open>.dropdown-toggle.btn-primary {
+  background-color: var(--bs-red-100) !important;
+  border-color: var(--bs-red-100) !important;
+  box-shadow: none;
+}
+.btn-primary:active,
+.btn-primary.active,
+.open>.dropdown-toggle.btn-primary {
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+}
+

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import {HttpClientModule} from '@angular/common/http'
+import { HttpClientModule } from '@angular/common/http'
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -18,13 +18,13 @@ import { RolesComponent } from './egs-workspace/roles/roles.component';
 
 //Link Routes
 const appRoute: Routes = [
-  {path:'', redirectTo:'projects', pathMatch:"full"},
-  {path:'projects', component: ProjectsComponent},
-  {path:'workspace', component: EgsWorkspaceComponent},
-  {path:'workspace/user', component: UserComponent},
-  {path:'workspace/user/:id:test', component: UserComponent},
-  {path:'login', component: EgsLoginComponent},
-  {path:'register', component: EgsRegistrationComponent},
+  { path: '', redirectTo: 'projects', pathMatch: "full" },
+  { path: 'projects', component: ProjectsComponent },
+  { path: 'workspace', component: EgsWorkspaceComponent },
+  { path: 'workspace/user', component: UserComponent },
+  { path: 'workspace/user/:id:test', component: UserComponent },
+  { path: 'login', component: EgsLoginComponent },
+  { path: 'register', component: EgsRegistrationComponent },
 ]
 
 @NgModule({
