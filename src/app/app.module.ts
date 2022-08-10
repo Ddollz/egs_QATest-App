@@ -13,12 +13,16 @@ import { ProjectsComponent } from './egs-project/projects/projects.component';
 import { HeaderComponent } from './header/header.component';
 import { SideBarComponent } from './side-bar/side-bar.component';
 import { EgsWorkspaceComponent } from './egs-workspace/egs-workspace.component';
+import { UserComponent } from './egs-workspace/user/user.component';
+import { RolesComponent } from './egs-workspace/roles/roles.component';
 
 //Link Routes
 const appRoute: Routes = [
   {path:'', redirectTo:'projects', pathMatch:"full"},
   {path:'projects', component: ProjectsComponent},
   {path:'workspace', component: EgsWorkspaceComponent},
+  {path:'workspace/user', component: UserComponent},
+  {path:'workspace/user/:id:test', component: UserComponent},
   {path:'login', component: EgsLoginComponent},
   {path:'register', component: EgsRegistrationComponent},
 ]
@@ -31,7 +35,9 @@ const appRoute: Routes = [
     ProjectsComponent,
     HeaderComponent,
     SideBarComponent,
-    EgsWorkspaceComponent
+    EgsWorkspaceComponent,
+    UserComponent,
+    RolesComponent
   ],
   imports: [
     BrowserModule,

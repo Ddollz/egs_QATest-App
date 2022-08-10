@@ -8,6 +8,7 @@ import { Component, HostBinding, OnInit } from '@angular/core';
 export class SideBarComponent implements OnInit {
 
   ddWorkspace: boolean = true;
+  ddSecurity: boolean = true;
   constructor() { }
 
   ngOnInit(): void {
@@ -16,6 +17,8 @@ export class SideBarComponent implements OnInit {
   toggleCollapse(Dropdown__Name: string) {
     if (Dropdown__Name == "workspace") {
       this.ddWorkspace = !this.ddWorkspace;
+    } else if (Dropdown__Name == "security") {
+      this.ddSecurity = !this.ddSecurity;
     }
   }
 }
