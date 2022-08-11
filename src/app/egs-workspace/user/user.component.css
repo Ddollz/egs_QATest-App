@@ -24,10 +24,43 @@
   align-items: center;
 }
 
-.filter-item{
-  white-space: nowrap;
+.filters-block>* {
+  font-size: .875rem;
 }
-.add-filter-button{
-  white-space: nowrap;
 
+.search_input {
+  width: 200px;
+  height: 30px;
+}
+
+.filter-item {
+  position: relative;
+  white-space: nowrap;
+  text-decoration: none;
+  color: #393939;
+  font-weight: 500;
+  background: transparent;
+  border: none;
+  white-space: nowrap;
+  background: #f3f3f3;
+  padding: .4375rem .75rem;
+  border-radius: .25rem;
+  cursor: pointer;
+  line-height: 1.125rem;
+}
+
+.add-filter-button {
+  white-space: nowrap;
+  font-size: .875rem;
+  background-color: transparent !important;
+  border: none !important;
+  color: var(--bs-blue-prime);
+}
+
+.add-filter-button:focus {
+  box-shadow: none;
+}
+
+.add-filter-button:hover {
+  color: var(--bs-blue-second);
 }

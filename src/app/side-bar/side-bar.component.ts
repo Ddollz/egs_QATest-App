@@ -17,6 +17,7 @@ export class SideBarComponent implements OnInit {
   toggleCollapse(Dropdown__Name: string) {
     if (Dropdown__Name == "workspace") {
       this.ddWorkspace = !this.ddWorkspace;
+      console.log(this.ddWorkspace);
     } else if (Dropdown__Name == "security") {
       this.ddSecurity = !this.ddSecurity;
     }

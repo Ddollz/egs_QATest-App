@@ -6,21 +6,52 @@
         <div class="row filter-row">
           <div class="col d-flex text-start">
             <div class="filters-block">
-              <input type="text" class="form-control me-2" id="exampleInputEmail1" aria-describedby="emailHelp">
+              <input type="text" class="form-control search_input me-2" placeholder="Search for team members">
               <div class="filter-outer me-2">
                 <div class="filter-item">
                   <span>Status: Multiple</span>
                 </div>
               </div>
               <div class="add-filter-outer">
-                <button type="button" class="btn btn-primary add-filter-button">Add Filter</button>
+                <button type="button" class="btn btn-primary add-filter-button">+ Add Filter</button>
               </div>
             </div>
           </div>
         </div>
-        <div class="row m-0"><table>
-          ad
-        </table></div>
+        <div class="row m-0">
+          <table mat-table [dataSource]="dataSource" class="mat-elevation-z0">
+
+            <!--- Note that these columns can be defined in any order.
+                  The actual rendered columns are set as a property on the row definition" -->
+
+            <!-- Position Column -->
+            <ng-container matColumnDef="position">
+              <th mat-header-cell *matHeaderCellDef> No. </th>
+              <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef> Name </th>
+              <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+            </ng-container>
+
+            <!-- Weight Column -->
+            <ng-container matColumnDef="weight">
+              <th mat-header-cell *matHeaderCellDef> Weight </th>
+              <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
+            </ng-container>
+
+            <!-- Symbol Column -->
+            <ng-container matColumnDef="symbol">
+              <th mat-header-cell *matHeaderCellDef> Symbol </th>
+              <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+        </div>
       </div>
     </div>
   </div>
