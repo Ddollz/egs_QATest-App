@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http'
+import { MatTableModule } from '@angular/material/table';
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -15,6 +16,7 @@ import { SideBarComponent } from './side-bar/side-bar.component';
 import { EgsWorkspaceComponent } from './egs-workspace/egs-workspace.component';
 import { UserComponent } from './egs-workspace/user/user.component';
 import { RolesComponent } from './egs-workspace/roles/roles.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 //Link Routes
 const appRoute: Routes = [
@@ -45,7 +47,9 @@ const appRoute: Routes = [
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    RouterModule.forRoot(appRoute)
+    MatTableModule,
+    RouterModule.forRoot(appRoute),
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
