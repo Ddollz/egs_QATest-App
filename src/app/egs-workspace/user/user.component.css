@@ -66,6 +66,7 @@
 }
 .table-status i{
   font-size: 1.5rem;
+  cursor: pointer;
 }
 .table-name {
   font-weight: 500;

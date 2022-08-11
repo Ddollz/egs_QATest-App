@@ -32,9 +32,9 @@
 
             <ng-container matColumnDef="status">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
-              <td mat-cell *matCellDef="let element" class="table-status">
-                <ng-container *ngIf="element.status"><i class="bi bi-check" style="color: var(--bs-green-prime);"></i></ng-container>
-                <ng-container *ngIf="!element.status"><i class="bi bi-x" style="color: var(--bs-red-100);"></i></ng-container>
+              <td mat-cell *matCellDef="let element" class="table-status" (click)="changeStatus(element.id)">
+                  <ng-container *ngIf="element.status"><i class="bi bi-check" style="color: var(--bs-green-prime);"></i></ng-container>
+                  <ng-container *ngIf="!element.status"><i class="bi bi-x" style="color: var(--bs-red-100);"></i></ng-container>
               </td>
             </ng-container>
 
@@ -48,11 +48,17 @@
 
             <ng-container matColumnDef="role">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Role </th>
-              <td mat-cell *matCellDef="let element"> {{element.role}} </td>
+              <td mat-cell *matCellDef="let element">
+                <mat-select [(value)]="element.role">
+                  <mat-option *ngFor="let role of roles" value="{{role.value}}">
+                    {{role.viewValue}}
+                  </mat-option>
+                </mat-select>
+              </td>
             </ng-container>
 
             <ng-container matColumnDef="roleTitle">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header > Role Title </th>
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Role Title </th>
               <td mat-cell *matCellDef="let element"> {{element.roleTitle}} </td>
             </ng-container>
 

@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http'
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
+import { MatSelectModule } from '@angular/material/select';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -51,6 +52,7 @@ const appRoute: Routes = [
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
+    MatSelectModule,
     RouterModule.forRoot(appRoute),
     BrowserAnimationsModule
   ],
