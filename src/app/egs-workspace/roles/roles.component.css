@@ -1,0 +1,36 @@
+:host() {
+  flex: 1;
+  overflow: auto;
+  position: relative;
+}
+
+.app__content {
+  padding: 1rem 1rem 0.25rem 1.5rem;
+  display: flex;
+  flex: 1 1 0%;
+  flex-direction: column;
+  overflow: hidden;
+  height: 100%;
+}
+
+.table-title {
+  font-weight: 500;
+  margin-bottom: 0;
+  line-height: 1rem;
+}
+
+.table-desctiption {
+  margin-top: 0;
+  font-weight: 400;
+  font-size: .75rem;
+  line-height: 1rem;
+  color: #959595;
+}
+
+.mat-column-users{
+  width: 80px;
+}
+.mat-column-setting{
+  width: 80px;
+  text-align: end;
+}
