@@ -8,23 +8,39 @@
             <div class="filters-block">
               <input type="text" class="form-control search_input me-2" placeholder="Search for team members" (keyup)="applyFilter($event)" #input>
               <div class="filter-outer me-2">
-                <div class="filter-item">
+                <div class="filter-item" (click)="displayDropdown($event)">
                   <span>Status: Multiple</span>
                 </div>
+                <div class="filter-dropdown d-flex flex-column hide">
+
+                  <mat-radio-group aria-label="Select an option" class="d-flex flex-column">
+                    <mat-radio-button value="0" class="mb-2" (change)="applyFilter(undefined,$event)">All</mat-radio-button>
+                    <mat-radio-button value="1" class="mb-2" (change)="applyFilter(undefined,$event)">Active</mat-radio-button>
+                    <mat-radio-button value="2" (change)="applyFilter(undefined,$event)">Inactive</mat-radio-button>
+                  </mat-radio-group>
+
+                  <!-- <mat-checkbox>Active</mat-checkbox>
+                  <mat-checkbox>Inactive</mat-checkbox> -->
+                </div>
               </div>
-              <div class="add-filter-outer">
-                <button type="button" class="btn btn-primary add-filter-button">+ Add Filter</button>
+              <div class="filter-outer me-2">
+                <div class="filter-item" (click)="displayDropdown($event)">
+                  <span>Role: Multiple</span>
+                </div>
+                <div class="filter-dropdown d-flex flex-column hide">
+                  <mat-radio-group aria-label="Select an option" [(ngModel)]="filteredValues" class="d-flex flex-column">
+                    <mat-radio-button value="" class="mb-2" (change)="applyFilter(undefined,$event)" >All</mat-radio-button>
+                    <ng-container *ngFor="let item of roles">
+                      <mat-radio-button value="{{item.value}}" class="mb-2" (change)="applyFilter(undefined,$event)" > {{item.value}}</mat-radio-button>
+                    </ng-container>
+                  </mat-radio-group>
+                </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="row m-0">
+        <div class="row m-0 mt-3">
           <table mat-table [dataSource]="dataSource" class="mat-elevation-z0" matSort>
-
-            <!--- Note that these columns can be defined in any order.
-                  The actual rendered columns are set as a property on the row definition" -->
-
-            <!-- Position Column -->
             <ng-container matColumnDef="id">
               <th mat-header-cell *matHeaderCellDef> No. </th>
               <td mat-cell *matCellDef="let element"> {{element.id}} </td>
@@ -33,8 +49,8 @@
             <ng-container matColumnDef="status">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
               <td mat-cell *matCellDef="let element" class="table-status" (click)="changeStatus(element.id)">
-                  <ng-container *ngIf="element.status"><i class="bi bi-check" style="color: var(--bs-green-prime);"></i></ng-container>
-                  <ng-container *ngIf="!element.status"><i class="bi bi-x" style="color: var(--bs-red-100);"></i></ng-container>
+                <ng-container *ngIf="element.status"><i class="bi bi-check" style="color: var(--bs-green-prime);"></i></ng-container>
+                <ng-container *ngIf="!element.status"><i class="bi bi-x" style="color: var(--bs-red-100);"></i></ng-container>
               </td>
             </ng-container>
 
@@ -49,9 +65,9 @@
             <ng-container matColumnDef="role">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Role </th>
               <td mat-cell *matCellDef="let element">
-                <mat-select [(value)]="element.role">
-                  <mat-option *ngFor="let role of roles" value="{{role.value}}">
-                    {{role.viewValue}}
+                <mat-select [(value)]="element.role" class="select-item">
+                  <mat-option *ngFor="let role of roles" value="{{role.value}}" class="select-item">
+                    {{role.value}}
                   </mat-option>
                 </mat-select>
               </td>
