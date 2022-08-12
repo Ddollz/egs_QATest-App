@@ -1,4 +1,5 @@
 import { Component, HostBinding, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-side-bar',
@@ -9,7 +10,7 @@ export class SideBarComponent implements OnInit {
 
   ddWorkspace: boolean = true;
   ddSecurity: boolean = true;
-  constructor() { }
+  constructor(public router: Router) { }
 
   ngOnInit(): void {
   }

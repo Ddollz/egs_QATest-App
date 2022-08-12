@@ -48,7 +48,24 @@
   cursor: pointer;
   line-height: 1.125rem;
 }
-
+.filter-outer {
+  position: relative;
+}
+.filter-dropdown {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 0;
+  padding: 1rem;
+  border-radius: 6px;
+  border: 1px solid #e3e1e1;
+  box-shadow: 0 0 12px rgb(217 217 217 / 50%);
+  z-index: 999;
+  background: #fff;
+  min-width: 180px;
+}
+.hide{
+  display: none !important;
+}
 .add-filter-button {
   white-space: nowrap;
   font-size: .875rem;
@@ -64,10 +81,12 @@
 .add-filter-button:hover {
   color: var(--bs-blue-second);
 }
-.table-status i{
+
+.table-status i {
   font-size: 1.5rem;
   cursor: pointer;
 }
+
 .table-name {
   font-weight: 500;
   margin-bottom: 0;
@@ -80,4 +99,17 @@
   font-size: .75rem;
   line-height: 1rem;
   color: #959595;
+}
+
+::ng-deep .mat-select-value {
+  color: var(--bs-blue-prime);
+}
+
+::ng-deep .mat-select-value:hover {
+  color: var(--bs-blue-second);
+}
+
+::ng-deep .mat-select-arrow {
+  display: none;
+
 }
