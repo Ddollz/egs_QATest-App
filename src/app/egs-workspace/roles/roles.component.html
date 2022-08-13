@@ -4,40 +4,6 @@
       <h3>User Roles</h3>
 
       <div class="row">
-        <div class="row filter-row">
-          <div class="col d-flex text-start">
-            <!-- <div class="filters-block">
-              <input type="text" class="form-control search_input me-2" placeholder="Search for team members" (keyup)="applyFilter($event)" #input>
-              <div class="filter-outer me-2">
-                <div class="filter-item" (click)="displayDropdown($event)">
-                  <span>Status: Multiple</span>
-                </div>
-                <div class="filter-dropdown d-flex flex-column hide">
-
-                  <mat-radio-group aria-label="Select an option" class="d-flex flex-column">
-                    <mat-radio-button value="0" class="mb-2" (change)="applyFilter(undefined,$event)">All</mat-radio-button>
-                    <mat-radio-button value="1" class="mb-2" (change)="applyFilter(undefined,$event)">Active</mat-radio-button>
-                    <mat-radio-button value="2" (change)="applyFilter(undefined,$event)">Inactive</mat-radio-button>
-                  </mat-radio-group>
-
-                </div>
-              </div>
-              <div class="filter-outer me-2">
-                <div class="filter-item" (click)="displayDropdown($event)">
-                  <span>Role: Multiple</span>
-                </div>
-                <div class="filter-dropdown d-flex flex-column hide">
-                  <mat-radio-group aria-label="Select an option" [(ngModel)]="filteredValues" class="d-flex flex-column">
-                    <mat-radio-button value="" class="mb-2" (change)="applyFilter(undefined,$event)" >All</mat-radio-button>
-                    <ng-container *ngFor="let item of roles">
-                      <mat-radio-button value="{{item.value}}" class="mb-2" (change)="applyFilter(undefined,$event)" > {{item.value}}</mat-radio-button>
-                    </ng-container>
-                  </mat-radio-group>
-                </div>
-              </div>
-            </div>
-          </div>-->
-        </div>
         <div class="row m-0 mt-3">
           <table mat-table [dataSource]="dataSource" class="mat-elevation-z0" matSort>
             <ng-container matColumnDef="value">
@@ -56,20 +22,21 @@
                 {{element.users}} user
               </td>
             </ng-container>
-
-
             <ng-container matColumnDef="setting">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>  </th>
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> </th>
               <td mat-cell *matCellDef="let element">
-                <i class="bi bi-three-dots"></i>
+                <div class="dropdown">
+                  <i class="bi bi-three-dots" data-bs-toggle="dropdown" aria-expanded="false"></i>
+                  <div class="dropdown-menu text-center">
+                    <a class="dropdown-item" href="#">View</a>
+                    <a class="dropdown-item" href="#">Delete</a>
+                  </div>
+                </div>
               </td>
             </ng-container>
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
-            <!-- <tr *matNoDataRow="">
-              <td class="mat-cell" colspan="4"> The "{{input.value}}" does not match any account. </td>
-            </tr> -->
           </table>
           <mat-paginator [pageSizeOptions]="[10, 5, 10, 20, 50]" showFirstLastButtons>
           </mat-paginator>

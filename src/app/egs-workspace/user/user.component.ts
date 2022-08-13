@@ -35,9 +35,9 @@ export class UserComponent implements OnInit, AfterViewInit {
   roleSelect: string = 'Multiple';
 
   roles: role[] = [
-    { value: 'Administrator',description:"Admin Description", checked: true, users : 2 },
-    { value: 'Editor',description:"Editor Description", checked: true, users : 1 },
-    { value: 'Guest',description:"Guest  Description", checked: true, users : 5 },
+    { value: 'Administrator', description: "Admin Description", checked: true, users: 2 },
+    { value: 'Editor', description: "Editor Description", checked: true, users: 1 },
+    { value: 'Guest', description: "Guest  Description", checked: true, users: 5 },
   ];
 
   constructor() {
@@ -46,6 +46,14 @@ export class UserComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.filterRoleText = document.querySelector('#filter-role');
     this.filterStatusText = document.querySelector('#filter-status');
+    this.dataSource.filterPredicate = function (data, filter: string): boolean {
+      return data.status === Number(filter)
+        || data.firstname.toLowerCase().includes(filter)
+        || data.lastname.toLowerCase().includes(filter)
+        || data.role.toLowerCase().includes(filter)
+        || data.roleTitle.toLowerCase().includes(filter)
+        || data.email.toLowerCase().includes(filter);
+    };
   }
 
   ngAfterViewInit() {
@@ -54,17 +62,21 @@ export class UserComponent implements OnInit, AfterViewInit {
   }
 
   applyFilter(event?: Event, valueFilter?: MatRadioChange) {
-
     if (event != null) {
       const filterValue = (event.target as HTMLInputElement).value;
-      this.dataSource.filter = filterValue.trim().toLocaleLowerCase();
+      this.dataSource.filter = filterValue.trim().toLowerCase();
       console.log(this.dataSource.filter);
     } else if (valueFilter != null) {
-      this.dataSource.filter = valueFilter.value;
+      this.dataSource.filter = valueFilter.value.trim().toLowerCase();
+      console.log(this.dataSource.filter);
     }
   }
   changeDropdownText() {
-    this.filterRoleText.innerHTML = this.roleSelect;
+    if (this.roleSelect)
+      this.filterRoleText.innerHTML = this.roleSelect;
+    else {
+      this.filterRoleText.innerHTML = 'Multiple';
+    }
     if (this.statusSelect == '1')
       this.filterStatusText.innerHTML = 'Active';
     else if (this.statusSelect == '-1')
@@ -76,22 +88,12 @@ export class UserComponent implements OnInit, AfterViewInit {
     //Find index of specific object using findIndex method.
     let objIndex = ELEMENT_DATA.findIndex((obj => obj.id == id));
     //Update object's name property.
-    if (ELEMENT_DATA[objIndex].status) {
+    if (ELEMENT_DATA[objIndex].status == 1) {
       ELEMENT_DATA[objIndex].status = -1;
     } else {
       ELEMENT_DATA[objIndex].status = 1;
     }
     console.log(ELEMENT_DATA);
-  }
-  displayDropdown(event: Event) {
-    const element = event.currentTarget as HTMLElement;
-    const e = element.nextSibling as HTMLElement;
-    if (e.classList.contains('hide')) {
-      e.classList.remove('hide');
-    } else {
-      e.classList.add('hide');
-    }
-
   }
 
 }
