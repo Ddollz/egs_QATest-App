@@ -21,11 +21,15 @@ import { EgsWorkspaceComponent } from './egs-workspace/egs-workspace.component';
 import { UserComponent } from './egs-workspace/user/user.component';
 import { RolesComponent } from './egs-workspace/roles/roles.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TestRunComponent } from './egs-project/projects/test-run/test-run.component';
 
 //Link Routes
 const appRoute: Routes = [
   { path: '', redirectTo: 'projects', pathMatch: "full" },
   { path: 'projects', component: ProjectsComponent },
+  { path: 'projects/run', component: TestRunComponent },
+  //Uncomment this when project is working
+  // { path: 'projects/run/:project', component: TestRunComponent },
   { path: 'workspace', component: EgsWorkspaceComponent },
   { path: 'workspace/user', component: UserComponent },
   { path: 'workspace/user/:id:test', component: UserComponent },
@@ -43,7 +47,8 @@ const appRoute: Routes = [
     SideBarComponent,
     EgsWorkspaceComponent,
     UserComponent,
-    RolesComponent
+    RolesComponent,
+    TestRunComponent
   ],
   imports: [
     BrowserModule,
