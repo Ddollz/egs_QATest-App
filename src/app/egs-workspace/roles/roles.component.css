@@ -13,19 +13,6 @@
   height: 100%;
 }
 
-.table-title {
-  font-weight: 500;
-  margin-bottom: 0;
-  line-height: 1rem;
-}
-
-.table-desctiption {
-  margin-top: 0;
-  font-weight: 400;
-  font-size: .75rem;
-  line-height: 1rem;
-  color: #959595;
-}
 
 .mat-column-users {
   width: 80px;

@@ -278,3 +278,19 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .add-filter-button:hover {
   color: var(--bs-blue-second);
 }
+
+/* Table */
+
+
+.column-title{
+  font-weight: 500;
+  margin-bottom: 0;
+  line-height: 1rem;
+}
+.column-subtitle{
+  margin-top: 0;
+  font-weight: 400;
+  font-size: .75rem;
+  line-height: 1rem;
+  color: #959595;
+}

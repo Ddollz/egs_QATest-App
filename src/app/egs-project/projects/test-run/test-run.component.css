@@ -12,3 +12,14 @@
   overflow: hidden;
   height: 100%;
 }
+.mat-column-status {
+  width: 25%;
+}
+
+.progress{
+  height: 1.3rem;
+
+}
+.progress-bar{
+  background-color: rgb(41, 185, 95);
+}

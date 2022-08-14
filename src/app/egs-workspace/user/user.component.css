@@ -18,19 +18,6 @@
   cursor: pointer;
 }
 
-.table-name {
-  font-weight: 500;
-  margin-bottom: 0;
-  line-height: 1rem;
-}
-
-.table-email {
-  margin-top: 0;
-  font-weight: 400;
-  font-size: .75rem;
-  line-height: 1rem;
-  color: #959595;
-}
 
 ::ng-deep .mat-select-value {
   color: var(--bs-blue-prime);
