@@ -1,3 +1,43 @@
 <div class="app__content">
   <p>test-run works!</p>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="row filter-row">
+        <div class="col d-flex text-start">
+          <div class="filters-block">
+            <input type="text" class="form-control search_input me-2" placeholder="Search for team members" #input>
+            <div class="filter-outer me-2">
+              <div class="filter-item" >
+                <span>Status: Multiple</span>
+              </div>
+              <div class="filter-dropdown d-flex flex-column hide">
+
+                <!-- <mat-radio-group aria-label="Select an option" class="d-flex flex-column">
+                  <mat-radio-button value="0" class="mb-2" (change)="applyFilter(undefined,$event)">All</mat-radio-button>
+                  <mat-radio-button value="1" class="mb-2" (change)="applyFilter(undefined,$event)">Active</mat-radio-button>
+                  <mat-radio-button value="2" (change)="applyFilter(undefined,$event)">Inactive</mat-radio-button>
+                </mat-radio-group> -->
+
+              </div>
+            </div>
+            <div class="filter-outer me-2">
+              <div class="filter-item">
+                <span>Role: Multiple</span>
+              </div>
+              <div class="filter-dropdown d-flex flex-column hide">
+                <!-- <mat-radio-group aria-label="Select an option" [(ngModel)]="filteredValues" class="d-flex flex-column">
+                  <mat-radio-button value="" class="mb-2" (change)="applyFilter(undefined,$event)" >All</mat-radio-button>
+                  <ng-container *ngFor="let item of roles">
+                    <mat-radio-button value="{{item.value}}" class="mb-2" (change)="applyFilter(undefined,$event)" > {{item.value}}</mat-radio-button>
+                  </ng-container>
+                </mat-radio-group> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
 </div>
