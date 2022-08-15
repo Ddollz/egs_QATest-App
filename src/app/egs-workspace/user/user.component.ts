@@ -48,8 +48,7 @@ export class UserComponent implements OnInit, AfterViewInit {
     this.filterStatusText = document.querySelector('#filter-status');
     this.dataSource.filterPredicate = function (data, filter: string): boolean {
       return data.status === Number(filter)
-        || data.firstname.toLowerCase().includes(filter)
-        || data.lastname.toLowerCase().includes(filter)
+        || (data.firstname.toLowerCase() +" "+ data.lastname.toLowerCase()).includes(filter)
         || data.role.toLowerCase().includes(filter)
         || data.roleTitle.toLowerCase().includes(filter)
         || data.email.toLowerCase().includes(filter);
@@ -97,4 +96,3 @@ export class UserComponent implements OnInit, AfterViewInit {
   }
 
 }
-// event: { target: HTMLInputElement }

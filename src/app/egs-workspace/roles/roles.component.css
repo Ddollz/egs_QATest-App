@@ -47,3 +47,9 @@ color: var(--bs-blue-second);
 .hide {
   display: none !important;
 }
+
+.add-role{
+  font-size: .875rem;
+  border-radius: .25rem;
+  padding: .2rem .75rem;
+}
