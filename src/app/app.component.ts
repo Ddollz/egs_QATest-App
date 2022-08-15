@@ -22,15 +22,15 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
 
     //Sample Post Methos
-    this.accountlist$ = this.api.getAccountList();
-    this.accountlist$.subscribe({
-      next(num) { console.log(num); },
-      error(err) {
-        console.log(err);
-      },
-      complete() { console.log('Finished sequence'); }
-    })
-    console.log(this.accountlist$);
+    // this.accountlist$ = this.api.getAccountList();
+    // this.accountlist$.subscribe({
+    //   next(num) { console.log(num); },
+    //   error(err) {
+    //     console.log(err);
+    //   },
+    //   complete() { console.log('Finished sequence'); }
+    // })
+    // console.log(this.accountlist$);
 
   }
 }

@@ -1,78 +1,75 @@
-<ng-container *ngIf="router.url == '/projects/repository'">
-  <div class="sidebar__Title">
-    <p>ActivMenu</p>
-  </div>
-
-  <div class="mt-2">
-    <div class="dropdown__title collapsed" data-bs-toggle="collapse" data-bs-target="#tests-collapse" aria-expanded="true" [ngClass] = "ddTests? '':'open'" (click) = "toggleCollapse('tests')">
-      <p>TESTS</p>
-      <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-caret-up open" viewBox="0 0 16 16">
-        <path d="M3.204 11h9.592L8 5.519 3.204 11zm-.753-.659 4.796-5.48a1 1 0 0 1 1.506 0l4.796 5.48c.566.647.106 1.659-.753 1.659H3.204a1 1 0 0 1-.753-1.659z" />
-      </svg>
-    </div>
-    <div class="collapse show" id="tests-collapse">
-      <a class="dropdown-item" href=""><i class="bi bi-person"></i>Repository</a>
-      <a class="dropdown-item" href=""><i class="bi bi-person"></i>Shared Steps</a>
-      <a class="dropdown-item" href=""><i class="bi bi-person"></i>Review</a>
-    </div>
-  </div>
-
-  <div class="mt-3">
-    <div class="dropdown__title collapsed" data-bs-toggle="collapse" data-bs-target="#execution-collapse" aria-expanded="true" [ngClass] = "ddExecution? '':'open'" (click) = "toggleCollapse('execution')">
-      <p>EXECUTION</p>
-      <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-caret-up open" viewBox="0 0 16 16">
-        <path d="M3.204 11h9.592L8 5.519 3.204 11zm-.753-.659 4.796-5.48a1 1 0 0 1 1.506 0l4.796 5.48c.566.647.106 1.659-.753 1.659H3.204a1 1 0 0 1-.753-1.659z" />
-      </svg>
-    </div>
-    <div class="collapse show" id="execution-collapse">
-      <a class="dropdown-item" href=""><i class="bi bi-person"></i>Test Plans</a>
-      <a class="dropdown-item" href=""><i class="bi bi-person"></i>Test Runs</a>
-      <a class="dropdown-item" href=""><i class="bi bi-person"></i>Configurations</a>
-    </div>
-  </div>
-
-  <div class="mt-3">
-    <div class="dropdown__title collapsed" data-bs-toggle="collapse" data-bs-target="#issues-collapse" aria-expanded="true" [ngClass] = "ddIssues? '':'open'" (click) = "toggleCollapse('issues')">
-      <p>ISSUES</p>
-      <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-caret-up open" viewBox="0 0 16 16">
-        <path d="M3.204 11h9.592L8 5.519 3.204 11zm-.753-.659 4.796-5.48a1 1 0 0 1 1.506 0l4.796 5.48c.566.647.106 1.659-.753 1.659H3.204a1 1 0 0 1-.753-1.659z" />
-      </svg>
-    </div>
-    <div class="collapse show" id="issues-collapse">
-      <a class="dropdown-item" href=""><i class="bi bi-person"></i>Defects</a>
-      <a class="dropdown-item" href=""><i class="bi bi-person"></i>Requirements</a>
-      <a class="dropdown-item" href=""><i class="bi bi-person"></i>Milestones</a>
-    </div>
-  </div>
-</ng-container>
-
-<ng-container *ngIf="router.url == '/workspace'">
+<ng-container *ngIf="router.url.includes('/workspace')">
   <div class="sidebar__Title">
     <p>Calcmenu Philippines</p>
   </div>
-
-  <div class="sidebar__workspace">
-    <div class="dropdown__title collapsed" data-bs-toggle="collapse" data-bs-target="#orders-collapse" aria-expanded="true" [ngClass] = "ddWorkspace? '':'open'" (click) = "toggleCollapse('workspace')">
+  <div class="mb-3">
+    <div class="dropdown__title collapsed" data-bs-toggle="collapse" data-bs-target="#workspace-collapse" aria-expanded="true" [ngClass]="ddWorkspace? '':'open'" (click)="toggleCollapse('workspace')">
       <p>WORKSPACE</p>
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down open" viewBox="0 0 16 16">
-        <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+        <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" />
       </svg>
     </div>
     <div class="collapse show" id="workspace-collapse">
       <a class="dropdown-item" routerLink="workspace/user"><i class="bi bi-person"></i>User</a>
-      <a class="dropdown-item" href=""><i class="bi bi-person-badge"></i>Roles</a>
+      <a class="dropdown-item" routerLink="workspace/roles"><i class="bi bi-person-badge"></i>Roles</a>
     </div>
   </div>
-  <div class="sidebar__workspace">
-    <div class="dropdown__title collapsed" data-bs-toggle="collapse" data-bs-target="#security-collapse" aria-expanded="true" [ngClass] = "ddSecurity? '':'open'" (click) = "toggleCollapse('security')">
+  <div class="mb-3">
+    <div class="dropdown__title collapsed" data-bs-toggle="collapse" data-bs-target="#security-collapse" aria-expanded="true" [ngClass]="ddSecurity? '':'open'" (click)="toggleCollapse('security')">
       <p>Security</p>
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-up open" viewBox="0 0 16 16">
-        <path d="M3.204 11h9.592L8 5.519 3.204 11zm-.753-.659 4.796-5.48a1 1 0 0 1 1.506 0l4.796 5.48c.566.647.106 1.659-.753 1.659H3.204a1 1 0 0 1-.753-1.659z" />
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down open" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" />
       </svg>
     </div>
     <div class="collapse show" id="security-collapse">
       <a class="dropdown-item" href=""><i class="bi bi-person"></i>Test 1</a>
       <a class="dropdown-item" href=""><i class="bi bi-person-badge"></i>Test2</a>
+    </div>
+  </div>
+
+</ng-container>
+<ng-container *ngIf="router.url.includes('/projects')">
+  <div class="sidebar__Title">
+    <p>Project Name</p>
+  </div>
+
+  <div class="mb-3">
+    <div class="dropdown__title collapsed" data-bs-toggle="collapse" data-bs-target="#test-collapse" aria-expanded="true" [ngClass]="ddWorkspace? '':'open'" (click)="toggleCollapse('workspace')">
+      <p>TEST</p>
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down open" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" />
+      </svg>
+    </div>
+    <div class="collapse show" id="test-collapse">
+      <a class="dropdown-item" routerLink="workspace/user"><i class="bi bi-boxes"></i>Repository</a>
+      <a class="dropdown-item" routerLink="workspace/roles"><i class="bi bi-diagram-3"></i>Shared Steps</a>
+      <a class="dropdown-item" routerLink="workspace/roles"><i class="bi bi-qr-code-scan"></i>Review</a>
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <div class="dropdown__title collapsed" data-bs-toggle="collapse" data-bs-target="#test-collapse" aria-expanded="true" [ngClass]="ddWorkspace? '':'open'" (click)="toggleCollapse('workspace')">
+      <p>Execution</p>
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down open" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" />
+      </svg>
+    </div>
+    <div class="collapse show" id="test-collapse">
+      <a class="dropdown-item" routerLink="workspace/user"><i class="bi bi-receipt"></i>Test Plans</a>
+      <a class="dropdown-item" routerLink="projects/run"><i class="bi bi-caret-right"></i>Test Runs</a>
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <div class="dropdown__title collapsed" data-bs-toggle="collapse" data-bs-target="#test-collapse" aria-expanded="true" [ngClass]="ddWorkspace? '':'open'" (click)="toggleCollapse('workspace')">
+      <p>Issues</p>
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down open" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" />
+      </svg>
+    </div>
+    <div class="collapse show" id="test-collapse">
+      <a class="dropdown-item" routerLink="workspace/user"><i class="bi bi-hdd-network"></i>Defacts</a>
+      <a class="dropdown-item" routerLink="workspace/roles"><i class="bi bi-signpost-2"></i>Milestones</a>
     </div>
   </div>
 </ng-container>
