@@ -48,26 +48,26 @@
   </div>
 
   <div class="mb-3">
-    <div class="dropdown__title collapsed" data-bs-toggle="collapse" data-bs-target="#test-collapse" aria-expanded="true" [ngClass]="ddWorkspace? '':'open'" (click)="toggleCollapse('workspace')">
+    <div class="dropdown__title collapsed" data-bs-toggle="collapse" data-bs-target="#Execution-collapse" aria-expanded="true" [ngClass]="ddWorkspace? '':'open'" (click)="toggleCollapse('workspace')">
       <p>Execution</p>
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down open" viewBox="0 0 16 16">
         <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" />
       </svg>
     </div>
-    <div class="collapse show" id="test-collapse">
+    <div class="collapse show" id="Execution-collapse">
       <a class="dropdown-item" routerLink="workspace/user"><i class="bi bi-receipt"></i>Test Plans</a>
       <a class="dropdown-item" routerLink="projects/run"><i class="bi bi-caret-right"></i>Test Runs</a>
     </div>
   </div>
 
   <div class="mb-3">
-    <div class="dropdown__title collapsed" data-bs-toggle="collapse" data-bs-target="#test-collapse" aria-expanded="true" [ngClass]="ddWorkspace? '':'open'" (click)="toggleCollapse('workspace')">
+    <div class="dropdown__title collapsed" data-bs-toggle="collapse" data-bs-target="#Issues-collapse" aria-expanded="true" [ngClass]="ddWorkspace? '':'open'" (click)="toggleCollapse('workspace')">
       <p>Issues</p>
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down open" viewBox="0 0 16 16">
         <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" />
       </svg>
     </div>
-    <div class="collapse show" id="test-collapse">
+    <div class="collapse show" id="Issues-collapse">
       <a class="dropdown-item" routerLink="workspace/user"><i class="bi bi-hdd-network"></i>Defacts</a>
       <a class="dropdown-item" routerLink="workspace/roles"><i class="bi bi-signpost-2"></i>Milestones</a>
     </div>
