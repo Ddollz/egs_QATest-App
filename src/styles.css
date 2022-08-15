@@ -175,7 +175,6 @@ select {
   background-color: var(--bs-red-100) !important;
   border-color: var(--bs-red-100) !important;
 }
-
 .btn-primary:hover,
 .btn-primary:focus,
 .btn-primary:active,
@@ -186,6 +185,7 @@ select {
   box-shadow: none;
 }
 .btn-primary:active,
+.btn:active:focus,
 .btn-primary.active,
 .open>.dropdown-toggle.btn-primary {
   box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
