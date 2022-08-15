@@ -8,6 +8,8 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatDialogModule } from '@angular/material/dialog';
+
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -24,6 +26,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TestRunComponent } from './egs-project/projects/test-run/test-run.component';
 import { CreateRoleComponent } from './egs-workspace/roles/create-role/create-role.component';
 import { RepositoryComponent } from './egs-project/projects/repository/repository.component';
+
 //Link Routes
 const appRoute: Routes = [
   { path: '', redirectTo: 'projects', pathMatch: "full" },
@@ -66,6 +69,7 @@ const appRoute: Routes = [
     MatSelectModule,
     MatCheckboxModule,
     MatRadioModule,
+    MatDialogModule,
     RouterModule.forRoot(appRoute),
     BrowserAnimationsModule
   ],
