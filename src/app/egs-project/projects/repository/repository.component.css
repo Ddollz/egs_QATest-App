@@ -1,0 +1,72 @@
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i");
+
+:host() {
+	flex: 1;
+	overflow: auto;
+	position: relative;
+}
+
+/*--------------------------------------------------------------
+# General
+--------------------------------------------------------------*/
+
+body {
+	font-family: "Open Sans", sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-family: "Nunito", sans-serif;
+}
+
+/*--------------------------------------------------------------
+# Main
+--------------------------------------------------------------*/
+
+.page-title {
+	font-size: 24px;
+	font-weight: 600;
+}
+
+.page-something {
+	font-size: 12px;
+	font-weight: 500;
+}
+
+.page-button {
+	height: fit-content;
+}
+
+.add-filter-button, .suites-button {
+	font-weight: 600;
+	color: #e52325;
+}
+
+.l-col {
+	font-size: 14px;
+	font-weight: 600;
+}
+
+.l-col i {
+	width: 100px;
+}
+
+.r-col {
+	border-left: 2px solid lightgray;
+}
+
+.r-col-header {
+	width: 100%;
+	margin-bottom: 8px;
+	
+	font-size: 14px;
+	font-weight: 600;
+
+	border-radius: 6px;
+	background-color: #00000008;
+	
+}
