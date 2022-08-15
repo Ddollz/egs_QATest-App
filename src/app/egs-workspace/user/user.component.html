@@ -1,91 +1,26 @@
 <div class="container-fluid app__content">
   <div class="row">
     <div class="col-lg-12">
-      <h3>Users</h3>
+      <h1>Users</h1>
       <div class="row">
         <div class="row filter-row">
           <div class="col d-flex text-start">
             <div class="filters-block">
-              <input type="text" class="form-control search_input me-2" placeholder="Search for team members" (keyup)="applyFilter($event)" #input>
-              <div class="filter-outer dropdown me-2">
-                <div class="filter-item" data-bs-toggle="dropdown" aria-expanded="false">
-                  Status: <span id = 'filter-status'>Multiple</span>
-                </div>
-                <div class="dropdown-menu ">
-                  <mat-radio-group aria-label="Select an option" class="d-flex flex-column" [(ngModel)]="statusSelect" (change) = "changeDropdownText()">
-                    <mat-radio-button value="" class="mb-2" (change)="applyFilter(undefined,$event)">All</mat-radio-button>
-                    <mat-radio-button value="1" class="mb-2" (change)="applyFilter(undefined,$event)">Active</mat-radio-button>
-                    <mat-radio-button value="-1" (change)="applyFilter(undefined,$event)">Inactive</mat-radio-button>
-                  </mat-radio-group>
+              <input type="text" class="form-control me-2" id="exampleInputEmail1" aria-describedby="emailHelp">
+              <div class="filter-outer me-2">
+                <div class="filter-item">
+                  <span>Status: Multiple</span>
                 </div>
               </div>
-              <div class="filter-outer dropdown me-2">
-                <div class="filter-item" data-bs-toggle="dropdown" aria-expanded="false">
-                  Role: <span id = 'filter-role'>Multiple</span>
-                </div>
-                <div class="dropdown-menu">
-                  <mat-radio-group aria-label="Select an option" class="d-flex flex-column" [(ngModel)]="roleSelect" (change) = "changeDropdownText()">
-                    <mat-radio-button value="" class="mb-2" (change)="applyFilter(undefined,$event)">All</mat-radio-button>
-                    <ng-container *ngFor="let item of roles">
-                      <mat-radio-button value="{{item.value}}" class="mb-2" (change)="applyFilter(undefined,$event)"> {{item.value}}</mat-radio-button>
-                    </ng-container>
-                  </mat-radio-group>
-                </div>
+              <div class="add-filter-outer">
+                <button type="button" class="btn btn-primary add-filter-button">Add Filter</button>
               </div>
             </div>
           </div>
         </div>
-        <div class="row m-0 mt-3">
-          <table mat-table [dataSource]="dataSource" class="mat-elevation-z0" matSort>
-            <ng-container matColumnDef="id">
-              <th mat-header-cell *matHeaderCellDef> No. </th>
-              <td mat-cell *matCellDef="let element"> {{element.id}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="status">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
-              <td mat-cell *matCellDef="let element" class="table-status" (click)="changeStatus(element.id)">
-                <ng-container *ngIf="element.status == '1'"><i class="bi bi-check" style="color: var(--bs-green-prime);"></i></ng-container>
-                <ng-container *ngIf="element.status == '-1'"><i class="bi bi-x" style="color: var(--bs-red-100);"></i></ng-container>
-              </td>
-            </ng-container>
-
-            <ng-container matColumnDef="name">
-              <th mat-header-cell *matHeaderCellDef> Name </th>
-              <td mat-cell *matCellDef="let element">
-                <div class="table-name">{{element.firstname}} {{element.lastname}}</div>
-                <div class="table-email">{{element.email}}</div>
-              </td>
-            </ng-container>
-
-            <ng-container matColumnDef="role">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Role </th>
-              <td mat-cell *matCellDef="let element">
-                <mat-select [(value)]="element.role" class="select-item">
-                  <mat-option *ngFor="let role of roles" value="{{role.value}}" class="select-item">
-                    {{role.value}}
-                  </mat-option>
-                </mat-select>
-              </td>
-            </ng-container>
-
-            <ng-container matColumnDef="roleTitle">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Role Title </th>
-              <td mat-cell *matCellDef="let element"> {{element.roleTitle}} </td>
-            </ng-container>
-
-
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
-            <tr *matNoDataRow="">
-              <td class="mat-cell" colspan="4"> The "{{input.value}}" does not match any account. </td>
-            </tr>
-          </table>
-          <!-- change page size option -->
-          <mat-paginator [pageSizeOptions]="[10, 5, 10, 20, 50]" showFirstLastButtons>
-          </mat-paginator>
-        </div>
+        <div class="row m-0"><table>
+          ad
+        </table></div>
       </div>
     </div>
   </div>
