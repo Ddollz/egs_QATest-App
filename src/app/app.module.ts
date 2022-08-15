@@ -23,6 +23,10 @@ import { RolesComponent } from './egs-workspace/roles/roles.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TestRunComponent } from './egs-project/projects/test-run/test-run.component';
 
+// same
+
+
+
 //Link Routes
 const appRoute: Routes = [
   { path: '', redirectTo: 'projects', pathMatch: "full" },
