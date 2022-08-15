@@ -96,4 +96,3 @@ export class UserComponent implements OnInit, AfterViewInit {
   }
 
 }
-// event: { target: HTMLInputElement }

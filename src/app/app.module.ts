@@ -23,15 +23,16 @@ import { RolesComponent } from './egs-workspace/roles/roles.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TestRunComponent } from './egs-project/projects/test-run/test-run.component';
 import { CreateRoleComponent } from './egs-workspace/roles/create-role/create-role.component';
-
+import { RepositoryComponent } from './egs-project/projects/repository/repository.component';
 //Link Routes
 const appRoute: Routes = [
   { path: '', redirectTo: 'projects', pathMatch: "full" },
   { path: 'projects', component: ProjectsComponent },
+  { path: 'projects/repository', component: RepositoryComponent },
   { path: 'projects/run', component: TestRunComponent },
   //Uncomment this when project is working
   // { path: 'projects/run/:project', component: TestRunComponent },
-  { path: 'workspace', component: EgsWorkspaceComponent },
+  { path: 'workspace/user', component: UserComponent },
   { path: 'workspace/user', component: UserComponent },
   { path: 'workspace/roles', component: RolesComponent },
   { path: 'workspace/roles/create', component: CreateRoleComponent },
