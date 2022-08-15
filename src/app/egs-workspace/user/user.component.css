@@ -13,34 +13,21 @@
   height: 100%;
 }
 
-.table-status i {
-  font-size: 1.5rem;
-  cursor: pointer;
+.filter-row>* {
+  width: 100%;
+  max-width: 100%;
+  flex-shrink: 0;
 }
 
-.table-name {
-  font-weight: 500;
-  margin-bottom: 0;
-  line-height: 1rem;
+.filters-block {
+  display: flex;
+  align-items: center;
 }
 
-.table-email {
-  margin-top: 0;
-  font-weight: 400;
-  font-size: .75rem;
-  line-height: 1rem;
-  color: #959595;
+.filter-item{
+  white-space: nowrap;
 }
-
-::ng-deep .mat-select-value {
-  color: var(--bs-blue-prime);
-}
-
-::ng-deep .mat-select-value:hover {
-  color: var(--bs-blue-second);
-}
-
-::ng-deep .mat-select-arrow {
-  display: none;
+.add-filter-button{
+  white-space: nowrap;
 
 }
