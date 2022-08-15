@@ -38,18 +38,16 @@
 }
 
 .dropdown-item:hover,
-.dropdown-item:active
-{
-background-color: transparent;
-color: var(--bs-blue-second);
+.dropdown-item:active {
+  background-color: transparent;
+  color: var(--bs-blue-second);
 }
 
 .hide {
   display: none !important;
 }
 
-.add-role{
-  font-size: .875rem;
-  border-radius: .25rem;
-  padding: .2rem .75rem;
+.modal-header,
+.modal-footer {
+  border: none;
 }

@@ -3,28 +3,29 @@
 		<div class="col-lg-12">
 
 			<h2 class="mt-2 page-title">Projects</h2>
-		
+
 			<div class="row mt-3">
 				<div class="d-flex col">
 					<div class="me-3">
-						<button type="button" class="btn btn-primary">Create new project</button>
+						<button type="button" class="btn btn-primary create-project-button">Create new project</button>
 					</div>
 					<div class="me-2">
-						<input type="text" class="form-control" placeholder="Search for projects">
+						<input type="text" class="form-control search_input" placeholder="Search for projects">
 					</div>
-					<div class="dropdown me-1">
-						<button class="btn btn-light" type="button" id="dropdownMenuButton" data-toggle="dropdown">Status:
-							Active</button>
-						<div class="dropdown-menu">
-							<a class="dropdown-item" href="#">Action</a>
-						</div>
-					</div>
+					<div class="filter-outer dropdown me-2">
+            <div class="filter-item" data-bs-toggle="dropdown" aria-expanded="false">
+              Status: <span id = 'filter-status'>Multiple</span>
+            </div>
+            <div class="dropdown-menu ">
+              test
+            </div>
+          </div>
 					<div class="me-2">
-						<button type="button" class="btn add-filter-button">+ Add filter</button>
+						<a type="button" class="btn add-filter-button">+ Add filter</a>
 					</div>
 				</div>
 			</div>
-		
+
 			<!-- TABLE HEAD -->
 			<div class="row mt-4 table-head">
 				<div class="col-4">
@@ -61,24 +62,24 @@
 				</div>
 			</div>
 			<!-- END OF TABLE HEAD -->
-		
+
 			<!-- TABLE BODY -->
 			<div class="row mt-2">
 				<div class="col-4">
 					<div class="row py-2 d-flex align-items-center project-row">
-		
+
 						<div class="col-1 px-0 text-center">
 							<a href="#">
 								<i class="bi bi-star"></i>
 							</a>
 						</div>
-		
+
 						<div class="col-1 px-0 text-center project-image">
 							<a href="#">
 								<img src="../../assets/img/placeholder.jpg">
 							</a>
 						</div>
-		
+
 						<div class="col">
 							<div>
 								<a class="project-name" routerLink="/projects/repository">ActivMenu</a>
@@ -91,7 +92,7 @@
 				</div>
 				<div class="col-8">
 					<div class="row py-2 d-flex align-items-center project-row">
-		
+
 						<div class="col d-none d-lg-block">
 							<div class="d-inline me-1">
 								<i class="bi bi-check"></i>
@@ -100,25 +101,25 @@
 								<span>No open defects</span>
 							</div>
 						</div>
-		
+
 						<div class="col d-none d-lg-block">
 							<div>
 								<span>No test runs</span>
 							</div>
 						</div>
-		
+
 						<div class="col d-none d-lg-block">
 							<div>
 								<span>No milestones</span>
 							</div>
 						</div>
-		
+
 						<div class="col d-none d-lg-block project-team">
 							<img src="../../assets/img/placeholder.jpg">
 							<img src="../../assets/img/placeholder.jpg">
 							<img src="../../assets/img/placeholder.jpg">
 						</div>
-		
+
 						<div class="col-1 d-flex justify-content-end">
 							<button class="btn">
 								<i class="bi bi-three-dots"></i>

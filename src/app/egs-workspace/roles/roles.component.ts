@@ -2,7 +2,10 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
 import { role, user } from '../../models/workspace/workspace.model';
+import { CreateRoleComponent } from './create-role/create-role.component';
+
 
 @Component({
   selector: 'app-roles',
@@ -20,9 +23,12 @@ export class RolesComponent implements OnInit {
   @ViewChild(MatSort) sort: any = MatSort;
   @ViewChild(MatPaginator) paginator: any = MatPaginator;
 
-  constructor() { }
+  constructor(private dialogRef : MatDialog) { }
 
   ngOnInit(): void {
   }
 
+  openCreateRole(){
+    this.dialogRef.open(CreateRoleComponent);
+  }
 }

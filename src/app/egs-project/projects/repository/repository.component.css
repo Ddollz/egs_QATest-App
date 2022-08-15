@@ -6,27 +6,6 @@
 	position: relative;
 }
 
-/*--------------------------------------------------------------
-# General
---------------------------------------------------------------*/
-
-body {
-	font-family: "Open Sans", sans-serif;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-	font-family: "Nunito", sans-serif;
-}
-
-/*--------------------------------------------------------------
-# Main
---------------------------------------------------------------*/
-
 .page-title {
 	font-size: 24px;
 	font-weight: 600;
@@ -41,10 +20,6 @@ h6 {
 	height: fit-content;
 }
 
-.add-filter-button, .suites-button {
-	font-weight: 600;
-	color: #e52325;
-}
 
 .l-col {
 	font-size: 14px;
@@ -62,11 +37,11 @@ h6 {
 .r-col-header {
 	width: 100%;
 	margin-bottom: 8px;
-	
+
 	font-size: 14px;
 	font-weight: 600;
 
 	border-radius: 6px;
 	background-color: #00000008;
-	
+
 }
