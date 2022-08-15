@@ -13,21 +13,21 @@
   height: 100%;
 }
 
-.filter-row>* {
-  width: 100%;
-  max-width: 100%;
-  flex-shrink: 0;
+.table-status i {
+  font-size: 1.5rem;
+  cursor: pointer;
 }
 
-.filters-block {
-  display: flex;
-  align-items: center;
+
+::ng-deep .mat-select-value {
+  color: var(--bs-blue-prime);
 }
 
-.filter-item{
-  white-space: nowrap;
+::ng-deep .mat-select-value:hover {
+  color: var(--bs-blue-second);
 }
-.add-filter-button{
-  white-space: nowrap;
+
+::ng-deep .mat-select-arrow {
+  display: none;
 
 }
