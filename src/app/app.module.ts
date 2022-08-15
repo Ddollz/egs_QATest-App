@@ -32,7 +32,7 @@ const appRoute: Routes = [
   { path: 'projects/run', component: TestRunComponent },
   //Uncomment this when project is working
   // { path: 'projects/run/:project', component: TestRunComponent },
-  { path: 'workspace', component: EgsWorkspaceComponent },
+  { path: 'workspace/user', component: UserComponent },
   { path: 'workspace/user', component: UserComponent },
   { path: 'workspace/roles', component: RolesComponent },
   { path: 'login', component: EgsLoginComponent },
