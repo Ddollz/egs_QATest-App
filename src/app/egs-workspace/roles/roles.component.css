@@ -1,0 +1,49 @@
+:host() {
+  flex: 1;
+  overflow: auto;
+  position: relative;
+}
+
+.app__content {
+  padding: 1rem 1rem 0.25rem 1.5rem;
+  display: flex;
+  flex: 1 1 0%;
+  flex-direction: column;
+  overflow: hidden;
+  height: 100%;
+}
+
+
+.mat-column-users {
+  width: 80px;
+}
+
+.mat-column-setting {
+  width: 80px;
+  text-align: end;
+}
+
+.dropdown-menu {
+  position: absolute;
+  border-radius: 6px;
+  border: 1px solid #e3e1e1;
+  box-shadow: 0 0 12px rgb(217 217 217 / 50%);
+  z-index: 999;
+  background: #fff;
+  min-width: 180px;
+}
+
+.dropdown-item {
+  transition: color .3s ease;
+}
+
+.dropdown-item:hover,
+.dropdown-item:active
+{
+background-color: transparent;
+color: var(--bs-blue-second);
+}
+
+.hide {
+  display: none !important;
+}
