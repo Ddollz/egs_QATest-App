@@ -320,6 +320,7 @@ select {
 
 .setting-icon{
   color: var(--bs-blue-prime);
+  cursor: pointer;
 }
 .setting-icon:hover{
   color: var(--bs-blue-second);

@@ -14,8 +14,18 @@
 }
 
 
-.mat-column-users {
-  width: 80px;
+.mat-column-Role_Code {
+  width: 100px;
+  font-size: .8rem;
+  color: #222222DE;
+
+}
+
+.mat-column-User {
+  width: 100px;
+  font-size: .8rem;
+  font-weight: 400;
+  color: #222222DE;
 }
 
 .mat-column-setting {

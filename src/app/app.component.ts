@@ -10,7 +10,7 @@ import { Router, NavigationStart, NavigationEnd } from '@angular/router';
 })
 export class AppComponent implements OnInit {
 
-  accountlist$!: Observable<any[]>;
+  roleList$!: Observable<any[]>;
 
   showHead: boolean = false;
   showSide: boolean = false;
@@ -21,16 +21,24 @@ export class AppComponent implements OnInit {
   }
   ngOnInit(): void {
 
-    //Sample Post Methos
-    // this.accountlist$ = this.api.getAccountList();
-    // this.accountlist$.subscribe({
-    //   next(num) { console.log(num); },
-    //   error(err) {
-    //     console.log(err);
-    //   },
-    //   complete() { console.log('Finished sequence'); }
-    // })
-    // console.log(this.accountlist$);
+    //Sample Post Methods
+    // this.api.UniCall(
+    //   {
+    //     CommandText: 'egsQARoleGet',
+    //     Params: [
+    //       {
+    //         Param: '@Role_ID',
+    //         Value: ''
+    //       }
 
+    //     ],
+    //   }
+    // ).subscribe({
+    //     next(num) { console.log(num); },
+    //     error(err) {
+    //       console.log(err);
+    //     },
+    //     complete() { console.log('Finished sequence'); }
+    //   })
   }
 }

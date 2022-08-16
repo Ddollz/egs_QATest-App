@@ -10,8 +10,9 @@ export interface user {
 }
 
 export interface role {
-  value: string;
-  description: string;
-  checked: boolean;
-  users: number;
+  Role_ID: string;
+  Role_Name: string;
+  Role_Description: string;
+  Role_Code: string;
+  Users: string;
 }
