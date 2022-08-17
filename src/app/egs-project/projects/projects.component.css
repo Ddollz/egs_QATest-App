@@ -6,7 +6,7 @@
   position: relative;
 }
 
-.create-project-button{
+.create-project-button {
   font-size: .875rem;
   border-radius: .25rem;
   padding: .2rem .75rem;
@@ -16,7 +16,6 @@
   font-size: 24px;
   font-weight: 600;
 }
-
 
 .table-head label {
   color: gray;

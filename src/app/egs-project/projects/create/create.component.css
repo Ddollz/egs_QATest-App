@@ -1,0 +1,24 @@
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i");
+
+:host() {
+    flex: 1;
+    overflow: auto;
+    position: relative;
+}
+
+.page-title {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.page-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-bottom: .25rem;
+}
+
+.create-project-button {
+    font-size: .875rem;
+    border-radius: .25rem;
+    padding: .2rem .75rem;
+}
