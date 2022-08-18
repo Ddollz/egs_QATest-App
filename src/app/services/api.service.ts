@@ -1,7 +1,10 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
+const httpOptions = {
+  headers: new HttpHeaders({'Content-Type': 'application/json'})
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -11,23 +14,32 @@ export class ApiService {
 
   constructor(private http:HttpClient) { }
 
-  getAccountList():Observable<any[]>{
-    return this.http.get<any>(this.ApiURL+"/EgsAccounts");
+
+  UniCall(body: any): Observable<any> {
+    console.log(JSON.stringify(body));
+    return this.http.post(
+      `${this.ApiURL}/UniCallController_SQLServer/UniCall`,
+      JSON.stringify(body),httpOptions
+    );
   }
 
-  getAccount(id:number|string){
-    return this.http.get<any>(this.ApiURL+`/EgsAccounts/${id}`);
-  }
+  // getAccountList():Observable<any[]>{
+  //   return this.http.get<any>(this.ApiURL+"/EgsAccounts");
+  // }
 
-  addAccount(data:any){
-    return this.http.post(this.ApiURL+'/EgsAccounts',data)
-  }
+  // getAccount(id:number|string){
+  //   return this.http.get<any>(this.ApiURL+`/EgsAccounts/${id}`);
+  // }
 
-  updateAccount(id:number|string, data:any){
-    return this.http.post(this.ApiURL+`/EgsAccounts/${id}`,data);
-  }
+  // addAccount(data:any){
+  //   return this.http.post(this.ApiURL+'/EgsAccounts',data)
+  // }
 
-  deleteAccount(id:number|string){
-    return this.http.delete(this.ApiURL+`/EgsAccounts/${id}`);
-  }
+  // updateAccount(id:number|string, data:any){
+  //   return this.http.post(this.ApiURL+`/EgsAccounts/${id}`,data);
+  // }
+
+  // deleteAccount(id:number|string){
+  //   return this.http.delete(this.ApiURL+`/EgsAccounts/${id}`);
+  // }
 }

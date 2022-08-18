@@ -27,7 +27,7 @@
                   <mat-radio-group aria-label="Select an option" class="d-flex flex-column" [(ngModel)]="roleSelect" (change) = "changeDropdownText()">
                     <mat-radio-button value="" class="mb-2" (change)="applyFilter(undefined,$event)">All</mat-radio-button>
                     <ng-container *ngFor="let item of roles">
-                      <mat-radio-button value="{{item.value}}" class="mb-2" (change)="applyFilter(undefined,$event)"> {{item.value}}</mat-radio-button>
+                      <mat-radio-button value="{{item.Role_Name}}" class="mb-2" (change)="applyFilter(undefined,$event)"> {{item.Role_Name}}</mat-radio-button>
                     </ng-container>
                   </mat-radio-group>
                 </div>
@@ -62,8 +62,8 @@
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Role </th>
               <td mat-cell *matCellDef="let element">
                 <mat-select [(value)]="element.role" class="select-item">
-                  <mat-option *ngFor="let role of roles" value="{{role.value}}" class="select-item">
-                    {{role.value}}
+                  <mat-option *ngFor="let role of roles" value="{{role.Role_Name}}" class="select-item">
+                    {{role.Role_Name}}
                   </mat-option>
                 </mat-select>
               </td>

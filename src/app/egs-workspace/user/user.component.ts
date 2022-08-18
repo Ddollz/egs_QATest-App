@@ -35,9 +35,9 @@ export class UserComponent implements OnInit, AfterViewInit {
   roleSelect: string = 'Multiple';
 
   roles: role[] = [
-    { value: 'Administrator', description: "Admin Description", checked: true, users: 2 },
-    { value: 'Editor', description: "Editor Description", checked: true, users: 1 },
-    { value: 'Guest', description: "Guest  Description", checked: true, users: 5 },
+    { Role_ID:'1', Role_Name: 'Administrator', Role_Description: "Admin Description", Role_Code: 'ADM',Users:'0'},
+    { Role_ID:'2', Role_Name: 'Guest', Role_Description: "Admin Description", Role_Code: 'ADM',Users:'0'},
+    { Role_ID:'3', Role_Name: 'Editor', Role_Description: "Admin Description", Role_Code: 'ADM',Users:'0'}
   ];
 
   constructor() {
