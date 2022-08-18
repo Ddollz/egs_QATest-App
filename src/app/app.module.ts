@@ -25,9 +25,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TestRunComponent } from './egs-project/projects/test-run/test-run.component';
 import { RepositoryComponent } from './egs-project/projects/repository/repository.component';
 import { CreateComponent } from './egs-project/projects/create/create.component';
-import { TestPlanComponent } from './egs-project/projects/test-plan/test-plan.component';
-import { CreatePlanComponent } from './egs-project/projects/test-plan/create-plan/create-plan.component';
-
 
 //Link Routes
 const appRoute: Routes = [
@@ -36,8 +33,6 @@ const appRoute: Routes = [
   { path: 'projects/create', component: CreateComponent },
   { path: 'projects/repository', component: RepositoryComponent },
   { path: 'projects/run', component: TestRunComponent },
-  { path: 'projects/plan', component: TestPlanComponent },
-  { path: 'projects/plan/createplan', component: CreatePlanComponent },
   //Uncomment this when project is working
   // { path: 'projects/run/:project', component: TestRunComponent },
   { path: 'workspace/user', component: UserComponent },
@@ -57,9 +52,7 @@ const appRoute: Routes = [
     UserComponent,
     RolesComponent,
     TestRunComponent,
-    CreateComponent,
-    TestPlanComponent,
-    CreatePlanComponent
+    CreateComponent
   ],
   imports: [
     BrowserModule,
