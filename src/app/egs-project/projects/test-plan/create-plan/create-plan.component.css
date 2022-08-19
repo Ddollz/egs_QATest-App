@@ -23,17 +23,6 @@
     max-width: 100%;
 } */
 
-.modal-case.modal-select-cases .modal-select-cases-stats, .modal-select-cases.regular-modal .modal-select-cases-stats {
-    float: right;
-    display: flex;
-    align-items: center;
-    margin-top: 4px;
-	padding: 25px 29px 27px 32px;
-    border: 1px solid #000;
-    border-radius: 6px;
-
-}
-
 .modal-heading {
 	flex: 0 1 auto;
 }
