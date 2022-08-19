@@ -27,6 +27,7 @@ import { RepositoryComponent } from './egs-project/projects/repository/repositor
 import { CreateComponent } from './egs-project/projects/create/create.component';
 import { TestPlanComponent } from './egs-project/projects/test-plan/test-plan.component';
 import { CreatePlanComponent } from './egs-project/projects/test-plan/create-plan/create-plan.component';
+import { RouteGuardService } from './services/route-guard.service';
 
 
 //Link Routes
@@ -38,8 +39,6 @@ const appRoute: Routes = [
   { path: 'projects/run', component: TestRunComponent },
   { path: 'projects/plan', component: TestPlanComponent },
   { path: 'projects/plan/createplan', component: CreatePlanComponent },
-  //Uncomment this when project is working
-  // { path: 'projects/run/:project', component: TestRunComponent },
   { path: 'workspace/user', component: UserComponent },
   { path: 'workspace/roles', component: RolesComponent },
   { path: 'login', component: EgsLoginComponent },
@@ -77,7 +76,7 @@ const appRoute: Routes = [
     RouterModule.forRoot(appRoute),
     BrowserAnimationsModule
   ],
-  providers: [],
+  providers: [RouteGuardService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

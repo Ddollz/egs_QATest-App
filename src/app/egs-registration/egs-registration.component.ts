@@ -15,6 +15,9 @@ export class EgsRegistrationComponent implements OnInit {
     this.loginForm = this.formbuilder.group(
       {
         email: new FormControl("", [Validators.required, Validators.email]),
+        RoleTitle: new FormControl("", [Validators.required, Validators.pattern("^[a-zA-Z ]*$")]),
+        Fname: new FormControl("", [Validators.required, Validators.pattern("^[a-zA-Z ]*$")]),
+        Lname: new FormControl("", [Validators.required, Validators.pattern("^[a-zA-Z ]*$")]),
         pwd: new FormControl("", [Validators.required, Validators.minLength(6), Validators.maxLength(15)]),
         rpwd: new FormControl("", [Validators.required]),
       }
@@ -44,6 +47,15 @@ export class EgsRegistrationComponent implements OnInit {
   }
   get Email(): FormControl {
     return this.loginForm.get('email') as FormControl;
+  }
+  get RoleTitle(): FormControl {
+    return this.loginForm.get('RoleTitle') as FormControl;
+  }
+  get Fname(): FormControl {
+    return this.loginForm.get('Fname') as FormControl;
+  }
+  get Lname(): FormControl {
+    return this.loginForm.get('Lname') as FormControl;
   }
   get PWD(): FormControl {
     return this.loginForm.get('pwd') as FormControl;
