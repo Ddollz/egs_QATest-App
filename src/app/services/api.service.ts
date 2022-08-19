@@ -24,7 +24,7 @@ export class ApiService {
   }
 
   // getAccountList():Observable<any[]>{
-  //   return this.http.get<any>(this.ApiURL+"/EgsAccounts");
+  //   return this.http.get<any>(this.ApiURL+"/Auth/");
   // }
 
   // getAccount(id:number|string){
