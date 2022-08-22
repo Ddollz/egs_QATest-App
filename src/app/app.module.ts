@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http'
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
@@ -28,6 +28,7 @@ import { CreateComponent } from './egs-project/projects/create/create.component'
 import { TestPlanComponent } from './egs-project/projects/test-plan/test-plan.component';
 import { CreatePlanComponent } from './egs-project/projects/test-plan/create-plan/create-plan.component';
 import { RouteGuardService } from './services/route-guard.service';
+import { AuthInterceptor } from './services/auth.interceptor';
 
 
 //Link Routes
@@ -76,7 +77,11 @@ const appRoute: Routes = [
     RouterModule.forRoot(appRoute),
     BrowserAnimationsModule
   ],
-  providers: [RouteGuardService],
+  providers: [RouteGuardService, {
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthInterceptor,
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

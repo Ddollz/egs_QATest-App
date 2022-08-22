@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 const httpOptions = {
-  headers: new HttpHeaders({'Content-Type': 'application/json'})
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 }
 @Injectable({
   providedIn: 'root'
@@ -15,19 +15,23 @@ export class ApiService {
   readonly MethodUrl = environment.unicall_url;
   readonly AuthUrl = environment.auth_url;
 
-  constructor(private http:HttpClient) { }
+  constructor(private http: HttpClient) { }
 
 
   UniCall(body: any): Observable<any> {
     console.log(JSON.stringify(body));
     return this.http.post(
       `${this.ApiURL}${this.MethodUrl}`,
-      JSON.stringify(body),httpOptions
+      JSON.stringify(body), httpOptions
     );
   }
 
-  RegisterCall(body:any){
-    return this.http.post(this.ApiURL+this.AuthUrl+"register",body);
+  RegisterCall(data: any) {
+    return this.http.post(this.ApiURL + this.AuthUrl + "register", data);
+  }
+
+  LoginCall(data: any) {
+    return this.http.post(this.ApiURL + this.AuthUrl + "login", data, { responseType: "text" });
   }
 
   // getAccountList():Observable<any[]>{
