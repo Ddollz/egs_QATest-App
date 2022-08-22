@@ -47,7 +47,6 @@ export class RolesComponent implements OnInit {
     ).subscribe(value => {
       this.roles = value[0];
       this.dataSource = new MatTableDataSource<role>(this.roles);
-      console.log(this.roles);
     }
     );
   }
@@ -101,10 +100,9 @@ export class RolesComponent implements OnInit {
       },
       (error) => {
         console.log(error);
-        alert("500 Internal Server Errors")
+        alert("500 Internal Server Errors");
       }, () => {
         reloadPage();
-
       }
     );
   }

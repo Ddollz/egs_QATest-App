@@ -21,10 +21,10 @@
           <input type="text" class="form-control" id="RoleTitle1" formControlName="RoleTitle">
           <div class="invalid-f mb-0 mt-1">
             <p *ngIf="RoleTitle.errors?.['required']&&(RoleTitle.dirty||RoleTitle.touched)">
-              test is Required.
+              Role Title is Required.
             </p>
             <p *ngIf="RoleTitle.errors?.['pattern']&&(RoleTitle.dirty||RoleTitle.touched)">
-              test is Invalid.
+              Role Title must consist only alphabets.
             </p>
           </div>
         </div>
@@ -36,10 +36,10 @@
           <input type="text" class="form-control" id="fname1" formControlName="Fname">
           <div class="invalid-f mb-0 mt-1">
             <p *ngIf="Fname.errors?.['required']&&(Fname.dirty||Fname.touched)">
-              te is Required.
+              First name is Required.
             </p>
             <p *ngIf="Fname.errors?.['pattern']&&(Fname.dirty||Fname.touched)">
-              Email is Invalid.
+              First name must consist only alphabets.
             </p>
           </div>
         </div>
@@ -49,10 +49,10 @@
           <input type="text" class="form-control" id="lname1"  formControlName="Lname">
           <div class="invalid-f mb-0 mt-1">
             <p *ngIf="Lname.errors?.['required']&&(Lname.dirty||Lname.touched)">
-              Email is Required.
+              First name is Required.
             </p>
             <p *ngIf="Lname.errors?.['pattern']&&(Lname.dirty||Lname.touched)">
-              Email is Invalid.
+              First name must consist only alphabets.
             </p>
           </div>
         </div>
