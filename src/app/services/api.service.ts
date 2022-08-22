@@ -13,6 +13,7 @@ export class ApiService {
 
   readonly ApiURL = environment.api_url;
   readonly MethodUrl = environment.unicall_url;
+  readonly AuthUrl = environment.auth_url;
 
   constructor(private http:HttpClient) { }
 
@@ -23,6 +24,10 @@ export class ApiService {
       `${this.ApiURL}${this.MethodUrl}`,
       JSON.stringify(body),httpOptions
     );
+  }
+
+  RegisterCall(body:any){
+    return this.http.post(this.ApiURL+this.AuthUrl+"register",body);
   }
 
   // getAccountList():Observable<any[]>{

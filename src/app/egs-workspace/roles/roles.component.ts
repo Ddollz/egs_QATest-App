@@ -58,6 +58,10 @@ export class RolesComponent implements OnInit {
     this.Modal_Title = 'Create new role';
     this.Modal_btn = "Create";
     this.Modal_idDisable = false;
+    this.Role_ID = "";
+    this.Role_Name = "";
+    this.Role_Description = "";
+    this.Role_Code = "";
   }
 
   openUpdateRole(id: string, name: string, desc: string, code: string) {
