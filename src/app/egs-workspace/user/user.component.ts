@@ -62,7 +62,6 @@ export class UserComponent implements OnInit, AfterViewInit {
     ).subscribe(value => {
       this.users = value[0];
       this.dataSource = new MatTableDataSource<user>(this.users);
-      console.log(value);
     }
     );
   }
@@ -71,8 +70,9 @@ export class UserComponent implements OnInit, AfterViewInit {
     this.filterRoleText = document.querySelector('#filter-role');
     this.filterStatusText = document.querySelector('#filter-status');
     this.dataSource.filterPredicate = function (data, filter: string): boolean {
+      console.log(filter)
       return data.User_Status === Number(filter)
-        || (data.User_Firstname.toLowerCase() +" "+ data.User_Firstname.toLowerCase()).includes(filter)
+        || (data.User_Firstname.toLowerCase() + " " + data.User_Firstname.toLowerCase()).includes(filter)
         || data.Role.toLowerCase().includes(filter)
         || data.RoleTitle.toLowerCase().includes(filter)
         || data.User_Email.toLowerCase().includes(filter);
@@ -88,10 +88,9 @@ export class UserComponent implements OnInit, AfterViewInit {
     if (event != null) {
       const filterValue = (event.target as HTMLInputElement).value;
       this.dataSource.filter = filterValue.trim().toLowerCase();
-      console.log(this.dataSource.filter);
+
     } else if (valueFilter != null) {
       this.dataSource.filter = valueFilter.value.trim().toLowerCase();
-      console.log(this.dataSource.filter);
     }
   }
   changeDropdownText() {
@@ -107,16 +106,76 @@ export class UserComponent implements OnInit, AfterViewInit {
     else
       this.filterStatusText.innerHTML = 'Multiple';
   }
+  onSelectionChangeRole(id: number, event?: any) {
+    console.log(event);
+    let objIndex = this.roles.find(obj => obj.Role_Name == event.value);
+    console.log(objIndex?.Role_ID);
+    if (objIndex != null) {
+      console.log(objIndex.Role_ID);
+      this.api.UniCall(
+        {
+          CommandText: 'egsQAAccountInsertUpdate',
+          Params: [
+            {
+              Param: '@User_id',
+              Value: id.toString()
+            },
+            {
+              Param: '@Role_ID',
+              Value: objIndex.Role_ID.toString()
+            }
+          ],
+        }
+      ).subscribe({
+        next(position: any) {
+          console.log(position);
+        },
+        error(msg) {
+          console.log(msg);
+          alert("500 Internal Server Errors")
+        }
+      }
+      );
+    }
+  }
   changeStatus(id: number) {
-    //Find index of specific object using findIndex method.
     let objIndex = this.users.findIndex((obj => obj.User_ID == id));
+    console.log(id)
+    let tempVal = this.users[objIndex].User_Status;
     //Update object's name property.
     if (this.users[objIndex].User_Status == 1) {
       this.users[objIndex].User_Status = -1;
+      tempVal = -1;
     } else {
       this.users[objIndex].User_Status = 1;
+      tempVal = 1;
     }
-    console.log(this.users);
+
+    this.api.UniCall(
+      {
+        CommandText: 'egsQAAccountInsertUpdate',
+        Params: [
+          {
+            Param: '@User_id',
+            Value: id.toString()
+          },
+          {
+            Param: '@User_Status',
+            Value: tempVal.toString()
+          }
+        ],
+      }
+    ).subscribe({
+      next(position: any) {
+        console.log(position);
+      },
+      error(msg) {
+        console.log(msg);
+        alert("500 Internal Server Errors")
+      }
+    }
+    );
+
   }
 
 }
