@@ -325,3 +325,12 @@ select {
 .setting-icon:hover{
   color: var(--bs-blue-second);
 }
+
+
+.linkTag.active{
+  color: var(--bs-blue-prime);
+}
+
+.linkTag:hover{
+  color: var(--bs-blue-second);
+}

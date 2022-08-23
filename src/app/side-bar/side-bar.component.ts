@@ -9,17 +9,11 @@ import { Router } from '@angular/router';
 export class SideBarComponent implements OnInit {
 
   ddWorkspace: boolean = true;
+  ddExecution: boolean = true;
   ddSecurity: boolean = true;
+  ddIssue: boolean = true;
   constructor(public router: Router) { }
 
   ngOnInit(): void {
-  }
-
-  toggleCollapse(Dropdown__Name: string) {
-    if (Dropdown__Name == "workspace") {
-      this.ddWorkspace = !this.ddWorkspace;
-    } else if (Dropdown__Name == "security") {
-      this.ddSecurity = !this.ddSecurity;
-    }
   }
 }
