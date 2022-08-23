@@ -24,6 +24,8 @@
   --black-25: rgba(37, 32, 32, 0.25);
   --black-10: rgba(37, 32, 32, 0.10);
   --black-5: rgba(37, 32, 32, 0.05);
+
+  --c-text: #382F2F;
 }
 
 /* You can add global styles to this file, and also import other style files */
@@ -59,7 +61,8 @@ body {
   text-rendering: optimizeSpeed;
   line-height: 1.5;
   background-color: var(--background);
-  font-family: "Segoe UI", Arial, sans-serif
+  font-family: "Segoe UI", Arial, sans-serif;
+  color: var(--c-text);
 }
 
 body.dark-theme {
@@ -90,6 +93,8 @@ h4,
 h5 {
   font-family: "Nunito", sans-serif;
   font-weight: 400;
+  color: var(--c-text);
+
 }
 
 h1 {
@@ -173,6 +178,7 @@ select {
   box-shadow: 0 0 0 0.25rem var(--bs-red-5);
   border-color: var(--bs-red-100);
 }
+
 .form-label {
   font-size: .75rem;
   line-height: 1rem;
@@ -318,19 +324,31 @@ select {
   color: #959595;
 }
 
-.setting-icon{
+.setting-icon {
   color: var(--bs-blue-prime);
   cursor: pointer;
 }
-.setting-icon:hover{
+
+.setting-icon:hover {
   color: var(--bs-blue-second);
 }
 
+.button-blue-transparent {
 
-.linkTag.active{
+  white-space: nowrap;
+  font-size: .875rem;
+  background-color: transparent !important;
+  border: none !important;
+}
+
+.button-blue-transparent:hover {
+  color: var(--bs-blue-second);
+}
+
+.linkTag.active {
   color: var(--bs-blue-prime);
 }
 
-.linkTag:hover{
+.linkTag:hover {
   color: var(--bs-blue-second);
 }

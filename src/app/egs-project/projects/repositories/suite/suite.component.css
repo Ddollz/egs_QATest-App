@@ -1,0 +1,29 @@
+
+.suite{
+  border-radius: 4px;
+  padding: 0.25rem;
+}
+.suite i {
+  font-size: 0.7rem;
+}
+.suite:hover a{
+  color: var(--bs-blue-second);
+}
+.suite{
+  position: relative;
+  cursor: pointer;
+}
+.suite:hover{
+  background-color: var(--black-5);
+}
+.suite-setting{
+  font-size: 0.775rem;
+}
+.suite-setting button i {
+  font-size: 0.9rem;
+}
+
+.button-blue-transparent {
+  font-size: 0.775rem;
+  font-weight: 500
+}

@@ -23,12 +23,13 @@ import { UserComponent } from './egs-workspace/user/user.component';
 import { RolesComponent } from './egs-workspace/roles/roles.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TestRunComponent } from './egs-project/projects/test-run/test-run.component';
-import { RepositoryComponent } from './egs-project/projects/repository/repository.component';
 import { CreateComponent } from './egs-project/projects/create/create.component';
 import { TestPlanComponent } from './egs-project/projects/test-plan/test-plan.component';
 import { CreatePlanComponent } from './egs-project/projects/test-plan/create-plan/create-plan.component';
 import { RouteGuardService } from './services/route-guard.service';
 import { AuthInterceptor } from './services/auth.interceptor';
+import { RepositoriesComponent } from './egs-project/projects/repositories/repositories.component';
+import { SuiteComponent } from './egs-project/projects/repositories/suite/suite.component';
 
 
 //Link Routes
@@ -36,7 +37,7 @@ const appRoute: Routes = [
   { path: '', redirectTo: 'projects', pathMatch: "full" },
   { path: 'projects', component: ProjectsComponent },
   { path: 'projects/create', component: CreateComponent },
-  { path: 'projects/repository', component: RepositoryComponent },
+  { path: 'projects/repository', component: RepositoriesComponent },
   { path: 'projects/run', component: TestRunComponent },
   { path: 'projects/plan', component: TestPlanComponent },
   { path: 'projects/plan/createplan', component: CreatePlanComponent },
@@ -59,7 +60,9 @@ const appRoute: Routes = [
     TestRunComponent,
     CreateComponent,
     TestPlanComponent,
-    CreatePlanComponent
+    CreatePlanComponent,
+    RepositoriesComponent,
+    SuiteComponent
   ],
   imports: [
     BrowserModule,

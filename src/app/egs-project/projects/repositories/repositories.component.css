@@ -1,0 +1,71 @@
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i");
+
+:host() {
+  flex: 1;
+  overflow: auto;
+  position: relative;
+}
+
+.app__content {
+  padding: 1rem 1rem 0.25rem 1.5rem;
+  display: flex;
+  flex: 1 1 0%;
+  flex-direction: column;
+  overflow: hidden;
+  height: 100%;
+}
+
+.page-title {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.page-something {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.page-button {
+  height: fit-content;
+}
+
+
+.l-col {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.l-col i {
+  width: 100px;
+}
+
+.r-col {
+  border-left: 2px solid lightgray;
+}
+
+.r-col-header {
+  width: 100%;
+  margin-bottom: 8px;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  border-radius: 6px;
+  background-color: #00000008;
+
+}
+
+
+.button-blue-transparent {
+  font-size: 0.775rem;
+  font-weight: 500
+}
+
+.suite-burger {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.chevron button {
+  padding: 0.175rem 0.45rem;
+}

@@ -10,7 +10,7 @@ import { ApiService } from '../../services/api.service';
 export class ProjectsComponent implements OnInit {
   test: string = '';
 
-  constructor(private router: Router, private api: ApiService) { 
+  constructor(private router: Router, private api: ApiService) {
     this.api.UniCall(
       {
         CommandText: 'egsQAProjectGet',
