@@ -7,45 +7,50 @@
 			<div class="row mt-3">
 				<div class="col-6">
 					<Label class="page-label">Project name*</Label>
-					<input type="text" class="form-control" placeholder="For example: Web Application">
+					<input [(ngModel)]="Project_Name" type="text" class="form-control" placeholder="For example: Web Application">
 				</div>
 			</div>
 
 			<div class="row mt-3">
 				<div class="col-6">
-					<Label class="page-label">Project code*</Label>
-					<input type="text" class="form-control" placeholder="For example: WA">
+					<Label class="page-label">Project code <i class="bi bi-question-circle-fill" data-bs-toggle="tooltip"
+							data-bs-placement="top"
+							title="Code is short name of your project. It should be from 2 to 10 letters. Only latin characters and numbers are allowed."></i>
+						*</Label>
+					<input [(ngModel)]="Project_Code" type="text" class="form-control" placeholder="For example: WA">
 				</div>
 			</div>
 
 			<div class="row mt-3">
 				<div class="col-6">
 					<Label class="page-label">Description</Label>
-					<textarea class="form-control" rows="4" placeholder="Write a few sentences about your project"></textarea>
+					<textarea [(ngModel)]="Project_Description" class="form-control"
+						placeholder="Write a few sentences about your project"></textarea>
 				</div>
 			</div>
 
-			<div class="row mt-3">
+			<div [formGroup]="formGroup" class="row mt-3">
 				<div class="col-2">
 					<Label class="page-label">Project access type</Label>
-					<mat-radio-group class="d-flex flex-column">
-						<mat-radio-button value="1" class="">Private</mat-radio-button>
-						<mat-radio-button value="2" class="">Public</mat-radio-button>
+					<mat-radio-group class="d-flex flex-column" formControlName="accessType">
+						<mat-radio-button value="1">Private</mat-radio-button>
+						<mat-radio-button value="2">Public</mat-radio-button>
 					</mat-radio-group>
 				</div>
 				<div class="col-4">
 					<Label class="page-label">Members access</Label>
-					<mat-radio-group class="d-flex flex-column">
-						<mat-radio-button value="1" class="">Add all members to this project</mat-radio-button>
-						<mat-radio-button value="2" class="">Add members from specific group</mat-radio-button>
-						<mat-radio-button value="3" class="">Don't add members</mat-radio-button>
+					<mat-radio-group class="d-flex flex-column" formControlName="memberAccess">
+						<mat-radio-button value="1">Add all members to this project</mat-radio-button>
+						<mat-radio-button value="2">Add members from specific group</mat-radio-button>
+						<mat-radio-button value="3">Don't add members</mat-radio-button>
 					</mat-radio-group>
 				</div>
 			</div>
 
 			<div class="row mt-3">
 				<div class="col">
-					<button type="button" class="btn btn-primary create-project-button">Create new project</button>
+					<button type="button" class="btn btn-primary Project-project-button" (click)="updateInsertProject()">Create
+						project</button>
 				</div>
 			</div>
 
