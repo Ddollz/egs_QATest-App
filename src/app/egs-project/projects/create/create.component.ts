@@ -72,16 +72,6 @@ export class CreateComponent implements OnInit {
         ],
       }
     ).subscribe({
-      // (value) => {
-      //   this.projects = value;
-      //   console.log(this.projects)
-      // },
-      // (error) => {
-      //   console.log(error);
-      //   alert("500 Internal Server Errors");
-      // }, () => {
-      //   reloadPage();
-      // }
       error(msg) {
         console.log(msg);
         alert("500 Internal Server Errors")
