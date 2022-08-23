@@ -27,7 +27,7 @@ export class CreateComponent implements OnInit {
     accessType: new FormControl(),
     memberAccess: new FormControl()
   });
-  
+
   constructor(private api: ApiService) { }
 
   ngOnInit(): void { }
@@ -39,11 +39,11 @@ export class CreateComponent implements OnInit {
         Params: [
           {
             Param: '@Project_ID',
-            Value: this.Project_ID
+            Value: this.Project_ID.toString()
           },
           {
             Param: '@User_ID',
-            Value: this.User_ID
+            Value: this.User_ID.toString()
           },
           {
             Param: '@Project_Name',
@@ -59,29 +59,34 @@ export class CreateComponent implements OnInit {
           },
           {
             Param: '@Project_AccessType',
-            Value: this.formGroup.controls.accessType.value
+            Value: this.formGroup.controls.accessType.value.toString()
           },
           {
             Param: '@Project_MemberAccess',
-            Value: this.formGroup.controls.memberAccess.value
+            Value: this.formGroup.controls.memberAccess.value.toString()
           },
           {
             Param: '@Project_Status',
-            Value: this.Project_Status
+            Value: this.Project_Status.toString()
           },
         ],
       }
-    ).subscribe(
-      (value) => {
-        this.projects = value;
-        console.log(this.projects)
-      },
-      (error) => {
-        console.log(error);
-        alert("500 Internal Server Errors");
-      }, () => {
-        reloadPage();
+    ).subscribe({
+      // (value) => {
+      //   this.projects = value;
+      //   console.log(this.projects)
+      // },
+      // (error) => {
+      //   console.log(error);
+      //   alert("500 Internal Server Errors");
+      // }, () => {
+      //   reloadPage();
+      // }
+      error(msg) {
+        console.log(msg);
+        alert("500 Internal Server Errors")
       }
+    }
     );
   }
 
