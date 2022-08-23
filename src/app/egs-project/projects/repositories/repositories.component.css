@@ -43,19 +43,6 @@
   border-left: 2px solid lightgray;
 }
 
-.r-col-header {
-  width: 100%;
-  margin-bottom: 8px;
-
-  font-size: 14px;
-  font-weight: 600;
-
-  border-radius: 6px;
-  background-color: #00000008;
-
-}
-
-
 .button-blue-transparent {
   font-size: 0.775rem;
   font-weight: 500

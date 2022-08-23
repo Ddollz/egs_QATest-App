@@ -1,0 +1,32 @@
+
+.r-col-header {
+  width: 100%;
+  margin-bottom: 8px;
+  border-radius: 6px;
+  background-color: #00000008;
+  padding: 0.5rem;
+}
+.check-box{
+  font-weight: 600;
+}
+.suite-buttons {
+  border-radius: 6px;
+  border: 1px solid transparent;
+  outline: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  transition: all 0.1s ease;
+  position: relative;
+  font-weight: inherit;
+  padding: 2px 6px;
+  background-color: transparent;
+}
+
+.suite-buttons:hover {
+  background-color: rgba(189, 188, 188, 0.37);
+}
+.check-box{
+  font-size: 0.875rem;
+}

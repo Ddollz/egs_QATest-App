@@ -30,6 +30,7 @@ import { RouteGuardService } from './services/route-guard.service';
 import { AuthInterceptor } from './services/auth.interceptor';
 import { RepositoriesComponent } from './egs-project/projects/repositories/repositories.component';
 import { SuiteComponent } from './egs-project/projects/repositories/suite/suite.component';
+import { CaseComponent } from './egs-project/projects/repositories/case/case.component';
 
 
 //Link Routes
@@ -62,7 +63,8 @@ const appRoute: Routes = [
     TestPlanComponent,
     CreatePlanComponent,
     RepositoriesComponent,
-    SuiteComponent
+    SuiteComponent,
+    CaseComponent
   ],
   imports: [
     BrowserModule,
