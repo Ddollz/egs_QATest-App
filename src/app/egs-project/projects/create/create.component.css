@@ -23,6 +23,10 @@
     padding: .2rem .75rem;
 }
 
+.tooltip-i {
+    cursor: pointer;
+}
+
 ::ng-deep .mat-radio-label-content {
     font-weight: 400;
     font-size: 0.875rem;

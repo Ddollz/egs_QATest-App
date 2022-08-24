@@ -6,33 +6,70 @@
   position: relative;
 }
 
-.create-project-button {
-  font-size: .875rem;
-  border-radius: .25rem;
-  padding: .2rem .75rem;
-}
-
 .page-title {
   font-size: 24px;
   font-weight: 600;
 }
 
-.table-head label {
-  color: gray;
+.page-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-bottom: .25rem;
+}
+
+.filter-span {
+  font-weight: 600;
+  color: var(--bs-red-100);
+}
+
+.mat-header-cell {
+  font-size: 0.9rem;
   font-weight: 600;
 }
 
-.project-row {
-  height: 100%;
-  border-bottom: 1px solid lightgray;
+/* .mat-cell {
+  border: 1px solid black;
+} */
+
+.mat-column-Favorite {
+  width: 5%;
 }
 
-.project-name {
-  font-weight: 800;
+.mat-column-Project_Image {
+  width: 5%;
+}
+
+.mat-column-Project_Name {
+  width: 25%;
+}
+
+.mat-column-Unresolved {
+  width: 15%;
+}
+
+.mat-column-TestRun {
+  width: 15%;
+}
+
+.mat-column-Milestone {
+  width: 15%;
+}
+
+.mat-column-Members {
+  width: 15%;
+}
+
+.mat-column-Setting {
+  width: 5%;
+}
+
+.column-title, .project-image img, .tooltip-i {
+  cursor: pointer;
 }
 
 .project-image img {
   width: 2.5rem;
+  margin: 8px 0;
   border-radius: 6px;
   display: inline-block;
 }
@@ -45,3 +82,31 @@
   border-radius: 5px;
 }
 
+.three-dots {
+  padding: 0 8px;
+}
+
+.btn-outline-primary {
+  font-size: .875rem;
+  border-radius: .25rem;
+  padding: .2rem .75rem;
+  background-color: white !important;
+  color: var(--bs-red-100) !important;
+  border-color: var(--bs-red-100) !important;
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary:focus,
+.btn-outline-primary:active,
+.btn-outline-primary.active,
+.open>.dropdown-toggle.btn-outline-primary {
+  border-color: #eb7374 !important;
+  color: #eb7374 !important;
+  box-shadow: none;
+}
+
+::ng-deep .mat-radio-label-content {
+  font-weight: 400;
+  font-size: 0.875rem;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
