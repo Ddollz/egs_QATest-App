@@ -1,4 +1,6 @@
-
+:host(){
+  cursor: pointer;
+}
 .r-col-header {
   width: 100%;
   margin-bottom: 8px;
@@ -20,12 +22,25 @@
   transition: all 0.1s ease;
   position: relative;
   font-weight: inherit;
+  font-size: 0.875rem;
   padding: 2px 6px;
   background-color: transparent;
 }
 
-.suite-buttons:hover {
+.suite-buttons i {
+  color: var(--black-50);
+}
+.suite-buttons:hover i {
+  color: var(--c-text);
+}
+.suite-buttons:hover{
   background-color: rgba(189, 188, 188, 0.37);
+}
+.suite-buttons.plus i{
+  color: var(--bs-blue-second);
+}
+.suite-buttons.plus:hover i{
+  color: var(--bs-blue-prime);
 }
 .check-box{
   font-size: 0.875rem;

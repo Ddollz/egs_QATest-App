@@ -1,11 +1,16 @@
-
-<div class="d-flex justify-content-between suite ">
-  <div class="d-flex align-items-center">
+<div class="d-flex justify-content-between suite" (click)="suiteOpen($event)" [ngClass]="carretOpen? '':'open'">
+  <div class="d-flex align-items-center item-suite">
     <i class="bi bi-caret-right-fill me-1"></i>
     <a type="button" class="button-blue-transparent">Main Dashboard</a>
   </div>
   <div class="suite-setting">
     <span class="me-1">7</span>
-    <button type="button" class="button-blue-transparent"><i class="bi bi-three-dots"></i></button>
+
+    <button type="button" class="button-blue-transparent" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots"></i></button>
+    <ul class="dropdown-menu">
+      <li><a class="dropdown-item" href="#">Action</a></li>
+      <li><a class="dropdown-item" href="#">Another action</a></li>
+      <li><a class="dropdown-item" href="#">Something else here</a></li>
+    </ul>
   </div>
 </div>

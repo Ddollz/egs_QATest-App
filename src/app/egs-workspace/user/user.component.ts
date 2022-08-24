@@ -60,7 +60,14 @@ export class UserComponent implements OnInit, AfterViewInit {
         ],
       }
     ).subscribe(value => {
+      for (let index = 0; index < value[0].length; index++) {
+        if (value[0][index].User_Status == 1)
+          value[0][index].User_Status = "Active";
+        if (value[0][index].User_Status == -1)
+          value[0][index].User_Status = "Inactive";
+      }
       this.users = value[0];
+      console.log(this.users)
       this.dataSource = new MatTableDataSource<user>(this.users);
     }
     );
@@ -69,14 +76,7 @@ export class UserComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.filterRoleText = document.querySelector('#filter-role');
     this.filterStatusText = document.querySelector('#filter-status');
-    this.dataSource.filterPredicate = function (data, filter: string): boolean {
-      console.log(filter)
-      return data.User_Status === Number(filter)
-        || (data.User_Firstname.toLowerCase() + " " + data.User_Firstname.toLowerCase()).includes(filter)
-        || data.Role.toLowerCase().includes(filter)
-        || data.RoleTitle.toLowerCase().includes(filter)
-        || data.User_Email.toLowerCase().includes(filter);
-    };
+
   }
 
   ngAfterViewInit() {
@@ -85,12 +85,22 @@ export class UserComponent implements OnInit, AfterViewInit {
   }
 
   applyFilter(event?: Event, valueFilter?: MatRadioChange) {
+
+    this.dataSource.filterPredicate = function (data, filter: string): boolean {
+      return data.User_Status.trim().toLocaleLowerCase() === filter.trim().toLocaleLowerCase()
+        || (data.User_Firstname.toLowerCase() + " " + data.User_Firstname.toLowerCase()).includes(filter)
+        || data.Role.toLowerCase().includes(filter)
+        || data.RoleTitle.toLowerCase().includes(filter)
+        || data.User_Email.toLowerCase().includes(filter);
+    };
     if (event != null) {
       const filterValue = (event.target as HTMLInputElement).value;
       this.dataSource.filter = filterValue.trim().toLowerCase();
 
     } else if (valueFilter != null) {
-      this.dataSource.filter = valueFilter.value.trim().toLowerCase();
+
+      this.dataSource.filter = valueFilter.value;
+
     }
   }
   changeDropdownText() {
@@ -99,9 +109,9 @@ export class UserComponent implements OnInit, AfterViewInit {
     else {
       this.filterRoleText.innerHTML = 'Multiple';
     }
-    if (this.statusSelect == '1')
+    if (this.statusSelect == 'Active')
       this.filterStatusText.innerHTML = 'Active';
-    else if (this.statusSelect == '-1')
+    else if (this.statusSelect == 'Inactive')
       this.filterStatusText.innerHTML = 'Inactive';
     else
       this.filterStatusText.innerHTML = 'Multiple';
@@ -141,13 +151,13 @@ export class UserComponent implements OnInit, AfterViewInit {
   changeStatus(id: number) {
     let objIndex = this.users.findIndex((obj => obj.User_ID == id));
     console.log(id)
-    let tempVal = this.users[objIndex].User_Status;
+    let tempVal = 0;
     //Update object's name property.
-    if (this.users[objIndex].User_Status == 1) {
-      this.users[objIndex].User_Status = -1;
+    if (this.users[objIndex].User_Status == "Active") {
+      this.users[objIndex].User_Status = "Inactive";
       tempVal = -1;
     } else {
-      this.users[objIndex].User_Status = 1;
+      this.users[objIndex].User_Status = "Active";
       tempVal = 1;
     }
 

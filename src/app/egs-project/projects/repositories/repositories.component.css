@@ -56,3 +56,37 @@
 .chevron button {
   padding: 0.175rem 0.45rem;
 }
+
+.modal-header,
+.modal-footer {
+  border: none;
+}
+
+.modal-body {
+  padding: 25px 29px 27px 32px;
+}
+
+.form-select,
+.form-select:hover,
+.form-select:focus,
+.form-select:active {
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.form-select {
+  background-color: var(--black-5);
+}
+
+.form-select:hover {
+  background-color: var(--black-10);
+}
+
+.form-select option {
+  background-color: #fff;
+  border: #fff;
+}
+
+/* ::ng-deep .cdk-overlay-container {
+  z-index: 9999;
+} */

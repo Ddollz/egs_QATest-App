@@ -27,3 +27,12 @@
   font-size: 0.775rem;
   font-weight: 500
 }
+
+
+.bi-caret-right-fill {
+  transition: transform 0.2s;
+}
+
+.suite.open .bi-caret-right-fill {
+  transform: rotate(90deg);
+}
