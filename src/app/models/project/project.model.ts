@@ -17,4 +17,7 @@ export interface suite {
   Suite_isLock: number;
   User_ID: number;
   Project_ID: number;
+  Parent_SuiteID: number;
+  Case_Count: number;
+  SuiteChild_Count: number;
 }

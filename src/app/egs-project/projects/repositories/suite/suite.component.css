@@ -1,24 +1,34 @@
-
-.suite{
+:host(){
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.suite {
   border-radius: 4px;
   padding: 0.25rem;
 }
+
 .suite i {
   font-size: 0.7rem;
 }
-.suite:hover a{
+
+.suite:hover a {
   color: var(--bs-blue-second);
 }
-.suite{
+
+.suite {
   position: relative;
   cursor: pointer;
 }
-.suite:hover{
+
+.suite:hover {
   background-color: var(--black-5);
 }
-.suite-setting{
+
+.suite-setting {
   font-size: 0.775rem;
 }
+
 .suite-setting button i {
   font-size: 0.9rem;
 }
@@ -35,4 +45,9 @@
 
 .suite.open .bi-caret-right-fill {
   transform: rotate(90deg);
+}
+
+.menu-delimeter {
+  border-left: 1px solid rgb(224, 225, 228);
+  margin-left: 0.625rem;
 }
