@@ -5,7 +5,7 @@ export interface user {
   User_Firstname: string;
   User_Lastname: string;
   User_isAdmin: string;
-  User_Status: number;
+  User_Status: string;
   Role_ID: number;
   RoleTitle: string;
   Role: string;
