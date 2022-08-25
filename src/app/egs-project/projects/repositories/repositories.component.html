@@ -44,7 +44,7 @@
       <ng-container *ngFor="let suite of suites">
         <ng-container *ngIf="suite.Project_ID == LinkParamID">
           <ng-container *ngIf="suite.Parent_SuiteID == 0">
-            <div class="collapsed" (click)="toggleDropdown($event)" [attr.data-bs-target]="'#collapse-'+suite.Suite_ID" aria-expanded="true">
+            <div class="collapsed" (click)="toggleDropdown($event)" [attr.data-bs-target]="'collapse-'+suite.Suite_ID" aria-expanded="true">
               <app-suite [Suite]="suite"></app-suite>
             </div>
             <div class="collapse show" [id]="'collapse-'+suite.Suite_ID">
@@ -61,7 +61,7 @@
           <!-- Check if leaf exist display the leaf and loop again.-->
           <!-- Check if leaf does not exist end the loop.-->
           <ng-container *ngIf="data.Suite_ID == s.Parent_SuiteID">
-            <div class="collapsed" (click)="toggleDropdown($event)" [attr.data-bs-target]="'#collapse-'+s.Suite_ID" aria-expanded="true">
+            <div class="collapsed" (click)="toggleDropdown($event)" [attr.data-bs-target]="'collapse-'+s.Suite_ID" aria-expanded="true">
               <app-suite [Suite]="s"></app-suite>
             </div>
             <div class="collapse show" [id]="'collapse-'+s.Suite_ID">

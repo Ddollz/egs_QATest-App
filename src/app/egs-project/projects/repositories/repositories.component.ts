@@ -3,7 +3,6 @@ import { ActivatedRoute } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 import { project, suite } from '../../../models/project/project.model';
 import { reloadPage } from '../../../services/global-functions.service';
-import * as $ from "jquery";
 @Component({
   selector: 'app-repositories',
   templateUrl: './repositories.component.html',
@@ -55,8 +54,14 @@ export class RepositoriesComponent implements OnInit {
   }
   toggleDropdown(event: Event) {
     var element = event.currentTarget as HTMLElement;
-    $(element).attr("data-bs-target");
-    $(String($(element).attr("data-bs-target"))).slideToggle("fast");
+    var test = element.getAttribute('data-bs-target')
+    if (test != null) {
+      var test2 = document.getElementById(test.toString())
+      if (test2?.classList.contains("show"))
+        test2?.classList.remove("show")
+      else
+        test2?.classList.add("show")
+    }
   }
   getCurrentProjectSuite() {
 
