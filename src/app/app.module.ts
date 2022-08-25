@@ -39,7 +39,7 @@ const appRoute: Routes = [
   { path: '', redirectTo: 'projects', pathMatch: "full" },
   { path: 'projects', component: ProjectsComponent },
   { path: 'projects/create', component: CreateComponent },
-  { path: 'projects/repository', component: RepositoriesComponent },
+  { path: 'projects/repository/:id', component: RepositoriesComponent },
   { path: 'projects/run', component: TestRunComponent },
   { path: 'projects/plan', component: TestPlanComponent },
   { path: 'projects/plan/createplan', component: CreatePlanComponent },

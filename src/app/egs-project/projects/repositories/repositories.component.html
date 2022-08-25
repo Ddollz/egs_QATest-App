@@ -40,10 +40,9 @@
           <button type="button" class="btn btn-light"><i class="bi bi-chevron-double-down"></i></button>
         </div>
       </div>
-
       <!-- Display Nodes -->
       <ng-container *ngFor="let suite of suites">
-        <ng-container *ngIf="suite.Project_ID != 0">
+        <ng-container *ngIf="suite.Project_ID == LinkParamID">
           <ng-container *ngIf="suite.Parent_SuiteID == 0">
             <div class="collapsed" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse-'+suite.Suite_ID" aria-expanded="true">
               <app-suite [Suite]="suite"></app-suite>

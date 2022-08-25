@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 import { project, suite } from '../../../models/project/project.model';
 import { reloadPage } from '../../../services/global-functions.service';
@@ -11,7 +12,7 @@ import { SuiteComponent } from './suite/suite.component';
 })
 export class RepositoriesComponent implements OnInit {
 
-  tempvalue: number = 4; //!remove this after project
+  LinkParamID: number = 0; //!remove this after project
 
   Modal_Title: string = "Create suite";
   Modal_btn: string = "Create";
@@ -29,7 +30,9 @@ export class RepositoriesComponent implements OnInit {
   Suite_isLock: number = 0;
   Suite_TempUserID: number = 1; //! This is only temporary change/remove this when token/auth is on
 
-  constructor(private api: ApiService) {
+  constructor(private api: ApiService, private activatedRoute: ActivatedRoute) {
+    this.LinkParamID = Number(this.activatedRoute.snapshot.paramMap.get('id'));
+
     this.getCurrentProjectSuite();
     //!This is ONLY TEMPORARY REMOVE WHEN PROJECT CREATION PAGE IS FINISHED
     this.api.UniCall(
@@ -38,7 +41,7 @@ export class RepositoriesComponent implements OnInit {
         Params: [
           {
             Param: '@Project_ID',
-            Value: '4'
+            Value: this.LinkParamID.toString()
           }
         ],
       }
@@ -61,7 +64,7 @@ export class RepositoriesComponent implements OnInit {
         Params: [
           {
             Param: '@Project_ID',
-            Value: '4'
+            Value: this.LinkParamID.toString()
           }
         ],
       }
@@ -78,7 +81,7 @@ export class RepositoriesComponent implements OnInit {
       this.Parent_SuiteID = "";
     } else if ((splited[0] === 'ParentRoot')) {
       this.Parent_SuiteID = splited[1];
-      this.Suite_Root = this.tempvalue.toString();
+      this.Suite_Root = this.LinkParamID.toString();
     }
 
     this.api.UniCall(
