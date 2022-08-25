@@ -3,8 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 import { project, suite } from '../../../models/project/project.model';
 import { reloadPage } from '../../../services/global-functions.service';
-import { SuiteComponent } from './suite/suite.component';
-
+import * as $ from "jquery";
 @Component({
   selector: 'app-repositories',
   templateUrl: './repositories.component.html',
@@ -12,7 +11,7 @@ import { SuiteComponent } from './suite/suite.component';
 })
 export class RepositoriesComponent implements OnInit {
 
-  LinkParamID: number = 0; //!remove this after project
+  LinkParamID: number = 0;
 
   Modal_Title: string = "Create suite";
   Modal_btn: string = "Create";
@@ -34,7 +33,7 @@ export class RepositoriesComponent implements OnInit {
     this.LinkParamID = Number(this.activatedRoute.snapshot.paramMap.get('id'));
 
     this.getCurrentProjectSuite();
-    //!This is ONLY TEMPORARY REMOVE WHEN PROJECT CREATION PAGE IS FINISHED
+
     this.api.UniCall(
       {
         CommandText: 'egsQAProjectGet',
@@ -50,12 +49,15 @@ export class RepositoriesComponent implements OnInit {
       this.Suite_Root = 'ProjectRoot|' + this.project.Project_ID;
     }
     );
-    //!This is ONLY TEMPORARY REMOVE WHEN PROJECT CREATION PAGE IS FINISHED
   }
 
   ngOnInit(): void {
   }
-
+  toggleDropdown(event: Event) {
+    var element = event.currentTarget as HTMLElement;
+    $(element).attr("data-bs-target");
+    $(String($(element).attr("data-bs-target"))).slideToggle("fast");
+  }
   getCurrentProjectSuite() {
 
     this.api.UniCall(
