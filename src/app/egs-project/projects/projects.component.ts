@@ -22,8 +22,8 @@ export class ProjectsComponent implements OnInit {
         CommandText: 'egsQAProjectGet',
         Params: [
           {
-            Param: '@User_ID',
-            Value: '1'
+            Param: '@Project_ID',
+            Value: null
           }
         ],
       }
