@@ -11,6 +11,7 @@ import { SuiteComponent } from './suite/suite.component';
 })
 export class RepositoriesComponent implements OnInit {
 
+  tempvalue: number = 4; //!remove this after project
 
   Modal_Title: string = "Create suite";
   Modal_btn: string = "Create";
@@ -29,22 +30,7 @@ export class RepositoriesComponent implements OnInit {
   Suite_TempUserID: number = 1; //! This is only temporary change/remove this when token/auth is on
 
   constructor(private api: ApiService) {
-    this.api.UniCall(
-      {
-        CommandText: 'egsQASuiteGet',
-        Params: [
-          {
-            Param: '@Suite_ID',
-            Value: null
-          }
-        ],
-      }
-    ).subscribe(value => {
-      this.suites = value[0];
-      console.log(this.suites)
-    }
-    );
-
+    this.getCurrentProjectSuite();
     //!This is ONLY TEMPORARY REMOVE WHEN PROJECT CREATION PAGE IS FINISHED
     this.api.UniCall(
       {
@@ -67,17 +53,33 @@ export class RepositoriesComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  getCurrentProjectSuite() {
+
+    this.api.UniCall(
+      {
+        CommandText: 'egsQASuiteGet',
+        Params: [
+          {
+            Param: '@Project_ID',
+            Value: '4'
+          }
+        ],
+      }
+    ).subscribe(value => {
+      this.suites = value[0];
+    }
+    );
+  }
+
   insertUpdateSuite() {
-    console.log(typeof this.Suite_Root);
     var splited = this.Suite_Root.split("|");
     if (splited[0] === 'ProjectRoot') {
       this.Suite_Root = splited[1];
       this.Parent_SuiteID = "";
     } else if ((splited[0] === 'ParentRoot')) {
       this.Parent_SuiteID = splited[1];
-      this.Suite_Root = "";
+      this.Suite_Root = this.tempvalue.toString();
     }
-    console.log(this.Suite_ID, this.Suite_Name, this.Suite_Root, this.Suite_Root, this.Description, this.Preconditions, this.Suite_isLock, this.Suite_TempUserID);
 
     this.api.UniCall(
       {
@@ -127,7 +129,7 @@ export class RepositoriesComponent implements OnInit {
           alert("500 Internal Server Errors")
         },
         complete() {
-          // reloadPage();
+          reloadPage();
         }
       }
     );

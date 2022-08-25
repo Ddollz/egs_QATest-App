@@ -86,11 +86,16 @@
   background-color: #fff;
   border: #fff;
 }
-.menu-delimeter {
-  border-left: 1px solid rgb(224, 225, 228);
-  margin-left: 0.625rem;
-}
 
+.collapse{
+  margin-left: 0.625rem;
+  border-left: 1px solid rgb(224, 225, 228);
+
+}
+.collapsing{
+  margin-left: 0.625rem;
+
+}
 /* ::ng-deep .cdk-overlay-container {
   z-index: 9999;
 } */

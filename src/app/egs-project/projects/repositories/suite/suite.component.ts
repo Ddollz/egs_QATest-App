@@ -21,7 +21,7 @@ export class SuiteComponent implements OnInit {
 
   suiteOpen(event: Event) {
     var element = event.target as HTMLElement;
-    if (element.tagName != "I")
+    if (element.tagName != "I" || element.tagName != "I")
       this.carretOpen = !this.carretOpen
 
     console.log(this.Suite);

@@ -41,46 +41,33 @@
         </div>
       </div>
 
+      <!-- Display Nodes -->
       <ng-container *ngFor="let suite of suites">
         <ng-container *ngIf="suite.Project_ID != 0">
-          <div class="dropdown__title collapsed" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse-'+suite.Suite_ID" aria-expanded="true">
-            <app-suite [Suite]="suite"></app-suite>
-          </div>
-          <div class="collapse show" [id]="'collapse-'+suite.Suite_ID">
-            <ng-container *ngFor="let s of suites">
-              <ng-container *ngIf="s.Parent_SuiteID == suite.Suite_ID">
-                <div class="dropdown__title collapsed" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse-'+s.Suite_ID" aria-expanded="true">
-                  <div class="d-flex flex-row">
-                    <div class="menu-delimeter">
-                      &nbsp;
-                    </div>
-                    <app-suite [Suite]="s" [countTab]='0'></app-suite>
-                  </div>
-                </div>
-                <div class="collapse show" [id]="'collapse-'+s.Suite_ID">
-                  <ng-container *ngTemplateOutlet="tree; context:{ $implicit: s}">
-                  </ng-container>
-                </div>
-              </ng-container>
-            </ng-container>
-          </div>
+          <ng-container *ngIf="suite.Parent_SuiteID == 0">
+            <div class="collapsed" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse-'+suite.Suite_ID" aria-expanded="true">
+              <app-suite [Suite]="suite"></app-suite>
+            </div>
+            <div class="collapse show" [id]="'collapse-'+suite.Suite_ID">
+              <!-- Run Template to display looping Leaf -->
+              <ng-container *ngTemplateOutlet="tree; context:{ $implicit: suite}"></ng-container>
+            </div>
+          </ng-container>
         </ng-container>
       </ng-container>
-      <!-- [ngTemplateOutletContext]="{$implicit:s, count:'1'}" -->
-      <ng-template #tree let-data let-count ="1">
+
+      <!-- Display Leaf -->
+      <ng-template #tree let-data>
         <ng-container *ngFor="let s of suites">
+          <!-- Check if leaf exist display the leaf and loop again.-->
+          <!-- Check if leaf does not exist end the loop.-->
           <ng-container *ngIf="data.Suite_ID == s.Parent_SuiteID">
-            <div class="dropdown__title collapsed" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse-'+s.Suite_ID" aria-expanded="true">
-              <div class="d-flex flex-row">
-                <div class="menu-delimeter">
-                  &nbsp;
-                </div>
-                <app-suite [Suite]="s"></app-suite>
-              </div>
+            <div class="collapsed" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse-'+s.Suite_ID" aria-expanded="true">
+              <app-suite [Suite]="s"></app-suite>
             </div>
             <div class="collapse show" [id]="'collapse-'+s.Suite_ID">
-              <ng-container *ngTemplateOutlet="tree; context: {$implicit:s}">
-              </ng-container>
+              <!-- Run the template leaf again -->
+              <ng-container *ngTemplateOutlet="tree; context: {$implicit:s}"></ng-container>
             </div>
           </ng-container>
         </ng-container>
@@ -122,10 +109,10 @@
             <option value='ProjectRoot|{{project.Project_ID}}' selected="true">Project Root</option>
             <ng-container *ngFor="let suite of suites">
               <!--? Add more suite Appends -->
-              <ng-container *ngIf="suite.Project_ID != 0">
+              <!-- <ng-container *ngIf="suite.Project_ID != 0"> -->
 
-                <option value='ParentRoot|{{suite.Suite_ID}}'>{{suite.Suite_Name}}</option>
-              </ng-container>
+              <option value='ParentRoot|{{suite.Suite_ID}}'>{{suite.Suite_Name}}</option>
+              <!-- </ng-container> -->
             </ng-container>
           </select>
 
