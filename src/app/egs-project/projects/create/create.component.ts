@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../services/api.service';
 import { project } from '../../../models/project/project.model';
-import { reloadPage } from '../../../services/global-functions.service';
-import { FormControl, FormGroup } from '@angular/forms';
+import { NavigationEnd, Router } from '@angular/router';
 
 @Component({
   selector: 'app-create',
@@ -12,25 +11,24 @@ import { FormControl, FormGroup } from '@angular/forms';
 export class CreateComponent implements OnInit {
 
   //Update and Insert Variables
-  Project_ID: number = 0;
-  User_ID: number = 1;
+  Project_ID: string = '';
+  User_ID: string = '1';
   Project_Name: string = '';
   Project_Code: string = '';
   Project_Description: string = '';
-  Project_AccessType: number = 0;
-  Project_MemberAccess: number = 0;
-  Project_Status: number = 0;
+  Project_AccessType: string = '';
+  Project_MemberAccess: string = '';
+  Project_Status: string = '';
 
   projects: project[] = [];
 
-  formGroup = new FormGroup({
-    accessType: new FormControl(),
-    memberAccess: new FormControl()
-  });
+  constructor(private api: ApiService, private router: Router) { }
 
-  constructor(private api: ApiService) { }
-
-  ngOnInit(): void { }
+  ngOnInit(): void { 
+    // set 1st radio as default
+    this.Project_AccessType = "1";
+    this.Project_MemberAccess = "1";
+  }
 
   updateInsertProject() {
     this.api.UniCall(
@@ -39,11 +37,11 @@ export class CreateComponent implements OnInit {
         Params: [
           {
             Param: '@Project_ID',
-            Value: this.Project_ID.toString()
+            Value: this.Project_ID
           },
           {
             Param: '@User_ID',
-            Value: this.User_ID.toString()
+            Value: this.User_ID
           },
           {
             Param: '@Project_Name',
@@ -59,25 +57,23 @@ export class CreateComponent implements OnInit {
           },
           {
             Param: '@Project_AccessType',
-            Value: this.formGroup.controls.accessType.value.toString()
+            Value: this.Project_AccessType
           },
           {
             Param: '@Project_MemberAccess',
-            Value: this.formGroup.controls.memberAccess.value.toString()
+            Value: this.Project_MemberAccess
           },
           {
             Param: '@Project_Status',
-            Value: this.Project_Status.toString()
-          },
-        ],
+            Value: this.Project_Status
+          }
+        ]
       }
     ).subscribe({
       error(msg) {
         console.log(msg);
         alert("500 Internal Server Errors")
       }
-    }
-    );
+    });
   }
-
 }
