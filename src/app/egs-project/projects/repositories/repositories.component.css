@@ -87,15 +87,64 @@
   border: #fff;
 }
 
-.collapse{
+.left .collapse {
   margin-left: 0.625rem;
   border-left: 1px solid rgb(224, 225, 228);
-
 }
-.collapsing{
+
+.right .collapse {
+  margin-left: 0.625rem;
+}
+
+.collapsing {
   margin-left: 0.625rem;
 
 }
+
+.caseContainer {
+  border-radius: 6px;
+}
+.caseRow{
+  border-top: 1px solid rgb(224, 225, 228);
+  border-bottom: 1px solid rgb(224, 225, 228);
+  border-radius: 6px;
+}
+.caseRow a {
+  font-weight: unset;
+  color: var(--c-text-secondary);
+
+}
+
+.caseRow:hover {
+  background-color: var(--black-5);
+}
+
+.caseRow.active {
+  background-color: var(--black-5);
+}
+
+.caseRow.active .caseDescription,
+.caseRow.active a {
+  font-weight: 500;
+}
+
+.quickTest{
+  outline: none;
+  border: none;
+  padding: 0.5rem;
+}
+
+.caseDescription {
+  padding-left: 0.5rem;
+  word-break: break-word;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  flex-grow: 1;
+  font-size: 0.8rem;
+}
+
 /* ::ng-deep .cdk-overlay-container {
   z-index: 9999;
 } */

@@ -3,9 +3,8 @@
 }
 .r-col-header {
   width: 100%;
-  margin-bottom: 8px;
   border-radius: 6px;
-  background-color: #00000008;
+  background-color: var(--black-5);
   padding: 0.5rem;
 }
 .check-box{
@@ -44,4 +43,10 @@
 }
 .check-box{
   font-size: 0.875rem;
+}
+
+.suite-description {
+  padding: 0 0.5rem;
+  font-size: 0.8rem;
+  color: var(--c-text-secondary);
 }

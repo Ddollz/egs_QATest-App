@@ -26,6 +26,8 @@
   --black-5: rgba(37, 32, 32, 0.05);
 
   --c-text: #382F2F;
+  --c-text-secondary: rgba(19, 38, 71, 0.5);
+  --app-header-height:2.5rem;
 }
 
 /* You can add global styles to this file, and also import other style files */
@@ -64,6 +66,9 @@ body {
   font-family: "Segoe UI", Arial, sans-serif;
   color: var(--c-text);
 }
+/* body{
+  overflow: hidden;
+} */
 
 body.dark-theme {
   --background: rgba(37, 32, 32, 1);
@@ -149,6 +154,11 @@ select {
   }
 }
 
+.Content{
+  height: 100%;
+  max-height: calc(100vh - var(--app-header-height));
+  /* max-height: calc(100vh - var(--app-header-height)); */
+}
 
 /* This is only Initial Css END*/
 
@@ -210,6 +220,34 @@ select {
 .btn:active:focus,
 .btn-primary.active,
 .open>.dropdown-toggle.btn-primary {
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+}
+
+
+.btn-secondary {
+  color: black;
+  font-size: .875rem;
+  border-radius: .25rem;
+  padding: .2rem .75rem;
+  background-color: var(--black-5) !important;
+  border-color: var(--black-5) !important;
+}
+
+.btn-secondary:hover,
+.btn-secondary:focus,
+.btn-secondary:active,
+.btn-secondary.active,
+.open>.dropdown-toggle.btn-secondary {
+  background-color: var(--black-5) !important;
+  border-color: var(--black-5) !important;
+  box-shadow: none;
+  color: black;
+}
+
+.btn-secondary:active,
+.btn:active:focus,
+.btn-secondary.active,
+.open>.dropdown-toggle.btn-secondary {
   box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
 }
 

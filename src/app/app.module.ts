@@ -31,7 +31,7 @@ import { AuthInterceptor } from './services/auth.interceptor';
 import { RepositoriesComponent } from './egs-project/projects/repositories/repositories.component';
 import { SuiteComponent } from './egs-project/projects/repositories/suite/suite.component';
 import { CaseComponent } from './egs-project/projects/repositories/case/case.component';
-import { SuiteChildComponent } from './egs-project/projects/repositories/suite/suite-child/suite-child.component';
+import { CaseCreateComponent } from './egs-project/projects/repositories/case-create/case-create.component';
 
 
 //Link Routes
@@ -40,6 +40,7 @@ const appRoute: Routes = [
   { path: 'projects', component: ProjectsComponent },
   { path: 'projects/create', component: CreateComponent },
   { path: 'projects/repository/:id', component: RepositoriesComponent },
+  { path: 'projects/repository/create/:id', component: CaseCreateComponent },
   { path: 'projects/run', component: TestRunComponent },
   { path: 'projects/plan', component: TestPlanComponent },
   { path: 'projects/plan/createplan', component: CreatePlanComponent },
@@ -66,7 +67,7 @@ const appRoute: Routes = [
     RepositoriesComponent,
     SuiteComponent,
     CaseComponent,
-    SuiteChildComponent
+    CaseCreateComponent
   ],
   imports: [
     BrowserModule,

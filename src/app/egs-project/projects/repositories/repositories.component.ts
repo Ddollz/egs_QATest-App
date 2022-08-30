@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
-import { project, suite } from '../../../models/project/project.model';
+import { project, suite, testCase } from '../../../models/project/project.model';
 import { reloadPage } from '../../../services/global-functions.service';
 @Component({
   selector: 'app-repositories',
@@ -15,7 +15,10 @@ export class RepositoriesComponent implements OnInit {
   Modal_Title: string = "Create suite";
   Modal_btn: string = "Create";
 
+  suitesDeleteArray: string = '';
+
   suites: suite[] = [];
+  testCases: testCase[] = [];
 
   @Input() project = {} as project;
 
@@ -48,6 +51,22 @@ export class RepositoriesComponent implements OnInit {
       this.Suite_Root = 'ProjectRoot|' + this.project.Project_ID;
     }
     );
+
+    this.api.UniCall(
+      {
+        CommandText: 'egsQATestCaseGet',
+        Params: [
+          {
+            Param: '@Case_ID',
+            Value: ''
+          }
+        ],
+      }
+    ).subscribe(value => {
+      this.testCases = value[0];
+      console.log(this.testCases);
+    }
+    );
   }
 
   ngOnInit(): void {
@@ -62,6 +81,8 @@ export class RepositoriesComponent implements OnInit {
       else
         test2?.classList.add("show")
     }
+    event.preventDefault();
+    event.stopPropagation();
   }
   getCurrentProjectSuite() {
 
@@ -90,7 +111,7 @@ export class RepositoriesComponent implements OnInit {
       this.Parent_SuiteID = splited[1];
       this.Suite_Root = this.LinkParamID.toString();
     }
-
+    console.log(this.Parent_SuiteID);
     this.api.UniCall(
       {
         CommandText: 'egsQASuiteInsertUpdate',
@@ -144,5 +165,82 @@ export class RepositoriesComponent implements OnInit {
       }
     );
   }
+  editSuite(editSuite: number) {
+    this.Modal_Title = "Edit suite";
+    this.Modal_btn = "Edit";
+    var currentSuite = this.suites.find(x => x.Suite_ID === editSuite);
+    if (currentSuite != null) {
+      this.Suite_ID = currentSuite.Suite_ID;
+      this.Suite_Name = currentSuite.Suite_Name;
+      if (currentSuite.Parent_SuiteID == 0) {
+        this.Suite_Root = 'ProjectRoot|' + currentSuite.Project_ID.toString();
+      } else {
+        this.Suite_Root = 'ParentRoot|' + currentSuite.Parent_SuiteID.toString();
+      }
+      this.Description = currentSuite.Suite_Desc;
+      this.Preconditions = currentSuite.Suite_PreCondition;
+      this.Suite_Name = currentSuite.Suite_Name;
+    }
+  }
+  deleteOnCascade(i: number) {
+    var currentSuite = this.suites.find(x => x.Parent_SuiteID === i);
+    if (currentSuite != null) {
+      if (this.suitesDeleteArray == "")
+        this.suitesDeleteArray = currentSuite.Suite_ID.toString();
+      else
+        this.suitesDeleteArray = this.suitesDeleteArray + ', ' + currentSuite.Suite_ID;
+      this.deleteOnCascade(currentSuite.Suite_ID);
+    }
+    return true
+  }
+  deleteSuite(suiteID: number) {
 
+    var currentSuite = this.suites.find(x => x.Suite_ID === suiteID);
+    var child = this.suites.filter(x => x.Parent_SuiteID === suiteID);
+    if (currentSuite != null) {
+      if (child.length > 0) {
+        for (let index = 0; index < child.length; index++) {
+          if (this.deleteOnCascade(child[index].Suite_ID)) {
+            this.suitesDeleteArray = this.suitesDeleteArray + ', ' + child[index].Suite_ID;
+          }
+        }
+      }
+      this.suitesDeleteArray = this.suitesDeleteArray + ', ' + currentSuite.Suite_ID;
+      console.log(this.suitesDeleteArray);
+      this.api.UniCall(
+        {
+          CommandText: 'egsQASuiteDelete',
+          Params: [
+            {
+              Param: '@List',
+              Value: this.suitesDeleteArray.toString()
+            }
+          ],
+        }
+      ).subscribe({
+        next(position: any) {
+          console.log(position);
+        },
+        error(msg) {
+          console.log(msg);
+          alert("500 Internal Server Errors")
+        },
+        complete() {
+          reloadPage();
+        }
+      }
+      );
+    }
+  }
+  resetModal() {
+
+    this.Modal_Title = "Create suite";
+    this.Modal_btn = "Create";
+    this.Suite_ID = 0;
+    this.Suite_Name = '';
+    this.Suite_Root = 'ProjectRoot|' + this.project.Project_ID;
+    this.Parent_SuiteID = '';
+    this.Description = '';
+    this.Preconditions = '';
+  }
 }

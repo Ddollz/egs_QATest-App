@@ -1,0 +1,266 @@
+<div class="container-fluid app__content">
+  <div class="row">
+    <div class="col-lg-12">
+      <h3 class="m-0">
+        <a routerLink="../../4">
+          <i class="bi bi-arrow-left-short"></i>
+        </a>
+        Create case
+      </h3>
+      <div class="row">
+        <form class="form-create-case" [formGroup]="caseForm">
+          <div class="case-create-block">Basic</div>
+          <div class="row mt-4">
+            <div class="col-xl col-lg col-md-12 col-sm-12">
+              <div class="form-group">
+                <label for="title" class="control-label required">Title</label>
+                <input class="form-control" type="Text" placeholder="For example: Authorization"  formControlName="@Case_Title">
+                <div class="form-control-feedback hide"></div>
+              </div>
+            </div>
+
+            <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12 form-group">
+              <label for="0-status" class="required">Status</label>
+              <mat-select class="select-item" [value]="'1'"  formControlName="@Case_Status">
+                <mat-option value="1" class="select-item">
+                  Actual
+                </mat-option>
+                <mat-option value="2" class="select-item">
+                  Draft
+                </mat-option>
+                <mat-option value="3" class="select-item">
+                  Deprecated
+                </mat-option>
+              </mat-select>
+            </div>
+
+            <div class="form-group">
+              <label for="description" class="control-label required">Description</label>
+              <input class="form-control" type="Text" id="description" formControlName="@Case_Desc" placeholder="For example: We can authorize on page http://example.com/login">
+              <div class="form-control-feedback hide"></div>
+            </div>
+
+
+            <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12 form-group">
+              <label for="0-status" class="required">Suite</label>
+              <mat-select class="select-item" formControlName="@Suite_ID">
+
+                <mat-option *ngFor="let suite of suites" [value]="suite.Suite_ID" class="select-item">
+                  {{suite.Suite_Name}}
+                </mat-option>
+
+              </mat-select>
+            </div>
+            <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12 form-group">
+              <label for="0-status" class="required">Severity</label>
+              <mat-select class="select-item" [value]="'1'" formControlName="@Case_Severity">
+                <mat-option value="1" class="select-item">
+                  Not set
+                </mat-option>
+                <mat-option value="2" class="select-item">
+                  Blocker
+                </mat-option>
+                <mat-option value="3" class="select-item">
+                  Critical
+                </mat-option>
+                <mat-option value="3" class="select-item">
+                  Major
+                </mat-option>
+                <mat-option value="3" class="select-item">
+                  Normal
+                </mat-option>
+                <mat-option value="3" class="select-item">
+                  Minor
+                </mat-option>
+                <mat-option value="3" class="select-item">
+                  Trival
+                </mat-option>
+              </mat-select>
+            </div>
+
+            <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12 form-group">
+              <label for="0-status" class="required">Priority</label>
+              <mat-select class="select-item" [value]="'1'" formControlName="@Case_Priority">
+                <mat-option value="1" class="select-item">
+                  Not set
+                </mat-option>
+                <mat-option value="2" class="select-item">
+                  High
+                </mat-option>
+                <mat-option value="3" class="select-item">
+                  Medium
+                </mat-option>
+                <mat-option value="3" class="select-item">
+                  Low
+                </mat-option>
+              </mat-select>
+            </div>
+
+            <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12 form-group">
+              <label for="0-status" class="required">Type</label>
+              <mat-select class="select-item" [value]="'1'" formControlName="@Case_Type">
+                <mat-option value="1" class="select-item">
+                  Other
+                </mat-option>
+                <mat-option value="2" class="select-item">
+                  Functional
+                </mat-option>
+                <mat-option value="3" class="select-item">
+                  Smole
+                </mat-option>
+                <mat-option value="3" class="select-item">
+                  Regression
+                </mat-option>
+                <mat-option value="3" class="select-item">
+                  Security
+                </mat-option>
+                <mat-option value="3" class="select-item">
+                  Usability
+                </mat-option>
+                <mat-option value="3" class="select-item">
+                  Performance
+                </mat-option>
+                <mat-option value="3" class="select-item">
+                  Acceptance
+                </mat-option>
+                <mat-option value="3" class="select-item">
+                  Compatibility
+                </mat-option>
+                <mat-option value="3" class="select-item">
+                  Integration
+                </mat-option>
+                <mat-option value="3" class="select-item">
+                  Exploratory
+                </mat-option>
+              </mat-select>
+            </div>
+
+            <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12 form-group">
+              <label for="0-status" class="required">Layer</label>
+              <mat-select class="select-item" [value]="'1'" formControlName="@Case_Layer">
+                <mat-option value="1" class="select-item">
+                  Not set
+                </mat-option>
+                <mat-option value="2" class="select-item">
+                  E2E
+                </mat-option>
+                <mat-option value="3" class="select-item">
+                  API
+                </mat-option>
+                <mat-option value="3" class="select-item">
+                  Unit
+                </mat-option>
+              </mat-select>
+            </div>
+
+            <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12 form-group">
+              <label for="0-status" class="required">Is flaky</label>
+              <mat-select class="select-item" [value]="'1'" formControlName="@Case_Flaky">
+                <mat-option value="1" class="select-item">
+                  No
+                </mat-option>
+                <mat-option value="2" class="select-item">
+                  Yes
+                </mat-option>
+              </mat-select>
+            </div>
+
+            <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12 form-group">
+              <label for="0-status" class="required">Milestone</label>
+              <mat-select class="select-item" [value]="'0'" formControlName="@Case_Milestone">
+                <mat-option value="1" class="select-item">
+                  Not set
+                </mat-option>
+              </mat-select>
+            </div>
+
+            <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12 form-group">
+              <label for="0-status" class="required">Behavior</label>
+              <mat-select class="select-item" [value]="'1'" formControlName="@Case_Behavior">
+                <mat-option value="1" class="select-item" selected>
+                  Not set
+                </mat-option>
+                <mat-option value="2" class="select-item">
+                  Positive
+                </mat-option>
+                <mat-option value="3" class="select-item">
+                  Negative
+                </mat-option>
+                <mat-option value="3" class="select-item">
+                  Destructive
+                </mat-option>
+              </mat-select>
+            </div>
+
+            <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12 form-group">
+              <label for="0-status" class="required">Automation status</label>
+              <mat-select class="select-item" [value]="'1'" formControlName="@Case_AutoStat">
+                <mat-option value="1" class="select-item" selected>
+                  Not automated
+                </mat-option>
+                <mat-option value="2" class="select-item">
+                  To be automated
+                </mat-option>
+                <mat-option value="3" class="select-item">
+                  Automated
+                </mat-option>
+              </mat-select>
+            </div>
+          </div>
+          <div class="case-create-block mb-4">Conditions</div>
+          <div class="row">
+            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 form-groupform-group">
+              <label for="title" class="control-label required">Pre-condition</label>
+              <input class="form-control" type="Text" placeholder="Empty value" formControlName="@Case_PreCondition">
+              <div class="form-control-feedback hide"></div>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 form-groupform-group">
+              <label for="title" class="control-label required">Post-conditions</label>
+              <input class="form-control" type="Text" placeholder="Empty value" formControlName="@Case_PostCondition">
+              <div class="form-control-feedback hide"></div>
+            </div>
+          </div>
+          <div class="case-create-block mb-4">Tags</div>
+          <div class="row">
+            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 form-groupform-group">
+              <mat-select class="select-item" [value]="'1'" formControlName="@Case_Tags">
+                <mat-option value="1" class="select-item" selected>
+                  No options
+                </mat-option>
+              </mat-select>
+            </div>
+          </div>
+
+          <div class="case-create-block">Attachments</div>
+          <div class="row mt-3">
+            <div class="col">
+              <div id="case-attachments" class="attachments"></div><button class="button-blue-transparent btn  b-0 p-0" type="button"><i class="bi bi-plus-circle-fill" style="color: var(--bs-blue-prime);"></i> Add attachment</button>
+            </div>
+          </div>
+
+          <div class="case-create-block">Parameter</div>
+          <div class="row mt-3">
+            <div class="col">
+              <div id="case-attachments" class="attachments"></div><button class="button-blue-transparent btn  b-0 p-0" type="button"><i class="bi bi-plus-circle-fill" style="color: var(--bs-blue-prime);"></i> Add Parameter</button>
+            </div>
+          </div>
+
+          <div class="case-create-block">Test Case Steps</div>
+          <div class="row mt-3">
+            <div class="col">
+              <div id="case-attachments" class="attachments"></div><button class="button-blue-transparent btn  b-0 p-0" type="button"><i class="bi bi-plus-circle-fill" style="color: var(--bs-blue-prime);"></i> Add Step</button>
+            </div>
+          </div>
+
+          <div class="save-menu-wrapper">
+            <div class="text-start save-menu">
+              <button id="save-case" class="btn btn-primary me-3" (click)="createCase()">Save</button>
+              <button class="btn btn-secondary me-1" type="submit">Save and create another</button>
+              <button class="btn button-blue-transparent b-0">Cancel</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

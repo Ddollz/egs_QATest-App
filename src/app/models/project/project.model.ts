@@ -21,3 +21,23 @@ export interface suite {
   Case_Count: number;
   SuiteChild_Count: number;
 }
+export interface testCase {
+  Case_ID: number;
+  Case_Title: string;
+  Case_Status: number;
+  Case_Desc: string;
+  Suite_ID: number;
+  Case_Severity: number;
+  Case_Priority: number;
+  Case_Type: number;
+  Case_Layer: number;
+  Case_Flaky: number;
+  Case_isLock: number;
+  User_ID: number;
+  Case_Milestone: number;
+  Case_Behavior: number;
+  Case_AutoStat: number;
+  Case_PreCondition: string;
+  Case_PostCondition: string;
+  Case_Tag: string;
+}

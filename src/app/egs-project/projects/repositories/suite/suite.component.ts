@@ -1,6 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
 import { project, suite } from '../../../../models/project/project.model';
-
 @Component({
   selector: 'app-suite',
   templateUrl: './suite.component.html',
@@ -9,27 +8,37 @@ import { project, suite } from '../../../../models/project/project.model';
 export class SuiteComponent implements OnInit {
   @Input() Suite = {} as suite;
 
-  @Input() isChild: boolean = false;
-  @Input() countTab: number = 0;
-
   carretOpen: boolean = false;
 
-  constructor() { }
+  Modal_Title: string = "Edit suite";
+  Modal_btn: string = "Save";
+
+  @Output() newItemEvent = new EventEmitter<number>();
+  @Output() newDeleteEvent = new EventEmitter<number>();
+
+  constructor() {
+  }
 
   ngOnInit(): void {
   }
 
   suiteOpen(event: Event) {
     var element = event.target as HTMLElement;
-    if (element.tagName != "I" || element.tagName != "I")
+    if (element.tagName != "I")
       this.carretOpen = !this.carretOpen
-    console.log(element);
 
   }
   settingOpen(event: Event) {
-
     event.stopPropagation()
     event.preventDefault()
   }
 
+  editSuite(suiteUpdate: number) {
+    this.newItemEvent.emit(suiteUpdate);
+  }
+
+  deleteSuite(suiteDelete: number) {
+    // console.log(suiteDelete);
+    this.newDeleteEvent.emit(suiteDelete);
+  }
 }

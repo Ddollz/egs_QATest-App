@@ -1,17 +1,29 @@
-
 <div class="d-flex justify-content-between suite w-100" (click)="suiteOpen($event)" [ngClass]="carretOpen? '':'open'">
   <div class="d-flex align-items-center item-suite">
     <i class="bi bi-caret-right-fill me-1"></i>
-    <a type="button" class="button-blue-transparent">{{Suite.Suite_Name}}</a>
+    <!-- ID is temporary -->
+    <a type="button" class="button-blue-transparent suite-name">{{Suite.Suite_ID}} - {{Suite.Suite_Name}}</a>
   </div>
   <div class="suite-setting">
     <span class="me-1">{{Suite.Case_Count}}</span>
 
-    <button type="button" class="button-blue-transparent"(click)="settingOpen($event)" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots"></i></button>
-    <ul class="dropdown-menu">
-      <li><a class="dropdown-item" href="#">Action</a></li>
-      <li><a class="dropdown-item" href="#">Another action</a></li>
-      <li><a class="dropdown-item" href="#">Something else here</a></li>
-    </ul>
+      <button type="button" class="button-blue-transparent" (click)="settingOpen($event)" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots"></i></button>
+      <ul class="dropdown-menu pt-2 pb-2" id = "dropdown">
+        <div class="dropdown-group">
+          <li><a class="dropdown-item" (click)="editSuite(Suite.Suite_ID)" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="bi bi-pencil"></i>Edit</a></li>
+          <li><a class="dropdown-item" href="#"><i class="bi bi-clipboard"></i>Clone</a></li>
+        </div>
+        <div class="dropdown-group">
+          <li><a class="dropdown-item" href="#"><i class="bi bi-check-square"></i>Select All</a></li>
+          <li><a class="dropdown-item" href="#"><i class="bi bi-square"></i>Unselect All</a></li>
+        </div>
+        <div class="dropdown-group">
+          <li><a class="dropdown-item" href="#"><i class="bi bi-plus"></i>Create Suite</a></li>
+          <li><a class="dropdown-item create" href="#"><i class="bi bi-plus"></i>Create Case</a></li>
+        </div>
+        <div class="dropdown-group delete">
+          <li><a class="dropdown-item" (click)="deleteSuite(Suite.Suite_ID)"><i class="bi bi-trash"></i>Delete</a></li>
+        </div>
+      </ul>
   </div>
 </div>
