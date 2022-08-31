@@ -63,166 +63,171 @@
 
 <!-- Add cases modal -->
 <div class="modal fade modal-dialog modal-xl" id="addcases" tabindex="-1" aria-labelledby="casesLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="casesLabel">Select Test Cases</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-
-        </div>
-        <div class="modal-body">
-            <div class="filters-block">
-                <div class="filters-block-items">
-                    <div class="form-inline case-search case-search-input me-2">
-                        <input type="text" name="title" class="form-control search-input" placeholder="Search for cases" value="">
+    <div class="modal-dialog pop-out">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>
+                    <h5 class="modal-title" id="casesLabel">Select Test Cases</h5>
+                    <div class="filters-block">
+                        <div class="filters-block-items">
+                            <div class="case-search-input me-2">
+                                <input type="text" name="title" class="form-control form-control-sm" placeholder="Search for cases" value="">
+                            </div>
+                        </div>
+                        <div class="add-filter-outer">
+                            <button class="add-filter-button">+ Add filter</button>
+                        </div>
                     </div>
                 </div>
-                <div class="add-filter-outer">
-                    <button class="add-filter-button">+ Add filter</button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-select-cases-stats">
+                    <p class="cases-count">25 test cases selected</p>
                 </div>
             </div>
-            <form>
-                <div class="row mt-3">
-                    <!-- LEFT COLUMN -->
-                    <div class="col-4">
-                        <div class="row mt-2 d-flex align-items-center">
-                            <div class="col">
-                                <label><input type="checkbox" name="checkbox" value="value">  Login</label>
+            <div class="modal-body">
+                <form>
+                    <div class="row mt-3">
+                        <!-- LEFT COLUMN -->
+                        <div class="suites-column">
+                            <div class="row mt-2 d-flex align-items-center">
+                                <div class="col">
+                                    <label><input type="checkbox" name="checkbox" value="value">  Login</label>
+                                </div>
+                                <div class="col-1 d-flex justify-content-end">
+                                    <span class="me-1 l-col">0/3</span>
+                                    <button type="button" class="btn p-0 l-col"><i class="bi bi-three-dots"></i></button>
+                                </div>
                             </div>
-                            <div class="col-1 d-flex justify-content-end">
-                                <span class="me-1 l-col">0/3</span>
-                                <button type="button" class="btn p-0 l-col"><i class="bi bi-three-dots"></i></button>
+
+                            <div class="row mt-2 d-flex align-items-center">
+                                <div class="col">
+                                    <label><input type="checkbox" name="checkbox" value="value">  Main Dashboard</label>
+                                </div>
+                                <div class="col-1 d-flex justify-content-end">
+                                    <span class="me-1 l-col">0/7</span>
+                                    <button type="button" class="btn p-0 l-col"><i class="bi bi-three-dots"></i></button>
+                                </div>
+                            </div>
+
+                            <div class="row mt-2 d-flex align-items-center">
+                                <div class="col">
+                                    <label><input type="checkbox" name="checkbox" value="value">  Product Module</label>
+                                </div>
+                                <div class="col-2 d-flex justify-content-end">
+                                    <span class="me-1 l-col">0/6</span>
+                                    <button type="button" class="btn p-0 l-col"><i class="bi bi-three-dots"></i></button>
+                                </div>
+                            </div>
+
+                            <div class="row mt-2 d-flex align-items-center">
+                                <div class="col">
+                                    <label><input type="checkbox" name="checkbox" value="value">  Recipe Module</label>
+                                </div>
+                                <div class="col-1 d-flex justify-content-end">
+                                    <span class="me-1 l-col">0/10</span>
+                                    <button type="button" class="btn p-0 l-col"><i class="bi bi-three-dots"></i></button>
+                                </div>
+                            </div>
+
+                            <div class="row mt-2 d-flex align-items-center">
+                                <div class="col">
+                                    <label><input type="checkbox" name="checkbox" value="value">  Shopping List</label>
+                                </div>
+                                <div class="col-1 d-flex justify-content-end">
+                                    <span class="me-1 l-col">0/9</span>
+                                    <button type="button" class="btn p-0 l-col"><i class="bi bi-three-dots"></i></button>
+                                </div>
+                            </div>
+
+                            <div class="row mt-2 d-flex align-items-center">
+                                <div class="col">
+                                    <label><input type="checkbox" name="checkbox" value="value">  Basket Module</label>
+                                </div>
+                                <div class="col-1 d-flex justify-content-end">
+                                    <span class="me-1 l-col">0/5</span>
+                                    <button type="button" class="btn p-0 l-col"><i class="bi bi-three-dots"></i></button>
+                                </div>
+                            </div>
+
+                            <div class="row mt-2 d-flex align-items-center">
+                                <div class="col">
+                                    <label><input type="checkbox" name="checkbox" value="value">  Setting - Profile</label>
+                                </div>
+                                <div class="col-1 d-flex justify-content-end">
+                                    <span class="me-1 l-col">0/6</span>
+                                    <button type="button" class="btn p-0 l-col"><i class="bi bi-three-dots"></i></button>
+                                </div>
+                            </div>
+
+                            <div class="row mt-2 d-flex align-items-center">
+                                <div class="col">
+                                    <label><input type="checkbox" name="checkbox" value="value">  ActivMenu</label>
+                                </div>
+                                <div class="col-1 d-flex justify-content-end">
+                                    <span class="me-1 l-col">0/1</span>
+                                    <button type="button" class="btn p-0 l-col"><i class="bi bi-three-dots"></i></button>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="row mt-2 d-flex align-items-center">
-                            <div class="col">
-                                <label><input type="checkbox" name="checkbox" value="value">  Main Dashboard</label>
+                        <!-- RIGHT COLUMN -->
+                        <div class="cases-column ps-4">
+                            <div class="row r-col-header">
+                                <div class="col py-3 ps-5">
+                                    <span>Login</span>
+                                </div>
                             </div>
-                            <div class="col-1 d-flex justify-content-end">
-                                <span class="me-1 l-col">0/7</span>
-                                <button type="button" class="btn p-0 l-col"><i class="bi bi-three-dots"></i></button>
-                            </div>
-                        </div>
 
-                        <div class="row mt-2 d-flex align-items-center">
-                            <div class="col">
-                                <label><input type="checkbox" name="checkbox" value="value">  Product Module</label>
+                            <div class="row r-col-header">
+                                <div class="col py-3 ps-5">
+                                    <span>Main Dashboard</span>
+                                </div>
                             </div>
-                            <div class="col-2 d-flex justify-content-end">
-                                <span class="me-1 l-col">0/6</span>
-                                <button type="button" class="btn p-0 l-col"><i class="bi bi-three-dots"></i></button>
-                            </div>
-                        </div>
 
-                        <div class="row mt-2 d-flex align-items-center">
-                            <div class="col">
-                                <label><input type="checkbox" name="checkbox" value="value">  Recipe Module</label>
+                            <div class="row r-col-header">
+                                <div class="col py-3 ps-5">
+                                    <span>Product Module</span>
+                                </div>
                             </div>
-                            <div class="col-1 d-flex justify-content-end">
-                                <span class="me-1 l-col">0/10</span>
-                                <button type="button" class="btn p-0 l-col"><i class="bi bi-three-dots"></i></button>
-                            </div>
-                        </div>
 
-                        <div class="row mt-2 d-flex align-items-center">
-                            <div class="col">
-                                <label><input type="checkbox" name="checkbox" value="value">  Shopping List</label>
+                            <div class="row r-col-header">
+                                <div class="col py-3 ps-5">
+                                    <span>Recipe Module</span>
+                                </div>
                             </div>
-                            <div class="col-1 d-flex justify-content-end">
-                                <span class="me-1 l-col">0/9</span>
-                                <button type="button" class="btn p-0 l-col"><i class="bi bi-three-dots"></i></button>
-                            </div>
-                        </div>
 
-                        <div class="row mt-2 d-flex align-items-center">
-                            <div class="col">
-                                <label><input type="checkbox" name="checkbox" value="value">  Basket Module</label>
+                            <div class="row r-col-header">
+                                <div class="col py-3 ps-5">
+                                    <span>Shopping List</span>
+                                </div>
                             </div>
-                            <div class="col-1 d-flex justify-content-end">
-                                <span class="me-1 l-col">0/5</span>
-                                <button type="button" class="btn p-0 l-col"><i class="bi bi-three-dots"></i></button>
-                            </div>
-                        </div>
 
-                        <div class="row mt-2 d-flex align-items-center">
-                            <div class="col">
-                                <label><input type="checkbox" name="checkbox" value="value">  Setting - Profile</label>
+                            <div class="row r-col-header">
+                                <div class="col py-3 ps-5">
+                                    <span>Basket Module</span>
+                                </div>
                             </div>
-                            <div class="col-1 d-flex justify-content-end">
-                                <span class="me-1 l-col">0/6</span>
-                                <button type="button" class="btn p-0 l-col"><i class="bi bi-three-dots"></i></button>
-                            </div>
-                        </div>
 
-                        <div class="row mt-2 d-flex align-items-center">
-                            <div class="col">
-                                <label><input type="checkbox" name="checkbox" value="value">  ActivMenu</label>
+                            <div class="row r-col-header">
+                                <div class="col py-3 ps-5">
+                                    <span>Setting Profile</span>
+                                </div>
                             </div>
-                            <div class="col-1 d-flex justify-content-end">
-                                <span class="me-1 l-col">0/1</span>
-                                <button type="button" class="btn p-0 l-col"><i class="bi bi-three-dots"></i></button>
+
+                            <div class="row r-col-header">
+                                <div class="col py-3 ps-5">
+                                    <span>ActivMenu</span>
+                                </div>
                             </div>
                         </div>
                     </div>
-
-                    <!-- RIGHT COLUMN -->
-                    <div class="col-8 ps-4 r-col">
-                        <div class="row r-col-header">
-                            <div class="col py-3 ps-5">
-                                <span>Login</span>
-                            </div>
-                        </div>
-
-                        <div class="row r-col-header">
-                            <div class="col py-3 ps-5">
-                                <span>Main Dashboard</span>
-                            </div>
-                        </div>
-
-                        <div class="row r-col-header">
-                            <div class="col py-3 ps-5">
-                                <span>Product Module</span>
-                            </div>
-                        </div>
-
-                        <div class="row r-col-header">
-                            <div class="col py-3 ps-5">
-                                <span>Recipe Module</span>
-                            </div>
-                        </div>
-
-                        <div class="row r-col-header">
-                            <div class="col py-3 ps-5">
-                                <span>Shopping List</span>
-                            </div>
-                        </div>
-
-                        <div class="row r-col-header">
-                            <div class="col py-3 ps-5">
-                                <span>Basket Module</span>
-                            </div>
-                        </div>
-
-                        <div class="row r-col-header">
-                            <div class="col py-3 ps-5">
-                                <span>Setting Profile</span>
-                            </div>
-                        </div>
-
-                        <div class="row r-col-header">
-                            <div class="col py-3 ps-5">
-                                <span>ActivMenu</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </form>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="select-cases-done-button" class="btn btn-primary">Done</button>
+                <button class="btn btn-invisible-danger b-0">Cancel</button>
+            </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Submit</button>
-        </div>
-      </div>
     </div>
-  </div>
+</div>
+
