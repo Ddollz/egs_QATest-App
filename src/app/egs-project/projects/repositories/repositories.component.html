@@ -1,0 +1,194 @@
+<div class="app__content">
+
+  <div class="row">
+    <div class="col">
+      <h2 class="my-3 page-title">{{project.Project_Name}} Repository<span class="ms-2 page-something">8 suites | 47 tests</span>
+      </h2>
+    </div>
+    <div class="col d-flex justify-content-end align-items-center">
+      <button class="btn btn-light page-button">
+        <i class="bi bi-three-dots"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="d-flex col">
+      <div class="me-2">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="resetModal()">+ Suite</button>
+      </div>
+      <div class="me-2">
+        <a type="button" [routerLink]="'../create/'+LinkParamID" class="btn btn-primary">+ Case</a>
+      </div>
+      <div class="me-2">
+        <input type="text" class="form-control search_input" placeholder="Search for projects">
+      </div>
+      <div>
+        <a type="button" class="btn add-filter-button">+ Add filter</a>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row mt-3 h-100">
+    <!-- LEFT COLUMN -->
+    <div class="col-2 left">
+      <div class="d-flex flex-row justify-content-between mb-2">
+        <button type="button" class="button-blue-transparent suite-burger p-0"><i class="bi bi-list me-1"></i>Suites</button>
+        <div class="chevron">
+          <button type="button" class="btn btn-light me-1"><i class="bi bi-chevron-double-up"></i></button>
+          <button type="button" class="btn btn-light"><i class="bi bi-chevron-double-down"></i></button>
+        </div>
+      </div>
+      <!-- Display Nodes -->
+      <ng-container *ngFor="let suite of suites">
+        <ng-container *ngIf="suite.Project_ID == LinkParamID">
+          <ng-container *ngIf="suite.Parent_SuiteID == 0">
+            <div class="collapsed" (click)="toggleDropdown($event)" [attr.data-bs-target]="'collapse-'+suite.Suite_ID" aria-expanded="true">
+              <app-suite [Suite]="suite" (newItemEvent)="editSuite($event)" (newDeleteEvent)="deleteSuite($event)"></app-suite>
+            </div>
+            <div class="collapse show" [id]="'collapse-'+suite.Suite_ID">
+              <!-- Run Template to display looping Leaf -->
+              <ng-container *ngTemplateOutlet="tree; context:{ $implicit: suite}"></ng-container>
+            </div>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+
+      <!-- Display Leaf -->
+      <ng-template #tree let-data>
+        <ng-container *ngFor="let s of suites">
+          <!-- Check if leaf exist display the leaf and loop again.-->
+          <!-- Check if leaf does not exist end the loop.-->
+          <ng-container *ngIf="data.Suite_ID == s.Parent_SuiteID">
+            <div class="collapsed" (click)="toggleDropdown($event)" [attr.data-bs-target]="'collapse-'+s.Suite_ID" aria-expanded="true">
+              <app-suite [Suite]="s" (newItemEvent)="editSuite($event)" (newDeleteEvent)="deleteSuite($event)"></app-suite>
+            </div>
+            <div class="collapse show" [id]="'collapse-'+s.Suite_ID">
+              <!-- Run the template leaf again -->
+              <ng-container *ngTemplateOutlet="tree; context: {$implicit:s}"></ng-container>
+            </div>
+          </ng-container>
+        </ng-container>
+      </ng-template>
+
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div class="col-10 ps-3 r-col right">
+
+      <!-- Display Nodes -->
+      <ng-container *ngFor="let suite of suites">
+        <ng-container *ngIf="suite.Project_ID == LinkParamID">
+          <ng-container *ngIf="suite.Parent_SuiteID == 0">
+            <div class="collapsed" (click)="toggleDropdown($event)" [attr.data-bs-target]="'collapse-'+suite.Suite_ID+'-case'" aria-expanded="true">
+              <app-case [Suite]="suite"></app-case>
+            </div>
+            <div class="collapse show" [id]="'collapse-'+suite.Suite_ID+'-case'">
+
+
+              <div class="caseContainer ">
+                <ng-container *ngFor="let testCase of testCases">
+                  <ng-container *ngIf="testCase.Suite_ID == suite.Suite_ID">
+                    <div class="caseRow d-flex flex-row align-items-center">
+                      <mat-checkbox class="ms-3 me-3">
+                      </mat-checkbox>
+                      <a href="#" class="button-blue-transparent">{{project.Project_Name}}</a>
+                      <div class="caseDescription">{{testCase.Case_Title}}</div>
+                    </div>
+                  </ng-container>
+
+                </ng-container>
+                <input class="ms-5 clearedInput" placeholder="+ Create quick test" value="">
+              </div>
+
+
+              <!-- Run Template to display looping Leaf -->
+              <ng-container *ngTemplateOutlet="treeCase; context:{ $implicit: suite}"></ng-container>
+            </div>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+
+      <!-- Display Leaf -->
+      <ng-template #treeCase let-data>
+        <ng-container *ngFor="let s of suites">
+          <!-- Check if leaf exist display the leaf and loop again.-->
+          <!-- Check if leaf does not exist end the loop.-->
+          <ng-container *ngIf="data.Suite_ID == s.Parent_SuiteID">
+            <div class="collapsed" (click)="toggleDropdown($event)" [attr.data-bs-target]="'collapse-'+s.Suite_ID+'-case'" aria-expanded="true">
+              <app-case [Suite]="s"></app-case>
+            </div>
+            <div class="collapse show" [id]="'collapse-'+s.Suite_ID+'-case'">
+
+
+
+              <div class="caseContainer ">
+
+                <ng-container *ngFor="let testCase of testCases">
+                  <ng-container *ngIf="testCase.Suite_ID == s.Suite_ID">
+                    <div class="caseRow d-flex flex-row align-items-center">
+                      <mat-checkbox class="ms-3 me-3">
+                      </mat-checkbox>
+                      <a href="#" class="button-blue-transparent">{{project.Project_Name}}</a>
+                      <div class="caseDescription">{{testCase.Case_Title}}</div>
+                    </div>
+                  </ng-container>
+
+                </ng-container>
+                <input class="ms-5 quickTest" placeholder="+ Create quick test" value="">
+              </div>
+
+
+              <!-- Run the template leaf again -->
+              <ng-container *ngTemplateOutlet="treeCase; context: {$implicit:s}"></ng-container>
+            </div>
+          </ng-container>
+        </ng-container>
+      </ng-template>
+
+    </div>
+  </div>
+
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+
+        <h5 class="modal-title" id="exampleModalLabel">{{Modal_Title}}</h5>
+
+        <div class="mb-3">
+          <label for="SuiteName" class="form-label">Suite name</label>
+          <input type="text" class="form-control" id="SuiteName" [(ngModel)]="Suite_Name">
+        </div>
+        <div class="mb-3">
+          <label for="SuiteName" class="form-label">Parent suite</label>
+          <select class="form-select" aria-label="Default select example" [(ngModel)]="Suite_Root">
+            <option value='ProjectRoot|{{project.Project_ID}}'>Project Root</option>
+            <ng-container *ngFor="let suite of suites">
+              <option value='ParentRoot|{{suite.Suite_ID}}'>{{suite.Suite_Name}}</option>
+            </ng-container>
+          </select>
+
+        </div>
+
+        <div class="mb-3">
+          <label for="Description" class="form-label">Description</label>
+          <input type="text" class="form-control" id="Description" [(ngModel)]="Description">
+        </div>
+        <div class="mb-3">
+          <label for="Preconditions" class="form-label">Preconditions</label>
+          <input type="text" class="form-control" id="Preconditions" [(ngModel)]="Preconditions">
+        </div>
+        <div class="d-flex flex-row justify-content-end">
+          <button type="button" class="btn btn-transparent" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" (click)="insertUpdateSuite()">{{Modal_btn}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

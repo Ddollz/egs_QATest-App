@@ -22,3 +22,21 @@
     border-radius: .25rem;
     padding: .2rem .75rem;
 }
+
+.tooltip-i {
+    cursor: pointer;
+}
+
+::ng-deep .mat-radio-label-content {
+    font-weight: 400;
+    font-size: 0.875rem;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+::ng-deep .mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element {
+    background-color: #e52325;
+  }
+
+::ng-deep .mat-radio-button.mat-accent .mat-radio-inner-circle {
+    background-color: #e52325;
+}

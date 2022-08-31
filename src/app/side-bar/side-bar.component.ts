@@ -1,5 +1,5 @@
 import { Component, HostBinding, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-side-bar',
@@ -8,18 +8,17 @@ import { Router } from '@angular/router';
 })
 export class SideBarComponent implements OnInit {
 
-  ddWorkspace: boolean = true;
-  ddSecurity: boolean = true;
-  constructor(public router: Router) { }
+  //Utilities
+  LinkParamID: number = 0;
 
-  ngOnInit(): void {
+  ddWorkspace: boolean = true;
+  ddExecution: boolean = true;
+  ddSecurity: boolean = true;
+  ddIssue: boolean = true;
+  constructor(public router: Router, private activatedRoute: ActivatedRoute) {
+    console.log(activatedRoute);
   }
 
-  toggleCollapse(Dropdown__Name: string) {
-    if (Dropdown__Name == "workspace") {
-      this.ddWorkspace = !this.ddWorkspace;
-    } else if (Dropdown__Name == "security") {
-      this.ddSecurity = !this.ddSecurity;
-    }
+  ngOnInit(): void {
   }
 }

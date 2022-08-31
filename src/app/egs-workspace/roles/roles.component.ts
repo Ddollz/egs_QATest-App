@@ -47,7 +47,6 @@ export class RolesComponent implements OnInit {
     ).subscribe(value => {
       this.roles = value[0];
       this.dataSource = new MatTableDataSource<role>(this.roles);
-      console.log(this.roles);
     }
     );
   }
@@ -59,6 +58,10 @@ export class RolesComponent implements OnInit {
     this.Modal_Title = 'Create new role';
     this.Modal_btn = "Create";
     this.Modal_idDisable = false;
+    this.Role_ID = "";
+    this.Role_Name = "";
+    this.Role_Description = "";
+    this.Role_Code = "";
   }
 
   openUpdateRole(id: string, name: string, desc: string, code: string) {
@@ -101,10 +104,9 @@ export class RolesComponent implements OnInit {
       },
       (error) => {
         console.log(error);
-        alert("500 Internal Server Errors")
+        alert("500 Internal Server Errors");
       }, () => {
         reloadPage();
-
       }
     );
   }

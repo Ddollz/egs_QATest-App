@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http'
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
@@ -23,10 +23,16 @@ import { UserComponent } from './egs-workspace/user/user.component';
 import { RolesComponent } from './egs-workspace/roles/roles.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TestRunComponent } from './egs-project/projects/test-run/test-run.component';
-import { RepositoryComponent } from './egs-project/projects/repository/repository.component';
 import { CreateComponent } from './egs-project/projects/create/create.component';
 import { TestPlanComponent } from './egs-project/projects/test-plan/test-plan.component';
 import { CreatePlanComponent } from './egs-project/projects/test-plan/create-plan/create-plan.component';
+import { RouteGuardService } from './services/route-guard.service';
+import { AuthInterceptor } from './services/auth.interceptor';
+import { RepositoriesComponent } from './egs-project/projects/repositories/repositories.component';
+import { SuiteComponent } from './egs-project/projects/repositories/suite/suite.component';
+import { CaseComponent } from './egs-project/projects/repositories/case/case.component';
+import { CaseCreateComponent } from './egs-project/projects/repositories/case-create/case-create.component';
+import { UploadAttachmentComponent } from './egs-project/projects/utilities/upload-attachment/upload-attachment.component';
 
 
 //Link Routes
@@ -34,12 +40,11 @@ const appRoute: Routes = [
   { path: '', redirectTo: 'projects', pathMatch: "full" },
   { path: 'projects', component: ProjectsComponent },
   { path: 'projects/create', component: CreateComponent },
-  { path: 'projects/repository', component: RepositoryComponent },
+  { path: 'projects/repository/:id', component: RepositoriesComponent },
+  { path: 'projects/repository/create/:id', component: CaseCreateComponent },
   { path: 'projects/run', component: TestRunComponent },
   { path: 'projects/plan', component: TestPlanComponent },
   { path: 'projects/plan/createplan', component: CreatePlanComponent },
-  //Uncomment this when project is working
-  // { path: 'projects/run/:project', component: TestRunComponent },
   { path: 'workspace/user', component: UserComponent },
   { path: 'workspace/roles', component: RolesComponent },
   { path: 'login', component: EgsLoginComponent },
@@ -59,7 +64,12 @@ const appRoute: Routes = [
     TestRunComponent,
     CreateComponent,
     TestPlanComponent,
-    CreatePlanComponent
+    CreatePlanComponent,
+    RepositoriesComponent,
+    SuiteComponent,
+    CaseComponent,
+    CaseCreateComponent,
+    UploadAttachmentComponent,
   ],
   imports: [
     BrowserModule,
@@ -77,7 +87,11 @@ const appRoute: Routes = [
     RouterModule.forRoot(appRoute),
     BrowserAnimationsModule
   ],
-  providers: [],
+  providers: [RouteGuardService, {
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthInterceptor,
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

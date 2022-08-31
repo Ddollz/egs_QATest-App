@@ -24,6 +24,10 @@
   --black-25: rgba(37, 32, 32, 0.25);
   --black-10: rgba(37, 32, 32, 0.10);
   --black-5: rgba(37, 32, 32, 0.05);
+
+  --c-text: #382F2F;
+  --c-text-secondary: rgba(19, 38, 71, 0.5);
+  --app-header-height: 2.5rem;
 }
 
 /* You can add global styles to this file, and also import other style files */
@@ -59,8 +63,13 @@ body {
   text-rendering: optimizeSpeed;
   line-height: 1.5;
   background-color: var(--background);
-  font-family: "Segoe UI", Arial, sans-serif
+  font-family: "Segoe UI", Arial, sans-serif;
+  color: var(--c-text);
 }
+
+/* body{
+  overflow: hidden;
+} */
 
 body.dark-theme {
   --background: rgba(37, 32, 32, 1);
@@ -90,6 +99,8 @@ h4,
 h5 {
   font-family: "Nunito", sans-serif;
   font-weight: 400;
+  color: var(--c-text);
+
 }
 
 h1 {
@@ -144,6 +155,11 @@ select {
   }
 }
 
+.Content {
+  height: 100%;
+  max-height: calc(100vh - var(--app-header-height));
+  /* max-height: calc(100vh - var(--app-header-height)); */
+}
 
 /* This is only Initial Css END*/
 
@@ -173,6 +189,7 @@ select {
   box-shadow: 0 0 0 0.25rem var(--bs-red-5);
   border-color: var(--bs-red-100);
 }
+
 .form-label {
   font-size: .75rem;
   line-height: 1rem;
@@ -207,12 +224,47 @@ select {
   box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
 }
 
+
+.btn-secondary {
+  color: black;
+  font-size: .875rem;
+  border-radius: .25rem;
+  padding: .2rem .75rem;
+  background-color: var(--black-5) !important;
+  border-color: var(--black-5) !important;
+}
+
+.btn-secondary:hover,
+.btn-secondary:focus,
+.btn-secondary:active,
+.btn-secondary.active,
+.open>.dropdown-toggle.btn-secondary {
+  background-color: var(--black-5) !important;
+  border-color: var(--black-5) !important;
+  box-shadow: none;
+  color: black;
+}
+
+.btn-secondary:active,
+.btn:active:focus,
+.btn-secondary.active,
+.open>.dropdown-toggle.btn-secondary {
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+}
+
 .btn-transparent {
   color: #46484a;
   font-size: .875rem;
   font-weight: 500;
   background-color: transparent;
   border: none;
+}
+
+
+.clearedInput {
+  outline: none;
+  border: none;
+  padding: 0.5rem;
 }
 
 /* Dropdown Style */
@@ -318,10 +370,54 @@ select {
   color: #959595;
 }
 
-.setting-icon{
+.setting-icon {
   color: var(--bs-blue-prime);
   cursor: pointer;
 }
-.setting-icon:hover{
+
+.setting-icon:hover {
+  color: var(--bs-blue-second);
+}
+
+.button-blue-transparent {
+  white-space: nowrap;
+  font-size: .875rem;
+  background-color: transparent !important;
+  border: none !important;
+
+  transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+  transition-property: color, background-color, border-color, box-shadow;
+  transition-duration: 0.15s, 0.15s, 0.15s, 0.15s;
+  transition-timing-function: ease-in-out, ease-in-out, ease-in-out, ease-in-out;
+  transition-delay: 0s, 0s, 0s, 0s;
+}
+
+.button-blue-transparent:hover {
+  color: var(--bs-blue-second);
+}
+
+.button-gray-transparent {
+  white-space: nowrap;
+  font-size: .875rem;
+  background-color: transparent !important;
+  color: var(--black-50);
+  border: none !important;
+  transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+  transition-property: color, background-color, border-color, box-shadow;
+  transition-duration: 0.15s, 0.15s, 0.15s, 0.15s;
+  transition-timing-function: ease-in-out, ease-in-out, ease-in-out, ease-in-out;
+  transition-delay: 0s, 0s, 0s, 0s;
+}
+
+.button-gray-transparent:hover {
+  color: var(--c-text);
+}
+
+
+.linkTag.active {
+  color: var(--bs-blue-prime);
+}
+
+.linkTag:hover {
   color: var(--bs-blue-second);
 }

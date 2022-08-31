@@ -14,6 +14,4 @@ export class CreatePlanComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  back(): void {    this.location.back()  }
-
 }
