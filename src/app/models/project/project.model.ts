@@ -41,3 +41,15 @@ export interface testCase {
   Case_PostCondition: string;
   Case_Tag: string;
 }
+
+export interface step {
+  Case_StepID: string;
+  Step_number: string;
+  Step_Type: string;
+  Case_ID: string;
+  Step_Action: string;
+  Step_InputData: string;
+  Step_ExpectedResult: string;
+  Step_Status: string;
+}
+

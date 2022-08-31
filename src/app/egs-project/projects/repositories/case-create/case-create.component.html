@@ -8,20 +8,21 @@
         Create case
       </h3>
       <div class="row">
+        <div class="case-create-block">Basic</div>
         <form class="form-create-case" [formGroup]="caseForm">
-          <div class="case-create-block">Basic</div>
+
           <div class="row mt-4">
             <div class="col-xl col-lg col-md-12 col-sm-12">
               <div class="form-group">
                 <label for="title" class="control-label required">Title</label>
-                <input class="form-control" type="Text" placeholder="For example: Authorization"  formControlName="@Case_Title">
+                <input class="form-control" type="Text" placeholder="For example: Authorization" formControlName="@Case_Title">
                 <div class="form-control-feedback hide"></div>
               </div>
             </div>
 
             <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12 form-group">
               <label for="0-status" class="required">Status</label>
-              <mat-select class="select-item" [value]="'1'"  formControlName="@Case_Status">
+              <mat-select class="select-item" [value]="'1'" formControlName="@Case_Status">
                 <mat-option value="1" class="select-item">
                   Actual
                 </mat-option>
@@ -98,38 +99,38 @@
 
             <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12 form-group">
               <label for="0-status" class="required">Type</label>
-              <mat-select class="select-item" [value]="'1'" formControlName="@Case_Type">
-                <mat-option value="1" class="select-item">
+              <mat-select class="select-item" [value]="'Other'" formControlName="@Case_Type">
+                <mat-option value="Other" class="select-item">
                   Other
                 </mat-option>
-                <mat-option value="2" class="select-item">
+                <mat-option value="Functional" class="select-item">
                   Functional
                 </mat-option>
-                <mat-option value="3" class="select-item">
-                  Smole
+                <mat-option value="Smoke" class="select-item">
+                  Smoke
                 </mat-option>
-                <mat-option value="3" class="select-item">
+                <mat-option value="Regression" class="select-item">
                   Regression
                 </mat-option>
-                <mat-option value="3" class="select-item">
+                <mat-option value="Security" class="select-item">
                   Security
                 </mat-option>
-                <mat-option value="3" class="select-item">
+                <mat-option value="Usability" class="select-item">
                   Usability
                 </mat-option>
-                <mat-option value="3" class="select-item">
+                <mat-option value="Performance" class="select-item">
                   Performance
                 </mat-option>
-                <mat-option value="3" class="select-item">
+                <mat-option value="Acceptance" class="select-item">
                   Acceptance
                 </mat-option>
-                <mat-option value="3" class="select-item">
+                <mat-option value="Compatibility" class="select-item">
                   Compatibility
                 </mat-option>
-                <mat-option value="3" class="select-item">
+                <mat-option value="Integration" class="select-item">
                   Integration
                 </mat-option>
-                <mat-option value="3" class="select-item">
+                <mat-option value="Exploratory" class="select-item">
                   Exploratory
                 </mat-option>
               </mat-select>
@@ -206,6 +207,7 @@
                 </mat-option>
               </mat-select>
             </div>
+
           </div>
           <div class="case-create-block mb-4">Conditions</div>
           <div class="row">
@@ -220,6 +222,7 @@
               <div class="form-control-feedback hide"></div>
             </div>
           </div>
+
           <div class="case-create-block mb-4">Tags</div>
           <div class="row">
             <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 form-groupform-group">
@@ -230,37 +233,90 @@
               </mat-select>
             </div>
           </div>
-
-          <div class="case-create-block">Attachments</div>
-          <div class="row mt-3">
-            <div class="col">
-              <div id="case-attachments" class="attachments"></div><button class="button-blue-transparent btn  b-0 p-0" type="button"><i class="bi bi-plus-circle-fill" style="color: var(--bs-blue-prime);"></i> Add attachment</button>
-            </div>
-          </div>
-
-          <div class="case-create-block">Parameter</div>
-          <div class="row mt-3">
-            <div class="col">
-              <div id="case-attachments" class="attachments"></div><button class="button-blue-transparent btn  b-0 p-0" type="button"><i class="bi bi-plus-circle-fill" style="color: var(--bs-blue-prime);"></i> Add Parameter</button>
-            </div>
-          </div>
-
-          <div class="case-create-block">Test Case Steps</div>
-          <div class="row mt-3">
-            <div class="col">
-              <div id="case-attachments" class="attachments"></div><button class="button-blue-transparent btn  b-0 p-0" type="button"><i class="bi bi-plus-circle-fill" style="color: var(--bs-blue-prime);"></i> Add Step</button>
-            </div>
-          </div>
-
-          <div class="save-menu-wrapper">
-            <div class="text-start save-menu">
-              <button id="save-case" class="btn btn-primary me-3" (click)="createCase()">Save</button>
-              <button class="btn btn-secondary me-1" type="submit">Save and create another</button>
-              <button class="btn button-blue-transparent b-0">Cancel</button>
-            </div>
-          </div>
         </form>
+
+        <div class="case-create-block">Attachments</div>
+        <div class="row mt-3">
+          <div class="col">
+            <div id="case-attachments" class="attachments"></div>
+            <button class="button-blue-transparent btn  b-0 p-0" type="button" data-bs-toggle="modal" data-bs-target="#UploadModal">
+              <i class="bi bi-plus-circle-fill" style="color: var(--bs-blue-prime);"></i> Add attachment
+            </button>
+          </div>
+        </div>
+
+        <div class="case-create-block">Parameter</div>
+        <div class="row mt-3">
+          <div class="col">
+            <input class="ms-3 clearedInput" placeholder="Param Title (Optional)" value="">
+          </div>
+
+        </div>
+
+        <div class="case-create-block">Test Case Steps</div>
+        <div class="row mt-3">
+          <div class="col">
+            <ng-container *ngFor="let count of steps; let i = index">
+              <div class="d-flex flex-row">
+                <div class="stepNumber me-3" style="margin-top: 36px;">
+                  <ng-container *ngIf="count.Step_number">
+                    {{count.Step_number}}
+                  </ng-container>
+
+                </div>
+                <div class="stepinput-row d-flex flex-row">
+                  <div class="form-group w-100 me-2">
+                    <label for="title" class="control-label required">Action</label>
+                    <input class="form-control" type="Text" placeholder="For example: Open Sign in page" [(ngModel)]="count.Step_Action" value="{{count.Step_Action}}">
+                    <div class="form-control-feedback hide"></div>
+                  </div>
+                  <div class="form-group w-100 me-2">
+                    <label for="title" class="control-label required">Input data</label>
+                    <input class="form-control" type="Text" placeholder="For example: Login / password" [(ngModel)]="count.Step_InputData" value="{{count.Step_InputData}}">
+                    <div class="form-control-feedback hide"></div>
+                  </div>
+                  <div class="form-group w-100 me-2">
+                    <label for="title" class="control-label required">Expected result</label>
+                    <input class="form-control" type="Text" placeholder="For example: popup is opened" [(ngModel)]="count.Step_ExpectedResult" value="{{count.Step_ExpectedResult}}">
+                    <div class="form-control-feedback hide"></div>
+                  </div>
+                </div>
+
+                <div class="step-controls d-flex align-content-center justify-content-evenly">
+                  <button class="button-gray-transparent">
+                    <i class="bi bi-image-fill"></i>
+                  </button>
+                  <button class="button-gray-transparent">
+                    <i class="bi bi-share-fill"></i>
+                  </button>
+                  <button class="button-gray-transparent">
+                    <i class="bi bi-clipboard"></i>
+                  </button>
+                  <button class="button-gray-transparent">
+                    <i class="bi bi-trash-fill"></i>
+                  </button>
+                </div>
+              </div>
+            </ng-container>
+
+            <div id="case-attachments" class="attachments"></div>
+            <button class="button-blue-transparent btn  b-0 p-0" type="button" (click)="addStepInput()">
+              <i class="bi bi-plus-circle-fill" style="color: var(--bs-blue-prime);"></i> Add Step
+            </button>
+          </div>
+        </div>
+
+        <div class="save-menu-wrapper">
+          <div class="text-start save-menu">
+            <button id="save-case" class="btn btn-primary me-3" (click)="createCase()">Save</button>
+            <button class="btn btn-secondary me-1" type="submit">Save and create another</button>
+            <button class="btn button-blue-transparent b-0">Cancel</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
+
+
+<app-upload-attachment Modal_Title="Upload Attachment"></app-upload-attachment>

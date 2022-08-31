@@ -32,6 +32,7 @@ import { RepositoriesComponent } from './egs-project/projects/repositories/repos
 import { SuiteComponent } from './egs-project/projects/repositories/suite/suite.component';
 import { CaseComponent } from './egs-project/projects/repositories/case/case.component';
 import { CaseCreateComponent } from './egs-project/projects/repositories/case-create/case-create.component';
+import { UploadAttachmentComponent } from './egs-project/projects/utilities/upload-attachment/upload-attachment.component';
 
 
 //Link Routes
@@ -67,7 +68,8 @@ const appRoute: Routes = [
     RepositoriesComponent,
     SuiteComponent,
     CaseComponent,
-    CaseCreateComponent
+    CaseCreateComponent,
+    UploadAttachmentComponent,
   ],
   imports: [
     BrowserModule,

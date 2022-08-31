@@ -1,5 +1,5 @@
 import { Component, HostBinding, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-side-bar',
@@ -8,11 +8,16 @@ import { Router } from '@angular/router';
 })
 export class SideBarComponent implements OnInit {
 
+  //Utilities
+  LinkParamID: number = 0;
+
   ddWorkspace: boolean = true;
   ddExecution: boolean = true;
   ddSecurity: boolean = true;
   ddIssue: boolean = true;
-  constructor(public router: Router) { }
+  constructor(public router: Router, private activatedRoute: ActivatedRoute) {
+    console.log(activatedRoute);
+  }
 
   ngOnInit(): void {
   }

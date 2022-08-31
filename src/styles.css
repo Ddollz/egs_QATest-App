@@ -27,7 +27,7 @@
 
   --c-text: #382F2F;
   --c-text-secondary: rgba(19, 38, 71, 0.5);
-  --app-header-height:2.5rem;
+  --app-header-height: 2.5rem;
 }
 
 /* You can add global styles to this file, and also import other style files */
@@ -66,6 +66,7 @@ body {
   font-family: "Segoe UI", Arial, sans-serif;
   color: var(--c-text);
 }
+
 /* body{
   overflow: hidden;
 } */
@@ -154,7 +155,7 @@ select {
   }
 }
 
-.Content{
+.Content {
   height: 100%;
   max-height: calc(100vh - var(--app-header-height));
   /* max-height: calc(100vh - var(--app-header-height)); */
@@ -257,6 +258,13 @@ select {
   font-weight: 500;
   background-color: transparent;
   border: none;
+}
+
+
+.clearedInput {
+  outline: none;
+  border: none;
+  padding: 0.5rem;
 }
 
 /* Dropdown Style */
@@ -372,16 +380,39 @@ select {
 }
 
 .button-blue-transparent {
-
   white-space: nowrap;
   font-size: .875rem;
   background-color: transparent !important;
   border: none !important;
+
+  transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+  transition-property: color, background-color, border-color, box-shadow;
+  transition-duration: 0.15s, 0.15s, 0.15s, 0.15s;
+  transition-timing-function: ease-in-out, ease-in-out, ease-in-out, ease-in-out;
+  transition-delay: 0s, 0s, 0s, 0s;
 }
 
 .button-blue-transparent:hover {
   color: var(--bs-blue-second);
 }
+
+.button-gray-transparent {
+  white-space: nowrap;
+  font-size: .875rem;
+  background-color: transparent !important;
+  color: var(--black-50);
+  border: none !important;
+  transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+  transition-property: color, background-color, border-color, box-shadow;
+  transition-duration: 0.15s, 0.15s, 0.15s, 0.15s;
+  transition-timing-function: ease-in-out, ease-in-out, ease-in-out, ease-in-out;
+  transition-delay: 0s, 0s, 0s, 0s;
+}
+
+.button-gray-transparent:hover {
+  color: var(--c-text);
+}
+
 
 .linkTag.active {
   color: var(--bs-blue-prime);
@@ -390,4 +421,3 @@ select {
 .linkTag:hover {
   color: var(--bs-blue-second);
 }
-

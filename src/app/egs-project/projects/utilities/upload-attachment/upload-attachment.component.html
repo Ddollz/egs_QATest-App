@@ -1,0 +1,17 @@
+<!-- Modal -->
+<div class="modal fade" id="UploadModal" tabindex="-1" aria-labelledby="UploadModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="UploadModalLabel">{{Modal_Title}}</h5>
+      </div>
+      <div class="modal-body">
+        <form action="/v1/workspace/attachments/upload" class="dropzone" enctype="multipart/form-data">
+          <div class="dz-message"><span>Drop files here to upload</span></div>
+        </form>
+      </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+  </div>
+</div>
