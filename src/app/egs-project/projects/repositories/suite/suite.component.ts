@@ -15,6 +15,7 @@ export class SuiteComponent implements OnInit {
 
   @Output() newItemEvent = new EventEmitter<number>();
   @Output() newDeleteEvent = new EventEmitter<number>();
+  @Output() createNewEvent = new EventEmitter<number>();
 
   constructor() {
   }
@@ -38,7 +39,11 @@ export class SuiteComponent implements OnInit {
   }
 
   deleteSuite(suiteDelete: number) {
-    // console.log(suiteDelete);
     this.newDeleteEvent.emit(suiteDelete);
+  }
+
+  createChildSuite(suiteParent: number) {
+    // console.log(suiteDelete);
+    this.createNewEvent.emit(suiteParent);
   }
 }

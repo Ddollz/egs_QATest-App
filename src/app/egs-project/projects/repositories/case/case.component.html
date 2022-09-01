@@ -3,10 +3,10 @@
     <mat-checkbox class="me-3 button-blue-transparent check-box">
       {{Suite.Suite_Name}}
     </mat-checkbox>
-    <button class="suite-buttons plus me-2"><i class="bi bi-plus"></i></button>
-    <button class="suite-buttons me-2"><i class="bi bi-pencil"></i></button>
+    <button class="suite-buttons plus me-2" [routerLink]="'../create/'+projectID" [queryParams]="{create:true,suite:Suite.Suite_ID}"><i class="bi bi-plus"></i></button>
+    <button class="suite-buttons me-2" (click)="editSuite(Suite.Suite_ID)" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="bi bi-pencil"></i></button>
     <button class="suite-buttons me-2"><i class="bi bi-clipboard"></i></button>
-    <button class="suite-buttons me-2"><i class="bi bi-trash"></i></button>
+    <button class="suite-buttons me-2" (click)="deleteSuite(Suite.Suite_ID)"><i class="bi bi-trash"></i></button>
   </div>
 </div>
 <div class="suite-description">

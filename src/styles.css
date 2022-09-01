@@ -1,7 +1,11 @@
 @import "~bootstrap-icons/font/bootstrap-icons.css";
 
 :root {
+  --shadow-color-primary: rgb(9 30 66 / 25%);
+  --shadow-color-secondary: rgb(9 30 66 / 31%);
+  --popup-shadow: 0px 4px 8px var(--shadow-color-primary), 0px 0px 1px var(--shadow-color-secondary);
 
+  --bg-color-default: #fff;
   --bs-blue-prime: #286efa;
   --bs-blue-second: #609de6;
 
@@ -28,6 +32,7 @@
   --c-text: #382F2F;
   --c-text-secondary: rgba(19, 38, 71, 0.5);
   --app-header-height: 2.5rem;
+
 }
 
 /* You can add global styles to this file, and also import other style files */

@@ -1,5 +1,6 @@
-import { Component, HostBinding, OnInit } from '@angular/core';
+import { Component, HostBinding, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { sidebarService } from '../services/global-functions.service';
 
 @Component({
   selector: 'app-side-bar',
@@ -9,16 +10,24 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class SideBarComponent implements OnInit {
 
   //Utilities
-  LinkParamID: number = 0;
+  projectID: number = 0;
+  _asideSubscription: any;
 
   ddWorkspace: boolean = true;
   ddExecution: boolean = true;
   ddSecurity: boolean = true;
   ddIssue: boolean = true;
-  constructor(public router: Router, private activatedRoute: ActivatedRoute) {
-    console.log(activatedRoute);
+  constructor(public router: Router, private sidebarServ: sidebarService) {
+    this.projectID = this.sidebarServ.projectID;
+    this._asideSubscription = sidebarServ.selectedTitle.subscribe((value) => {
+      this.projectID = value
+    })
   }
 
   ngOnInit(): void {
+  }
+
+  isActive(url: string): boolean {
+    return this.router.url.includes(url);
   }
 }

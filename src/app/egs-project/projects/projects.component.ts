@@ -122,6 +122,6 @@ export class ProjectsComponent implements OnInit {
     if (event != null) {
       const filterValue = (event.target as HTMLInputElement).value;
       this.dataSource.filter = filterValue.trim().toLowerCase();
-    } 
+    }
   }
 }

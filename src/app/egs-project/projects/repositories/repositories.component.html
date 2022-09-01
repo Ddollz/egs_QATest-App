@@ -2,7 +2,7 @@
 
   <div class="row">
     <div class="col">
-      <h2 class="my-3 page-title">{{project.Project_Name}} Repository<span class="ms-2 page-something">8 suites | 47 tests</span>
+      <h2 class="my-3 page-title">{{project.Project_Name}} Repository<span class="ms-2 page-something">{{suites.length}} suites | {{testCases.length}} tests</span>
       </h2>
     </div>
     <div class="col d-flex justify-content-end align-items-center">
@@ -45,7 +45,7 @@
         <ng-container *ngIf="suite.Project_ID == LinkParamID">
           <ng-container *ngIf="suite.Parent_SuiteID == 0">
             <div class="collapsed" (click)="toggleDropdown($event)" [attr.data-bs-target]="'collapse-'+suite.Suite_ID" aria-expanded="true">
-              <app-suite [Suite]="suite" (newItemEvent)="editSuite($event)" (newDeleteEvent)="deleteSuite($event)"></app-suite>
+              <app-suite [Suite]="suite" (createNewEvent)="createChildSuites($event)" (newItemEvent)="editSuite($event)" (newDeleteEvent)="deleteSuite($event)"></app-suite>
             </div>
             <div class="collapse show" [id]="'collapse-'+suite.Suite_ID">
               <!-- Run Template to display looping Leaf -->
@@ -62,7 +62,7 @@
           <!-- Check if leaf does not exist end the loop.-->
           <ng-container *ngIf="data.Suite_ID == s.Parent_SuiteID">
             <div class="collapsed" (click)="toggleDropdown($event)" [attr.data-bs-target]="'collapse-'+s.Suite_ID" aria-expanded="true">
-              <app-suite [Suite]="s" (newItemEvent)="editSuite($event)" (newDeleteEvent)="deleteSuite($event)"></app-suite>
+              <app-suite [Suite]="s" (createNewEvent)="createChildSuites($event)" (newItemEvent)="editSuite($event)" (newDeleteEvent)="deleteSuite($event)"></app-suite>
             </div>
             <div class="collapse show" [id]="'collapse-'+s.Suite_ID">
               <!-- Run the template leaf again -->
@@ -82,7 +82,7 @@
         <ng-container *ngIf="suite.Project_ID == LinkParamID">
           <ng-container *ngIf="suite.Parent_SuiteID == 0">
             <div class="collapsed" (click)="toggleDropdown($event)" [attr.data-bs-target]="'collapse-'+suite.Suite_ID+'-case'" aria-expanded="true">
-              <app-case [Suite]="suite"></app-case>
+              <app-case [Suite]="suite" [projectID]="LinkParamID" (editNewEvent)="editSuite($event)" (newDeleteEvent)="deleteSuite($event)"></app-case>
             </div>
             <div class="collapse show" [id]="'collapse-'+suite.Suite_ID+'-case'">
 
@@ -90,12 +90,13 @@
               <div class="caseContainer ">
                 <ng-container *ngFor="let testCase of testCases">
                   <ng-container *ngIf="testCase.Suite_ID == suite.Suite_ID">
-                    <div class="caseRow d-flex flex-row align-items-center">
+                    <div class="caseRow d-flex flex-row align-items-center" (click)="thisisfunction($event, testCase)" tabindex="-1">
                       <mat-checkbox class="ms-3 me-3">
                       </mat-checkbox>
-                      <a href="#" class="button-blue-transparent">{{project.Project_Name}}</a>
+                      {{project.Project_Name}}
                       <div class="caseDescription">{{testCase.Case_Title}}</div>
                     </div>
+                    <div class="border-bottom"></div>
                   </ng-container>
 
                 </ng-container>
@@ -117,26 +118,25 @@
           <!-- Check if leaf does not exist end the loop.-->
           <ng-container *ngIf="data.Suite_ID == s.Parent_SuiteID">
             <div class="collapsed" (click)="toggleDropdown($event)" [attr.data-bs-target]="'collapse-'+s.Suite_ID+'-case'" aria-expanded="true">
-              <app-case [Suite]="s"></app-case>
+              <app-case [Suite]="s" [projectID]="LinkParamID" (editNewEvent)="editSuite($event)" (newDeleteEvent)="deleteSuite($event)"></app-case>
             </div>
             <div class="collapse show" [id]="'collapse-'+s.Suite_ID+'-case'">
 
 
 
               <div class="caseContainer ">
-
                 <ng-container *ngFor="let testCase of testCases">
                   <ng-container *ngIf="testCase.Suite_ID == s.Suite_ID">
-                    <div class="caseRow d-flex flex-row align-items-center">
+                    <div class="caseRow d-flex flex-row align-items-center" (click)="thisisfunction($event, testCase)" tabindex="-1">
                       <mat-checkbox class="ms-3 me-3">
                       </mat-checkbox>
-                      <a href="#" class="button-blue-transparent">{{project.Project_Name}}</a>
+                      {{project.Project_Name}}
                       <div class="caseDescription">{{testCase.Case_Title}}</div>
                     </div>
                   </ng-container>
 
                 </ng-container>
-                <input class="ms-5 quickTest" placeholder="+ Create quick test" value="">
+                <input class="ms-5 clearedInput" placeholder="+ Create quick test" value="">
               </div>
 
 
@@ -152,6 +152,14 @@
 
 </div>
 
+<!-- TestCase Preview -->
+<div class="CasePanel" #casePanel>
+  <div class="d-flex justify-content-between align-items-center">
+    <a href="#" class="projectPanelTitle button-blue-transparent">{{project.Project_Name}}</a>
+    <div class="panelControl" (click)="closePanel()"><i class="bi bi-x"></i></div>
+  </div>
+  <h2 class="page-title">{{testCase.Case_Title}}</h2>
+</div>
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

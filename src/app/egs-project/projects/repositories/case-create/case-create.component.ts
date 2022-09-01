@@ -3,8 +3,9 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ApiService } from 'src/app/services/api.service';
 import { reloadPage } from '../../../../services/global-functions.service';
 import { suite, step } from '../../../../models/project/project.model';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
+import { sidebarService } from '../../../../services/global-functions.service';
 
 @Component({
   selector: 'app-case-create',
@@ -17,6 +18,9 @@ export class CaseCreateComponent implements OnInit {
   LinkParamID: number = 0;
   json: any = {};
   stepCount: number = 0;
+  //createCase
+  createCaseSuiteEdit: boolean = false;
+  createCaseSuite: number = 0;
 
   //Models
   suites: suite[] = [];
@@ -31,10 +35,11 @@ export class CaseCreateComponent implements OnInit {
   stepForm !: FormGroup;
 
 
-  constructor(private formBuilder: FormBuilder, private api: ApiService, private activatedRoute: ActivatedRoute) {
+  constructor(private formBuilder: FormBuilder, private api: ApiService, private activatedRoute: ActivatedRoute, public sidebarServ: sidebarService, private router: Router) {
     this.LinkParamID = Number(this.activatedRoute.snapshot.paramMap.get('id'));
-    console.log(activatedRoute);
+    this.createCaseSuite = Number(this.activatedRoute.snapshot.queryParamMap.get('suite'));
 
+    this.sidebarServ.fetchProjectID(this.LinkParamID);
     this.api.UniCall(
       {
         CommandText: 'egsQASuiteGet',
@@ -47,10 +52,13 @@ export class CaseCreateComponent implements OnInit {
       }
     ).subscribe(value => {
       this.suites = value[0];
-      this.caseForm.controls['@Suite_ID'].setValue(this.suites[0].Suite_ID);
+      if (this.createCaseSuite == 0 && !this.createCaseSuiteEdit) {
+        this.caseForm.controls['@Suite_ID'].setValue(this.suites[0].Suite_ID);
+      } else {
+        this.caseForm.controls['@Suite_ID'].setValue(this.createCaseSuite);
+      }
     }
     );
-
   }
 
   ngOnInit(): void {
@@ -74,27 +82,21 @@ export class CaseCreateComponent implements OnInit {
       '@User_ID': ['1'],
     })
 
-
-    // this.caseForm = this.formBuilder.group({
-    //   '@Case_Title': [null],
-    //   '@Case_Status': ['1'],
-    //   '@Case_Desc': [null],
-    // })
   }
   createCase() {
     this.json['CommandText'] = 'egsQACaseAndStepInsert';
     this.json['Params'] = [];
 
     for (const field in this.caseForm.controls) { // 'field' is a string
-      const control = this.caseForm.get(field)?.value; // 'control' is a FormControl
+      var control = this.caseForm.get(field)?.value; // 'control' is a FormControl
+      if (control != null)
+        control = control.toString();
       var temp = {
         Param: field,
-        Value: control.toString()
+        Value: control
       }
       this.json['Params'].push(temp);
     }
-
-
     var stepjson = JSON.stringify(this.steps).toString();
     console.log(stepjson);
     var temps = {
@@ -105,21 +107,11 @@ export class CaseCreateComponent implements OnInit {
 
     this.api.UniCall(
       this.json
-    ).subscribe(
-      {
-        next(position: any) {
-          console.log(position);
-        },
-        error(msg) {
-          console.log(msg);
-          alert("500 Internal Server Errors")
-        },
-        complete() {
-          reloadPage();
-        }
-      }
-    );
-
+    ).subscribe({
+      next: (v) => this.router.navigate(["projects/repository/" + this.LinkParamID]),
+      error: (e) => console.error(e),
+      complete: () => console.info('complete')
+    })
   }
 
   addStepInput() {
@@ -135,6 +127,5 @@ export class CaseCreateComponent implements OnInit {
         Step_Status: '1'
       }
     )
-    console.log(this.steps);
   }
 }

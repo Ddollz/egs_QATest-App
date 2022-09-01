@@ -41,7 +41,7 @@
       </svg>
     </div>
     <div class="collapse show" id="test-collapse">
-      <a class="dropdown-item linkTag" routerLinkActive="active" routerLink="projects/repository"><i class="bi bi-boxes"></i>Repository</a>
+      <a class="dropdown-item linkTag" [class.active]="isActive('repository')" routerLink="projects/repository/{{projectID}}"><i class="bi bi-boxes"></i>Repository</a>
       <a class="dropdown-item linkTag" routerLinkActive="active" routerLink="workspace/roles"><i class="bi bi-diagram-3"></i>Shared Steps</a>
       <a class="dropdown-item linkTag" routerLinkActive="active" routerLink="workspace/roles"><i class="bi bi-qr-code-scan"></i>Review</a>
     </div>
