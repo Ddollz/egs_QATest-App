@@ -1,8 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 import { project, suite, testCase } from '../../../models/project/project.model';
 import { reloadPage } from '../../../services/global-functions.service';
+import { sidebarService } from '../../../services/global-functions.service';
 @Component({
   selector: 'app-repositories',
   templateUrl: './repositories.component.html',
@@ -10,17 +11,25 @@ import { reloadPage } from '../../../services/global-functions.service';
 })
 export class RepositoriesComponent implements OnInit {
 
+  //Utilities
   LinkParamID: number = 0;
+  suitesDeleteArray: string = '';
 
+
+  //Modal
   Modal_Title: string = "Create suite";
   Modal_btn: string = "Create";
 
-  suitesDeleteArray: string = '';
-
+  //Project Modals
   suites: suite[] = [];
   testCases: testCase[] = [];
-
   @Input() project = {} as project;
+
+
+  //Case Description Variables
+  testCaseID: number = 0;
+  testCase = {} as testCase;
+  @ViewChild('casePanel') panel?: ElementRef;
 
   Suite_ID: number = 0;
   Suite_Name: string = '';
@@ -31,8 +40,12 @@ export class RepositoriesComponent implements OnInit {
   Suite_isLock: number = 0;
   Suite_TempUserID: number = 1; //! This is only temporary change/remove this when token/auth is on
 
-  constructor(private api: ApiService, private activatedRoute: ActivatedRoute) {
+
+  constructor(private api: ApiService, private activatedRoute: ActivatedRoute, private sidebarServ: sidebarService) {
+
     this.LinkParamID = Number(this.activatedRoute.snapshot.paramMap.get('id'));
+    this.sidebarServ.fetchProjectID(this.LinkParamID);
+
 
     this.getCurrentProjectSuite();
 
@@ -152,18 +165,11 @@ export class RepositoriesComponent implements OnInit {
       }
     ).subscribe(
       {
-        next(position: any) {
-          console.log(position);
-        },
-        error(msg) {
-          console.log(msg);
-          alert("500 Internal Server Errors")
-        },
-        complete() {
-          reloadPage();
-        }
+        next: (v) => console.log(v),
+        error: (e) => console.error(e),
+        complete: () => reloadPage()
       }
-    );
+    )
   }
   editSuite(editSuite: number) {
     this.Modal_Title = "Edit suite";
@@ -217,21 +223,21 @@ export class RepositoriesComponent implements OnInit {
             }
           ],
         }
-      ).subscribe({
-        next(position: any) {
-          console.log(position);
-        },
-        error(msg) {
-          console.log(msg);
-          alert("500 Internal Server Errors")
-        },
-        complete() {
-          reloadPage();
+      ).subscribe(
+        {
+          next: (v) => console.log(v),
+          error: (e) => { console.error(e); alert("500 Internal Server Errors") },
+          complete: () => reloadPage()
         }
-      }
-      );
+      )
     }
   }
+
+  createChildSuites(SuiteParentID: any) {
+    this.resetModal();
+    this.Suite_Root = 'ParentRoot|' + SuiteParentID;
+  }
+
   resetModal() {
 
     this.Modal_Title = "Create suite";
@@ -242,5 +248,17 @@ export class RepositoriesComponent implements OnInit {
     this.Parent_SuiteID = '';
     this.Description = '';
     this.Preconditions = '';
+  }
+  thisisfunction(event: Event, testc: testCase) {
+    console.log(event.currentTarget)
+    var caseRow = event.currentTarget as HTMLElement;
+    caseRow.focus();
+    this.testCase = testc;
+    if (this.panel != null)
+      this.panel.nativeElement.style.display = "flex";
+  }
+  closePanel(){
+    if (this.panel != null)
+      this.panel.nativeElement.style.display = "none";
   }
 }

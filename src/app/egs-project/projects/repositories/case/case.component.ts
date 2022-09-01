@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { suite } from '../../../../models/project/project.model';
 
 @Component({
@@ -8,6 +8,11 @@ import { suite } from '../../../../models/project/project.model';
 })
 export class CaseComponent implements OnInit {
   @Input() Suite = {} as suite;
+  @Input() projectID: number = 0;
+
+  @Output() createNewEvent = new EventEmitter<number>();
+  @Output() editNewEvent = new EventEmitter<number>();
+  @Output() newDeleteEvent = new EventEmitter<number>();
 
   constructor() { }
 
@@ -19,6 +24,15 @@ export class CaseComponent implements OnInit {
     event.stopPropagation()
     event.preventDefault()
     console.log("adwd")
+  }
+
+  editSuite(suiteUpdate: number) {
+    this.editNewEvent.emit(suiteUpdate);
+  }
+
+
+  deleteSuite(suiteDelete: number) {
+    this.newDeleteEvent.emit(suiteDelete);
   }
 
 }
