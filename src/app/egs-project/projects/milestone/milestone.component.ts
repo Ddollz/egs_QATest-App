@@ -1,0 +1,17 @@
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-milestone',
+  templateUrl: './milestone.component.html',
+  styleUrls: ['./milestone.component.css']
+})
+export class MilestoneComponent implements OnInit {
+
+  displayedColumns: string[] = ['Title', 'Status', 'Description', 'Cases', 'DueDate', 'ThreeDots'];
+
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+
+}

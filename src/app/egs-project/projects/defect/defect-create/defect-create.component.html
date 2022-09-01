@@ -1,0 +1,75 @@
+<div class="app__content">
+	<div class="row">
+		<div class="col-lg-12">
+
+			<h2 class="page-title my-3"><i class="bi bi-arrow-left me-4" data-bs-toggle="tooltip" title="Go back"
+					routerLink="/projects/defect"></i>Create defect</h2>
+
+			<div class="row mb-3">
+				<div class="mb-3">
+					<Label class="page-label">Defect title*</Label>
+					<input type="text" class="form-control" placeholder="For example: Regression">
+				</div>
+				<div class="mb-3">
+					<Label class="page-label">Actual result*</Label>
+					<input type="text" class="form-control">
+				</div>
+				<div class="mb-3">
+					<Label class="page-label">Milestone</Label>
+					<mat-select class="select-item" [value]="'Not set'">
+						<mat-option value="Not set" class="select-item">Not set</mat-option>
+					</mat-select>
+				</div>
+				<div class="mb-3">
+					<Label class="page-label">Severity*</Label>
+					<mat-select class="select-item" [value]="'Normal'">
+						<mat-option value="Not set" class="select-item">Not set</mat-option>
+						<mat-option value="Blocker" class="select-item">Blocker</mat-option>
+						<mat-option value="Critical" class="select-item">Critical</mat-option>
+						<mat-option value="Major" class="select-item">Major</mat-option>
+						<mat-option value="Normal" class="select-item">Normal</mat-option>
+						<mat-option value="Minor" class="select-item">Minor</mat-option>
+						<mat-option value="Trivial" class="select-item">Trivial</mat-option>
+					</mat-select>
+				</div>
+				<div>
+					<Label class="page-label">Assignee</Label>
+					<mat-select class="select-item" [value]="'Unassigned'">
+						<mat-option value="Unassigned" class="select-item">Unassigned</mat-option>
+					</mat-select>
+				</div>
+			</div>
+
+			<div class="row m-0 mb-4">
+				<span class="label-line ps-0">Tags</span>
+			</div>
+
+			<div class="row mb-3">
+				<div>
+					<mat-select class="select-item" [value]="''" placeholder="Select...">
+					</mat-select>
+				</div>
+			</div>
+
+			<div class="row m-0 mb-4">
+				<span class="label-line ps-0">Attachments</span>
+			</div>
+
+			<div class="mb-3">
+				<span class="add-attach-span"><i class="bi bi-plus-circle-fill me-2"></i>Add attachment</span>
+			</div>
+
+			<div class="row m-0 mb-3">
+				<span class="label-line ps-0"></span>
+			</div>
+
+			<div class="row mb-5">
+				<div class="d-flex align-items-center">
+					<button class="btn btn-primary me-3">Create defect</button>
+					<span class="cancel-span" routerLink="/projects/defect">Cancel</span>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>

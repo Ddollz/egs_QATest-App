@@ -12,7 +12,8 @@
 						</button>
 					</div>
 					<div class="me-3">
-						<input type="text" class="form-control search_input" placeholder="Search for projects" (keyup)="applyFilter($event)">
+						<input type="text" class="form-control search_input" placeholder="Search for projects"
+							(keyup)="applyFilter($event)">
 					</div>
 					<div class="me-3">
 						<div class="filter-item" data-bs-toggle="dropdown">Status</div>
@@ -64,7 +65,8 @@
 						<th mat-header-cell *matHeaderCellDef>Project Name</th>
 						<td mat-cell *matCellDef="let element">
 							<div class="row d-flex align-items-center">
-								<div class="column-title" routerLink="/projects/repository/{{element.Project_ID}}">{{element.Project_Name}}</div>
+								<div class="column-title" routerLink="/projects/repository/{{element.Project_ID}}">
+									{{element.Project_Name}}</div>
 								<div class="column-subtitle">{{element.Project_Desc}}</div>
 							</div>
 						</td>
@@ -110,10 +112,12 @@
 								<button class="btn three-dots" data-bs-toggle="dropdown">
 									<i class="bi bi-three-dots"></i>
 									<div class="dropdown-menu">
-										<div class="dropdown-item" (click)="openUpdateModal(element.Project_ID, element.Project_Name, element.Project_Desc, element.Project_Code, element.Project_AccessType)" data-bs-toggle="modal"
-											data-bs-target="#settingsModal">Settings</div>
-										<div class="dropdown-item" (click)="openDeleteModal(element.Project_ID, element.Project_Name)" data-bs-toggle="modal"
-											data-bs-target="#deleteModal">Delete</div>
+										<div class="dropdown-item"
+											(click)="openUpdateModal(element.Project_ID, element.Project_Name, element.Project_Desc, element.Project_Code, element.Project_AccessType)"
+											data-bs-toggle="modal" data-bs-target="#settingsModal">Settings</div>
+										<div class="dropdown-item"
+											(click)="openDeleteModal(element.Project_ID, element.Project_Name)"
+											data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</div>
 									</div>
 								</button>
 							</div>
@@ -134,7 +138,8 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title">
-					<i class="bi bi-arrow-left me-4" data-bs-dismiss="modal"></i>
+					<i class="bi bi-arrow-left me-4" data-bs-toggle="tooltip" title="Go back"
+						data-bs-dismiss="modal"></i>
 					Settings
 				</h5>
 			</div>
@@ -154,7 +159,8 @@
 
 						<div class="mt-4">
 							<Label class="page-label">Project code
-								<i class="bi bi-question-circle-fill tooltip-i" data-bs-toggle="tooltip" data-bs-placement="top"
+								<i class="bi bi-question-circle-fill tooltip-i" data-bs-toggle="tooltip"
+									data-bs-placement="top"
 									title="Code is short name of your project. It should be from 2 to 10 letters. Only latin characters and numbers are allowed.">
 								</i>
 							</Label>
@@ -193,13 +199,15 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title">
-					<i class="bi bi-arrow-left me-4" data-bs-dismiss="modal"></i>
+					<i class="bi bi-arrow-left me-4" data-bs-toggle="tooltip" title="Go back"
+						data-bs-dismiss="modal"></i>
 					Delete project
 				</h5>
 			</div>
 			<div class="modal-body">
 				<h6>Are you sure, that you want delete project "{{Project_Name}}"</h6>
-				<p class="mb-0">This action can't be reversed. All entities including suites and cases will be removed.</p>
+				<p class="mb-0">This action can't be reversed. All entities including suites and cases will be removed.
+				</p>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Cancel</button>

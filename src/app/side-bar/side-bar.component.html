@@ -2,7 +2,7 @@
   <div class="sidebar__Title">
     <p>Calcmenu Philippines</p>
   </div>
-  <div class="mb-3">
+  <div class="mb-3 mt-2">
     <div class="dropdown__title collapsed" data-bs-toggle="collapse" data-bs-target="#workspace-collapse" aria-expanded="true" (click)="ddWorkspace = !ddWorkspace" [ngClass]="ddWorkspace? '':'open'">
       <p>WORKSPACE</p>
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down open" viewBox="0 0 16 16">
@@ -11,7 +11,7 @@
     </div>
     <div class="collapse show" id="workspace-collapse">
       <a class="dropdown-item linkTag" routerLinkActive="active" routerLink="workspace/user"><i class="bi bi-person"></i>User</a>
-      <a class="dropdown-item linkTag" routerLinkActive="active"  routerLink="workspace/roles"><i class="bi bi-person-badge"></i>Roles</a>
+      <a class="dropdown-item linkTag" routerLinkActive="active" routerLink="workspace/roles"><i class="bi bi-person-badge"></i>Roles</a>
     </div>
   </div>
   <!-- <div class="mb-3">
@@ -28,7 +28,7 @@
   </div> -->
 </ng-container>
 
-<ng-container *ngIf="router.url.includes('/projects') && router.url != '/projects/create'">
+<ng-container *ngIf="router.url.includes('/projects')">
   <div class="sidebar__Title">
     <p>Project Name</p>
   </div>
@@ -42,8 +42,7 @@
     </div>
     <div class="collapse show" id="test-collapse">
       <a class="dropdown-item linkTag" routerLinkActive="active" routerLink="projects/repository"><i class="bi bi-boxes"></i>Repository</a>
-      <a class="dropdown-item linkTag" routerLinkActive="active" routerLink="workspace/roles"><i class="bi bi-diagram-3"></i>Shared Steps</a>
-      <a class="dropdown-item linkTag" routerLinkActive="active" routerLink="workspace/roles"><i class="bi bi-qr-code-scan"></i>Review</a>
+      <a class="dropdown-item linkTag" routerLinkActive="active" routerLink="projects/shared-steps"><i class="bi bi-diagram-3"></i>Shared Steps</a>
     </div>
   </div>
 
@@ -55,8 +54,9 @@
       </svg>
     </div>
     <div class="collapse show" id="Execution-collapse">
-      <a class="dropdown-item linkTag" routerLinkActive="active" routerLink="projects/plan"><i class="bi bi-receipt"></i>Test Plans</a>
+      <a class="dropdown-item linkTag" routerLinkActive="active" routerLink="projects/plan"><i class="bi bi-card-list"></i>Test Plans</a>
       <a class="dropdown-item linkTag" routerLinkActive="active" routerLink="projects/run"><i class="bi bi-caret-right"></i>Test Runs</a>
+      <a class="dropdown-item linkTag" routerLinkActive="active" routerLink="projects/config"><i class="bi bi-wrench-adjustable-circle"></i>Configurations</a>
     </div>
   </div>
 
@@ -68,8 +68,8 @@
       </svg>
     </div>
     <div class="collapse show" id="Issues-collapse">
-      <a class="dropdown-item linkTag" routerLinkActive="active" routerLink="workspace/user"><i class="bi bi-hdd-network"></i>Defacts</a>
-      <a class="dropdown-item linkTag" routerLinkActive="active" routerLink="workspace/roles"><i class="bi bi-signpost-2"></i>Milestones</a>
+      <a class="dropdown-item linkTag" routerLinkActive="active" routerLink="projects/defect"><i class="bi bi-exclamation-circle"></i>Defects</a>
+      <a class="dropdown-item linkTag" routerLinkActive="active" routerLink="projects/milestone"><i class="bi bi-airplane"></i>Milestones</a>
     </div>
   </div>
 </ng-container>

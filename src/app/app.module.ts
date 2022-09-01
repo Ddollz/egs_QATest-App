@@ -33,6 +33,13 @@ import { SuiteComponent } from './egs-project/projects/repositories/suite/suite.
 import { CaseComponent } from './egs-project/projects/repositories/case/case.component';
 import { CaseCreateComponent } from './egs-project/projects/repositories/case-create/case-create.component';
 import { UploadAttachmentComponent } from './egs-project/projects/utilities/upload-attachment/upload-attachment.component';
+import { DefectComponent } from './egs-project/projects/defect/defect.component';
+import { SharedStepsComponent } from './egs-project/projects/shared-steps/shared-steps.component';
+import { DefectCreateComponent } from './egs-project/projects/defect/defect-create/defect-create.component';
+import { StepCreateComponent } from './egs-project/projects/shared-steps/step-create/step-create.component';
+import { MilestoneComponent } from './egs-project/projects/milestone/milestone.component';
+import { MilestoneCreateComponent } from './egs-project/projects/milestone/milestone-create/milestone-create.component';
+import { ConfigComponent } from './egs-project/projects/config/config.component';
 
 
 //Link Routes
@@ -43,8 +50,15 @@ const appRoute: Routes = [
   { path: 'projects/repository/:id', component: RepositoriesComponent },
   { path: 'projects/repository/create/:id', component: CaseCreateComponent },
   { path: 'projects/run', component: TestRunComponent },
+  { path: 'projects/config', component: ConfigComponent },
   { path: 'projects/plan', component: TestPlanComponent },
   { path: 'projects/plan/createplan', component: CreatePlanComponent },
+  { path: 'projects/shared-steps', component: SharedStepsComponent },
+  { path: 'projects/shared-steps/step-create', component: StepCreateComponent },
+  { path: 'projects/defect', component: DefectComponent },
+  { path: 'projects/defect/defect-create', component: DefectCreateComponent },
+  { path: 'projects/milestone', component: MilestoneComponent },
+  { path: 'projects/milestone/milestone-create', component: MilestoneCreateComponent },
   { path: 'workspace/user', component: UserComponent },
   { path: 'workspace/roles', component: RolesComponent },
   { path: 'login', component: EgsLoginComponent },
@@ -70,6 +84,13 @@ const appRoute: Routes = [
     CaseComponent,
     CaseCreateComponent,
     UploadAttachmentComponent,
+    DefectComponent,
+    SharedStepsComponent,
+    DefectCreateComponent,
+    StepCreateComponent,
+    MilestoneComponent,
+    MilestoneCreateComponent,
+    ConfigComponent,
   ],
   imports: [
     BrowserModule,
