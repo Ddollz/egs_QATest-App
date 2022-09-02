@@ -43,13 +43,13 @@ export interface testCase {
 }
 
 export interface step {
-  Case_StepID: string;
-  Step_number: string;
+  Case_StepID: number;
+  Step_number: number;
   Step_Type: string;
-  Case_ID: string;
+  Case_ID: number;
   Step_Action: string;
   Step_InputData: string;
   Step_ExpectedResult: string;
-  Step_Status: string;
+  Step_Status: number;
 }
 

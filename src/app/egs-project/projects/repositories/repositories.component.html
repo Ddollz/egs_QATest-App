@@ -81,7 +81,7 @@
       <ng-container *ngFor="let suite of suites">
         <ng-container *ngIf="suite.Project_ID == LinkParamID">
           <ng-container *ngIf="suite.Parent_SuiteID == 0">
-            <div class="collapsed" (click)="toggleDropdown($event)" [attr.data-bs-target]="'collapse-'+suite.Suite_ID+'-case'" aria-expanded="true">
+            <div class="collapsed" (click)="toggleDropdown($event)" [attr.data-bs-target]="'collapse-'+suite.Suite_ID" aria-expanded="true">
               <app-case [Suite]="suite" [projectID]="LinkParamID" (editNewEvent)="editSuite($event)" (newDeleteEvent)="deleteSuite($event)"></app-case>
             </div>
             <div class="collapse show" [id]="'collapse-'+suite.Suite_ID+'-case'">
@@ -90,17 +90,17 @@
               <div class="caseContainer ">
                 <ng-container *ngFor="let testCase of testCases">
                   <ng-container *ngIf="testCase.Suite_ID == suite.Suite_ID">
-                    <div class="caseRow d-flex flex-row align-items-center" (click)="thisisfunction($event, testCase)" tabindex="-1">
+                    <div class="caseRow d-flex flex-row align-items-center" (click)="openPanel($event, testCase)" tabindex="-1">
                       <mat-checkbox class="ms-3 me-3">
                       </mat-checkbox>
-                      {{project.Project_Name}}
+                      <a class="button-blue-transparent">{{project.Project_Name}}</a>
                       <div class="caseDescription">{{testCase.Case_Title}}</div>
                     </div>
                     <div class="border-bottom"></div>
                   </ng-container>
 
                 </ng-container>
-                <input class="ms-5 clearedInput" placeholder="+ Create quick test" value="">
+                <input class="ms-5 clearedInput" placeholder="+ Create quick test" [attr.suiteAttri] = "suite.Suite_ID" (keyup.enter)="onQuickCaseEnter($event)">
               </div>
 
 
@@ -117,7 +117,7 @@
           <!-- Check if leaf exist display the leaf and loop again.-->
           <!-- Check if leaf does not exist end the loop.-->
           <ng-container *ngIf="data.Suite_ID == s.Parent_SuiteID">
-            <div class="collapsed" (click)="toggleDropdown($event)" [attr.data-bs-target]="'collapse-'+s.Suite_ID+'-case'" aria-expanded="true">
+            <div class="collapsed" (click)="toggleDropdown($event)" [attr.data-bs-target]="'collapse-'+s.Suite_ID" aria-expanded="true">
               <app-case [Suite]="s" [projectID]="LinkParamID" (editNewEvent)="editSuite($event)" (newDeleteEvent)="deleteSuite($event)"></app-case>
             </div>
             <div class="collapse show" [id]="'collapse-'+s.Suite_ID+'-case'">
@@ -127,16 +127,16 @@
               <div class="caseContainer ">
                 <ng-container *ngFor="let testCase of testCases">
                   <ng-container *ngIf="testCase.Suite_ID == s.Suite_ID">
-                    <div class="caseRow d-flex flex-row align-items-center" (click)="thisisfunction($event, testCase)" tabindex="-1">
+                    <div class="caseRow d-flex flex-row align-items-center" (click)="openPanel($event, testCase)" tabindex="-1">
                       <mat-checkbox class="ms-3 me-3">
                       </mat-checkbox>
-                      {{project.Project_Name}}
+                      <a class="button-blue-transparent">{{project.Project_Name}}</a>
                       <div class="caseDescription">{{testCase.Case_Title}}</div>
                     </div>
                   </ng-container>
 
                 </ng-container>
-                <input class="ms-5 clearedInput" placeholder="+ Create quick test" value="">
+                <input class="ms-5 clearedInput" placeholder="+ Create quick test" [attr.suiteAttri] = "s.Suite_ID" (keyup.enter)="onQuickCaseEnter($event)">
               </div>
 
 
@@ -156,9 +156,238 @@
 <div class="CasePanel" #casePanel>
   <div class="d-flex justify-content-between align-items-center">
     <a href="#" class="projectPanelTitle button-blue-transparent">{{project.Project_Name}}</a>
-    <div class="panelControl" (click)="closePanel()"><i class="bi bi-x"></i></div>
+    <div class="panelClose" (click)="closePanel()"><i class="bi bi-x"></i></div>
   </div>
   <h2 class="page-title">{{testCase.Case_Title}}</h2>
+  <div class="panel-container">
+    <div class="panelControl">
+      <a class="btns " [routerLink]="'../create/'+project.Project_ID" [queryParams]="{case:testCase.Case_ID}"><i class="bi bi-pencil"></i> Edit</a>
+      <button class="btns "><i class="bi bi-clipboard"></i> Clone</button>
+      <button class="btns " (click)="deleteCase(testCase.Case_ID)"><i class="bi bi-trash2"></i> Delete</button>
+    </div>
+    <div class="panelNav">
+      <button (click)="changePanelContent('General')" class="btns active"><span></span>General</button>
+      <button (click)="changePanelContent('Property')" class="btns"><span></span>Properties</button>
+      <button class="btns"><span></span>Runs</button>
+      <button class="btns"><span></span>History</button>
+      <button class="btns"><span></span>Defects</button>
+      <button class="btns"><span></span>Comments</button>
+    </div>
+    <div class="panelContent">
+
+      <div class="panel-general" #General>
+        <section class="mt-3">
+          <label for="0-description" class="panelLabel">Description</label>
+          <div class="markdown-area">
+            {{testCase.Case_Desc}}
+          </div>
+        </section>
+        <section class="mt-3">
+          <label for="0-precondition" class="panelLabel">Pre-conditions</label>
+          <div class="markdown-area">
+            {{testCase.Case_PreCondition}}
+          </div>
+        </section>
+        <section class="mt-3">
+          <label for="0-postcondition" class="panelLabel">Post-conditions</label>
+          <div class="markdown-area">
+            {{testCase.Case_PostCondition}}
+          </div>
+        </section>
+        <section class="mt-3">
+          <label for="0-steps" class="panelLabel">Steps</label>
+          <table mat-table [dataSource]="dataSource" class="mat-elevation-z0 table-steps">
+            <ng-container matColumnDef="Step">
+              <th mat-header-cell *matHeaderCellDef> Step </th>
+              <td mat-cell *matCellDef="let element">
+                <div class="markdown-area">{{element.Step_number}}</div>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="Action">
+              <th mat-header-cell *matHeaderCellDef> Action </th>
+              <td mat-cell *matCellDef="let element">
+                <div class="markdown-area">{{element.Step_Action}}</div>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="Input">
+              <th mat-header-cell *matHeaderCellDef> Input Data </th>
+              <td mat-cell *matCellDef="let element">
+                <div class="markdown-area">{{element.Step_InputData}}</div>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="Expected">
+              <th mat-header-cell *matHeaderCellDef> Expected Result </th>
+              <td mat-cell *matCellDef="let element">
+                <div class="markdown-area">{{element.Step_ExpectedResult}}</div>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+        </section>
+      </div>
+      <div class="panel-properties" #Properties>
+        <div class="row mt-3">
+
+          <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 form-group">
+            <label class="panelLabel">Severity</label>
+            <mat-select class="select-item" [(value)]="this.Case_Severity">
+              <mat-option value="1" class="select-item">
+                Not set
+              </mat-option>
+              <mat-option value="2" class="select-item">
+                Blocker
+              </mat-option>
+              <mat-option value="3" class="select-item">
+                Critical
+              </mat-option>
+              <mat-option value="3" class="select-item">
+                Major
+              </mat-option>
+              <mat-option value="3" class="select-item">
+                Normal
+              </mat-option>
+              <mat-option value="3" class="select-item">
+                Minor
+              </mat-option>
+              <mat-option value="3" class="select-item">
+                Trival
+              </mat-option>
+            </mat-select>
+          </div>
+
+          <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 form-group">
+            <label class="panelLabel">Priority</label>
+            <mat-select class="select-item" [(ngModel)]="this.Case_Priority">
+              <mat-option value="1" class="select-item">
+                Not set
+              </mat-option>
+              <mat-option value="2" class="select-item">
+                High
+              </mat-option>
+              <mat-option value="3" class="select-item">
+                Medium
+              </mat-option>
+              <mat-option value="3" class="select-item">
+                Low
+              </mat-option>
+            </mat-select>
+          </div>
+
+          <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 form-group">
+            <label class="panelLabel">Type</label>
+            <mat-select class="select-item" [(ngModel)]="this.Case_Type">
+              <mat-option value="Other" class="select-item">
+                Other
+              </mat-option>
+              <mat-option value="Functional" class="select-item">
+                Functional
+              </mat-option>
+              <mat-option value="Smoke" class="select-item">
+                Smoke
+              </mat-option>
+              <mat-option value="Regression" class="select-item">
+                Regression
+              </mat-option>
+              <mat-option value="Security" class="select-item">
+                Security
+              </mat-option>
+              <mat-option value="Usability" class="select-item">
+                Usability
+              </mat-option>
+              <mat-option value="Performance" class="select-item">
+                Performance
+              </mat-option>
+              <mat-option value="Acceptance" class="select-item">
+                Acceptance
+              </mat-option>
+              <mat-option value="Compatibility" class="select-item">
+                Compatibility
+              </mat-option>
+              <mat-option value="Integration" class="select-item">
+                Integration
+              </mat-option>
+              <mat-option value="Exploratory" class="select-item">
+                Exploratory
+              </mat-option>
+            </mat-select>
+          </div>
+
+          <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 form-group">
+            <label class="panelLabel">Layer</label>
+            <mat-select class="select-item" [(value)]="this.Case_Layer">
+              <mat-option value="1" class="select-item">
+                Not set
+              </mat-option>
+              <mat-option value="2" class="select-item">
+                E2E
+              </mat-option>
+              <mat-option value="3" class="select-item">
+                API
+              </mat-option>
+              <mat-option value="3" class="select-item">
+                Unit
+              </mat-option>
+            </mat-select>
+          </div>
+
+          <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 form-group">
+            <label class="panelLabel">Is flaky</label>
+            <mat-select class="select-item" [(value)]="this.Case_Flaky">
+              <mat-option value="1" class="select-item">
+                No
+              </mat-option>
+              <mat-option value="2" class="select-item">
+                Yes
+              </mat-option>
+            </mat-select>
+          </div>
+
+          <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 form-group">
+            <label class="panelLabel">Milestone</label>
+            <mat-select class="select-item" [(value)]="this.Case_Milestone">
+              <mat-option value="1" class="select-item">
+                Not set
+              </mat-option>
+            </mat-select>
+          </div>
+
+          <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 form-group">
+            <label class="panelLabel">Behavior</label>
+            <mat-select class="select-item" [(value)]="this.Case_Behavior">
+              <mat-option value="1" class="select-item" selected>
+                Not set
+              </mat-option>
+              <mat-option value="2" class="select-item">
+                Positive
+              </mat-option>
+              <mat-option value="3" class="select-item">
+                Negative
+              </mat-option>
+              <mat-option value="3" class="select-item">
+                Destructive
+              </mat-option>
+            </mat-select>
+          </div>
+
+          <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 form-group">
+            <label class="panelLabel">Automation status</label>
+            <mat-select class="select-item" [(value)]="this.Case_AutoStat">
+              <mat-option value="1" class="select-item" selected>
+                Not automated
+              </mat-option>
+              <mat-option value="2" class="select-item">
+                To be automated
+              </mat-option>
+              <mat-option value="3" class="select-item">
+                Automated
+              </mat-option>
+            </mat-select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- Modal -->

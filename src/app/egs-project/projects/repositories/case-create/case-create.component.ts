@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ApiService } from 'src/app/services/api.service';
 import { reloadPage } from '../../../../services/global-functions.service';
-import { suite, step } from '../../../../models/project/project.model';
+import { suite, step, testCase } from '../../../../models/project/project.model';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { sidebarService } from '../../../../services/global-functions.service';
@@ -18,13 +18,17 @@ export class CaseCreateComponent implements OnInit {
   LinkParamID: number = 0;
   json: any = {};
   stepCount: number = 0;
+
   //createCase
-  createCaseSuiteEdit: boolean = false;
   createCaseSuite: number = 0;
+
+  //editCase
+  editCase: number = 0;
 
   //Models
   suites: suite[] = [];
   steps: step[] = [];
+  testCase = {} as testCase;
 
   //Modal Variables
   Modal_Title: string = 'Upload Attachment';
@@ -38,6 +42,7 @@ export class CaseCreateComponent implements OnInit {
   constructor(private formBuilder: FormBuilder, private api: ApiService, private activatedRoute: ActivatedRoute, public sidebarServ: sidebarService, private router: Router) {
     this.LinkParamID = Number(this.activatedRoute.snapshot.paramMap.get('id'));
     this.createCaseSuite = Number(this.activatedRoute.snapshot.queryParamMap.get('suite'));
+    this.editCase = Number(this.activatedRoute.snapshot.queryParamMap.get('case'));
 
     this.sidebarServ.fetchProjectID(this.LinkParamID);
     this.api.UniCall(
@@ -52,17 +57,52 @@ export class CaseCreateComponent implements OnInit {
       }
     ).subscribe(value => {
       this.suites = value[0];
-      if (this.createCaseSuite == 0 && !this.createCaseSuiteEdit) {
+      if (this.createCaseSuite == 0) {
         this.caseForm.controls['@Suite_ID'].setValue(this.suites[0].Suite_ID);
       } else {
         this.caseForm.controls['@Suite_ID'].setValue(this.createCaseSuite);
       }
     }
     );
+    if (this.editCase != 0) {
+      this.api.UniCall(
+        {
+          CommandText: 'egsQATestCaseGet',
+          Params: [
+            {
+              Param: '@Case_ID',
+              Value: this.editCase.toString()
+            }
+          ],
+        }
+      ).subscribe(value => {
+        console.log(value[0][0].Case_ID);
+        this.caseForm.controls['@Case_IDED'].setValue(value[0][0].Case_ID);
+        this.caseForm.controls['@Case_Title'].setValue(value[0][0].Case_Title);
+        this.caseForm.controls['@Case_Status'].setValue(value[0][0].Case_Status.toString());
+        this.caseForm.controls['@Case_Desc'].setValue(value[0][0].Case_Desc);
+        this.caseForm.controls['@Suite_ID'].setValue(value[0][0].Suite_ID);
+        this.caseForm.controls['@Case_Severity'].setValue(value[0][0].Case_Severity.toString());
+        this.caseForm.controls['@Case_Priority'].setValue(value[0][0].Case_Priority.toString());
+        this.caseForm.controls['@Case_Type'].setValue(value[0][0].Case_Type);
+        this.caseForm.controls['@Case_Layer'].setValue(value[0][0].Case_Layer.toString());
+        this.caseForm.controls['@Case_Flaky'].setValue(value[0][0].Case_Flaky.toString());
+        this.caseForm.controls['@Case_isLock'].setValue(value[0][0].Case_isLock.toString());
+        this.caseForm.controls['@Case_Milestone'].setValue(value[0][0].Case_Milestone.toString());
+        this.caseForm.controls['@Case_Behavior'].setValue(value[0][0].Case_Behavior.toString());
+        this.caseForm.controls['@Case_AutoStat'].setValue(value[0][0].Case_AutoStat.toString());
+        this.caseForm.controls['@Case_PreCondition'].setValue(value[0][0].Case_PreCondition);
+        this.caseForm.controls['@Case_PostCondition'].setValue(value[0][0].Case_PostCondition);
+        this.caseForm.controls['@Case_Tags'].setValue(value[0][0].Case_Tag);
+        this.caseForm.controls['@User_ID'].setValue(value[0][0].User_ID);
+      }
+      );
+    }
   }
 
   ngOnInit(): void {
     this.caseForm = this.formBuilder.group({
+      '@Case_IDED': [null],
       '@Case_Title': [null],
       '@Case_Status': ['1'],
       '@Case_Desc': [null],
@@ -117,14 +157,14 @@ export class CaseCreateComponent implements OnInit {
   addStepInput() {
     this.steps.push(
       {
-        Case_StepID: '',
-        Step_number: (this.steps.length + 1).toString(),
+        Case_StepID: 0,
+        Step_number: this.steps.length + 1,
         Step_Type: '1',
-        Case_ID: '',
+        Case_ID: 0,
         Step_Action: "",
         Step_InputData: "",
         Step_ExpectedResult: "",
-        Step_Status: '1'
+        Step_Status: 1
       }
     )
   }
