@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, ViewChild} from '@angular/core';
 import { project, suite } from '../../../../models/project/project.model';
 @Component({
   selector: 'app-suite',
@@ -7,6 +7,7 @@ import { project, suite } from '../../../../models/project/project.model';
 })
 export class SuiteComponent implements OnInit {
   @Input() Suite = {} as suite;
+
 
   carretOpen: boolean = false;
 

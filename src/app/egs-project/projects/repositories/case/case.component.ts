@@ -14,6 +14,7 @@ export class CaseComponent implements OnInit {
   @Output() editNewEvent = new EventEmitter<number>();
   @Output() newDeleteEvent = new EventEmitter<number>();
 
+  checked: boolean = false;
   constructor() { }
 
   ngOnInit(): void {
@@ -33,6 +34,11 @@ export class CaseComponent implements OnInit {
 
   deleteSuite(suiteDelete: number) {
     this.newDeleteEvent.emit(suiteDelete);
+  }
+  checkbox(event: Event) {
+    event.stopPropagation()
+    event.preventDefault()
+    this.checked = !this.checked;
   }
 
 }

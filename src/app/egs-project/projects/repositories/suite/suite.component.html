@@ -19,7 +19,7 @@
       </div>
       <div class="dropdown-group">
         <li><a class="dropdown-item" (click)="createChildSuite(Suite.Suite_ID)" data-bs-toggle="modal" data-bs-target="#exampleModal" href="#"><i class="bi bi-plus"></i>Create Suite</a></li>
-        <li><a class="dropdown-item create" href="#"><i class="bi bi-plus"></i>Create Case</a></li>
+        <li><a class="dropdown-item create" [routerLink]="'../create/'+Suite.Project_ID" [queryParams]="{create:true,suite:Suite.Suite_ID}"><i class="bi bi-plus"></i>Create Case</a></li>
       </div>
       <div class="dropdown-group delete">
         <li><a class="dropdown-item" (click)="deleteSuite(Suite.Suite_ID)"><i class="bi bi-trash"></i>Delete</a></li>
