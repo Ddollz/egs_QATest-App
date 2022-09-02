@@ -8,23 +8,23 @@
 			<div class="row mb-3">
 				<div class="col-6">
 					<Label class="page-label">Milestone name*</Label>
-					<input type="text" class="form-control" placeholder="For example: Release 1.0">
+					<input [(ngModel)]="Milestone_Title" type="text" class="form-control" placeholder="For example: Release 1.0">
 				</div>
 			</div>
 
 			<div class="row mb-3">
 				<div class="col-6">
 					<Label class="page-label">Description*</Label>
-					<textarea class="form-control"></textarea>
+					<textarea [(ngModel)]="Milestone_Description" class="form-control"></textarea>
 				</div>
 			</div>
 
 			<div class="row mb-3">
 				<div class="col-4">
 					<Label class="page-label">Status</Label>
-					<mat-select class="select-item" [value]="'Active'">
-						<mat-option value="Active" class="select-item">Active</mat-option>
-						<mat-option value="Completed" class="select-item">Completed</mat-option>
+					<mat-select [(ngModel)]="Milestone_Status" class="select-item">
+						<mat-option value="1" class="select-item">Active</mat-option>
+						<mat-option value="2" class="select-item">Completed</mat-option>
 					</mat-select>
 				</div>
 			</div>
@@ -32,13 +32,13 @@
 			<div class="row mb-5">
 				<div class="col-4">
 					<Label class="page-label">Due date</Label>
-					<input type="date" class="form-control">
+					<input [(ngModel)]="Milestone_DueDate" type="date" class="form-control">
 				</div>
 			</div>
 
 			<div class="row mb-5">
 				<div class="d-flex align-items-center">
-					<button class="btn btn-primary me-3">Create milestone</button>
+					<button class="btn btn-primary me-3" (click)="updateInsertMilestone()">Create milestone</button>
 					<span class="cancel-span" routerLink="/projects/milestone">Cancel</span>
 				</div>
 			</div>

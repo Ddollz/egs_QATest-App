@@ -21,6 +21,7 @@ export interface suite {
   Case_Count: number;
   SuiteChild_Count: number;
 }
+
 export interface testCase {
   Case_ID: number;
   Case_Title: string;
@@ -53,3 +54,10 @@ export interface step {
   Step_Status: string;
 }
 
+export interface milestone {
+  Milestone_ID: number;
+  Milestone_Title: string;
+  Milestone_Description: string;
+  Milestone_Status: number;
+  Milestone_DueDate: string;
+}

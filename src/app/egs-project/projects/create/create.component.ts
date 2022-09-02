@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../services/api.service';
 import { project } from '../../../models/project/project.model';
-import { NavigationEnd, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create',
@@ -70,10 +70,9 @@ export class CreateComponent implements OnInit {
         ]
       }
     ).subscribe({
-      error(msg) {
-        console.log(msg);
-        alert("500 Internal Server Errors")
-      }
+      next: (v) => this.router.navigate(["/projects"]),
+      error: (e) => console.error(e),
+      complete: () => console.info('complete')
     });
   }
 }

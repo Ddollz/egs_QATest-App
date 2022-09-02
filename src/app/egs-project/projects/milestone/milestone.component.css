@@ -31,45 +31,10 @@
     color: #222;
     font-size: 14px;
     font-weight: 600;
-    margin-bottom: 5px;
 }
 
 .column-title:hover {
     color: #eb7374;
-}
-
-.filter-span {
-    font-weight: 600;
-    color: var(--bs-red-100);
-}
-
-/* Images */
-
-/* Buttons */
-.filter-btn {
-    font-weight: 600;
-    color: #393939;
-    background-color: #f3f3f3 !important;
-    border: none;
-}
-
-.filter-btn:hover,
-.filter-item:hover {
-    background-color: #efefef !important;
-}
-
-.filter-span:hover {
-    color: #eb7374;
-}
-
-/* Checkbox */
-input[type="checkbox"]:focus {
-    box-shadow: none !important;
-}
-
-input[type="checkbox"]:checked {
-    border-color: var(--bs-red-100) !important;
-    background-color: var(--bs-red-100) !important;
 }
 
 /* Icons */
@@ -108,14 +73,11 @@ input[type="checkbox"]:checked {
 }
 
 /* Misc */
-.tooltip-i,
-.filter-span,
 .column-title {
     cursor: pointer;
 }
 
-.btn-primary,
-.filter-span {
+.btn-primary {
     white-space: nowrap;
 }
 
