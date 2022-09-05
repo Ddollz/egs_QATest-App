@@ -14,42 +14,11 @@
     height: 100%;
   }
 
-.page-title {
-	font-size: 24px;
-	font-weight: 600;
-}
-
-.page-something {
-	font-size: 12px;
-	font-weight: 500;
-}
-
-.page-button {
-	height: fit-content;
-}
 
 
-.l-col {
-	font-size: 14px;
-	font-weight: 600;
-}
 
-.l-col i {
-	width: 100px;
-}
 
-.r-col {
-	border-left: 2px solid lightgray;
-}
 
-.r-col-header {
-	width: 100%;
-	margin-bottom: 8px;
 
-	font-size: 14px;
-	font-weight: 600;
 
-	border-radius: 6px;
-	background-color: #00000008;
 
-}
