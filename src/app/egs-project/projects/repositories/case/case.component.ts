@@ -15,6 +15,7 @@ export class CaseComponent implements OnInit {
   @Output() newDeleteEvent = new EventEmitter<number>();
 
   checked: boolean = false;
+  @Input() carretOpen: boolean = false;
   constructor() { }
 
   ngOnInit(): void {

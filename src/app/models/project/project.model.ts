@@ -20,6 +20,7 @@ export interface suite {
   Parent_SuiteID: number;
   Case_Count: number;
   SuiteChild_Count: number;
+  carretOpen: boolean;
 }
 
 export interface testCase {
