@@ -62,3 +62,12 @@ export interface milestone {
   Milestone_Status: number;
   Milestone_DueDate: string;
 }
+
+export interface testplan {
+  TestPlan_ID: number;
+  TestPlan_Title: string;
+  TestPlan_Description: string;
+  TestPlan_CaseCount: number;
+  TestPlan_RunTime: string;
+  Case_ID: number;
+}

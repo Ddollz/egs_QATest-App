@@ -21,39 +21,46 @@
                             <div id="titleGroup" class="form-group">
                                 <label for="title" class="control-label required">Title</label>
                                 <div class="mb-3">
-                                    <input class="form-control" type="Text" name="title" id="title" placeholder="For example: Regression" required="" value="">
+                                    <input [(ngModel)]="TestPlan_Title" class="form-control" type="Text" placeholder="For example: Regression">
                                 </div>
-                                <div class="form-control-feedback hide">
+                                <!-- <div class="form-control-feedback hide">
 
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>
+
                     <div class="row mt-3">
                         <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
                             <div id="titleGroup" class="form-group">
                                 <label for="title" class="control-label required">Description</label>
                                 <div class="mb-3">
-                                    <input class="form-control" type="Text" name="title" id="title" placeholder="For example: Full Regression" required="" value="">
+                                    <input [(ngModel)]="TestPlan_Desc" class="form-control" type="Text" placeholder="For example: Full Regression">
                                 </div>
-                                <div class="form-control-feedback hide">
+                                <!-- <div class="form-control-feedback hide">
 
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
                             <p class="page-something">0 test cases selected</p>
-                            <button id="edit-plan-add-cases-button" class="btn btn-invisible b-0 ms-0 p-0 me-3 mb-3 page-button" type="button" data-bs-toggle="modal" data-bs-target="#addcases"><i class="bi bi-plus-circle-fill text-red"></i> Add cases</button>
+                            <button id="edit-plan-add-cases-button" class="btn btn-invisible b-0 ms-0 p-0 me-3 mb-3 page-button" type="button" data-bs-toggle="modal" data-bs-target="#addcases">
+                                <i class="bi bi-plus-circle-fill text-red"></i> 
+                                Add cases
+                            </button>
                         </div>
                         <hr>
                     </div>
-                    <div class="save-menu-wrapper">
-                        <div class="text-start save-menu">
-                            <button id="save-plan" class="btn btn-primary me-3 save-button" type="submit">Create plan</button>
-                            <button class="btn btn-invisible-danger b-0">Cancel</button>
-                        </div>
+    
+                    <div class="mt-1">
+                        <button type="button" class="btn btn-primary me-3" (click)="updateInsertTestPlan()">
+                            Create plan
+                        </button>
+                        <button class="btn btn-invisible-danger b-0">
+                            Cancel
+                        </button>
                     </div>
                 </form>
             </div>
@@ -84,6 +91,7 @@
                     <p class="cases-count">25 test cases selected</p>
                 </div>
             </div>
+
             <div class="modal-body">
                 <form>
                     <div class="row mt-3">
