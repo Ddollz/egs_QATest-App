@@ -16,6 +16,7 @@ export class RepositoriesComponent implements OnInit {
   //Utilities
   LinkParamID: number = 0;
   suitesDeleteArray: string = '';
+  carretOpen: boolean = true;
 
 
   //Modal
@@ -103,7 +104,7 @@ export class RepositoriesComponent implements OnInit {
 
   ngOnInit(): void {
   }
-  toggleDropdown(event: Event) {
+  toggleDropdown(event: Event, suite: any) {
     var element = event.currentTarget as HTMLElement;
     var dropdownLeft = element.getAttribute('data-bs-target')
     var dropdownRight = element.getAttribute('data-bs-target') + '-case';
@@ -118,10 +119,15 @@ export class RepositoriesComponent implements OnInit {
         dropdownDomLeft?.classList.add("show")
         dropdownDomRight?.classList.add("show")
       }
+
+      let index = this.suites.indexOf(suite);
+      suite.carretOpen = !suite.carretOpen;
+      this.suites[index] = suite;
     }
     event.preventDefault();
     event.stopPropagation();
   }
+
   onQuickCaseEnter(event: any) {
     console.log(event.target.value);
     var dom = event.currentTarget as HTMLElement;
@@ -222,6 +228,10 @@ export class RepositoriesComponent implements OnInit {
       }
     ).subscribe(value => {
       this.suites = value[0];
+      for (let index = 0; index < this.suites.length; index++) {
+        this.suites[index]['carretOpen'] = true;
+      }
+      console.log(this.suites);
     }
     );
   }
@@ -409,7 +419,7 @@ export class RepositoriesComponent implements OnInit {
       }
     }
   }
-  deleteCase(value:number){
+  deleteCase(value: number) {
     this.api.UniCall(
       {
         CommandText: 'egsQATestCaseDelete',

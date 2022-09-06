@@ -9,7 +9,7 @@ export class SuiteComponent implements OnInit {
   @Input() Suite = {} as suite;
 
 
-  carretOpen: boolean = false;
+  @Input() carretOpen: boolean = false;
 
   Modal_Title: string = "Edit suite";
   Modal_btn: string = "Save";
@@ -26,8 +26,8 @@ export class SuiteComponent implements OnInit {
 
   suiteOpen(event: Event) {
     var element = event.target as HTMLElement;
-    if (element.tagName != "I")
-      this.carretOpen = !this.carretOpen
+    // if (element.tagName != "I")
+    //   this.carretOpen = !this.carretOpen
 
   }
   settingOpen(event: Event) {

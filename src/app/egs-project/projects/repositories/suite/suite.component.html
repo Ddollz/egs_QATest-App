@@ -1,8 +1,8 @@
-<div class="d-flex justify-content-between suite w-100" (click)="suiteOpen($event)" [ngClass]="carretOpen? '':'open'">
+<div class="d-flex justify-content-between suite w-100" (click)="suiteOpen($event)" [ngClass]="carretOpen? 'open':''">
   <div class="d-flex align-items-center item-suite">
     <i class="bi bi-caret-right-fill me-1"></i>
     <!-- ID is temporary -->
-    <a type="button" class="button-blue-transparent suite-name">{{Suite.Suite_ID}} - {{Suite.Suite_Name}}</a>
+    <a type="button" class="button-blue-transparent suite-name">{{Suite.Suite_Name}}</a>
   </div>
   <div class="suite-setting">
     <span class="me-1">{{Suite.Case_Count}}</span>

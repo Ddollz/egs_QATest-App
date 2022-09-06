@@ -21,7 +21,7 @@
         <a type="button" [routerLink]="'../create/'+LinkParamID" class="btn btn-primary">+ Case</a>
       </div>
       <div class="me-2">
-        <input type="text" class="form-control search_input" placeholder="Search for projects">
+        <input type="text" class="form-control search_input" placeholder="Search for cases">
       </div>
       <div>
         <a type="button" class="btn add-filter-button">+ Add filter</a>
@@ -41,11 +41,11 @@
         </div>
       </div>
       <!-- Display Nodes -->
-      <ng-container *ngFor="let suite of suites">
+      <ng-container *ngFor="let suite of suites;">
         <ng-container *ngIf="suite.Project_ID == LinkParamID">
           <ng-container *ngIf="suite.Parent_SuiteID == 0">
-            <div class="collapsed" (click)="toggleDropdown($event)" [attr.data-bs-target]="'collapse-'+suite.Suite_ID" aria-expanded="true">
-              <app-suite [Suite]="suite" (createNewEvent)="createChildSuites($event)" (newItemEvent)="editSuite($event)" (newDeleteEvent)="deleteSuite($event)"></app-suite>
+            <div class="collapsed" (click)="toggleDropdown($event, suite)" [attr.data-bs-target]="'collapse-'+suite.Suite_ID" aria-expanded="true">
+              <app-suite [Suite]="suite" [carretOpen]="suite.carretOpen" (createNewEvent)="createChildSuites($event)" (newItemEvent)="editSuite($event)" (newDeleteEvent)="deleteSuite($event)"></app-suite>
             </div>
             <div class="collapse show" [id]="'collapse-'+suite.Suite_ID">
               <!-- Run Template to display looping Leaf -->
@@ -61,8 +61,8 @@
           <!-- Check if leaf exist display the leaf and loop again.-->
           <!-- Check if leaf does not exist end the loop.-->
           <ng-container *ngIf="data.Suite_ID == s.Parent_SuiteID">
-            <div class="collapsed" (click)="toggleDropdown($event)" [attr.data-bs-target]="'collapse-'+s.Suite_ID" aria-expanded="true">
-              <app-suite [Suite]="s" (createNewEvent)="createChildSuites($event)" (newItemEvent)="editSuite($event)" (newDeleteEvent)="deleteSuite($event)"></app-suite>
+            <div class="collapsed" (click)="toggleDropdown($event, s)" [attr.data-bs-target]="'collapse-'+s.Suite_ID" aria-expanded="true">
+              <app-suite [Suite]="s" [carretOpen]="s.carretOpen" (createNewEvent)="createChildSuites($event)" (newItemEvent)="editSuite($event)" (newDeleteEvent)="deleteSuite($event)"></app-suite>
             </div>
             <div class="collapse show" [id]="'collapse-'+s.Suite_ID">
               <!-- Run the template leaf again -->
@@ -76,17 +76,19 @@
 
     <!-- RIGHT COLUMN -->
     <div class="col-10 ps-3 r-col right">
-
       <!-- Display Nodes -->
       <ng-container *ngFor="let suite of suites">
         <ng-container *ngIf="suite.Project_ID == LinkParamID">
           <ng-container *ngIf="suite.Parent_SuiteID == 0">
-            <div class="collapsed" (click)="toggleDropdown($event)" [attr.data-bs-target]="'collapse-'+suite.Suite_ID" aria-expanded="true">
-              <app-case [Suite]="suite" [projectID]="LinkParamID" (editNewEvent)="editSuite($event)" (newDeleteEvent)="deleteSuite($event)"></app-case>
+            <div class="collapsed" (click)="toggleDropdown($event, suite)" [ngClass]="suite.carretOpen? '':'mb-3'" [attr.data-bs-target]="'collapse-'+suite.Suite_ID" aria-expanded="true">
+              <app-case [Suite]="suite" [carretOpen]="suite.carretOpen" [projectID]="LinkParamID" (editNewEvent)="editSuite($event)" (newDeleteEvent)="deleteSuite($event)"></app-case>
             </div>
             <div class="collapse show" [id]="'collapse-'+suite.Suite_ID+'-case'">
 
 
+              <div class="suite-description">
+                {{suite.Suite_Desc}}
+              </div>
               <div class="caseContainer ">
                 <ng-container *ngFor="let testCase of testCases">
                   <ng-container *ngIf="testCase.Suite_ID == suite.Suite_ID">
@@ -100,7 +102,7 @@
                   </ng-container>
 
                 </ng-container>
-                <input class="ms-5 clearedInput" placeholder="+ Create quick test" [attr.suiteAttri] = "suite.Suite_ID" (keyup.enter)="onQuickCaseEnter($event)">
+                <input class="ms-5 mb-3 clearedInput" placeholder="+ Create quick test" [attr.suiteAttri]="suite.Suite_ID" (keyup.enter)="onQuickCaseEnter($event)">
               </div>
 
 
@@ -117,13 +119,16 @@
           <!-- Check if leaf exist display the leaf and loop again.-->
           <!-- Check if leaf does not exist end the loop.-->
           <ng-container *ngIf="data.Suite_ID == s.Parent_SuiteID">
-            <div class="collapsed" (click)="toggleDropdown($event)" [attr.data-bs-target]="'collapse-'+s.Suite_ID" aria-expanded="true">
-              <app-case [Suite]="s" [projectID]="LinkParamID" (editNewEvent)="editSuite($event)" (newDeleteEvent)="deleteSuite($event)"></app-case>
+            <div class="collapsed" (click)="toggleDropdown($event, s)" [ngClass]="s.carretOpen? '':'mb-3'" [attr.data-bs-target]="'collapse-'+s.Suite_ID" aria-expanded="true">
+              <app-case [Suite]="s" [carretOpen]="s.carretOpen" [projectID]="LinkParamID" (editNewEvent)="editSuite($event)" (newDeleteEvent)="deleteSuite($event)"></app-case>
             </div>
             <div class="collapse show" [id]="'collapse-'+s.Suite_ID+'-case'">
 
 
 
+              <div class="suite-description">
+                {{s.Suite_Desc}}
+              </div>
               <div class="caseContainer ">
                 <ng-container *ngFor="let testCase of testCases">
                   <ng-container *ngIf="testCase.Suite_ID == s.Suite_ID">
@@ -136,7 +141,7 @@
                   </ng-container>
 
                 </ng-container>
-                <input class="ms-5 clearedInput" placeholder="+ Create quick test" [attr.suiteAttri] = "s.Suite_ID" (keyup.enter)="onQuickCaseEnter($event)">
+                <input class="ms-5 mb-3 clearedInput" placeholder="+ Create quick test" [attr.suiteAttri]="s.Suite_ID" (keyup.enter)="onQuickCaseEnter($event)">
               </div>
 
 

@@ -238,9 +238,11 @@
   display: inline-block;
 
 }
-.panel-properties{
- display: none;
+
+.panel-properties {
+  display: none;
 }
+
 .panelContent .panelLabel {
   font-size: 0.775rem;
   margin-bottom: 5px;
@@ -291,6 +293,12 @@
   font-weight: 400;
   line-height: 1.5;
   border-radius: .25rem;
+}
+
+.suite-description {
+  padding: 0 0.5rem;
+  font-size: 0.8rem;
+  color: var(--c-text-secondary);
 }
 
 /* ::ng-deep .cdk-overlay-container {

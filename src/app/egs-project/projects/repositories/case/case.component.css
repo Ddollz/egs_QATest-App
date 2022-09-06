@@ -45,8 +45,6 @@
   font-size: 0.875rem;
 }
 
-.suite-description {
-  padding: 0 0.5rem;
-  font-size: 0.8rem;
-  color: var(--c-text-secondary);
+.caseControl{
+  display: none;
 }
