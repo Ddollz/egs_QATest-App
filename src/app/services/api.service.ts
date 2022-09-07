@@ -13,8 +13,8 @@ export class ApiService {
 
   readonly ApiURL = environment.api_url;
   readonly MethodUrl = environment.unicall_url;
+  readonly MethodUrlAttach = environment.uniattach_url;
   readonly AuthUrl = environment.auth_url;
-
   constructor(private http: HttpClient) { }
 
 
@@ -26,6 +26,19 @@ export class ApiService {
     );
   }
 
+  UniAttachmentlist(data: any, isResponseBlob: boolean = false): Observable<any> {
+    var httpOptions = {};
+    if (isResponseBlob) {
+      httpOptions = { observe: 'response', responseType: "blob" };
+    }
+    console.log(this.ApiURL);
+    return this.http.post(
+      `${this.ApiURL}${this.MethodUrlAttach}`,
+      data, httpOptions
+    );
+  }
+
+
   RegisterCall(data: any) {
     return this.http.post(this.ApiURL + this.AuthUrl + "register", data);
   }
@@ -34,23 +47,4 @@ export class ApiService {
     return this.http.post(this.ApiURL + this.AuthUrl + "login", data, { responseType: "text" });
   }
 
-  // getAccountList():Observable<any[]>{
-  //   return this.http.get<any>(this.ApiURL+"/Auth/");
-  // }
-
-  // getAccount(id:number|string){
-  //   return this.http.get<any>(this.ApiURL+`/EgsAccounts/${id}`);
-  // }
-
-  // addAccount(data:any){
-  //   return this.http.post(this.ApiURL+'/EgsAccounts',data)
-  // }
-
-  // updateAccount(id:number|string, data:any){
-  //   return this.http.post(this.ApiURL+`/EgsAccounts/${id}`,data);
-  // }
-
-  // deleteAccount(id:number|string){
-  //   return this.http.delete(this.ApiURL+`/EgsAccounts/${id}`);
-  // }
 }

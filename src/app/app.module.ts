@@ -40,6 +40,7 @@ import { StepCreateComponent } from './egs-project/projects/shared-steps/step-cr
 import { MilestoneComponent } from './egs-project/projects/milestone/milestone.component';
 import { MilestoneCreateComponent } from './egs-project/projects/milestone/milestone-create/milestone-create.component';
 import { ConfigComponent } from './egs-project/projects/config/config.component';
+import { EgsTestingComponentKarlComponent } from './egs-testing-component-karl/egs-testing-component-karl.component';
 
 
 //Link Routes
@@ -63,6 +64,7 @@ const appRoute: Routes = [
   { path: 'workspace/roles', component: RolesComponent },
   { path: 'login', component: EgsLoginComponent },
   { path: 'register', component: EgsRegistrationComponent },
+  { path: 'test', component: EgsTestingComponentKarlComponent },
 ]
 
 @NgModule({
@@ -91,6 +93,7 @@ const appRoute: Routes = [
     MilestoneComponent,
     MilestoneCreateComponent,
     ConfigComponent,
+    EgsTestingComponentKarlComponent,
   ],
   imports: [
     BrowserModule,
