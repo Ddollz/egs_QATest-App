@@ -1,4 +1,7 @@
 <input type="file" (change)="createFile($event)">
+<input type="number" (keyup.enter)="deleteFile($event)">
+<br>
+<br>
 <ng-container *ngFor="let item of displayImage">
   <!-- <button (click)="createFile()">Create File</button> -->
   <!-- {{item.byteFile}} -->

@@ -41,6 +41,7 @@ export class EgsTestingComponentKarlComponent implements OnInit {
     this.api.UniAttachmentlist(formData).subscribe({
       next: (result) => {
         this.displayImage = result[0];
+        console.log(result)
       },
       error: (msg) => {
         console.log(msg);
@@ -48,6 +49,8 @@ export class EgsTestingComponentKarlComponent implements OnInit {
       }
     })
   }
+
+  //? Function for downloading file
   downloadFile(file_ID: any, filename: string) {
 
     //? Stored Procedure Name
@@ -102,7 +105,7 @@ export class EgsTestingComponentKarlComponent implements OnInit {
         },
         {
           "Param": "@User_ID",
-          "Value": "1"
+          "Value": "3"
         }
       ]
 
@@ -121,15 +124,56 @@ export class EgsTestingComponentKarlComponent implements OnInit {
     this.api.UniAttachmentlist(formData, true).subscribe({
       next: (result) => {
         console.log(result);
-        reloadPage();
       },
       error: (msg) => {
         console.log(msg);
+      },
+      complete: ()=>{
+        reloadPage();
       }
     })
 
   }
+  //? Deleting File to API
+  deleteFile(event: Event) {
 
+    var file_ID = (event.target as HTMLInputElement).value;
+    console.log(file_ID)
+    //? Stored Procedure Name
+    var commandText = 'egsQATestCaseAttachmentDelete';
+
+    //? Parameter of the store procedure
+    var Params = [{
+      Param: "@CaseAttachment_ID",
+      Value: file_ID.toString()
+    }]
+
+    //? Convert Param JSON to String So may the api able to read json
+    var stringParam = JSON.stringify(Params);
+    var formData = new FormData();
+
+
+    //? When we are using UniAttachment we need to use Formdata in angular allowing us
+    //? to create, read, update and delete files
+    //? When delete file the "isDelete field is required"
+    formData.append("CommandText", commandText);
+    formData.append("Params", stringParam);
+    formData.append("file_ID", file_ID.toString());
+    formData.append("isDelete", 'true');
+
+    this.api.UniAttachmentlist(formData, false).subscribe({
+      next: (result) => {
+        console.log(result)
+      },
+      error: (msg) => {
+        console.log(msg);
+      },
+      complete: ()=>{
+        reloadPage();
+      }
+    })
+
+  }
   ngOnInit(): void {
   }
 }
