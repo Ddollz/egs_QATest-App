@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../services/api.service';
 import { reloadPage } from '../services/global-functions.service';
-import { saveAs, } from 'file-saver';
-import * as FileSaver from 'file-saver';
 
 @Component({
   selector: 'app-egs-testing-component-karl',
