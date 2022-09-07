@@ -199,6 +199,32 @@
             {{testCase.Case_PostCondition}}
           </div>
         </section>
+
+        <section class="mt-3">
+          <label for="0-postcondition" class="panelLabel">Attachments</label>
+          <div class="d-flex">
+
+            <ng-container *ngFor="let attachment of this.testCaseAttachment">
+
+              <div class="suitecase-attachment">
+                <div class="suitecase-attachment-container">
+                  <div class="suitecase-attachment-image" style="background: url(&quot;data:image/png;base64,{{attachment.byteFile.fileContents}}&quot;)">
+                    <a class="suitecase-attachment-link is-image"></a>
+                    <div class="suitecase-attachment-overlay">
+                      <p class="suitecase-attachment-filename">{{attachment.Filename}}</p>
+                      <div class="suitecase-attachment-overlay-bottom">
+                        <p class="suitecase-attachment-size"> {{attachment.Filesize}}</p>
+                        <button type="button" class="suitecase-attachment-remove" (click)="deleteAttachment(attachment.CaseAttachment_ID)"><i class="bi bi-x"></i></button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+
+
+        </section>
         <section class="mt-3">
           <label for="0-steps" class="panelLabel">Steps</label>
           <table mat-table [dataSource]="dataSource" class="mat-elevation-z0 table-steps">

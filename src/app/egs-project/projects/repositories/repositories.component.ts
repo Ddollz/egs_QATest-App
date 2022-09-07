@@ -37,6 +37,7 @@ export class RepositoriesComponent implements OnInit {
   //Case Description Variables
   testCaseID: number = 0;
   testCase = {} as testCase;
+  testCaseAttachment: any = [];
   @ViewChild('casePanel') panel?: ElementRef;
   @ViewChild('General') General?: ElementRef;
   @ViewChild('Properties') Properties?: ElementRef;
@@ -402,6 +403,35 @@ export class RepositoriesComponent implements OnInit {
     this.Case_Milestone = this.testCase.Case_Milestone.toString();
     this.Case_Behavior = this.testCase.Case_Behavior.toString();
     this.Case_AutoStat = this.testCase.Case_AutoStat.toString();
+
+    //? Get Attachments
+    var commandText = 'egsQATestCaseAttachmentGet';
+    var Params =
+      [
+
+        {
+          Param: "@Case_ID",
+          Value: this.testCase.Case_ID.toString()
+        }
+
+      ];
+
+    var stringParam = JSON.stringify(Params);
+
+    var formData = new FormData();
+    formData.append("CommandText", commandText);
+    formData.append("Params", stringParam);
+
+    this.api.UniAttachmentlist(formData).subscribe({
+      next: (result) => {
+        this.testCaseAttachment = result[0];
+        console.log(this.testCaseAttachment)
+      },
+      error: (msg) => {
+        console.log(msg);
+        alert("500 Internal Server Errors")
+      }
+    });
   }
   closePanel() {
     if (this.panel != null)
@@ -437,5 +467,45 @@ export class RepositoriesComponent implements OnInit {
         complete: () => reloadPage()
       }
     )
+  }
+
+  deleteAttachment(value: number) {
+
+    var file_ID = value;
+    console.log(file_ID)
+    //? Stored Procedure Name
+    var commandText = 'egsQATestCaseAttachmentDelete';
+
+    //? Parameter of the store procedure
+    var Params = [{
+      Param: "@CaseAttachment_ID",
+      Value: file_ID.toString()
+    }]
+
+    //? Convert Param JSON to String So may the api able to read json
+    var stringParam = JSON.stringify(Params);
+    var formData = new FormData();
+
+
+    //? When we are using UniAttachment we need to use Formdata in angular allowing us
+    //? to create, read, update and delete files
+    //? When delete file the "isDelete field is required"
+    formData.append("CommandText", commandText);
+    formData.append("Params", stringParam);
+    formData.append("file_ID", file_ID.toString());
+    formData.append("isDelete", 'true');
+
+    this.api.UniAttachmentlist(formData, false).subscribe({
+      next: (result) => {
+        console.log(result)
+      },
+      error: (msg) => {
+        console.log(msg);
+      },
+      complete: () => {
+        reloadPage();
+      }
+    })
+
   }
 }

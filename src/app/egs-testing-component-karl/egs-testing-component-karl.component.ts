@@ -20,9 +20,10 @@ export class EgsTestingComponentKarlComponent implements OnInit {
     var Params =
       [
         {
-          Param: "@CaseAttachment_ID",
-          Value: ""
+          Param: "@SelectAll",
+          Value: "true"
         }
+
       ];
 
     //? Convert Param JSON to String So may the api able to read json
@@ -126,7 +127,7 @@ export class EgsTestingComponentKarlComponent implements OnInit {
       error: (msg) => {
         console.log(msg);
       },
-      complete: ()=>{
+      complete: () => {
         reloadPage();
       }
     })
@@ -166,7 +167,7 @@ export class EgsTestingComponentKarlComponent implements OnInit {
       error: (msg) => {
         console.log(msg);
       },
-      complete: ()=>{
+      complete: () => {
         reloadPage();
       }
     })

@@ -443,3 +443,122 @@ select {
 .linkTag:hover {
   color: var(--bs-blue-second);
 }
+
+.attachments {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.suitecase-attachment {
+  width: 10rem;
+  display: block;
+  margin-bottom: 1rem;
+  margin-right: 1.5rem;
+}
+
+.suitecase-attachment-image {
+  position: relative;
+  width: 10rem;
+  height: 6.75rem;
+  border-radius: 0.25rem;
+  background-size: cover !important;
+  transition: box-shadow .2s ease;
+  border: 1px solid #e0e2e6;
+  padding: 0.75rem;
+  cursor: pointer;
+}
+
+.suitecase-attachment-image:hover .suitecase-attachment-overlay {
+  opacity: 1;
+}
+
+.suitecase-attachment-file:hover .suitecase-attachment-overlay {
+  opacity: 1;
+
+}
+
+.suitecase-attachment-overlay {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  border-radius: 0.25rem;
+  background-color: rgba(52, 52, 52, .7);
+  padding: 11px 14px;
+  opacity: 0;
+  transition: opacity .3s ease;
+  left: 0;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.suitecase-attachment-file {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 10rem;
+  height: 6.75rem;
+  background: #e9e9e9;
+  border-radius: 0.25rem;
+  transition: box-shadow .2s ease;
+  border: 1px solid #e0e2e6;
+}
+
+.suitecase-attachment-overlay .suitecase-attachment-filename {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 14px;
+  color: #fff;
+}
+
+.suitecase-attachment-overlay .suitecase-attachment-overlay-bottom {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.suitecase-attachment-overlay .suitecase-attachment-size {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 14px;
+  color: #fff;
+  margin: 0;
+}
+
+.suitecase-attachment-overlay .suitecase-attachment-remove {
+  z-index: 2;
+  border: none;
+  background: none;
+  padding: 0;
+  margin: 0;
+  height: 18px;
+  width: 12px;
+  display: flex;
+  color: #fff;
+}
+
+.suitecase-attachment-link.is-image {
+  z-index: -1;
+}
+
+.suitecase-attachment-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.suitecase-attachment-extension {
+  text-decoration: none !important;
+  font-weight: bold;
+  color: #000;
+}
+
