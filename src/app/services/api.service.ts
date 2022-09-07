@@ -31,7 +31,6 @@ export class ApiService {
     if (isResponseBlob) {
       httpOptions = { observe: 'response', responseType: "blob" };
     }
-    console.log(this.ApiURL);
     return this.http.post(
       `${this.ApiURL}${this.MethodUrlAttach}`,
       data, httpOptions

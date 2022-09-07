@@ -170,9 +170,9 @@
       <button class="btns "><i class="bi bi-clipboard"></i> Clone</button>
       <button class="btns " (click)="deleteCase(testCase.Case_ID)"><i class="bi bi-trash2"></i> Delete</button>
     </div>
-    <div class="panelNav">
-      <button (click)="changePanelContent('General')" class="btns active"><span></span>General</button>
-      <button (click)="changePanelContent('Property')" class="btns"><span></span>Properties</button>
+    <div class="panelNav" #panelNav>
+      <button (click)="changePanelContent('General', $event)" class="btns active" id = "General" ><span></span>General</button>
+      <button (click)="changePanelContent('Property', $event)" class="btns" id = "Property" ><span></span>Properties</button>
       <button class="btns"><span></span>Runs</button>
       <button class="btns"><span></span>History</button>
       <button class="btns"><span></span>Defects</button>

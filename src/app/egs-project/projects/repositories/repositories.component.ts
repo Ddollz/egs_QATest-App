@@ -38,6 +38,7 @@ export class RepositoriesComponent implements OnInit {
   testCaseID: number = 0;
   testCase = {} as testCase;
   testCaseAttachment: any = [];
+  @ViewChild('panelNav') panelNav?: ElementRef;
   @ViewChild('casePanel') panel?: ElementRef;
   @ViewChild('General') General?: ElementRef;
   @ViewChild('Properties') Properties?: ElementRef;
@@ -96,7 +97,6 @@ export class RepositoriesComponent implements OnInit {
       }
     ).subscribe(value => {
       this.testCases = value[0];
-      console.log(this.testCases);
     }
     );
 
@@ -130,7 +130,6 @@ export class RepositoriesComponent implements OnInit {
   }
 
   onQuickCaseEnter(event: any) {
-    console.log(event.target.value);
     var dom = event.currentTarget as HTMLElement;
     var sID = dom.getAttribute('suiteattri')
     this.api.UniCall(
@@ -232,7 +231,6 @@ export class RepositoriesComponent implements OnInit {
       for (let index = 0; index < this.suites.length; index++) {
         this.suites[index]['carretOpen'] = true;
       }
-      console.log(this.suites);
     }
     );
   }
@@ -386,7 +384,6 @@ export class RepositoriesComponent implements OnInit {
     ).subscribe(value => {
       this.steps = value[0];
       this.dataSource = new MatTableDataSource<step>(this.steps);
-      console.log(this.steps)
     }
     );
     var caseRow = event.currentTarget as HTMLElement;
@@ -425,7 +422,6 @@ export class RepositoriesComponent implements OnInit {
     this.api.UniAttachmentlist(formData).subscribe({
       next: (result) => {
         this.testCaseAttachment = result[0];
-        console.log(this.testCaseAttachment)
       },
       error: (msg) => {
         console.log(msg);
@@ -437,7 +433,16 @@ export class RepositoriesComponent implements OnInit {
     if (this.panel != null)
       this.panel.nativeElement.style.display = "none";
   }
-  changePanelContent(value: string) {
+  changePanelContent(value: string, event:Event) {
+    let children = this.panelNav?.nativeElement.children;
+    console.log(children);
+    for (let index = 0; index < children.length; index++) {
+
+      children[index].classList.remove('active');
+
+    }
+    let c = this.panelNav?.nativeElement.querySelector('#'+value);
+    c.classList.add('active');
     if (this.Properties != null && this.General != null) {
       if (value === 'General') {
         this.Properties.nativeElement.style.display = 'none';
@@ -472,7 +477,6 @@ export class RepositoriesComponent implements OnInit {
   deleteAttachment(value: number) {
 
     var file_ID = value;
-    console.log(file_ID)
     //? Stored Procedure Name
     var commandText = 'egsQATestCaseAttachmentDelete';
 
