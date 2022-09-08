@@ -1,23 +1,38 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
+import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
+import Quill from 'quill';
 import { ApiService } from 'src/app/services/api.service';
-import { project, suite, testCase, step } from '../../../models/project/project.model';
+import { project, suite, testCase, step, testrun, testCaseComment } from '../../../models/project/project.model';
 import { reloadPage, sidebarService } from '../../../services/global-functions.service';
+
 @Component({
   selector: 'app-repositories',
   templateUrl: './repositories.component.html',
   styleUrls: ['./repositories.component.css']
 })
-export class RepositoriesComponent implements OnInit {
+export class RepositoriesComponent implements OnInit, AfterViewInit {
+
+  //toolbar
+  editorOptions = {
+    toolbar: [
+      ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+      [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+      ['link', 'image', 'video']                         // link and image, video
+    ]
+  };
+  htmlstring: any;
+
+  //testCaseComment
+  caseComments: any = [];
+
 
   //Utilities
   LinkParamID: number = 0;
   suitesDeleteArray: string = '';
   carretOpen: boolean = true;
-
+  currentDate = new Date();
 
   //Modal
   Modal_Title: string = "Create suite";
@@ -31,14 +46,22 @@ export class RepositoriesComponent implements OnInit {
 
   //Table Steps
   displayedColumns: string[] = ['Step', 'Action', 'Input', 'Expected'];
-  dataSource = new MatTableDataSource<step>();
-  @ViewChild(MatSort) sort: any = MatSort;
+  stepdataSource = new MatTableDataSource<step>();
+
+  //Table test runs
+  runDisplayedColumns: string[] = ['title', 'environment', 'time', 'status'];
+  runDataSource = new MatTableDataSource<testrun>();
+
+  //Table test defects
+  defectsDisplayedColumns: string[] = ['Defect', 'Author', 'Assignee', 'Severity', 'Milestone', 'External', 'ThreeDots'];
+  defectsDataSource = new MatTableDataSource<testrun>();
 
   //Case Description Variables
   testCaseID: number = 0;
   testCase = {} as testCase;
   testCaseAttachment: any = [];
   @ViewChild('panelNav') panelNav?: ElementRef;
+  @ViewChild('panelContent') panelContent?: ElementRef;
   @ViewChild('casePanel') panel?: ElementRef;
   @ViewChild('General') General?: ElementRef;
   @ViewChild('Properties') Properties?: ElementRef;
@@ -104,6 +127,9 @@ export class RepositoriesComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+  ngAfterViewInit(): void {
+
   }
   toggleDropdown(event: Event, suite: any) {
     var element = event.currentTarget as HTMLElement;
@@ -370,7 +396,7 @@ export class RepositoriesComponent implements OnInit {
     this.Preconditions = '';
   }
   openPanel(event: Event, testc: testCase) {
-    console.log(testc.Case_ID);
+    this.changePanelContent('General')
     this.api.UniCall(
       {
         CommandText: 'egsQAStepGet',
@@ -383,7 +409,7 @@ export class RepositoriesComponent implements OnInit {
       }
     ).subscribe(value => {
       this.steps = value[0];
-      this.dataSource = new MatTableDataSource<step>(this.steps);
+      this.stepdataSource = new MatTableDataSource<step>(this.steps);
     }
     );
     var caseRow = event.currentTarget as HTMLElement;
@@ -402,6 +428,7 @@ export class RepositoriesComponent implements OnInit {
     this.Case_AutoStat = this.testCase.Case_AutoStat.toString();
 
     //? Get Attachments
+    //? START
     var commandText = 'egsQATestCaseAttachmentGet';
     var Params =
       [
@@ -428,31 +455,59 @@ export class RepositoriesComponent implements OnInit {
         alert("500 Internal Server Errors")
       }
     });
+    //? END
+
+
+    //? Get Case Comment
+    //? START
+    this.api.UniCall(
+      {
+        CommandText: 'egsQATestCaseCommentGet',
+        Params: [
+          {
+            Param: '@Case_ID',
+            Value: this.testCase.Case_ID.toString()
+          }
+        ],
+      }
+    ).subscribe(
+      {
+        next: (v) => {
+          this.caseComments = v[0];
+          console.log(v[0])
+        },
+        error: (e) => console.error(e),
+      }
+    )
+    //? END
+
   }
   closePanel() {
     if (this.panel != null)
       this.panel.nativeElement.style.display = "none";
   }
-  changePanelContent(value: string, event:Event) {
-    let children = this.panelNav?.nativeElement.children;
-    console.log(children);
-    for (let index = 0; index < children.length; index++) {
+  changePanelContent(value: string, event?: Event) {
+    let panelNavchildren = this.panelNav?.nativeElement.children;
+    let activePanel = this.panelNav?.nativeElement.querySelector('#' + value);
 
-      children[index].classList.remove('active');
+    let panelContentchildren = this.panelContent?.nativeElement.children;
+    let activeContent = this.panelContent?.nativeElement.querySelector('#' + value);
+
+    for (let index = 0; index < panelNavchildren.length; index++) {
+
+      panelNavchildren[index].classList.remove('active');
 
     }
-    let c = this.panelNav?.nativeElement.querySelector('#'+value);
-    c.classList.add('active');
-    if (this.Properties != null && this.General != null) {
-      if (value === 'General') {
-        this.Properties.nativeElement.style.display = 'none';
-        this.General.nativeElement.style.display = 'block';
-      }
-      if (value === 'Property') {
-        this.Properties.nativeElement.style.display = 'block';
-        this.General.nativeElement.style.display = 'none';
-      }
+
+    activePanel.classList.add('active');
+
+    for (let index = 0; index < panelContentchildren.length; index++) {
+
+      panelContentchildren[index].style.display = 'none';
     }
+
+    activeContent.style.display = 'block';
+
   }
   deleteCase(value: number) {
     this.api.UniCall(
@@ -511,5 +566,43 @@ export class RepositoriesComponent implements OnInit {
       }
     })
 
+  }
+  postComment() {
+    let currentDateTime = new Date();
+    this.api.UniCall(
+      {
+        CommandText: 'egsQATestCaseCommentInsertUpdate',
+        Params: [
+          {
+            Param: '@Comment_Content',
+            Value: this.htmlstring
+          },
+          {
+            Param: '@Comment_Date',
+            Value: currentDateTime
+          },
+          {
+            Param: '@User_ID',
+            Value: this.Suite_TempUserID.toString()
+          },
+          {
+            Param: '@Case_ID',
+            Value: this.testCase.Case_ID.toString()
+          },
+        ],
+      }
+    ).subscribe(
+      {
+        next: (v) => console.log(v),
+        error: (e) => { console.error(e); alert("500 Internal Server Errors") },
+        complete: () => reloadPage()
+      }
+    )
+  }
+  commentContent(event: any) {
+    this.htmlstring = JSON.stringify(event.content);
+  }
+  displayCommentContent(event: any, content: any) {
+    event.setContents(JSON.parse(content));
   }
 }

@@ -44,6 +44,15 @@ export interface testCase {
   Case_Tag: string;
 }
 
+export interface testCaseComment{
+  Comment_ID: number;
+  Comment_Content: string;
+  Comment_Date: string;
+  User_id: number;
+  Case_ID: number;
+}
+
+
 export interface step {
   Case_StepID: number;
   Step_number: number;
@@ -70,4 +79,17 @@ export interface testplan {
   TestPlan_CaseCount: number;
   TestPlan_RunTime: string;
   Case_ID: number;
+}
+
+export interface testrun{
+  TestRun_ID: number;
+  TestRun_Title: string;
+  TestRun_Desc: number;
+  TestPlan_ID: number;
+  TestRun_Environment: number;
+  TestRun_Milestone: number;
+  User_ID: number;
+  TestRun_Tags: string;
+  TestRun_CompletionRange: number;
+  TestRun_DateCreated: number;
 }

@@ -41,6 +41,7 @@ import { MilestoneComponent } from './egs-project/projects/milestone/milestone.c
 import { MilestoneCreateComponent } from './egs-project/projects/milestone/milestone-create/milestone-create.component';
 import { ConfigComponent } from './egs-project/projects/config/config.component';
 import { EgsTestingComponentKarlComponent } from './egs-testing-component-karl/egs-testing-component-karl.component';
+import { QuillModule } from 'ngx-quill';
 
 
 //Link Routes
@@ -109,6 +110,11 @@ const appRoute: Routes = [
     MatRadioModule,
     MatDialogModule,
     RouterModule.forRoot(appRoute),
+    QuillModule.forRoot({
+      modules: {
+        syntax: true,
+      }
+    }),
     BrowserAnimationsModule
   ],
   providers: [RouteGuardService, {
