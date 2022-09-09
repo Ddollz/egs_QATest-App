@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { testplan } from '../../../models/project/project.model';
-import { ApiService } from '../../../services/api.service';
+import { testplan } from '../../../../models/project/project.model';
+import { ApiService } from '../../../../services/api.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router'
 
 @Component({
-  selector: 'app-test-plan',
-  templateUrl: './test-plan.component.html',
-  styleUrls: ['./test-plan.component.css']
+  selector: 'app-edit-plan',
+  templateUrl: './edit-plan.component.html',
+  styleUrls: ['./edit-plan.component.css']
 })
-export class TestPlanComponent implements OnInit {
+export class EditPlanComponent implements OnInit {
 
   //Update and Insert Variables
   TestPlan_ID: string = '';
@@ -29,7 +29,7 @@ export class TestPlanComponent implements OnInit {
         Params: [
           {
             Param: '@TestPlan_ID',
-            Value: null
+            Value: this.TestPlan_ID
           }
         ]
       }
@@ -42,12 +42,12 @@ export class TestPlanComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  editViewPlan(id: string, name: string, desc: string, code: string){
-    this.router.navigate(['/projects/plan/editplan']);
-    this.TestPlan_ID = id;
-    this.TestPlan_Title = name;
-    this.TestPlan_Desc = desc;
-    this.TestPlan_CaseCount = code;
-  }
+  // editViewPlan(id: string, name: string, desc: string, code: string){
+  //   this.router.navigate(['/projects/plan/editplan']);
+  //   this.TestPlan_ID = id;
+  //   this.TestPlan_Title = name;
+  //   this.TestPlan_Desc = desc;
+  //   this.TestPlan_CaseCount = code;
+  // }
 
 }

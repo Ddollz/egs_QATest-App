@@ -5,6 +5,7 @@
 	overflow: auto;
 	position: relative;
 }
+
 .app__content {
     padding: 1rem 1rem 0.25rem 1.5rem;
     display: flex;
@@ -14,7 +15,54 @@
     height: 100%;
   }
 
+.column-title {
+    color: #222;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
 
+.column-title:hover {
+    color: #eb7374;
+}
+
+.mat-header-cell {
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.mat-column-TestPlan_Title {
+    width: 50%;
+}
+  
+.mat-column-TestPlan_RunTime {
+    width: 20%;
+}
+  
+.mat-column-Project_Name {
+    width: 25%;
+}
+  
+.mat-column-Unresolved {
+    width: 15%;
+}
+
+.tooltip-i,
+.filter-span,
+.column-title,
+.project-image img {
+  cursor: pointer;
+}
+
+/* Dropdown */
+.dropdown-item:hover {
+  background-color: white;
+  color: #eb7374;
+}
+
+.dropdown-item:active {
+  background-color: white;
+}
 
 
 

@@ -7,115 +7,74 @@
         <a id="createButton" class="btn btn btn-primary" routerLink="createplan">Create plan</a>
       </div>
 
-      <div class="plan-list-items">
-        <table mat-table [dataSource]="dataSource" class="table projects-table mt-3" cellspacing="0">
-          <thead>
-            <tr>
-              <th class="ps-0">Title</th>
-              <th class="plan-average">Run time</th>
-              <th class="plan-cases">Cases</th>
-              <th class="text-end"></th>
-            </tr>
-          </thead>
-            <tbody>
-              <tr class="project-row">
-                <td class="ps-0">
-                  <div>
-                    <a class="defect-title" href="#">Testplan Test</a>
-                  </div>
+      <div class="row mt-2">
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z0" cellspacing="0">
+          
+			<ng-container matColumnDef="TestPlan_Title">
+				<th mat-header-cell *matHeaderCellDef>Title</th>
+				<td mat-cell *matCellDef="let element">
+					<div class="row d-flex align-items-center">
+						<div class="column-title" routerLink="projects/plan/viewplan{{element.TestPlan_ID}}">
+							{{element.TestPlan_Title}}</div>
+						<div class="column-subtitle">{{element.TestPlan_Desc}}</div>
+					</div>
+				</td>
+			</ng-container>
 
-                  <span class="project-cases" style="font-size: 0.875rem;">Created 3 days ago</span>
-                </td>
-                <td> 00:04:18</td>
-                <td> 7 test cases</td>
-                <td class="text-end">
-                  <div class="dropdown">
-                    <a class="btn btn-dropdown" data-bs-toggle="dropdown" aria-expanded="false" href="#">
-                      <i class="bi bi-three-dots"></i>
-                    </a>
+			<ng-container matColumnDef="TestPlan_RunTime">
+				<th mat-header-cell *matHeaderCellDef>Run time</th>
+				<td mat-cell *matCellDef="let element">
+					<div class="row d-flex align-items-center">
+						<div>
+							{{element.TestPlan_RunTime}}</div>
+					</div>
+				</td>
+			</ng-container>
 
-                    <div class="dropdown-menu dropdown-menu-end">
-                      <div class="dropdown-item">
-                        <a href="#">View</a>
-                      </div>
-                      <div class="dropdown-item">
-                        <a href="#">Edit</a>
-                      </div>
-                      <div class="dropdown-item">
-                        <a href="#">Export XLS</a>
-                      </div>
-                      <div class="dropdown-item">
-                        <a class="text-danger">Delete</a>
-                      </div>
-                    </div>
-                  </div>
-                </td>
-              </tr>
-              <tr class="project-row">
-                <td class="ps-0">
-                  <div>
-                    <a class="defect-title" href="#">Testplan test 2</a>
-                  </div>
+			<ng-container matColumnDef="TestPlan_CaseCount">
+				<th mat-header-cell *matHeaderCellDef>Cases</th>
+				<td mat-cell *matCellDef="let element">
+					<div class="row d-flex align-items-center">
+						<div>
+							{{element.TestPlan_CaseCount}} test cases</div>
+					</div>
+				</td>
+			</ng-container>
 
-                  <span class="project-cases" style="font-size: 0.875rem;">Created 3 months ago, updated 1 month ago</span>
-                </td>
-                <td> 00:08:37</td>
-                <td> 14 test cases</td>
-                <td class="text-end">
-                  <div class="dropdown">
-                    <a class="btn btn-dropdown" data-bs-toggle="dropdown" aria-expanded="false" href="#">
-                      <i class="bi bi-three-dots"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-end">
-                      <div class="dropdown-item">
-                        <a href="#">View</a>
-                      </div>
-                      <div class="dropdown-item">
-                        <a href="#">Edit</a>
-                      </div>
-                      <div class="dropdown-item">
-                        <a href="#">Export XLS</a>
-                      </div>
-                      <div class="dropdown-item">
-                        <a class="text-danger">Delete</a>
-                      </div>
-                    </div>
-                  </div>
-                </td>
-              </tr>
-              <tr class="project-row">
-                <td class="ps-0">
-                  <div>
-                    <a class="defect-title" href="#">Testplan test 3</a>
-                  </div>
+			<ng-container matColumnDef="ThreeDots">
+				<th mat-header-cell *matHeaderCellDef></th>
+				<td mat-cell *matCellDef="let element">
+					<div class="d-flex justify-content-end">
+						<button class="btn three-dots" data-bs-toggle="dropdown">
+							<i class="bi bi-three-dots"></i>
+							<div class="dropdown-menu">
+								<div class="dropdown-item">
+									<a routerLink="/projects/plan/viewplan">View</a>
+								</div>
+								<div class="dropdown-item">
+									<a (click)="editViewPlan(element.TestPlan_ID, element.TestPlan_Title, element.TestPlan_Desc, element.TestPlan_CaseCount)">Edit</a>
+								</div>
+								<div class="dropdown-item">
+									<a href="#">Export XLS</a>
+								</div>
+								<div class="dropdown-item">
+									<a href="#">Delete</a>
+								</div>
+								<!-- <div class="dropdown-item"
+									(click)="openUpdateModal(element.Project_ID, element.Project_Name, element.Project_Desc, element.Project_Code, element.Project_AccessType)"
+									data-bs-toggle="modal" data-bs-target="#settingsModal">Settings</div> -->
+								<!-- <div class="dropdown-item"
+									(click)="openDeleteModal(element.Project_ID, element.Project_Name)"
+									data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</div> -->
+							</div>
+						</button>
+					</div>
+				</td>
+			</ng-container>
 
-                  <span class="project-cases" style="font-size: 0.875rem;">Created 6 months ago, updated 4 months ago</span>
-                </td>
-                <td> 00:20:37</td>
-                <td> 36 test cases</td>
-                <td class="text-end">
-                  <div class="dropdown">
-                    <a class="btn btn-dropdown" data-bs-toggle="dropdown" aria-expanded="false" href="#">
-                      <i class="bi bi-three-dots"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-end">
-                      <div class="dropdown-item">
-                        <a href="#">View</a>
-                      </div>
-                      <div class="dropdown-item">
-                        <a href="#">Edit</a>
-                      </div>
-                      <div class="dropdown-item">
-                        <a href="#">Export XLS</a>
-                      </div>
-                      <div class="dropdown-item">
-                        <a class="text-danger">Delete</a>
-                      </div>
-                    </div>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
+          	<tr mat-header-row *matHeaderRowDef=" displayedColumns"></tr>
+			<tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
         </table>
       </div>
   </div>

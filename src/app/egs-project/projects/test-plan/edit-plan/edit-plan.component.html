@@ -6,7 +6,7 @@
                     <h3 class="page-title">
                         <a title="Test plan list" href="/projects/plan" >
                             <i class="submenu-toggle bi bi-arrow-left"></i>
-                        </a> Create Test Plan
+                        </a> Edit Test Plan
                     </h3>
                 </div>
             </div>
@@ -20,7 +20,7 @@
                         <div id="titleGroup" class="form-group">
                             <label for="title" class="page-label control-label required">Title*</label>
                             <div class="mb-3">
-                                <input [(ngModel)]="TestPlan_Title" class="form-control" type="Text" placeholder="For example: Regression">
+                                <input [(ngModel)]="TestPlan_Title" class="form-control" type="Text">
                             </div>
                             <!-- <div class="form-control-feedback hide">
 
@@ -34,8 +34,7 @@
                         <div id="titleGroup" class="form-group">
                             <label for="title" class="page-label control-label required">Description</label>
                             <div class="mb-3">
-                                <textarea [(ngModel)]="TestPlan_Desc" class="form-control"
-                                    placeholder="For example: Full Regression">
+                                <textarea [(ngModel)]="TestPlan_Desc" class="form-control">
                                 </textarea>
                             </div>
                             <!-- <div class="form-control-feedback hide">
@@ -55,7 +54,7 @@
                 </div>
                 <hr>
                 <div class="mt-1">
-                    <button type="button" class="btn btn-primary me-3" (click)="updateInsertTestPlan()">
+                    <button type="button" class="btn btn-primary me-3">
                         Create plan
                     </button>
                     <button class="btn btn-invisible-danger b-0">

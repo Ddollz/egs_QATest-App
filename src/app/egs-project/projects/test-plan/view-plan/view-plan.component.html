@@ -1,0 +1,83 @@
+<div class="app__content">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="view-plan-header">
+                <div class="view-plan-header-title">
+                
+                    <h2 class="page-title my-3">
+                        <a routerLink="/projects/plan">
+                            <i class="submenu-toggle bi bi-arrow-left"></i>
+                        </a>
+                        Testplan Sample
+                    </h2>
+                </div>
+    
+                <div class="view-plan-header-buttons mt-3">
+                    <div class="tri-dot">
+                        <button type="button" class="btn btn-primary" routerLink="/projects/run">
+                            Start run
+                        </button>
+                    </div>
+                    
+                    <div class="dropdown">
+                        <button class="btn btn-secondary" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-three-dots"></i>
+                        </button>
+
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <div class="dropdown-item">
+                                <a href="#">Edit</a>
+                            </div>
+                            <div class="dropdown-item">
+                                <a href="#">Export XLS</a>
+                            </div>
+                            <div class="dropdown-item">
+                                <a class="text-danger">Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="view-plan-tabs flex-fill">
+                <div class="tabs">
+                    <div class="tabs-header-container">
+                        <div class="tabs-header">
+                            <div class="tabs-header-item active">
+                                <div class="tabs-header-item-wrapper">
+                                    <button id="tab-details" class="tabs-header-item-label tabs-header-item-btn">Details</button>
+                                </div>
+                            </div>
+                            <div class="tabs-header-item">
+                                <div class="tabs-header-item-wrapper">
+                                    <button id="tab-test-cases" class="tabs-header-item-btn">Test Cases</button>
+                                </div>
+                            </div>
+                            <div class="tabs-header-item">
+                                <div class="tabs-header-item-wrapper">
+                                    <button id="tab-test-runs" class="tabs-header-item-btn">Test runs</button>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="tabs-header-slider" style="width: 46px; left: -2px;"></span>
+                    </div>
+                    <div class="tabs-content">
+                        <div class="plan-view-details">
+                            <div class="plan-view-details-item">
+                                <p class="view-plan-details-item-header">Description</p>
+                                <div class="markdown-area">
+                                    <div>
+                                        <div style="overflow-wrap: break-word;">
+                                            <p>Sample</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
