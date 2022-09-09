@@ -62,24 +62,13 @@ export interface step {
   Step_InputData: string;
   Step_ExpectedResult: string;
   Step_Status: number;
-  SharedStep_Title: string;
-  isShareable: number;
+  SharedStep_ID: number;
 }
 
 export interface sharedStep {
   SharedStep_ID: number;
   SharedStep_Title: string;
 }
-
-export interface sharedStep2 {
-  SharedStep2_Code: number;
-  SharedStep2_ID: number;
-  SharedStep2_Number: number;
-  SharedStep2_Action: string;
-  SharedStep2_InputData: string;
-  SharedStep2_ExpectedResult: string;
-}
-
 export interface defect {
   Defect_ID: number;
   Defect_Title: string;

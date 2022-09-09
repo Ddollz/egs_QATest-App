@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { sharedStep, sharedStep2 } from '../../../../models/project/project.model';
+import { sharedStep, step } from '../../../../models/project/project.model';
 import { ApiService } from 'src/app/services/api.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { reloadPage } from 'src/app/services/global-functions.service';
 
 @Component({
   selector: 'app-step-create',
@@ -15,58 +16,107 @@ export class StepCreateComponent implements OnInit {
   Button_title: string = 'Create';
 
   json: any = {};
-  sharedSteps: sharedStep[] = [];
-  sharedSteps2: sharedStep2[] = [];
+  sharedSteps: any;
+  steps: step[] = [];
 
-  SharedStep_ID: string = '';
-  SharedStep_Title: string = '';
+  SharedStep_ID: number = 0;
+  SharedStep_Title?: string;
 
-  constructor(private api: ApiService, private router: Router, private route: ActivatedRoute) { }
+  stepDeleteArray: string = '';
 
-  ngOnInit(): void {
+  constructor(private api: ApiService, private router: Router, private route: ActivatedRoute) {
+
     if (this.route.snapshot.params['i']) {
       this.index = this.route.snapshot.params['i'];
       this.Page_title = 'Edit shared step';
       this.Button_title = 'Save';
-      this.getSharedStep();
+      this.SharedStep_ID = this.index;
+      this.api.UniCall(
+        {
+          CommandText: 'egsQASharedStepGet',
+          Params: [
+            {
+              Param: '@SharedStep_ID',
+              Value: this.SharedStep_ID.toString()
+            },
+            {
+              Param: '@WithSteps',
+              Value: '1'
+            }
+          ]
+        }
+      ).subscribe({
+        next: (e) => {
+          this.SharedStep_ID = e[0][0].SharedStep_ID;
+          this.SharedStep_Title = e[0][0].SharedStep_Title;
+          this.steps = e[1]
+        },
+        error: (e) => {
+          alert("500 Internal Server Errors")
+        }
+      });
+    }
+
+  }
+
+  ngOnInit(): void {
+  }
+
+  addStep() {
+    this.steps.push(
+      {
+        Case_StepID: 0,
+        Step_number: this.steps.length + 1,
+        Step_Type: "",
+        Case_ID: 0,
+        Step_Action: "",
+        Step_InputData: "",
+        Step_ExpectedResult: "",
+        Step_Status: 0,
+        SharedStep_ID: 0
+      }
+    )
+  }
+
+  cloneStep(action: string, input: string, result: string) {
+    this.steps.push(
+      {
+        Case_StepID: 0,
+        Step_number: this.steps.length + 1,
+        Step_Type: "",
+        Case_ID: 0,
+        Step_Action: action,
+        Step_InputData: input,
+        Step_ExpectedResult: result,
+        Step_Status: 0,
+        SharedStep_ID: 0
+      }
+    )
+  }
+
+  deleteStep(value: step) {
+    const index: number = this.steps.indexOf(value);
+    if (index !== -1) {
+      this.steps.splice(index, 1);
+    }
+    let i = 1;
+    this.steps.forEach(element => {
+      element.Step_number = i;
+      i++
+    });
+    if (this.index != 0) {
+
+      if (this.stepDeleteArray == "")
+        this.stepDeleteArray = value.Case_StepID.toString();
+      else
+        this.stepDeleteArray = this.stepDeleteArray + ', ' + value.Case_StepID;
+
     }
   }
 
-  getSharedStep() {
+  updateInsertSharedStep(another: boolean = false) {
+    console.log(JSON.stringify(this.steps))
 
-  }
-
-  addSharedStep2() {
-    this.sharedSteps2.push(
-      {
-        SharedStep2_Code: 0,
-        SharedStep2_ID: 0,
-        SharedStep2_Number: this.sharedSteps2.length + 1,
-        SharedStep2_Action: "",
-        SharedStep2_InputData: "",
-        SharedStep2_ExpectedResult: ""
-      }
-    )
-  }
-
-  cloneSharedStep2(action: string, input: string, result: string) {
-    this.sharedSteps2.push(
-      {
-        SharedStep2_Code: 0,
-        SharedStep2_ID: 0,
-        SharedStep2_Number: this.sharedSteps2.length + 1,
-        SharedStep2_Action: action,
-        SharedStep2_InputData: input,
-        SharedStep2_ExpectedResult: result
-      }
-    )
-  }
-
-  deleteSharedStep2() {
-    this.sharedSteps2.pop();
-  }
-
-  updateInsertSharedStep() {
     this.api.UniCall(
       {
         CommandText: 'egsQASharedStepInsertUpdate',
@@ -78,30 +128,45 @@ export class StepCreateComponent implements OnInit {
           {
             Param: '@SharedStep_Title',
             Value: this.SharedStep_Title
+          },
+          {
+            Param: '@stepJson',
+            Value: JSON.stringify(this.steps)
           }
         ]
       }
     ).subscribe({
-      error: (e) => console.error(e),
-      complete: () => console.info('complete')
+      next: (e) => {
+
+        this.api.UniCall(
+          {
+            CommandText: 'egsQAStepDelete',
+            Params: [
+              {
+                Param: '@Case_StepID',
+                Value: this.stepDeleteArray
+              }
+            ]
+          }
+        ).subscribe({
+          next: (e) => {
+          },
+          error: (e) => {
+            alert("500 Internal Server Errors")
+          }
+        });
+
+      },
+      error: (e) => {
+        alert("500 Internal Server Errors")
+      },
+      complete: () => {
+        if (another == true) {
+          reloadPage()
+        } else {
+          this.router.navigate(["/projects/shared-steps"])
+        }
+      }
     });
-
-    this.json['CommandText'] = 'egsQASharedStep2Insert';
-    this.json['Params'] = [];
-
-    var sharedStep2Json = JSON.stringify(this.sharedSteps2).toString();
-    console.log(sharedStep2Json);
-    var temp = {
-      Param: '@SharedStep2Json',
-      Value: sharedStep2Json
-    }
-    this.json['Params'].push(temp);
-
-    this.api.UniCall(
-      this.json
-    ).subscribe({
-      error: (e) => console.error(e),
-      complete: () => this.router.navigate(["projects/shared-steps"])
-    })
   }
 }

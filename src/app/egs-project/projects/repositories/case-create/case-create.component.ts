@@ -188,8 +188,7 @@ export class CaseCreateComponent implements OnInit {
         Step_InputData: "",
         Step_ExpectedResult: "",
         Step_Status: 1,
-        SharedStep_Title: "",
-        isShareable: 0
+        SharedStep_ID: 0,
       }
     )
   }

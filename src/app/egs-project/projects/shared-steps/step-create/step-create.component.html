@@ -17,41 +17,41 @@
 			</div>
 
 			<div class="row">
-				<ng-container *ngFor="let count of sharedSteps2; let i = index">
+				<ng-container *ngFor="let count of steps; let i = index">
 					<div class="d-flex mt-4">
 						<div class="d-flex align-items-end me-3" style="width: 1rem;">
-							<span class="number-span">{{count.SharedStep2_Number}}</span>
+							<span class="number-span">{{count.Step_number}}</span>
 						</div>
 
 						<div class="row w-100">
 							<div class="col pe-0">
 								<Label class="page-label" *ngIf="i == 0">Action*</Label>
 								<input type="text" class="form-control" placeholder="For example: Open Sign in page"
-									[(ngModel)]="count.SharedStep2_Action" value="{{count.SharedStep2_Action}}">
+									[(ngModel)]="count.Step_Action" value="{{count.Step_Action}}">
 							</div>
 							<div class="col">
 								<Label class="page-label" *ngIf="i == 0">Input data</Label>
 								<input type="text" class="form-control" placeholder="For example: Login / password"
-									[(ngModel)]="count.SharedStep2_InputData" value="{{count.SharedStep2_InputData}}">
+									[(ngModel)]="count.Step_InputData" value="{{count.Step_InputData}}">
 							</div>
 							<div class="col ps-0">
 								<Label class="page-label" *ngIf="i == 0">Expected result</Label>
 								<input type="text" class="form-control" placeholder="For example: popup is opened"
-									[(ngModel)]="count.SharedStep2_ExpectedResult" value="{{count.SharedStep2_ExpectedResult}}">
+									[(ngModel)]="count.Step_ExpectedResult" value="{{count.Step_ExpectedResult}}">
 							</div>
 						</div>
 
 						<div class="d-flex align-items-end">
 							<i class="bi bi-image-fill mx-3" data-bs-toggle="tooltip" title="Add attachment"></i>
-							<i class="bi bi-clipboard-fill me-3" data-bs-toggle="tooltip" title="Clone step" (click)="cloneSharedStep2(count.SharedStep2_Action, count.SharedStep2_InputData, count.SharedStep2_ExpectedResult)"></i>
-							<i class="bi bi-trash-fill" data-bs-toggle="tooltip" title="Delete step" (click)="deleteSharedStep2()"></i>
+							<i class="bi bi-clipboard-fill me-3" data-bs-toggle="tooltip" title="Clone step" (click)="cloneStep(count.Step_Action, count.Step_InputData, count.Step_ExpectedResult)"></i>
+							<i class="bi bi-trash-fill" data-bs-toggle="tooltip" title="Delete step" (click)="deleteStep(count)"></i>
 						</div>
 					</div>
 				</ng-container>
 			</div>
 
 			<div class="mt-4 mb-3">
-				<span class="add-step-span" (click)="addSharedStep2()"><i class="bi bi-plus-circle-fill me-2"></i>Add step</span>
+				<span class="add-step-span" (click)="addStep()"><i class="bi bi-plus-circle-fill me-2"></i>Add step</span>
 			</div>
 
 			<div class="row m-0 mb-3">
@@ -61,7 +61,7 @@
 			<div class="row mb-5">
 				<div class="d-flex align-items-center">
 					<button class="btn btn-primary me-3" (click)="updateInsertSharedStep()">{{Button_title}}</button>
-					<button class="btn btn-primary me-3" *ngIf="Button_title != 'Save'">Save and create another</button>
+					<button class="btn btn-primary me-3" *ngIf="Button_title != 'Save'" (click)="updateInsertSharedStep(true)">Save and create another</button>
 					<span class="cancel-span" routerLink="/projects/shared-steps">Cancel</span>
 				</div>
 			</div>

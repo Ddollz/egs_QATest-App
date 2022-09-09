@@ -19,7 +19,7 @@ export class SharedStepsComponent implements OnInit {
   displayedColumns: string[] = ['Title', 'AttachedTo', 'ThreeDots'];
   dataSource = new MatTableDataSource<sharedStep>();
 
-  constructor(private api: ApiService) { 
+  constructor(private api: ApiService) {
     this.api.UniCall(
       {
         CommandText: 'egsQASharedStepGet',
@@ -33,6 +33,7 @@ export class SharedStepsComponent implements OnInit {
     ).subscribe(value => {
       this.sharedSteps = value[0];
       this.dataSource = new MatTableDataSource<sharedStep>(this.sharedSteps);
+      console.log(this.sharedSteps)
     });
   }
 
