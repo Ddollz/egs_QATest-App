@@ -28,7 +28,8 @@
   border-radius: .25rem;
 }
 
-.form-group, .input-group {
+.form-group,
+.input-group {
   margin-bottom: 1.25rem;
   position: relative;
   z-index: 0;
@@ -48,16 +49,18 @@
   background: #fff;
   z-index: 10;
 }
+
 .save-menu {
   border-top: 1px solid #e9e9e9;
   padding-top: 1rem;
 }
+
 .text-start {
   text-align: left !important;
 }
 
 
-.stepNumber{
+.stepNumber {
   font-style: normal;
   font-weight: bold;
   font-size: 14px;
@@ -66,7 +69,8 @@
   opacity: 1;
   white-space: nowrap;
 }
-.stepinput-row{
+
+.stepinput-row {
   width: 90%;
 }
 

@@ -74,7 +74,7 @@
 }
 
 .linkTag.active {
-  color: var(--bs-red-100);
+  color: var(--c-sidebar-tag);
 }
 
 .linkTag:hover {

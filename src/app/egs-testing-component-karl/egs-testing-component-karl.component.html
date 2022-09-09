@@ -1,0 +1,14 @@
+InputFile
+<input type="file" (change)="createFile($event)">
+<br>
+Delete File
+<input type="number" (keyup.enter)="deleteFile($event)">
+<br>
+<br>
+<ng-container *ngFor="let item of displayImage">
+  <!-- <button (click)="createFile()">Create File</button> -->
+  <!-- {{item.byteFile}} -->
+  <button (click)="downloadFile(item.CaseAttachment_ID, item.Filename)">{{item.Filename}} - {{item.CaseAttachment_ID}}</button>
+
+  <img [src]="'data:image/png;base64,'+item.byteFile.fileContents" alt="" width="50%" height="auto">
+</ng-container>
