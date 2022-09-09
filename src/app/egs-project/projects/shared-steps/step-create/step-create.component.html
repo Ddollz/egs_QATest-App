@@ -2,51 +2,56 @@
 	<div class="row">
 		<div class="col-lg-12">
 
-			<h2 class="page-title my-3"><i class="bi bi-arrow-left me-4" data-bs-toggle="tooltip"
-					title="Go back" routerLink="/projects/shared-steps"></i>Create shared step</h2>
+			<h2 class="page-title my-3"><i class="bi bi-arrow-left me-4" data-bs-toggle="tooltip" title="Go back"
+					routerLink="/projects/shared-steps"></i>{{Page_title}}</h2>
 
 			<div class="row mb-3">
 				<div class="col-6">
 					<Label class="page-label">Shared step title*</Label>
-					<input type="text" class="form-control" placeholder="For example: Authorization">
+					<input [(ngModel)]="SharedStep_Title" type="text" class="form-control" placeholder="For example: Authorization">
 				</div>
 			</div>
 
-			<div class="row m-0 mb-4">
+			<div class="row m-0">
 				<span class="label-line ps-0">Steps to reproduce</span>
 			</div>
 
-			<div class="row mb-4">
-				<div class="d-flex">
-					<div class="d-flex align-items-end me-3">
-						<span class="number-span">1</span>
-					</div>
+			<div class="row">
+				<ng-container *ngFor="let count of sharedSteps2; let i = index">
+					<div class="d-flex mt-4">
+						<div class="d-flex align-items-end me-3" style="width: 1rem;">
+							<span class="number-span">{{count.SharedStep2_Number}}</span>
+						</div>
 
-					<div class="row w-100">
-						<div class="col pe-0">
-							<Label class="page-label">Action*</Label>
-							<input type="text" class="form-control" placeholder="For example: Open Sign in page">
+						<div class="row w-100">
+							<div class="col pe-0">
+								<Label class="page-label" *ngIf="i == 0">Action*</Label>
+								<input type="text" class="form-control" placeholder="For example: Open Sign in page"
+									[(ngModel)]="count.SharedStep2_Action" value="{{count.SharedStep2_Action}}">
+							</div>
+							<div class="col">
+								<Label class="page-label" *ngIf="i == 0">Input data</Label>
+								<input type="text" class="form-control" placeholder="For example: Login / password"
+									[(ngModel)]="count.SharedStep2_InputData" value="{{count.SharedStep2_InputData}}">
+							</div>
+							<div class="col ps-0">
+								<Label class="page-label" *ngIf="i == 0">Expected result</Label>
+								<input type="text" class="form-control" placeholder="For example: popup is opened"
+									[(ngModel)]="count.SharedStep2_ExpectedResult" value="{{count.SharedStep2_ExpectedResult}}">
+							</div>
 						</div>
-						<div class="col">
-							<Label class="page-label">Input data</Label>
-							<input type="text" class="form-control" placeholder="For example: Login / password">
-						</div>
-						<div class="col ps-0">
-							<Label class="page-label">Expected result</Label>
-							<input type="text" class="form-control" placeholder="For example: popup is opened">
-						</div>
-					</div>
 
-					<div class="d-flex align-items-end">
-						<i class="bi bi-image-fill mx-3" data-bs-toggle="tooltip" title="Add attachment"></i>
-						<i class="bi bi-clipboard-fill me-3" data-bs-toggle="tooltip" title="Clone step"></i>
-						<i class="bi bi-trash-fill" data-bs-toggle="tooltip" title="Delete step"></i>
+						<div class="d-flex align-items-end">
+							<i class="bi bi-image-fill mx-3" data-bs-toggle="tooltip" title="Add attachment"></i>
+							<i class="bi bi-clipboard-fill me-3" data-bs-toggle="tooltip" title="Clone step" (click)="cloneSharedStep2(count.SharedStep2_Action, count.SharedStep2_InputData, count.SharedStep2_ExpectedResult)"></i>
+							<i class="bi bi-trash-fill" data-bs-toggle="tooltip" title="Delete step" (click)="deleteSharedStep2()"></i>
+						</div>
 					</div>
-				</div>
+				</ng-container>
 			</div>
 
-			<div class="mb-3">
-				<span class="add-step-span"><i class="bi bi-plus-circle-fill me-2"></i>Add step</span>
+			<div class="mt-4 mb-3">
+				<span class="add-step-span" (click)="addSharedStep2()"><i class="bi bi-plus-circle-fill me-2"></i>Add step</span>
 			</div>
 
 			<div class="row m-0 mb-3">
@@ -55,8 +60,8 @@
 
 			<div class="row mb-5">
 				<div class="d-flex align-items-center">
-					<button class="btn btn-primary me-3">Create</button>
-					<button class="btn btn-primary me-3">Save and create another</button>
+					<button class="btn btn-primary me-3" (click)="updateInsertSharedStep()">{{Button_title}}</button>
+					<button class="btn btn-primary me-3" *ngIf="Button_title != 'Save'">Save and create another</button>
 					<span class="cancel-span" routerLink="/projects/shared-steps">Cancel</span>
 				</div>
 			</div>

@@ -40,6 +40,7 @@ import { StepCreateComponent } from './egs-project/projects/shared-steps/step-cr
 import { MilestoneComponent } from './egs-project/projects/milestone/milestone.component';
 import { MilestoneCreateComponent } from './egs-project/projects/milestone/milestone-create/milestone-create.component';
 import { ConfigComponent } from './egs-project/projects/config/config.component';
+import { DefectViewComponent } from './egs-project/projects/defect/defect-view/defect-view.component';
 
 
 //Link Routes
@@ -54,11 +55,15 @@ const appRoute: Routes = [
   { path: 'projects/plan', component: TestPlanComponent },
   { path: 'projects/plan/createplan', component: CreatePlanComponent },
   { path: 'projects/shared-steps', component: SharedStepsComponent },
-  { path: 'projects/shared-steps/step-create', component: StepCreateComponent },
+  { path: 'projects/shared-steps/create', component: StepCreateComponent },
+  { path: 'projects/shared-steps/edit/:i', component: StepCreateComponent },
   { path: 'projects/defect', component: DefectComponent },
-  { path: 'projects/defect/defect-create', component: DefectCreateComponent },
+  { path: 'projects/defect/create', component: DefectCreateComponent },
+  { path: 'projects/defect/edit/:i', component: DefectCreateComponent },
+  { path: 'projects/defect/view/:i', component: DefectViewComponent },
   { path: 'projects/milestone', component: MilestoneComponent },
-  { path: 'projects/milestone/milestone-create', component: MilestoneCreateComponent },
+  { path: 'projects/milestone/create', component: MilestoneCreateComponent },
+  { path: 'projects/milestone/edit/:i', component: MilestoneCreateComponent },
   { path: 'workspace/user', component: UserComponent },
   { path: 'workspace/roles', component: RolesComponent },
   { path: 'login', component: EgsLoginComponent },
@@ -91,6 +96,7 @@ const appRoute: Routes = [
     MilestoneComponent,
     MilestoneCreateComponent,
     ConfigComponent,
+    DefectViewComponent,
   ],
   imports: [
     BrowserModule,

@@ -68,25 +68,6 @@
   color: #eb7374;
 }
 
-.btn-outline-primary {
-  font-size: .875rem;
-  border-radius: .25rem;
-  padding: .2rem .75rem;
-  background-color: white !important;
-  color: var(--bs-red-100) !important;
-  border-color: var(--bs-red-100) !important;
-}
-
-.btn-outline-primary:hover,
-.btn-outline-primary:focus,
-.btn-outline-primary:active,
-.btn-outline-primary.active,
-.open>.dropdown-toggle.btn-outline-primary {
-  border-color: #eb7374 !important;
-  color: #eb7374 !important;
-  box-shadow: none;
-}
-
 /* Checkbox */
 input[type="checkbox"]:focus {
   box-shadow: none !important;

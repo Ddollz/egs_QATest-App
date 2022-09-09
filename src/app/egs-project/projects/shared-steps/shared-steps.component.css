@@ -34,7 +34,14 @@
     margin-bottom: 5px;
 }
 
-.column-title:hover {
+.cancel-span {
+    font-weight: 600;
+    color: var(--bs-red-100);
+    padding: 0rem 0.75rem;
+}
+
+.column-title:hover,
+.cancel-span:hover {
     color: #eb7374;
 }
 
@@ -63,7 +70,8 @@
 
 /* Misc */
 .tooltip-i,
-.column-title {
+.column-title,
+.cancel-span {
     cursor: pointer;
 }
 

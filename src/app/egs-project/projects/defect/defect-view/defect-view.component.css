@@ -11,7 +11,7 @@
     display: flex;
     flex: 1 1 0%;
     flex-direction: column;
-    overflow: hidden;
+    overflow: auto;
     height: 100%;
 }
 
@@ -27,61 +27,47 @@
     margin-bottom: .25rem;
 }
 
-.column-title {
-    color: #222;
-    font-size: 14px;
-    font-weight: 600;
-}
-
 .cancel-span {
     font-weight: 600;
     color: var(--bs-red-100);
     padding: 0rem 0.75rem;
 }
 
-.column-title:hover,
 .cancel-span:hover {
     color: #eb7374;
 }
 
+/* Images */
+.author-img {
+  width: 2rem;
+  height: 2rem;
+  display: inline;
+  margin-right: 0.5rem;
+  border-radius: 5px;
+}
+
+/* Button */
+.filter-btn {
+  font-weight: 600;
+  color: #393939;
+  background-color: #f3f3f3 !important;
+  border: none;
+}
+
+.filter-btn:hover,
+.filter-item:hover {
+  background-color: #efefef !important;
+}
+
 /* Icons */
-.three-dots {
-    padding: 0 8px;
-}
-
-/* Columns */
-.mat-header-cell {
-    font-size: 0.9rem;
-    font-weight: 600;
-}
-
-.mat-column-Title {
-    width: 25%;
-}
-
-.mat-column-Status {
-    width: 17.5%;
-}
-
-.mat-column-Description {
-    width: 17.5%;
-}
-
-.mat-column-Cases {
-    width: 17.5%;
-}
-
-.mat-column-DueDate {
-    width: 17.5%;
-}
-
-.mat-column-ThreeDots {
-    width: 5%;
+.bi-exclamation-circle-fill {
+color: #ffc107;
 }
 
 /* Misc */
-.column-title,
-.cancel-span {
+.tooltip-i,
+.cancel-span,
+.bi-arrow-left {
     cursor: pointer;
 }
 
@@ -90,11 +76,11 @@
 }
 
 /* Dropdown */
-.dropdown-item:hover {
-    background-color: white;
-    color: #eb7374;
-}
-
-.dropdown-item:active {
-    background-color: white;
+.select-item {
+    background-color: var(--black-5);
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    border-radius: .25rem;
 }

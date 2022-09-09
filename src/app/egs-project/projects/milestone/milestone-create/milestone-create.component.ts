@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services/api.service';
 import { milestone } from '../../../../models/project/project.model';
 import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-milestone-create',
@@ -10,29 +11,59 @@ import { Router } from '@angular/router';
 })
 export class MilestoneCreateComponent implements OnInit {
 
+  index: number = 0;
+  Page_title: string = 'Create milestone';
+  Button_title: string = 'Create milestone';
+
   //Update and Insert Variables
   Milestone_ID: string = '';
   Milestone_Title: string = '';
-  Milestone_Status: string = '';
+  Milestone_Status: string = '1';
   Milestone_Description: string = '';
   Milestone_DueDate: string = '';
 
   milestones: milestone[] = [];
 
-  constructor(private api: ApiService, private router: Router) { }
+  constructor(private api: ApiService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.Milestone_Status = "1"
+    if (this.route.snapshot.params['i']) {
+      this.index = this.route.snapshot.params['i'];
+      this.Page_title = 'Edit milestone';
+      this.Button_title = 'Save';
+      this.getMilestone();
+    }
+  }
+
+  getMilestone() {
+    this.api.UniCall(
+      {
+        CommandText: 'egsQAMilestoneGet',
+        Params: [
+          {
+            Param: '@Milestone_ID',
+            Value: null
+          }
+        ]
+      }
+    ).subscribe(value => {
+      this.Milestone_ID = value[0][this.index].Milestone_ID;
+      this.Milestone_Title = value[0][this.index].Milestone_Title;
+      this.Milestone_Description = value[0][this.index].Milestone_Desc;
+      this.Milestone_Status = value[0][this.index].Milestone_Status.toString();
+      this.Milestone_DueDate = value[0][this.index].Milestone_DueDate.substr(0,10);
+    });
   }
 
   updateInsertMilestone() {
+    console.log(this.Milestone_ID);
     this.api.UniCall(
       {
         CommandText: 'egsQAMilestoneInsertUpdate',
         Params: [
           {
             Param: '@Milestone_ID',
-            Value: this.Milestone_ID
+            Value: this.Milestone_ID.toString()
           },
           {
             Param: '@Milestone_Title',
@@ -53,9 +84,8 @@ export class MilestoneCreateComponent implements OnInit {
         ]
       }
     ).subscribe({
-      next: (v) => this.router.navigate(["/projects/milestone"]),
       error: (e) => console.error(e),
-      complete: () => console.info('complete')
+      complete: () => this.router.navigate(["/projects/milestone"])
     });
   }
 }

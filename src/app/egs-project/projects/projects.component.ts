@@ -78,13 +78,8 @@ export class ProjectsComponent implements OnInit {
         ]
       }
     ).subscribe({
-      error(msg) {
-        console.log(msg);
-        alert("500 Internal Server Errors")
-      },
-      complete() {
-        reloadPage();
-      }
+      error: (e) => console.error(e),
+      complete: () => reloadPage()
     });
   }
 
@@ -105,13 +100,8 @@ export class ProjectsComponent implements OnInit {
         ]
       }
     ).subscribe({
-      error(msg) {
-        console.log(msg);
-        alert("500 Internal Server Errors")
-      },
-      complete() {
-        reloadPage();
-      }
+      error: (e) => console.error(e),
+      complete: () => reloadPage()
     });
   }
 

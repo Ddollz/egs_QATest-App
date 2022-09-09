@@ -55,6 +55,32 @@ export interface step {
   Step_Status: number;
 }
 
+export interface sharedStep {
+  SharedStep_ID: number;
+  SharedStep_Title: string;
+}
+
+export interface sharedStep2 {
+  SharedStep2_Code: number;
+  SharedStep2_ID: number;
+  SharedStep2_Number: number;
+  SharedStep2_Action: string;
+  SharedStep2_InputData: string;
+  SharedStep2_ExpectedResult: string;
+}
+
+export interface defect {
+  Defect_ID: number;
+  Defect_Title: string;
+  Defect_ActualResult: string;
+  Defect_Milestone: number;
+  Defect_Severity: number;
+  Defect_Assignee: number;
+  Defect_Author: number;
+  Defect_Status: number;
+  Defect_DateCreated: string;
+}
+
 export interface milestone {
   Milestone_ID: number;
   Milestone_Title: string;

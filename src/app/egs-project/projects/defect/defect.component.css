@@ -44,6 +44,13 @@
 }
 
 /* Images */
+.author-img {
+  width: 1.5rem;
+  height: 1.5rem;
+  display: inline;
+  margin-right: 0.5rem;
+  border-radius: 5px;
+}
 
 /* Buttons */
 .filter-btn {
@@ -77,34 +84,43 @@ input[type="checkbox"]:checked {
     padding: 0 8px;
 }
 
+.bi-exclamation-circle-fill {
+  color: #ffc107;
+}
+
 /* Columns */
 .mat-header-cell {
     font-size: 0.9rem;
     font-weight: 600;
 }
 
+.mat-column-Status {
+  width: 5%;
+}
+
 .mat-column-Defect {
     width: 25%;
+    padding: 10px 0;
 }
 
 .mat-column-Author {
-    width: 14%;
+    width: 13%;
 }
 
 .mat-column-Assignee {
-    width: 14%;
+    width: 13%;
 }
 
 .mat-column-Severity {
-    width: 14%;
+    width: 13%;
 }
 
 .mat-column-Milestone {
-    width: 14%;
+    width: 13%;
 }
 
 .mat-column-External {
-    width: 14%;
+    width: 13%;
 }
 
 .mat-column-ThreeDots {

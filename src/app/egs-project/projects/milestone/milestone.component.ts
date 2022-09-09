@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { milestone } from '../../../models/project/project.model';
 import { ApiService } from '../../../services/api.service';
 import { MatTableDataSource } from '@angular/material/table';
+import { reloadPage } from '../../../services/global-functions.service';
 
 @Component({
   selector: 'app-milestone',
@@ -9,6 +10,9 @@ import { MatTableDataSource } from '@angular/material/table';
   styleUrls: ['./milestone.component.css']
 })
 export class MilestoneComponent implements OnInit {
+
+  Milestone_ID: string = '';
+  Milestone_Title: string = '';
 
   //Table Initialize
   milestones: milestone[] = [];
@@ -32,7 +36,28 @@ export class MilestoneComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
+
+  openDeleteModal(id: string, title: string) {
+    this.Milestone_ID = id;
+    this.Milestone_Title = title;
+  }
+
+  deleteMilestone() {
+    this.api.UniCall(
+      {
+        CommandText: 'egsQAMilestoneDelete',
+        Params: [
+          {
+            Param: '@Milestone_ID',
+            Value: this.Milestone_ID.toString()
+          }
+        ]
+      }
+    ).subscribe({
+      error: (e) => console.error(e),
+      complete: () => reloadPage()
+    });
   }
 
 }
