@@ -62,6 +62,8 @@ export interface step {
   Step_InputData: string;
   Step_ExpectedResult: string;
   Step_Status: number;
+  SharedStep_Title: string;
+  isShareable: number;
 }
 
 export interface sharedStep {
