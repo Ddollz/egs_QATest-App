@@ -1,9 +1,10 @@
+import { ThisReceiver } from '@angular/compiler';
 import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import Quill from 'quill';
 import { ApiService } from 'src/app/services/api.service';
-import { project, suite, testCase, step, testrun, testCaseComment } from '../../../models/project/project.model';
+import { project, suite, testCase, step, testrun, testCaseComment, defect } from '../../../models/project/project.model';
 import { reloadPage, sidebarService } from '../../../services/global-functions.service';
 
 @Component({
@@ -54,7 +55,7 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
 
   //Table test defects
   defectsDisplayedColumns: string[] = ['Defect', 'Author', 'Assignee', 'Severity', 'Milestone', 'External', 'ThreeDots'];
-  defectsDataSource = new MatTableDataSource<testrun>();
+  defectsDataSource = new MatTableDataSource<defect>();
 
   //Case Description Variables
   testCaseID: number = 0;
@@ -458,6 +459,23 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
     });
     //? END
 
+
+    this.api.UniCall(
+      {
+        CommandText: 'egsQADefectGet',
+        Params: [
+          {
+            Param: '@Case_ID',
+            Value: this.testCase.Case_ID.toString()
+          }
+        ],
+      }
+    ).subscribe(value => {
+      // this.defectsDataSource = value[0];
+      console.log(value)
+      this.defectsDataSource = new MatTableDataSource<defect>(value[0]);
+    }
+    );
 
     //? Get Case Comment
     //? START

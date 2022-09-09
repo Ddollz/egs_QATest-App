@@ -26,14 +26,14 @@ export class DefectComponent implements OnInit {
   displayedColumns: string[] = ['Status', 'Defect', 'Author', 'Assignee', 'Severity', 'Milestone', 'External', 'ThreeDots'];
   dataSource = new MatTableDataSource<defect>();
 
-  constructor(private api: ApiService) { 
+  constructor(private api: ApiService) {
     this.api.UniCall(
       {
         CommandText: 'egsQADefectGet',
         Params: [
           {
-            Param: '@Defect_ID',
-            Value: null
+            Param: '@WithAll',
+            Value: 'true'
           }
         ]
       }
