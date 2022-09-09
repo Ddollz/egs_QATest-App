@@ -24,6 +24,7 @@ export class CaseCreateComponent implements OnInit {
 
   //editCase
   editCase: number = 0;
+  TestCaseAndStep: any;
 
   //Models
   suites: suite[] = [];
@@ -75,11 +76,16 @@ export class CaseCreateComponent implements OnInit {
             {
               Param: '@Case_ID',
               Value: this.editCase.toString()
+            },
+            {
+              Param: '@WithStep',
+              Value: 'true'
             }
           ],
         }
       ).subscribe(value => {
-        console.log(value[0][0].Case_ID);
+        this.steps = value[1];
+        console.log(value);
         this.caseForm.controls['@Case_IDED'].setValue(value[0][0].Case_ID);
         this.caseForm.controls['@Case_Title'].setValue(value[0][0].Case_Title);
         this.caseForm.controls['@Case_Status'].setValue(value[0][0].Case_Status.toString());
@@ -142,6 +148,7 @@ export class CaseCreateComponent implements OnInit {
     }
     var stepjson = JSON.stringify(this.steps).toString();
     console.log(stepjson);
+    console.log(this.steps);
     var temps = {
       Param: '@caseJson',
       Value: stepjson

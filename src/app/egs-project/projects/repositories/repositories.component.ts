@@ -395,6 +395,7 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
     this.Description = '';
     this.Preconditions = '';
   }
+
   openPanel(event: Event, testc: testCase) {
     this.changePanelContent('General')
     this.api.UniCall(
