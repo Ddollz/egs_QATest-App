@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ApiService } from 'src/app/services/api.service';
 import { reloadPage } from '../../../../services/global-functions.service';
@@ -25,6 +25,8 @@ export class CaseCreateComponent implements OnInit {
   //editCase
   editCase: number = 0;
   TestCaseAndStep: any;
+  caseID: number = 0;
+  deleteStepsFromEdit: string = '';
 
   //Models
   suites: suite[] = [];
@@ -41,6 +43,17 @@ export class CaseCreateComponent implements OnInit {
 
   //Attachment
   attachments: any = [];
+
+  //SharedStep
+  sharedStepsTitle: string = '';
+  currentStep: step[] = [];
+  sharedSteps: any;
+  selectedSharedstep: any;
+  @ViewChild('openCreateSharedModal') openSharedModalBtn?: ElementRef;
+
+  //Step
+  @ViewChild('openAddSharedStepModal') openSharedStepModalBTN?: ElementRef;
+
 
   constructor(private formBuilder: FormBuilder, private api: ApiService, private activatedRoute: ActivatedRoute, public sidebarServ: sidebarService, private router: Router) {
     this.LinkParamID = Number(this.activatedRoute.snapshot.paramMap.get('id'));
@@ -85,6 +98,8 @@ export class CaseCreateComponent implements OnInit {
         }
       ).subscribe(value => {
         this.steps = value[1];
+        this.caseID = value[0][0].Case_ID;
+        console.log(this.caseID);
         this.caseForm.controls['@Case_IDED'].setValue(value[0][0].Case_ID);
         this.caseForm.controls['@Case_Title'].setValue(value[0][0].Case_Title);
         this.caseForm.controls['@Case_Status'].setValue(value[0][0].Case_Status.toString());
@@ -135,6 +150,21 @@ export class CaseCreateComponent implements OnInit {
       }
       );
     }
+
+    this.api.UniCall(
+      {
+        CommandText: 'egsQASharedStepGet',
+        Params: [
+          {
+            Param: '@SharedStep_ID',
+            Value: null
+          }
+        ]
+      }
+    ).subscribe(value => {
+      this.sharedSteps = value[0];
+      console.log(this.sharedSteps)
+    });
   }
 
   ngOnInit(): void {
@@ -198,7 +228,35 @@ export class CaseCreateComponent implements OnInit {
     this.api.UniCall(
       this.json
     ).subscribe({
-      next: (v) => this.router.navigate(["projects/repository/" + this.LinkParamID]),
+      next: (v) => {
+        this.api.UniCall(
+          {
+            CommandText: 'egsQAStepDelete',
+            Params: [
+              {
+                Param: '@Case_StepID',
+                Value: this.deleteStepsFromEdit
+              },
+              {
+                Param: '@Case_ID',
+                Value: this.caseID.toString()
+              },
+              {
+                Param: '@deleteFromEdit',
+                Value: '1'
+              }
+            ]
+          }
+        ).subscribe({
+          next: (e) => {
+            this.router.navigate(["projects/repository/" + this.LinkParamID])
+          },
+          error: (e) => {
+            alert("500 Internal Server Errors")
+            console.log(e)
+          }
+        });
+      },
       error: (e) => console.error(e),
       complete: () => console.info('complete')
     })
@@ -305,5 +363,90 @@ export class CaseCreateComponent implements OnInit {
       }
     })
 
+  }
+  deleteStep(value: step) {
+    const index: number = this.steps.indexOf(value);
+    if (index !== -1) {
+      this.steps.splice(index, 1);
+    }
+    let i = 1;
+    this.steps.forEach(element => {
+      element.Step_number = i;
+      i++
+    });
+
+
+    if (this.deleteStepsFromEdit == "")
+      this.deleteStepsFromEdit = value.Case_StepID.toString();
+    else
+      this.deleteStepsFromEdit = this.deleteStepsFromEdit + ', ' + value.Case_StepID;
+
+
+  }
+
+  addSharedStep() {
+    console.log(this.selectedSharedstep)
+
+    this.api.UniCall(
+      {
+        CommandText: 'egsQASharedStepGet',
+        Params: [
+          {
+            Param: '@SharedStep_ID',
+            Value: this.selectedSharedstep.toString()
+          },
+          {
+            Param: '@WithSteps',
+            Value: '1'
+          }
+        ]
+      }
+    ).subscribe({
+      next: (e) => {
+        for (let index = 0; index < e[1].length; index++) {
+          e[1][index].Case_StepID = '0';
+          e[1][index].SharedStep_ID = '';
+          this.steps.push(e[1][index]);
+        }
+
+        let i = 1;
+        this.steps.forEach(element => {
+          element.Step_number = i;
+          i++
+        });
+        this.openSharedStepModalBTN?.nativeElement.click();
+
+      },
+      error: (e) => {
+        alert("500 Internal Server Errors")
+      }
+    });
+
+  }
+  setCurrentSharedstep(s: step) {
+    this.currentStep.push(s);
+    console.log(this.currentStep)
+  }
+  updateInsertSharedStep() {
+    this.api.UniCall(
+      {
+        CommandText: 'egsQASharedStepInsertUpdate',
+        Params: [
+          {
+            Param: '@SharedStep_Title',
+            Value: this.sharedStepsTitle
+          },
+          {
+            Param: '@stepJson',
+            Value: JSON.stringify(this.currentStep)
+          }
+        ]
+      }
+    ).subscribe({
+      complete: () => {
+        this.openSharedModalBtn?.nativeElement.click();
+
+      },
+    });
   }
 }

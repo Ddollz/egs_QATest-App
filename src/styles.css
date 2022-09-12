@@ -183,6 +183,16 @@ select {
 
 
 /* Forms  */
+.required:after {
+  color: #d0021b;
+  content: "*";
+  margin-left: 0.125rem;
+}
+
+.cancel-span {
+  cursor: pointer;
+}
+
 .invalid-f p {
   color: var(--bs-red-100);
 }
@@ -244,6 +254,11 @@ select {
 .btn-primary.active,
 .open>.dropdown-toggle.btn-primary {
   box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+}
+
+.btn:disabled {
+  background: var(--bs-red-100);
+
 }
 
 

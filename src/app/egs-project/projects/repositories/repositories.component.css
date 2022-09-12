@@ -390,10 +390,6 @@
   margin: 0;
 }
 
-.cancel-span {
-  cursor: pointer;
-}
-
 .modal-title i {
   color: var(--bs-red-100);
 }
