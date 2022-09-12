@@ -1,10 +1,8 @@
-import { ThisReceiver } from '@angular/compiler';
 import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
-import Quill from 'quill';
 import { ApiService } from 'src/app/services/api.service';
-import { project, suite, testCase, step, testrun, testCaseComment, defect } from '../../../models/project/project.model';
+import { project, suite, testCase, step, testrun, defect } from '../../../models/project/project.model';
 import { reloadPage, sidebarService } from '../../../services/global-functions.service';
 
 @Component({
@@ -38,6 +36,20 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
   //Modal
   Modal_Title: string = "Create suite";
   Modal_btn: string = "Create";
+
+
+  //Modal Delete
+  @ViewChild('openDeleteSuiteModal') deleteSuiteButton?: ElementRef;
+  dataTypeDelete: string = "Suite";
+  dataTitleDelete: string = "N/a";
+  countSuiteChild: number = 0;
+  numberOfCasesDelete: number = 0;
+  currentSuiteDelete: any;
+  preventDeleteSuiteParent: any = 'delete';
+
+  //Selection Suite
+  // preventDeleteSuiteID: any = [];
+  preventSuiteID: any = [];
 
   //Project Modals
   suites: suite[] = [];
@@ -320,7 +332,7 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
   }
   editSuite(editSuite: number) {
     this.Modal_Title = "Edit suite";
-    this.Modal_btn = "Edit";
+    this.Modal_btn = "Save";
     var currentSuite = this.suites.find(x => x.Suite_ID === editSuite);
     if (currentSuite != null) {
       this.Suite_ID = currentSuite.Suite_ID;
@@ -333,8 +345,35 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
       this.Description = currentSuite.Suite_Desc;
       this.Preconditions = currentSuite.Suite_PreCondition;
       this.Suite_Name = currentSuite.Suite_Name;
+
+
+      //? Select Suite Delete
+      this.preventSuiteID.push(currentSuite.Suite_ID);
+      console.log(this.preventSuiteID);
+      //? Select/Filter if has a child
+      var child = this.suites.filter(x => x.Parent_SuiteID === currentSuite?.Suite_ID);
+      this.preventSuiteID.push(child[0].Suite_ID);
+
+      //? If has a chiled loop again and get all child
+      if (child.length > 0) {
+        for (let index = 0; index < child.length; index++) {
+          this.getChildTreeSuiteID(child[index].Suite_ID)
+        }
+      }
     }
   }
+
+  //? Looping child
+  getChildTreeSuiteID(id: number) {
+    var child = this.suites.filter(x => x.Parent_SuiteID === id);
+    if (child.length > 0) {
+      this.preventSuiteID.push(child[0].Suite_ID);
+      for (let index = 0; index < child.length; index++) {
+        this.getChildTreeSuite(child[index].Suite_ID)
+      }
+    }
+  }
+
   deleteOnCascade(i: number) {
     var currentSuite = this.suites.find(x => x.Parent_SuiteID === i);
     if (currentSuite != null) {
@@ -347,39 +386,54 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
     return true
   }
   deleteSuite(suiteID: number) {
+    //? Modal Buttom and entities
+    this.deleteSuiteButton?.nativeElement.click();
+    this.countSuiteChild = 0;
+    this.numberOfCasesDelete = 0;
+    this.preventSuiteID = [];
 
-    var currentSuite = this.suites.find(x => x.Suite_ID === suiteID);
-    var child = this.suites.filter(x => x.Parent_SuiteID === suiteID);
-    if (currentSuite != null) {
-      if (child.length > 0) {
-        for (let index = 0; index < child.length; index++) {
-          if (this.deleteOnCascade(child[index].Suite_ID)) {
-            this.suitesDeleteArray = this.suitesDeleteArray + ', ' + child[index].Suite_ID;
-          }
-        }
+    //? Select Suite Delete
+    this.currentSuiteDelete = this.suites.find(x => x.Suite_ID === suiteID);
+    this.preventSuiteID.push(this.currentSuiteDelete.Suite_ID);
+
+    //? Select/Filter if has a child
+    var child = this.suites.filter(x => x.Parent_SuiteID === this.currentSuiteDelete.Suite_ID);
+
+    //? If has a chiled loop again and get all child
+    if (child.length > 0) {
+      this.preventSuiteID.push(child[0].Suite_ID);
+
+      for (let index = 0; index < child.length; index++) {
+        this.getChildTreeSuite(child[index].Suite_ID)
       }
-      this.suitesDeleteArray = this.suitesDeleteArray + ', ' + currentSuite.Suite_ID;
-      // console.log(this.suitesDeleteArray);
-      this.api.UniCall(
-        {
-          CommandText: 'egsQASuiteDelete',
-          Params: [
-            {
-              Param: '@List',
-              Value: this.suitesDeleteArray.toString()
-            }
-          ],
-        }
-      ).subscribe(
-        {
-          // next: (v) => console.log(v),
-          error: (e) => { console.error(e); alert("500 Internal Server Errors") },
-          complete: () => reloadPage()
-        }
-      )
+    }
+
+    for (let index = 0; index < this.preventSuiteID.length; index++) {
+      if (this.preventSuiteID[index] != suiteID) {
+        this.countSuiteChild += 1;
+      }
+    }
+
+    for (let index = 0; index < this.preventSuiteID.length; index++) {
+      let cased = this.testCases.filter(x => x.Suite_ID === this.preventSuiteID[index]);
+      this.numberOfCasesDelete = cased.length + this.numberOfCasesDelete;
+    }
+    //? Modal Change
+    if (this.currentSuiteDelete != null) {
+      this.dataTitleDelete = this.currentSuiteDelete.Suite_Name
+    }
+
+  }
+  //? Looping child
+  getChildTreeSuite(id: number) {
+    var child = this.suites.filter(x => x.Parent_SuiteID === id);
+    if (child.length > 0) {
+      this.preventSuiteID.push(child[0].Suite_ID);
+      for (let index = 0; index < child.length; index++) {
+        this.getChildTreeSuite(child[index].Suite_ID)
+      }
     }
   }
-
   createChildSuites(SuiteParentID: any) {
     this.resetModal();
     this.Suite_Root = 'ParentRoot|' + SuiteParentID;
@@ -664,5 +718,97 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
   }
   displayCommentContent(event: any, content: any) {
     event.setContents(JSON.parse(content));
+  }
+
+  deleteSuiteData() {
+    var child = this.suites.filter(x => x.Parent_SuiteID === this.currentSuiteDelete.Suite_ID);
+
+    //? If dont delete
+    if (this.preventDeleteSuiteParent != 'delete') {
+      let newRoot = '';
+      var splited = this.preventDeleteSuiteParent.split("|");
+      if (splited[0] === 'ProjectRoot') {
+        newRoot = ''
+      } else if ((splited[0] === 'ParentRoot')) {
+        newRoot = splited[1].toString();
+      }
+      console.log(child[0])
+      this.api.UniCall(
+        {
+          CommandText: 'egsQASuiteInsertUpdate',
+          Params: [
+            {
+              Param: '@Suite_ID',
+              Value: child[0].Suite_ID.toString()
+            },
+            {
+              Param: '@Parent_SuiteID',
+              Value: newRoot.toString() || null
+            }
+          ],
+        }
+      ).subscribe(
+        {
+          next: (result) => {
+          },
+          error: (msg) => {
+            console.log(msg);
+            alert("500 Internal Server Errors")
+          },
+          complete: () => {
+
+            this.suitesDeleteArray = this.currentSuiteDelete.Suite_ID;
+            // console.log(this.suitesDeleteArray);
+            this.api.UniCall(
+              {
+                CommandText: 'egsQASuiteDelete',
+                Params: [
+                  {
+                    Param: '@List',
+                    Value: this.suitesDeleteArray.toString()
+                  }
+                ],
+              }
+            ).subscribe(
+              {
+                // next: (v) => console.log(v),
+                error: (e) => { console.error(e); alert("500 Internal Server Errors") },
+                complete: () => reloadPage()
+              }
+            )
+          }
+        }
+      )
+    }
+
+    if (this.currentSuiteDelete != null && this.preventDeleteSuiteParent == 'delete') {
+      if (child.length > 0) {
+        for (let index = 0; index < child.length; index++) {
+          if (this.deleteOnCascade(child[index].Suite_ID)) {
+            this.suitesDeleteArray = this.suitesDeleteArray + ', ' + child[index].Suite_ID;
+          }
+        }
+      }
+      this.suitesDeleteArray = this.suitesDeleteArray + ', ' + this.currentSuiteDelete.Suite_ID;
+      // console.log(this.suitesDeleteArray);
+      this.api.UniCall(
+        {
+          CommandText: 'egsQASuiteDelete',
+          Params: [
+            {
+              Param: '@List',
+              Value: this.suitesDeleteArray.toString()
+            }
+          ],
+        }
+      ).subscribe(
+        {
+          // next: (v) => console.log(v),
+          error: (e) => { console.error(e); alert("500 Internal Server Errors") },
+          complete: () => reloadPage()
+        }
+      )
+    }
+
   }
 }
