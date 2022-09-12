@@ -85,7 +85,6 @@ export class CaseCreateComponent implements OnInit {
         }
       ).subscribe(value => {
         this.steps = value[1];
-        console.log(value);
         this.caseForm.controls['@Case_IDED'].setValue(value[0][0].Case_ID);
         this.caseForm.controls['@Case_Title'].setValue(value[0][0].Case_Title);
         this.caseForm.controls['@Case_Status'].setValue(value[0][0].Case_Status.toString());
@@ -104,6 +103,35 @@ export class CaseCreateComponent implements OnInit {
         this.caseForm.controls['@Case_PostCondition'].setValue(value[0][0].Case_PostCondition);
         this.caseForm.controls['@Case_Tags'].setValue(value[0][0].Case_Tag);
         this.caseForm.controls['@User_ID'].setValue(value[0][0].User_ID);
+
+
+        var Params =
+          [
+            {
+              Param: "@Case_ID",
+              Value: value[0][0].Case_ID.toString()
+            }
+
+          ];
+
+
+        var formData = new FormData();
+        formData.append("CommandText", 'egsQATestCaseAttachmentGet');
+        formData.append("Params", JSON.stringify(Params));
+
+        //? API CALL
+        this.api.UniAttachmentlist(formData).subscribe({
+          next: (result) => {
+            console.log(typeof result)
+            console.log(result[0])
+            // if (result[0].length != 0)
+            this.attachments = result[0];
+          },
+          error: (msg) => {
+            console.log(msg);
+            alert("500 Internal Server Errors")
+          }
+        })
       }
       );
     }
@@ -147,8 +175,6 @@ export class CaseCreateComponent implements OnInit {
       this.json['Params'].push(temp);
     }
     var stepjson = JSON.stringify(this.steps).toString();
-    console.log(stepjson);
-    console.log(this.steps);
     var temps = {
       Param: '@caseJson',
       Value: stepjson
@@ -156,10 +182,11 @@ export class CaseCreateComponent implements OnInit {
     this.json['Params'].push(temps);
 
     var tempStringForAttachment = '';
+    // console.log(this.attachments[1])
+    // console.log(this.attachments[1].length)
+    // this.attachments = this.attachments[1]
     for (let index = 0; index < this.attachments.length; index++) {
-      for (let o = 0; o < this.attachments[index].length; o++) {
-        tempStringForAttachment = this.attachments[index][o].CaseAttachment_ID + ',' + tempStringForAttachment;
-      }
+      tempStringForAttachment = this.attachments[index].CaseAttachment_ID + ',' + tempStringForAttachment;
     }
 
     var attachmentParam = {
@@ -193,7 +220,11 @@ export class CaseCreateComponent implements OnInit {
     )
   }
   addAttachment(event: any) {
-    this.attachments.push(event);
+    console.log(event);
+    // if (this.attachments == undefined) {
+    //   this.attachments = event;
+    // } else
+    this.attachments.push(event[0]);
     console.log(this.attachments);
   }
   deleteAttachment(value: number) {
@@ -231,6 +262,46 @@ export class CaseCreateComponent implements OnInit {
       },
       complete: () => {
         reloadPage();
+      }
+    })
+
+  }
+
+  //? Function for downloading file
+  downloadFile(file_ID: any, filename: string) {
+
+    //? Stored Procedure Name
+    var commandText = 'egsQATestCaseAttachmentGet';
+
+    //? Parameter of the store procedure
+    var Params = [{
+      Param: "@CaseAttachment_ID",
+      Value: file_ID.toString()
+    }]
+
+    //? Convert Param JSON to String So may the api able to read json
+    var stringParam = JSON.stringify(Params);
+    var formData = new FormData();
+
+
+    //? When we are using UniAttachment we need to use Formdata in angular allowing us
+    //? to create, read, update and delete files
+    //? When posting file the "isDownload field is required"
+    formData.append("CommandText", commandText);
+    formData.append("Params", stringParam);
+    formData.append("file_ID", file_ID.toString());
+    formData.append("isDownload", 'true');
+
+    this.api.UniAttachmentlist(formData, true).subscribe({
+      next: (result) => {
+        let blob: Blob = result.body as Blob;
+        let a = document.createElement('a');
+        a.download = filename;
+        a.href = window.URL.createObjectURL(blob);
+        a.click();
+      },
+      error: (msg) => {
+        console.log(msg);
       }
     })
 

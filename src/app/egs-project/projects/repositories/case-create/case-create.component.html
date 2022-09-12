@@ -240,48 +240,46 @@
           <div class="col">
             <div id="case-attachments" class="attachments">
               <ng-container *ngFor="let attachment of attachments">
-                <ng-container *ngFor="let variable of attachment">
-                  <ng-container *ngIf="variable.byteFile.contentType.split('/')[0] == 'image'; else notImage">
+                <ng-container *ngIf="attachment.byteFile.contentType.split('/')[0] == 'image'; else notImage">
 
 
-                    <div class="suitecase-attachment">
-                      <div class="suitecase-attachment-container">
-                        <div data-disable="false" class="suitecase-attachment-image" style="background: url(&quot;data:image/png;base64,{{variable.byteFile.fileContents}}&quot;);"><a class="suitecase-attachment-link is-image"></a>
-                          <div class="suitecase-attachment-overlay">
-                            <p class="suitecase-attachment-filename">{{variable.Filename}}</p>
-                            <div class="suitecase-attachment-overlay-bottom">
-                              <p class="suitecase-attachment-size"> {{variable.Filesize}}</p><button type="button" class="suitecase-attachment-remove"><i class="bi bi-x"></i></button>
-                            </div>
+                  <div class="suitecase-attachment">
+                    <div class="suitecase-attachment-container">
+                      <div data-disable="false" class="suitecase-attachment-image"(click)="downloadFile(attachment.CaseAttachment_ID,attachment.Filename)"  style="background: url(&quot;data:image/png;base64,{{attachment.byteFile.fileContents}}&quot;);"><a class="suitecase-attachment-link is-image"></a>
+                        <div class="suitecase-attachment-overlay">
+                          <p class="suitecase-attachment-filename">{{attachment.Filename}}</p>
+                          <div class="suitecase-attachment-overlay-bottom">
+                            <p class="suitecase-attachment-size"> {{attachment.Filesize}}</p><button type="button" class="suitecase-attachment-remove"><i class="bi bi-x"></i></button>
                           </div>
                         </div>
                       </div>
                     </div>
-
-                  </ng-container>
-
-                  <ng-template #notImage>
-
-
-                    <div class="suitecase-attachment">
-                      <div class="suitecase-attachment-container">
-                        <div data-disable="false" class="suitecase-attachment-file">
-                          <a class="suitecase-attachment-link"></a>
-                          <span class="suitecase-attachment-extension">{{variable.byteFile.contentType.split('/')[0]}}</span>
-                          <div class="suitecase-attachment-overlay">
-                            <p class="suitecase-attachment-filename">{{variable.Filename}}</p>
-                            <div class="suitecase-attachment-overlay-bottom">
-                              <p class="suitecase-attachment-size"> {{variable.Filesize}}</p>
-                              <button type="button" class="suitecase-attachment-remove" (click)="deleteAttachment(variable.CaseAttachment_ID)"><i class="bi bi-x"></i></button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </ng-template>
-
-
+                  </div>
 
                 </ng-container>
+
+                <ng-template #notImage>
+
+
+                  <div class="suitecase-attachment">
+                    <div class="suitecase-attachment-container">
+                      <div data-disable="false" class="suitecase-attachment-file" (click)="downloadFile(attachment.CaseAttachment_ID,attachment.Filename)">
+                        <a class="suitecase-attachment-link"></a>
+                        <span class="suitecase-attachment-extension">{{attachment.byteFile.contentType.split('/')[0]}}</span>
+                        <div class="suitecase-attachment-overlay">
+                          <p class="suitecase-attachment-filename">{{attachment.Filename}}</p>
+                          <div class="suitecase-attachment-overlay-bottom">
+                            <p class="suitecase-attachment-size"> {{attachment.Filesize}}</p>
+                            <button type="button" class="suitecase-attachment-remove" (click)="deleteAttachment(attachment.CaseAttachment_ID)"><i class="bi bi-x"></i></button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+
+
+
               </ng-container>
 
             </div>
@@ -345,7 +343,7 @@
               </div>
             </ng-container>
 
-            <div id="case-attachments" class="attachments"></div>
+            <!-- <div id="case-attachments" class="attachments"></div> -->
             <button class="button-blue-transparent btn  b-0 p-0" type="button" (click)="addStepInput()">
               <i class="bi bi-plus-circle-fill" style="color: var(--bs-blue-prime);"></i> Add Step
             </button>

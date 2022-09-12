@@ -59,13 +59,14 @@ export class UploadAttachmentComponent implements OnInit, AfterViewInit {
 
     this.api.UniAttachmentlist(formData).subscribe({
       next: (result) => {
-        this.fileUploaded = result[1];
-        this.uploadedEvent.emit(this.fileUploaded);
+        console.log(result[0]);
+        this.fileUploaded = result[0];
+        this.uploadedEvent.emit(result[0]);
       },
       error: (msg) => {
         console.log(msg);
       },
-      complete: ()=>{
+      complete: () => {
         this.myDiv?.nativeElement.click();
       }
     })

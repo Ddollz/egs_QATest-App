@@ -235,7 +235,7 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
       }
     ).subscribe(
       {
-        next: (v) => console.log(v),
+        // next: (v) => console.log(v),
         error: (e) => console.error(e),
         complete: () => reloadPage()
       }
@@ -271,7 +271,7 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
       this.Parent_SuiteID = splited[1];
       this.Suite_Root = this.LinkParamID.toString();
     }
-    console.log(this.Parent_SuiteID);
+    // console.log(this.Parent_SuiteID);
     this.api.UniCall(
       {
         CommandText: 'egsQASuiteInsertUpdate',
@@ -312,7 +312,7 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
       }
     ).subscribe(
       {
-        next: (v) => console.log(v),
+        // next: (v) => console.log(v),
         error: (e) => console.error(e),
         complete: () => reloadPage()
       }
@@ -359,7 +359,7 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
         }
       }
       this.suitesDeleteArray = this.suitesDeleteArray + ', ' + currentSuite.Suite_ID;
-      console.log(this.suitesDeleteArray);
+      // console.log(this.suitesDeleteArray);
       this.api.UniCall(
         {
           CommandText: 'egsQASuiteDelete',
@@ -372,7 +372,7 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
         }
       ).subscribe(
         {
-          next: (v) => console.log(v),
+          // next: (v) => console.log(v),
           error: (e) => { console.error(e); alert("500 Internal Server Errors") },
           complete: () => reloadPage()
         }
@@ -472,7 +472,7 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
       }
     ).subscribe(value => {
       // this.defectsDataSource = value[0];
-      console.log(value)
+      // console.log(value)
       this.defectsDataSource = new MatTableDataSource<defect>(value[0]);
     }
     );
@@ -493,7 +493,7 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
       {
         next: (v) => {
           this.caseComments = v[0];
-          console.log(v[0])
+          // console.log(v[0])
         },
         error: (e) => console.error(e),
       }
@@ -541,7 +541,7 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
       }
     ).subscribe(
       {
-        next: (v) => console.log(v),
+        // next: (v) => console.log(v),
         error: (e) => { console.error(e); alert("500 Internal Server Errors") },
         complete: () => reloadPage()
       }
@@ -575,7 +575,7 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
 
     this.api.UniAttachmentlist(formData, false).subscribe({
       next: (result) => {
-        console.log(result)
+        // console.log(result)
       },
       error: (msg) => {
         console.log(msg);
@@ -586,6 +586,47 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
     })
 
   }
+
+  //? Function for downloading file
+  downloadFile(file_ID: any, filename: string) {
+
+    //? Stored Procedure Name
+    var commandText = 'egsQATestCaseAttachmentGet';
+
+    //? Parameter of the store procedure
+    var Params = [{
+      Param: "@CaseAttachment_ID",
+      Value: file_ID.toString()
+    }]
+
+    //? Convert Param JSON to String So may the api able to read json
+    var stringParam = JSON.stringify(Params);
+    var formData = new FormData();
+
+
+    //? When we are using UniAttachment we need to use Formdata in angular allowing us
+    //? to create, read, update and delete files
+    //? When posting file the "isDownload field is required"
+    formData.append("CommandText", commandText);
+    formData.append("Params", stringParam);
+    formData.append("file_ID", file_ID.toString());
+    formData.append("isDownload", 'true');
+
+    this.api.UniAttachmentlist(formData, true).subscribe({
+      next: (result) => {
+        let blob: Blob = result.body as Blob;
+        let a = document.createElement('a');
+        a.download = filename;
+        a.href = window.URL.createObjectURL(blob);
+        a.click();
+      },
+      error: (msg) => {
+        console.log(msg);
+      }
+    })
+
+  }
+
   postComment() {
     let currentDateTime = new Date();
     this.api.UniCall(
@@ -612,7 +653,7 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
       }
     ).subscribe(
       {
-        next: (v) => console.log(v),
+        // next: (v) => console.log(v),
         error: (e) => { console.error(e); alert("500 Internal Server Errors") },
         complete: () => reloadPage()
       }

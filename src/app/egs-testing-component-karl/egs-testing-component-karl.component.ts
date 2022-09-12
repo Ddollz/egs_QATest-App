@@ -39,8 +39,9 @@ export class EgsTestingComponentKarlComponent implements OnInit {
     //? API CALL
     this.api.UniAttachmentlist(formData).subscribe({
       next: (result) => {
+        console.log(typeof result[0])
         this.displayImage = result[0];
-        console.log(result)
+        // console.log(result)
       },
       error: (msg) => {
         console.log(msg);
