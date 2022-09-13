@@ -99,7 +99,6 @@ export class CaseCreateComponent implements OnInit {
       ).subscribe(value => {
         this.steps = value[1];
         this.caseID = value[0][0].Case_ID;
-        console.log(this.caseID);
         this.caseForm.controls['@Case_IDED'].setValue(value[0][0].Case_ID);
         this.caseForm.controls['@Case_Title'].setValue(value[0][0].Case_Title);
         this.caseForm.controls['@Case_Status'].setValue(value[0][0].Case_Status.toString());
@@ -131,16 +130,14 @@ export class CaseCreateComponent implements OnInit {
 
 
         var formData = new FormData();
-        formData.append("CommandText", 'egsQATestCaseAttachmentGet');
+        formData.append("CommandText", 'egsQAAttachmentGet');
         formData.append("Params", JSON.stringify(Params));
 
         //? API CALL
         this.api.UniAttachmentlist(formData).subscribe({
           next: (result) => {
-            console.log(typeof result)
-            console.log(result[0])
-            // if (result[0].length != 0)
-            this.attachments = result[0];
+            if (result[0] != undefined)
+              this.attachments = result[0];
           },
           error: (msg) => {
             console.log(msg);
@@ -163,7 +160,6 @@ export class CaseCreateComponent implements OnInit {
       }
     ).subscribe(value => {
       this.sharedSteps = value[0];
-      console.log(this.sharedSteps)
     });
   }
 
@@ -216,7 +212,7 @@ export class CaseCreateComponent implements OnInit {
     // console.log(this.attachments[1].length)
     // this.attachments = this.attachments[1]
     for (let index = 0; index < this.attachments.length; index++) {
-      tempStringForAttachment = this.attachments[index].CaseAttachment_ID + ',' + tempStringForAttachment;
+      tempStringForAttachment = this.attachments[index].Attachment_ID + ',' + tempStringForAttachment;
     }
 
     var attachmentParam = {
@@ -278,23 +274,18 @@ export class CaseCreateComponent implements OnInit {
     )
   }
   addAttachment(event: any) {
-    console.log(event);
-    // if (this.attachments == undefined) {
-    //   this.attachments = event;
-    // } else
     this.attachments.push(event[0]);
-    console.log(this.attachments);
   }
   deleteAttachment(value: number) {
 
     var file_ID = value;
-    console.log(file_ID)
+    console.log("hallo")
     //? Stored Procedure Name
-    var commandText = 'egsQATestCaseAttachmentDelete';
+    var commandText = 'egsQAAttachmentDelete';
 
     //? Parameter of the store procedure
     var Params = [{
-      Param: "@CaseAttachment_ID",
+      Param: "@Attachment_ID",
       Value: file_ID.toString()
     }]
 
@@ -329,11 +320,11 @@ export class CaseCreateComponent implements OnInit {
   downloadFile(file_ID: any, filename: string) {
 
     //? Stored Procedure Name
-    var commandText = 'egsQATestCaseAttachmentGet';
+    var commandText = 'egsQAAttachmentGet';
 
     //? Parameter of the store procedure
     var Params = [{
-      Param: "@CaseAttachment_ID",
+      Param: "@Attachment_ID",
       Value: file_ID.toString()
     }]
 

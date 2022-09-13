@@ -34,7 +34,7 @@ export class UploadAttachmentComponent implements OnInit, AfterViewInit {
   uploadImage(event: any) {
     console.log(event.target.files[0])
     //? Stored Procedure Name
-    var commandText = 'egsQATestCaseAttachmentInsertUpdate';
+    var commandText = 'egsQAAttachmentInsertUpdate';
 
     //? Parameter of the store procedure
     var Params =

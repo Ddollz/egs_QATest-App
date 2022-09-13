@@ -485,7 +485,7 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
 
     //? Get Attachments
     //? START
-    var commandText = 'egsQATestCaseAttachmentGet';
+    var commandText = 'egsQAAttachmentGet';
     var Params =
       [
 
@@ -606,11 +606,11 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
 
     var file_ID = value;
     //? Stored Procedure Name
-    var commandText = 'egsQATestCaseAttachmentDelete';
+    var commandText = 'egsQAAttachmentDelete';
 
     //? Parameter of the store procedure
     var Params = [{
-      Param: "@CaseAttachment_ID",
+      Param: "@Attachment_ID",
       Value: file_ID.toString()
     }]
 
@@ -645,11 +645,11 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
   downloadFile(file_ID: any, filename: string) {
 
     //? Stored Procedure Name
-    var commandText = 'egsQATestCaseAttachmentGet';
+    var commandText = 'egsQAAttachmentGet';
 
     //? Parameter of the store procedure
     var Params = [{
-      Param: "@CaseAttachment_ID",
+      Param: "@ttachment_ID",
       Value: file_ID.toString()
     }]
 
