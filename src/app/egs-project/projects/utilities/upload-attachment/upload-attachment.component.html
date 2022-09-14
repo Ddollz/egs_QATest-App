@@ -7,7 +7,7 @@
       </div>
       <div class="modal-body">
         <form action="/v1/workspace/attachments/upload" class="dropzone" enctype="multipart/form-data">
-          <input type="file" (change)="uploadImage($event)">
+          <input type="file" (change)="uploadImage($event)" #myFileInput>
           <div class="dz-message"><span>Drop files here to upload</span></div>
         </form>
       </div>

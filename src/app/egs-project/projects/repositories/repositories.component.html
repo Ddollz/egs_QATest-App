@@ -196,13 +196,13 @@
 
                 <div class="suitecase-attachment">
                   <div class="suitecase-attachment-container">
-                    <div class="suitecase-attachment-image" (click)="downloadFile(attachment.CaseAttachment_ID,attachment.Filename)" style="background: url(&quot;data:image/png;base64,{{attachment.byteFile.fileContents}}&quot;)">
+                    <div class="suitecase-attachment-image" (click)="downloadFile(attachment.Attachment_ID,attachment.Filename)" style="background: url(&quot;data:image/png;base64,{{attachment.byteFile.fileContents}}&quot;)">
                       <a class="suitecase-attachment-link is-image"></a>
                       <div class="suitecase-attachment-overlay">
                         <p class="suitecase-attachment-filename">{{attachment.Filename}}</p>
                         <div class="suitecase-attachment-overlay-bottom">
                           <p class="suitecase-attachment-size"> {{attachment.Filesize}}</p>
-                          <button type="button" class="suitecase-attachment-remove" (click)="deleteAttachment(attachment.CaseAttachment_ID)"><i class="bi bi-x"></i></button>
+                          <button type="button" class="suitecase-attachment-remove" (click)="deleteAttachment(attachment.Attachment_ID)"><i class="bi bi-x"></i></button>
                         </div>
                       </div>
                     </div>
@@ -215,14 +215,14 @@
 
                 <div class="suitecase-attachment">
                   <div class="suitecase-attachment-container">
-                    <div data-disable="false" class="suitecase-attachment-file" (click)="downloadFile(attachment.CaseAttachment_ID,attachment.Filename)">
+                    <div data-disable="false" class="suitecase-attachment-file" (click)="downloadFile(attachment.Attachment_ID,attachment.Filename)">
                       <a class="suitecase-attachment-link"></a>
                       <span class="suitecase-attachment-extension">{{attachment.byteFile.contentType.split('/')[0]}}</span>
                       <div class="suitecase-attachment-overlay">
                         <p class="suitecase-attachment-filename">{{attachment.Filename}}</p>
                         <div class="suitecase-attachment-overlay-bottom">
                           <p class="suitecase-attachment-size"> {{attachment.Filesize}}</p>
-                          <button type="button" class="suitecase-attachment-remove" (click)="deleteAttachment(attachment.CaseAttachment_ID)"><i class="bi bi-x"></i></button>
+                          <button type="button" class="suitecase-attachment-remove" (click)="deleteAttachment(attachment.Attachment_ID)"><i class="bi bi-x"></i></button>
                         </div>
                       </div>
                     </div>
@@ -260,6 +260,26 @@
               <th mat-header-cell *matHeaderCellDef> Expected Result </th>
               <td mat-cell *matCellDef="let element">
                 <div class="markdown-area">{{element.Step_ExpectedResult}}</div>
+                <div class="attachments attachments-small">
+                  <ng-container *ngFor="let a of stepAttachments">
+
+                    <ng-container *ngIf="a.byteFile.contentType.split('/')[0] == 'image'; else notImage">
+                      <div class="attachment">
+                        <a href="" target="_blank" rel="noreferrer">
+                          <div class="attachment-image" [ngStyle]="{'background': 'url(&quot;data:image/png;base64,'+a.byteFile.fileContents+'&quot;)'}"></div>
+                        </a>
+                      </div>
+                    </ng-container>
+
+                    <ng-template #notImage>
+                      <div class="attachment">
+                        <a href="#" target="_blank" rel="noreferrer">
+                          <div class="attachment-file"><span class="attachment-extension">{{a.byteFile.contentType.split('/')[0]}}</span></div>
+                        </a>
+                      </div>
+                    </ng-template>
+                  </ng-container>
+                </div>
               </td>
             </ng-container>
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

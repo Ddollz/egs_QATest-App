@@ -14,7 +14,7 @@ export class EgsTestingComponentKarlComponent implements OnInit {
   constructor(private api: ApiService) {
 
     //? Stored Procedure Name
-    var commandText = 'egsQATestCaseAttachmentGet';
+    var commandText = 'egsQAAttachmentGet';
 
     //? Parameter of the store procedure
     var Params =
@@ -40,6 +40,7 @@ export class EgsTestingComponentKarlComponent implements OnInit {
     this.api.UniAttachmentlist(formData).subscribe({
       next: (result) => {
         console.log(typeof result[0])
+        console.log(result)
         this.displayImage = result[0];
         // console.log(result)
       },
@@ -54,11 +55,10 @@ export class EgsTestingComponentKarlComponent implements OnInit {
   downloadFile(file_ID: any, filename: string) {
 
     //? Stored Procedure Name
-    var commandText = 'egsQATestCaseAttachmentGet';
-
+    var commandText = 'egsQAAttachmentGet';
     //? Parameter of the store procedure
     var Params = [{
-      Param: "@CaseAttachment_ID",
+      Param: "@Attachment_ID",
       Value: file_ID.toString()
     }]
 
@@ -94,7 +94,7 @@ export class EgsTestingComponentKarlComponent implements OnInit {
   createFile(event: any) {
     console.log(event.target.files[0])
     //? Stored Procedure Name
-    var commandText = 'egsQATestCaseAttachmentInsertUpdate';
+    var commandText = 'egsQAAttachmentInsertUpdate';
 
     //? Parameter of the store procedure
     var Params =
@@ -140,11 +140,11 @@ export class EgsTestingComponentKarlComponent implements OnInit {
     var file_ID = (event.target as HTMLInputElement).value;
     console.log(file_ID)
     //? Stored Procedure Name
-    var commandText = 'egsQATestCaseAttachmentDelete';
+    var commandText = 'egsQAAttachmentDelete';
 
     //? Parameter of the store procedure
     var Params = [{
-      Param: "@CaseAttachment_ID",
+      Param: "@Attachment_ID",
       Value: file_ID.toString()
     }]
 
