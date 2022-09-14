@@ -68,12 +68,16 @@
   color: var(--c-text);
   opacity: 1;
   white-space: nowrap;
+  width: 3%;
 }
 
 .stepinput-row {
-  width: 90%;
+  width: 87%;
 }
 
 .step-controls {
   width: 10%;
+}
+.space{
+  width: 3%;
 }

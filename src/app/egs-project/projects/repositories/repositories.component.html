@@ -260,6 +260,26 @@
               <th mat-header-cell *matHeaderCellDef> Expected Result </th>
               <td mat-cell *matCellDef="let element">
                 <div class="markdown-area">{{element.Step_ExpectedResult}}</div>
+                <div class="attachments attachments-small">
+                  <ng-container *ngFor="let a of stepAttachments">
+
+                    <ng-container *ngIf="a.byteFile.contentType.split('/')[0] == 'image'; else notImage">
+                      <div class="attachment">
+                        <a href="" target="_blank" rel="noreferrer">
+                          <div class="attachment-image" [ngStyle]="{'background': 'url(&quot;data:image/png;base64,'+a.byteFile.fileContents+'&quot;)'}"></div>
+                        </a>
+                      </div>
+                    </ng-container>
+
+                    <ng-template #notImage>
+                      <div class="attachment">
+                        <a href="#" target="_blank" rel="noreferrer">
+                          <div class="attachment-file"><span class="attachment-extension">{{a.byteFile.contentType.split('/')[0]}}</span></div>
+                        </a>
+                      </div>
+                    </ng-template>
+                  </ng-container>
+                </div>
               </td>
             </ng-container>
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

@@ -60,6 +60,7 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
   //Table Steps
   displayedColumns: string[] = ['Step', 'Action', 'Input', 'Expected'];
   stepdataSource = new MatTableDataSource<step>();
+  stepAttachments: any = [];
 
   //Table test runs
   runDisplayedColumns: string[] = ['title', 'environment', 'time', 'status'];
@@ -466,6 +467,69 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
     ).subscribe(value => {
       this.steps = value[0];
       this.stepdataSource = new MatTableDataSource<step>(this.steps);
+      this.steps = value[0];
+      var Tempstring = ''
+      this.steps.forEach(element => {
+        Tempstring = element.Case_StepID + ',' + Tempstring
+      });
+
+      var Params =
+        [
+          {
+            Param: '@AttachmentStepIDs',
+            Value: Tempstring
+          }
+        ];
+
+
+      var formData = new FormData();
+      formData.append("CommandText", 'egsQAAttachmentStepGet');
+      formData.append("Params", JSON.stringify(Params));
+
+      //? API CALL
+      this.api.UniAttachmentlist(formData).subscribe({
+        next: (result) => {
+          this.stepAttachments = result[0];
+
+
+        },
+        error: (msg) => {
+          console.log(msg);
+          alert("500 Internal Server Errors")
+        }
+      });
+      this.steps = value[0];
+      var Tempstring = ''
+      this.steps.forEach(element => {
+        Tempstring = element.Case_StepID + ',' + Tempstring
+      });
+
+      var Params =
+        [
+          {
+            Param: '@AttachmentStepIDs',
+            Value: Tempstring
+          }
+        ];
+
+
+      var formData = new FormData();
+      formData.append("CommandText", 'egsQAAttachmentStepGet');
+      formData.append("Params", JSON.stringify(Params));
+
+      //? API CALL
+      this.api.UniAttachmentlist(formData).subscribe({
+        next: (result) => {
+          this.stepAttachments = result[0];
+
+          console.log(this.stepAttachments);
+        },
+        error: (msg) => {
+          console.log(msg);
+          alert("500 Internal Server Errors")
+        }
+      });
+
     }
     );
     var caseRow = event.currentTarget as HTMLElement;

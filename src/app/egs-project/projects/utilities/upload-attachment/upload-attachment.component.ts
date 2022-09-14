@@ -16,7 +16,7 @@ export class UploadAttachmentComponent implements OnInit, AfterViewInit {
   //Modal Variables
   @Input() Modal_Title: string = '';
   @ViewChild('UploadModal') myDiv?: ElementRef;
-
+  @ViewChild('myFileInput') myFileInput?: ElementRef;
   constructor(private http: HttpClient, private api: ApiService) {
   }
 
@@ -57,6 +57,9 @@ export class UploadAttachmentComponent implements OnInit, AfterViewInit {
     formData.append("Params", stringParam);
     formData.append("files", event.target.files[0]);
 
+    if (this.myFileInput != undefined){
+      console.log("test")
+      this.myFileInput.nativeElement.value = "";}
     this.api.UniAttachmentlist(formData).subscribe({
       next: (result) => {
         console.log(result[0]);
@@ -68,7 +71,9 @@ export class UploadAttachmentComponent implements OnInit, AfterViewInit {
       },
       complete: () => {
         this.myDiv?.nativeElement.click();
+
       }
     })
+
   }
 }

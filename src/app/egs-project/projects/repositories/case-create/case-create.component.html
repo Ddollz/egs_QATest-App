@@ -240,9 +240,8 @@
           <div class="col">
             <div id="case-attachments" class="attachments">
               <ng-container *ngFor="let attachment of attachments">
+
                 <ng-container *ngIf="attachment.byteFile.contentType.split('/')[0] == 'image'; else notImage">
-
-
                   <div class="suitecase-attachment">
                     <div class="suitecase-attachment-container">
                       <div data-disable="false" class="suitecase-attachment-image" (click)="downloadFile(attachment.Attachment_ID,attachment.Filename)" style="background: url(&quot;data:image/png;base64,{{attachment.byteFile.fileContents}}&quot;);"><a class="suitecase-attachment-link is-image"></a>
@@ -256,12 +255,9 @@
                       </div>
                     </div>
                   </div>
-
                 </ng-container>
 
                 <ng-template #notImage>
-
-
                   <div class="suitecase-attachment">
                     <div class="suitecase-attachment-container">
                       <div data-disable="false" class="suitecase-attachment-file" (click)="downloadFile(attachment.Attachment_ID,attachment.Filename)">
@@ -279,12 +275,10 @@
                   </div>
                 </ng-template>
 
-
-
               </ng-container>
 
             </div>
-            <button class="button-blue-transparent btn  b-0 p-0" type="button" data-bs-toggle="modal" data-bs-target="#UploadModal">
+            <button class="button-blue-transparent btn  b-0 p-0" type="button" data-bs-toggle="modal" data-bs-target="#UploadModal" (click)="uploadFrom = 'case'">
               <i class="bi bi-plus-circle-fill" style="color: var(--bs-blue-prime);"></i> Add attachment
             </button>
           </div>
@@ -302,44 +296,125 @@
         <div class="row mt-3">
           <div class="col">
             <ng-container *ngFor="let count of steps; let i = index">
-              <div class="d-flex flex-row">
-                <div class="stepNumber me-3" style="margin-top: 36px;">
-                  <ng-container *ngIf="count.Step_number">
-                    {{count.Step_number}}
+              <div class="d-flex flex-column">
+                <div class="row d-flex flex-row mt-3">
+                  <div class="stepNumber d-flex align-items-center justify-content-center text-center">
+                    <ng-container *ngIf="count.Step_number">
+                      {{count.Step_number}}
+                    </ng-container>
+                  </div>
+                  <div class="stepinput-row d-flex flex-row">
+                    <div class="form-group w-100 me-2">
+                      <label for="title" class="control-label required">Action</label>
+                      <input class="form-control" type="Text" placeholder="For example: Open Sign in page" [(ngModel)]="count.Step_Action" value="{{count.Step_Action}}">
+                      <div class="form-control-feedback hide"></div>
+                    </div>
+                    <div class="form-group w-100 me-2">
+                      <label for="title" class="control-label">Input data</label>
+                      <input class="form-control" type="Text" placeholder="For example: Login / password" [(ngModel)]="count.Step_InputData" value="{{count.Step_InputData}}">
+                      <div class="form-control-feedback hide"></div>
+                    </div>
+                    <div class="form-group w-100 me-2">
+                      <label for="title" class="control-label">Expected result</label>
+                      <input class="form-control" type="Text" placeholder="For example: popup is opened" [(ngModel)]="count.Step_ExpectedResult" value="{{count.Step_ExpectedResult}}">
+                      <div class="form-control-feedback hide"></div>
+                    </div>
+                  </div>
+                  <div class="step-controls d-flex align-content-center justify-content-evenly">
+                    <button class="button-gray-transparent" data-bs-toggle="modal" data-bs-target="#UploadModal" (click)="uploadFrom = 'step'; attachmentsStepNo ='step'+count.Step_number.toString()">
+                      <i class="bi bi-image-fill"></i>
+                    </button>
+                    <button class="button-gray-transparent" data-bs-toggle="modal" data-bs-target="#createSharedStep" (click)="setCurrentSharedstep(count)">
+                      <i class="bi bi-share-fill"></i>
+                    </button>
+                    <button class="button-gray-transparent">
+                      <i class="bi bi-clipboard"></i>
+                    </button>
+                    <button class="button-gray-transparent" (click)="deleteStep(count)">
+                      <i class="bi bi-trash-fill"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="space"> </div>
+                  <ng-container *ngFor="let attachment of stepAttachments">
+                    <ng-container *ngIf="attachment.hasOwnProperty('step'+count.Step_number)">
+
+                      <ng-container *ngIf="attachment['step'+count.Step_number].byteFile.contentType.split('/')[0] == 'image'; else notImage2">
+                        <div class="suitecase-attachment">
+                          <div class="suitecase-attachment-container">
+                            <div data-disable="false" class="suitecase-attachment-image" (click)="downloadFile(attachment['step'+count.Step_number].Attachment_ID,attachment.Filename)" [ngStyle]="{'background': 'url(&quot;data:image/png;base64,'+attachment['step'+count.Step_number].byteFile.fileContents+'&quot;)'}">
+                              <a class="suitecase-attachment-link is-image"></a>
+                              <div class="suitecase-attachment-overlay">
+                                <p class="suitecase-attachment-filename">{{attachment['step'+count.Step_number].Filename}}</p>
+                                <div class="suitecase-attachment-overlay-bottom">
+                                  <p class="suitecase-attachment-size"> {{attachment['step'+count.Step_number].Filesize}}</p>
+                                  <button type="button" class="suitecase-attachment-remove" (click)="deleteAttachment(attachment['step'+count.Step_number].Attachment_ID)"><i class="bi bi-x"></i></button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </ng-container>
+
+                    </ng-container>
+
+                    <ng-container *ngIf="attachment.Step_ID == count.Case_StepID">
+                      <ng-container *ngIf="attachment.byteFile.contentType.split('/')[0] == 'image'; else notImage">
+                        <div class="suitecase-attachment">
+                          <div class="suitecase-attachment-container">
+                            <div data-disable="false" class="suitecase-attachment-image" (click)="downloadFile(attachment.Attachment_ID,attachment.Filename)" style="background: url(&quot;data:image/png;base64,{{attachment.byteFile.fileContents}}&quot;);"><a class="suitecase-attachment-link is-image"></a>
+                              <div class="suitecase-attachment-overlay">
+                                <p class="suitecase-attachment-filename">{{attachment.Filename}}</p>
+                                <div class="suitecase-attachment-overlay-bottom">
+                                  <p class="suitecase-attachment-size"> {{attachment.Filesize}}</p>
+                                  <button type="button" class="suitecase-attachment-remove" (click)="deleteAttachment(attachment.Attachment_ID)"><i class="bi bi-x"></i></button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </ng-container>
+                    </ng-container>
+
+                    <ng-template #notImage>
+                      <div class="suitecase-attachment">
+                        <div class="suitecase-attachment-container">
+                          <div data-disable="false" class="suitecase-attachment-file" (click)="downloadFile(attachment.Attachment_ID,attachment.Filename)">
+                            <a class="suitecase-attachment-link"></a>
+                            <span class="suitecase-attachment-extension">{{attachment.byteFile.contentType.split('/')[0]}}</span>
+                            <div class="suitecase-attachment-overlay">
+                              <p class="suitecase-attachment-filename">{{attachment.Filename}}</p>
+                              <div class="suitecase-attachment-overlay-bottom">
+                                <p class="suitecase-attachment-size"> {{attachment.Filesize}}</p>
+                                <button type="button" class="suitecase-attachment-remove" (click)="deleteAttachment(attachment.Attachment_ID)"><i class="bi bi-x"></i></button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </ng-template>
+
+
+                    <ng-template #notImage2>
+                      <div class="suitecase-attachment">
+                        <div class="suitecase-attachment-container">
+                          <div data-disable="false" class="suitecase-attachment-file" (click)="downloadFile(attachment['step'+count.Step_number].Attachment_ID,attachment.Filename)">
+                            <a class="suitecase-attachment-link"></a>
+                            <span class="suitecase-attachment-extension">{{attachment['step'+count.Step_number].byteFile.contentType.split('/')[0]}}</span>
+                            <div class="suitecase-attachment-overlay">
+                              <p class="suitecase-attachment-filename">{{attachment['step'+count.Step_number].Filename}}</p>
+                              <div class="suitecase-attachment-overlay-bottom">
+                                <p class="suitecase-attachment-size"> {{attachment['step'+count.Step_number].Filesize}}</p>
+                                <button type="button" class="suitecase-attachment-remove" (click)="deleteAttachment(attachment['step'+count.Step_number].Attachment_ID)"><i class="bi bi-x"></i></button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </ng-template>
+
                   </ng-container>
-
-                </div>
-                <div class="stepinput-row d-flex flex-row">
-                  <div class="form-group w-100 me-2">
-                    <label for="title" class="control-label required">Action</label>
-                    <input class="form-control" type="Text" placeholder="For example: Open Sign in page" [(ngModel)]="count.Step_Action" value="{{count.Step_Action}}">
-                    <div class="form-control-feedback hide"></div>
-                  </div>
-                  <div class="form-group w-100 me-2">
-                    <label for="title" class="control-label">Input data</label>
-                    <input class="form-control" type="Text" placeholder="For example: Login / password" [(ngModel)]="count.Step_InputData" value="{{count.Step_InputData}}">
-                    <div class="form-control-feedback hide"></div>
-                  </div>
-                  <div class="form-group w-100 me-2">
-                    <label for="title" class="control-label">Expected result</label>
-                    <input class="form-control" type="Text" placeholder="For example: popup is opened" [(ngModel)]="count.Step_ExpectedResult" value="{{count.Step_ExpectedResult}}">
-                    <div class="form-control-feedback hide"></div>
-                  </div>
-                </div>
-
-                <div class="step-controls d-flex align-content-center justify-content-evenly">
-                  <button class="button-gray-transparent">
-                    <i class="bi bi-image-fill"></i>
-                  </button>
-                  <button class="button-gray-transparent" data-bs-toggle="modal" data-bs-target="#createSharedStep" (click)="setCurrentSharedstep(count)">
-                    <i class="bi bi-share-fill"></i>
-                  </button>
-                  <button class="button-gray-transparent">
-                    <i class="bi bi-clipboard"></i>
-                  </button>
-                  <button class="button-gray-transparent" (click)="deleteStep(count)">
-                    <i class="bi bi-trash-fill"></i>
-                  </button>
                 </div>
               </div>
             </ng-container>

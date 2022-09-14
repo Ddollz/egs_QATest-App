@@ -19,7 +19,7 @@ export class ApiService {
 
 
   UniCall(body: any): Observable<any> {
-    console.log(JSON.stringify(body));
+    // console.log(JSON.stringify(body));
     return this.http.post(
       `${this.ApiURL}${this.MethodUrl}`,
       JSON.stringify(body), httpOptions
