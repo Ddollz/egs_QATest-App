@@ -1,48 +1,65 @@
 <div class="app__content">
-	<div class="row">
-		<div class="col-lg-12">
+  <div class="row">
+    <div class="col-lg-12">
 
-			<h2 class="page-title my-3"><i class="bi bi-arrow-left me-4" data-bs-toggle="tooltip"
-					title="Go back" routerLink="/projects/defect"></i>Login user without verifying email</h2>
+      <h2 class="page-title my-3"><i class="bi bi-arrow-left me-4" data-bs-toggle="tooltip" title="Go back"
+          routerLink="/projects/defect"></i>{{Defect_Title}}</h2>
 
-			<div class="row ">
-        
+      <div class="row ">
         <div class="col-8">
           <div class="d-flex align-items-center mb-4">
+            <ng-template [ngIf]="Defect_Status != '1'">
+              <div class="me-2">
+                <button type="button" class="btn btn-primary" (click)="openStatusModal(Defect_ID, 1)"
+                  data-bs-toggle="modal" data-bs-target="#statusModal">
+                  <i class="bi bi-arrow-bar-left"></i>
+                  Open
+                </button>
+              </div>
+            </ng-template>
+            <ng-template [ngIf]="Defect_Status != '2'">
+              <div class="me-2">
+                <button type="button" class="btn btn-primary" (click)="openStatusModal(Defect_ID, 2)"
+                  data-bs-toggle="modal" data-bs-target="#statusModal">
+                  <i class="bi bi-arrow-bar-right"></i>
+                  In Progress
+                </button>
+              </div>
+            </ng-template>
+            <ng-template [ngIf]="Defect_Status != '3'">
+              <div class="me-2">
+                <button type="button" class="btn btn-primary" (click)="openStatusModal(Defect_ID, 3)"
+                  data-bs-toggle="modal" data-bs-target="#statusModal">
+                  <i class="bi bi-x-lg"></i>
+                  Invalid
+                </button>
+              </div>
+            </ng-template>
+            <ng-template [ngIf]="Defect_Status != '4'">
+              <div class="me-2">
+                <button type="button" class="btn btn-primary" (click)="openStatusModal(Defect_ID, 4)"
+                  data-bs-toggle="modal" data-bs-target="#statusModal">
+                  <i class="bi bi-check-lg"></i>
+                  Resolve
+                </button>
+              </div>
+            </ng-template>
             <div class="me-2">
-              <button type="button" class="btn btn-primary">
-                <i class="bi bi-arrow-right"></i>
-                In Progress
-              </button>
+              <button type="button" class="btn btn-primary filter-btn">Assign to me</button>
             </div>
-            <div class="me-2">
-              <button type="button" class="btn btn-primary">
-                <i class="bi bi-check-lg"></i>
-                Resolve
-              </button>
-            </div>
-            <div class="me-2">
-              <button type="button" class="btn btn-primary">
-                <i class="bi bi-x-lg"></i>
-                Invalid
-              </button>
-            </div>
-            <div class="me-2">
-              <button type="button" class="btn btn-primary filter-btn">
-                Assign to me
-              </button>
-            </div>
-            <div>
-              <button type="button" class="btn btn-primary filter-btn">
-                <i class="bi bi-pencil-fill"></i>
-                Edit
-              </button>
-            </div>
+            <ng-template [ngIf]="Defect_Status == '1'">
+              <div>
+                <button type="button" class="btn btn-primary filter-btn" routerLink="/projects/defect/edit/{{index}}">
+                  <i class="bi bi-pencil-fill"></i>
+                  Edit
+                </button>
+              </div>
+            </ng-template>
           </div>
 
           <h6>Description</h6>
           <div class="mb-4">
-            <span>Did not proceed login</span>
+            <span>{{Defect_ActualResult}}</span>
           </div>
 
           <h6>Comments</h6>
@@ -57,19 +74,58 @@
         <div class="col-4">
           <h6>Status</h6>
           <div class="mb-4">
-            <i class="bi bi-exclamation-circle-fill me-2" data-bs-toggle="tooltip" title="Open"></i>
-            <span>Open</span>
+            <ng-template [ngIf]="Defect_Status == '1'">
+              <i class="bi bi-exclamation-circle-fill me-2" data-bs-toggle="tooltip" title="Open"></i>
+              <span>Open</span>
+            </ng-template>
+            <ng-template [ngIf]="Defect_Status == '2'">
+              <i class="bi bi-hourglass-top me-2" data-bs-toggle="tooltip" title="In Progress"></i>
+              <span>In Progress</span>
+            </ng-template>
+            <ng-template [ngIf]="Defect_Status == '3'">
+              <i class="bi bi-x-circle-fill me-2" data-bs-toggle="tooltip" title="Invalid"></i>
+              <span>Invalid</span>
+            </ng-template>
+            <ng-template [ngIf]="Defect_Status == '4'">
+              <i class="bi bi-check-circle-fill me-2" data-bs-toggle="tooltip" title="Resolved"></i>
+              <span>Resolved</span>
+            </ng-template>
+          </div>
+
+          <h6>Severity</h6>
+          <div class="mb-4">
+            <ng-template [ngIf]="Defect_Severity == '0'">
+              <i class="bi bi-dash-lg me-2"></i><span>Not set</span>
+            </ng-template>
+            <ng-template [ngIf]="Defect_Severity == '1'">
+              <i class="bi bi-x-circle me-2"></i><span>Blocker</span>
+            </ng-template>
+            <ng-template [ngIf]="Defect_Severity == '2'">
+              <i class="bi bi-chevron-double-up me-2"></i><span>Critical</span>
+            </ng-template>
+            <ng-template [ngIf]="Defect_Severity == '3'">
+              <i class="bi bi-chevron-up me-2"></i><span>Major</span>
+            </ng-template>
+            <ng-template [ngIf]="Defect_Severity == '4'">
+              <i class="bi bi-circle me-2"></i><span>Normal</span>
+            </ng-template>
+            <ng-template [ngIf]="Defect_Severity == '5'">
+              <i class="bi bi-chevron-down me-2"></i><span>Minor</span>
+            </ng-template>
+            <ng-template [ngIf]="Defect_Severity == '6'">
+              <i class="bi bi-chevron-double-down me-2"></i><span>Trivial</span>
+            </ng-template>
           </div>
 
           <h6>Milestone</h6>
           <div class="mb-4">
-            <span>1</span>
+            <span>{{Defect_Milestone}}</span>
           </div>
 
           <h6>Reporter</h6>
           <div class="mb-4">
             <img class="author-img" src="../../assets/img/placeholder.jpg">
-            <span>Royce Esguerra</span>
+            <span>User</span>
           </div>
 
           <h6>Assignee</h6>
@@ -79,11 +135,29 @@
 
           <h6>Created</h6>
           <div class="mb-4">
-            <span>20 May 2022 at 14:43:31</span>
+            <span>{{Defect_DateCreated}}</span>
           </div>
         </div>
       </div>
 
-		</div>
-	</div>
+    </div>
+  </div>
+</div>
+
+<!-- Status Modal -->
+<div class="modal fade" id="statusModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body p-4">
+
+        <h5 class="modal-title mb-3">{{statusTitle}} defect</h5>
+        <p class="mb-4">This defect will be marked as "{{statusTitle}}".</p>
+
+        <div class="d-flex align-items-center justify-content-end">
+          <span class="cancel-span me-2" data-bs-dismiss="modal">Cancel</span>
+          <button type="button" class="btn btn-primary" (click)="changeStatus()">Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

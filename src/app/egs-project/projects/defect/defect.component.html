@@ -19,7 +19,7 @@
             </button>
           </div>
           <div class="me-3">
-            <input type="text" class="form-control search_input" placeholder="Search for defects">
+            <input type="text" class="form-control search_input" placeholder="Search for defects" (keyup)="applyFilter($event)">
           </div>
           <div class="me-3">
             <div class="filter-item" data-bs-toggle="dropdown">Status</div>
@@ -30,7 +30,7 @@
               </div>
               <div class="form-check">
                 <input class="form-check-input" type="checkbox" value="">
-                <label class="form-check-label">In progress</label>
+                <label class="form-check-label">In Progress</label>
               </div>
               <div class="form-check">
                 <input class="form-check-input" type="checkbox" value="">
@@ -64,7 +64,18 @@
             <th mat-header-cell *matHeaderCellDef></th>
             <td mat-cell *matCellDef="let element">
               <div class="text-center">
-                <i class="bi bi-exclamation-circle-fill" data-bs-toggle="tooltip" title="Open"></i>
+                <ng-template [ngIf]="element.Defect_Status == 1">
+                  <i class="bi bi-exclamation-circle-fill" data-bs-toggle="tooltip" title="Open"></i>
+                </ng-template>
+                <ng-template [ngIf]="element.Defect_Status == 2">
+                  <i class="bi bi-hourglass-top" data-bs-toggle="tooltip" title="In Progress"></i>
+                </ng-template>
+                <ng-template [ngIf]="element.Defect_Status == 3">
+                  <i class="bi bi-x-circle-fill" data-bs-toggle="tooltip" title="Invalid"></i>
+                </ng-template>
+                <ng-template [ngIf]="element.Defect_Status == 4">
+                  <i class="bi bi-check-circle-fill" data-bs-toggle="tooltip" title="Resolved"></i>
+                </ng-template>
               </div>
             </td>
           </ng-container>
@@ -75,8 +86,7 @@
               <div class="row d-flex align-items-center">
                 <div class="column-title" routerLink="/projects/defect/view/{{i}}">
                   {{element.Defect_Title}}</div>
-                <!-- <div class="column-subtitle">{{element.Defect_DateCreated}}</div> -->
-                <div class="column-subtitle">created 3 months ago</div>
+                <div class="column-subtitle">{{getDaysAgo(element.Defect_DateCreated)}}</div>
               </div>
             </td>
           </ng-container>
@@ -85,7 +95,7 @@
             <th mat-header-cell *matHeaderCellDef>Author</th>
             <td mat-cell *matCellDef="let element">
               <img class="author-img" src="../../assets/img/placeholder.jpg">
-              <span>Royce Esguerra</span>
+              <span>User</span>
             </td>
           </ng-container>
 
@@ -101,15 +111,34 @@
           <ng-container matColumnDef="Severity">
             <th mat-header-cell *matHeaderCellDef>Severity</th>
             <td mat-cell *matCellDef="let element">
-              <!-- <div>{{element.Defect_Severity}}</div> -->
-              <i class="bi bi-dash-lg me-1"></i>
-              <span>Not set</span>
+              <ng-template [ngIf]="element.Defect_Severity == 0">
+                <i class="bi bi-dash-lg me-2"></i><span>Not set</span>
+              </ng-template>
+              <ng-template [ngIf]="element.Defect_Severity == 1">
+                <i class="bi bi-x-circle me-2"></i><span>Blocker</span>
+              </ng-template>
+              <ng-template [ngIf]="element.Defect_Severity == 2">
+                <i class="bi bi-chevron-double-up me-2"></i><span>Critical</span>
+              </ng-template>
+              <ng-template [ngIf]="element.Defect_Severity == 3">
+                <i class="bi bi-chevron-up me-2"></i><span>Major</span>
+              </ng-template>
+              <ng-template [ngIf]="element.Defect_Severity == 4">
+                <i class="bi bi-circle me-2"></i><span>Normal</span>
+              </ng-template>
+              <ng-template [ngIf]="element.Defect_Severity == 5">
+                <i class="bi bi-chevron-down me-2"></i><span>Minor</span>
+              </ng-template>
+              <ng-template [ngIf]="element.Defect_Severity == 6">
+                <i class="bi bi-chevron-double-down me-2"></i><span>Trivial</span>
+              </ng-template>
             </td>
           </ng-container>
 
           <ng-container matColumnDef="Milestone">
             <th mat-header-cell *matHeaderCellDef>Milestone</th>
             <td mat-cell *matCellDef="let element">
+              <!-- <div>{{getMilestone(element)}}</div> -->
               <div>{{element.Defect_Milestone}}</div>
             </td>
           </ng-container>
@@ -122,18 +151,32 @@
 
           <ng-container matColumnDef="ThreeDots">
             <th mat-header-cell *matHeaderCellDef></th>
-            <td mat-cell *matCellDef="let element">
+            <td mat-cell *matCellDef="let element; let i = index">
               <div class="d-flex justify-content-end">
                 <button class="btn three-dots" data-bs-toggle="dropdown">
                   <i class="bi bi-three-dots"></i>
                   <div class="dropdown-menu">
-                    <div class="dropdown-item">View</div>
+                    <div class="dropdown-item" routerLink="/projects/defect/view/{{i}}">View</div>
                     <div class="dropdown-item">Assign to me</div>
-                    <div class="dropdown-item">In Progress</div>
-                    <div class="dropdown-item">Resolve</div>
-                    <div class="dropdown-item">Invalid</div>
-                    <div class="dropdown-item">Edit</div>
-                    <div class="dropdown-item">Delete</div>
+                    <ng-template [ngIf]="element.Defect_Status != 1">
+                      <div class="dropdown-item" (click)="openStatusModal(element.Defect_ID, 1)"
+                      data-bs-toggle="modal" data-bs-target="#statusModal">Open</div>
+                    </ng-template>
+                    <ng-template [ngIf]="element.Defect_Status != 2">
+                      <div class="dropdown-item" (click)="openStatusModal(element.Defect_ID, 2)"
+                      data-bs-toggle="modal" data-bs-target="#statusModal">In Progress</div>
+                    </ng-template>
+                    <ng-template [ngIf]="element.Defect_Status != 3">
+                      <div class="dropdown-item" (click)="openStatusModal(element.Defect_ID, 3)"
+                      data-bs-toggle="modal" data-bs-target="#statusModal">Invalid</div>
+                    </ng-template>
+                    <ng-template [ngIf]="element.Defect_Status != 4">
+                      <div class="dropdown-item" (click)="openStatusModal(element.Defect_ID, 4)"
+                      data-bs-toggle="modal" data-bs-target="#statusModal">Resolve</div>
+                    </ng-template>
+                    <div class="dropdown-item" routerLink="/projects/defect/edit/{{i}}">Edit</div>
+                    <div class="dropdown-item" (click)="openDeleteModal(element.Defect_ID, element.Defect_Title)"
+                      data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</div>
                   </div>
                 </button>
               </div>
@@ -145,6 +188,42 @@
         </table>
       </div>
 
+    </div>
+  </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body p-4">
+
+        <h5 class="modal-title mb-3">Delete defect</h5>
+        <p class="mb-4">Are you sure, that you want delete defect "{{Defect_Title}}"?</p>
+
+        <div class="d-flex align-items-center justify-content-end">
+          <span class="cancel-span me-2" data-bs-dismiss="modal">Cancel</span>
+          <button type="button" class="btn btn-primary" (click)="deleteDefect()">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Status Modal -->
+<div class="modal fade" id="statusModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body p-4">
+
+        <h5 class="modal-title mb-3">{{statusTitle}} defect</h5>
+        <p class="mb-4">This defect will be marked as "{{statusTitle}}".</p>
+
+        <div class="d-flex align-items-center justify-content-end">
+          <span class="cancel-span me-2" data-bs-dismiss="modal">Cancel</span>
+          <button type="button" class="btn btn-primary" (click)="changeStatus()">Confirm</button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
