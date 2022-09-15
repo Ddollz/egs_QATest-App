@@ -137,24 +137,25 @@ export class StepCreateComponent implements OnInit {
       }
     ).subscribe({
       next: (e) => {
-
-        this.api.UniCall(
-          {
-            CommandText: 'egsQAStepDelete',
-            Params: [
-              {
-                Param: '@Case_StepID',
-                Value: this.stepDeleteArray
-              }
-            ]
-          }
-        ).subscribe({
-          next: (e) => {
-          },
-          error: (e) => {
-            alert("500 Internal Server Errors")
-          }
-        });
+        if (this.index != 0)
+          this.api.UniCall(
+            {
+              CommandText: 'egsQAStepDelete',
+              Params: [
+                {
+                  Param: '@Case_StepID',
+                  Value: this.stepDeleteArray
+                }
+              ]
+            }
+          ).subscribe({
+            next: (e) => {
+            },
+            error: (e) => {
+              alert("500 Internal Server Errors")
+              console.log(e)
+            }
+          });
 
       },
       error: (e) => {

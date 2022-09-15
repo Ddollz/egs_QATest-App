@@ -87,15 +87,39 @@
   border: #fff;
 }
 
-.left .collapse {
+.l-col .collapse {
   margin-left: 0.625rem;
   border-left: 1px solid rgb(224, 225, 228);
 }
-
-.right .collapse {
-  margin-left: 0.625rem;
+.actualcon{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.list-container{
+  height: 100px;
+  min-height: 0;
+  flex-grow: 1;
 }
 
+.r-col {
+  overflow-y: auto;
+  height: 100%;
+  min-height: 0;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.l-col {
+  overflow-y: auto;
+  height: 100%;
+  min-height: 0;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
 .collapsing {
   margin-left: 0.625rem;
 
@@ -163,6 +187,15 @@
 
 .projectPanelTitle:hover {
   color: var(--bs-blue-prime);
+}
+
+.panel-container {
+  overflow: auto;
+  height: 100%;
+  min-height: 0;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .panelClose {
@@ -277,10 +310,22 @@
   ;
 }
 
+.panelContent {
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
+  height: 100%;
+}
+
 .panelContent .panelLabel {
   font-size: 0.775rem;
   margin-bottom: 5px;
   font-weight: 600;
+}
+
+.panel-general {
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .markdown-area {
@@ -309,15 +354,15 @@
 }
 
 .mat-column-Action {
-  width: 33%;
+  width: 28%;
 }
 
 .mat-column-Input {
-  width: 33%;
+  width: 28%;
 }
 
 .mat-column-Expected {
-  width: 33%;
+  width: 43%;
 }
 
 .select-item {
@@ -338,3 +383,13 @@
 /* ::ng-deep .cdk-overlay-container {
   z-index: 9999;
 } */
+
+.deleteSubPara {
+  font-weight: 600;
+  font-size: 1.125rem;
+  margin: 0;
+}
+
+.modal-title i {
+  color: var(--bs-red-100);
+}

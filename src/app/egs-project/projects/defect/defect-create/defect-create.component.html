@@ -3,39 +3,40 @@
 		<div class="col-lg-12">
 
 			<h2 class="page-title my-3"><i class="bi bi-arrow-left me-4" data-bs-toggle="tooltip" title="Go back"
-					routerLink="/projects/defect"></i>Create defect</h2>
+					routerLink="/projects/defect"></i>{{Page_title}}</h2>
 
 			<div class="row mb-3">
 				<div class="mb-3">
 					<Label class="page-label">Defect title*</Label>
-					<input type="text" class="form-control" placeholder="For example: Regression">
+					<input type="text" class="form-control" placeholder="For example: Regression" [(ngModel)]="Defect_Title">
 				</div>
 				<div class="mb-3">
 					<Label class="page-label">Actual result*</Label>
-					<input type="text" class="form-control">
+					<input type="text" class="form-control" [(ngModel)]="Defect_ActualResult">
 				</div>
 				<div class="mb-3">
 					<Label class="page-label">Milestone</Label>
-					<mat-select class="select-item" [value]="'Not set'">
-						<mat-option value="Not set" class="select-item">Not set</mat-option>
+					<mat-select class="select-item" [(ngModel)]="Defect_Milestone">
+						<mat-option class="select-item" value="0">Not set</mat-option>
+            <mat-option class="select-item" *ngFor ="let milestone of milestones" [value]="milestone.Milestone_ID">{{milestone.Milestone_Title}}</mat-option>
 					</mat-select>
 				</div>
 				<div class="mb-3">
 					<Label class="page-label">Severity*</Label>
-					<mat-select class="select-item" [value]="'Normal'">
-						<mat-option value="Not set" class="select-item">Not set</mat-option>
-						<mat-option value="Blocker" class="select-item">Blocker</mat-option>
-						<mat-option value="Critical" class="select-item">Critical</mat-option>
-						<mat-option value="Major" class="select-item">Major</mat-option>
-						<mat-option value="Normal" class="select-item">Normal</mat-option>
-						<mat-option value="Minor" class="select-item">Minor</mat-option>
-						<mat-option value="Trivial" class="select-item">Trivial</mat-option>
+					<mat-select class="select-item" [(ngModel)]="Defect_Severity">
+						<mat-option value="0" class="select-item"><i class="bi bi-dash-lg me-2"></i>Not set</mat-option>
+						<mat-option value="1" class="select-item"><i class="bi bi-x-circle me-2"></i>Blocker</mat-option>
+						<mat-option value="2" class="select-item"><i class="bi bi-chevron-double-up me-2"></i>Critical</mat-option>
+						<mat-option value="3" class="select-item"><i class="bi bi-chevron-up me-2"></i>Major</mat-option>
+						<mat-option value="4" class="select-item"><i class="bi bi-circle me-2"></i>Normal</mat-option>
+						<mat-option value="5" class="select-item"><i class="bi bi-chevron-down me-2"></i>Minor</mat-option>
+						<mat-option value="6" class="select-item"><i class="bi bi-chevron-double-down me-2"></i>Trivial</mat-option>
 					</mat-select>
 				</div>
 				<div>
 					<Label class="page-label">Assignee</Label>
-					<mat-select class="select-item" [value]="'Unassigned'">
-						<mat-option value="Unassigned" class="select-item">Unassigned</mat-option>
+					<mat-select class="select-item" [(ngModel)]="Defect_Assignee">
+						<mat-option value="0" class="select-item">Unassigned</mat-option>
 					</mat-select>
 				</div>
 			</div>
@@ -65,7 +66,7 @@
 
 			<div class="row mb-5">
 				<div class="d-flex align-items-center">
-					<button class="btn btn-primary me-3">Create defect</button>
+					<button class="btn btn-primary me-3" (click)="updateInsertDefect()">{{Button_title}}</button>
 					<span class="cancel-span" routerLink="/projects/defect">Cancel</span>
 				</div>
 			</div>

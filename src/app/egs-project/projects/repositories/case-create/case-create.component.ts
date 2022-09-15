@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ApiService } from 'src/app/services/api.service';
 import { reloadPage } from '../../../../services/global-functions.service';
@@ -25,6 +25,8 @@ export class CaseCreateComponent implements OnInit {
   //editCase
   editCase: number = 0;
   TestCaseAndStep: any;
+  caseID: number = 0;
+  deleteStepsFromEdit: string = '';
 
   //Models
   suites: suite[] = [];
@@ -41,6 +43,22 @@ export class CaseCreateComponent implements OnInit {
 
   //Attachment
   attachments: any = [];
+  attachmentsStep: any = [];
+  attachmentsStepNo: string = '1';
+  attachmentJsonStep: any;
+  stepAttachments: any = [];
+  uploadFrom: string = 'case';
+
+  //SharedStep
+  sharedStepsTitle: string = '';
+  currentStep: step[] = [];
+  sharedSteps: any;
+  selectedSharedstep: any;
+  @ViewChild('openCreateSharedModal') openSharedModalBtn?: ElementRef;
+
+  //Step
+  @ViewChild('openAddSharedStepModal') openSharedStepModalBTN?: ElementRef;
+
 
   constructor(private formBuilder: FormBuilder, private api: ApiService, private activatedRoute: ActivatedRoute, public sidebarServ: sidebarService, private router: Router) {
     this.LinkParamID = Number(this.activatedRoute.snapshot.paramMap.get('id'));
@@ -76,16 +94,60 @@ export class CaseCreateComponent implements OnInit {
             {
               Param: '@Case_ID',
               Value: this.editCase.toString()
-            },
-            {
-              Param: '@WithStep',
-              Value: 'true'
             }
           ],
         }
       ).subscribe(value => {
-        this.steps = value[1];
-        console.log(value);
+        // this.steps = value[1];
+        this.caseID = value[0][0].Case_ID;
+        this.api.UniCall(
+          {
+            CommandText: 'egsQAStepGet',
+            Params: [
+              {
+                Param: '@Case_ID',
+                Value: this.caseID.toString()
+              }
+            ],
+          }
+        ).subscribe({
+          next: (value) => {
+
+            this.steps = value[0];
+            var Tempstring = ''
+            this.steps.forEach(element => {
+              Tempstring = element.Case_StepID + ',' + Tempstring
+            });
+
+            var Params =
+              [
+                {
+                  Param: '@AttachmentStepIDs',
+                  Value: Tempstring
+                }
+              ];
+
+
+            var formData = new FormData();
+            formData.append("CommandText", 'egsQAAttachmentStepGet');
+            formData.append("Params", JSON.stringify(Params));
+
+            //? API CALL
+            this.api.UniAttachmentlist(formData).subscribe({
+              next: (result) => {
+                this.stepAttachments = result[0];
+
+
+              },
+              error: (msg) => {
+                console.log(msg);
+                alert("500 Internal Server Errors")
+              }
+            });
+
+
+          }
+        })
         this.caseForm.controls['@Case_IDED'].setValue(value[0][0].Case_ID);
         this.caseForm.controls['@Case_Title'].setValue(value[0][0].Case_Title);
         this.caseForm.controls['@Case_Status'].setValue(value[0][0].Case_Status.toString());
@@ -104,9 +166,51 @@ export class CaseCreateComponent implements OnInit {
         this.caseForm.controls['@Case_PostCondition'].setValue(value[0][0].Case_PostCondition);
         this.caseForm.controls['@Case_Tags'].setValue(value[0][0].Case_Tag);
         this.caseForm.controls['@User_ID'].setValue(value[0][0].User_ID);
+
+
+        var Params =
+          [
+            {
+              Param: "@Case_ID",
+              Value: value[0][0].Case_ID.toString()
+            }
+
+          ];
+
+
+        var formData = new FormData();
+        formData.append("CommandText", 'egsQAAttachmentGet');
+        formData.append("Params", JSON.stringify(Params));
+
+        //? API CALL
+        this.api.UniAttachmentlist(formData).subscribe({
+          next: (result) => {
+            if (result[0] != undefined)
+              this.attachments = result[0];
+          },
+          error: (msg) => {
+            console.log(msg);
+            alert("500 Internal Server Errors")
+          }
+        })
+
       }
       );
     }
+
+    this.api.UniCall(
+      {
+        CommandText: 'egsQASharedStepGet',
+        Params: [
+          {
+            Param: '@SharedStep_ID',
+            Value: null
+          }
+        ]
+      }
+    ).subscribe(value => {
+      this.sharedSteps = value[0];
+    });
   }
 
   ngOnInit(): void {
@@ -133,7 +237,7 @@ export class CaseCreateComponent implements OnInit {
 
   }
   createCase() {
-    this.json['CommandText'] = 'egsQACaseAndStepInsert';
+    this.json['CommandText'] = 'egsQATestCaseInsertUpdate';
     this.json['Params'] = [];
 
     for (const field in this.caseForm.controls) { // 'field' is a string
@@ -146,20 +250,11 @@ export class CaseCreateComponent implements OnInit {
       }
       this.json['Params'].push(temp);
     }
-    var stepjson = JSON.stringify(this.steps).toString();
-    console.log(stepjson);
-    console.log(this.steps);
-    var temps = {
-      Param: '@caseJson',
-      Value: stepjson
-    }
-    this.json['Params'].push(temps);
 
+    //? Param For attachment
     var tempStringForAttachment = '';
     for (let index = 0; index < this.attachments.length; index++) {
-      for (let o = 0; o < this.attachments[index].length; o++) {
-        tempStringForAttachment = this.attachments[index][o].CaseAttachment_ID + ',' + tempStringForAttachment;
-      }
+      tempStringForAttachment = this.attachments[index].Attachment_ID + ',' + tempStringForAttachment;
     }
 
     var attachmentParam = {
@@ -167,11 +262,102 @@ export class CaseCreateComponent implements OnInit {
       Value: tempStringForAttachment.slice(0, -1).toString()
     }
     this.json['Params'].push(attachmentParam);
-    console.log(this.json);
+
     this.api.UniCall(
       this.json
     ).subscribe({
-      next: (v) => this.router.navigate(["projects/repository/" + this.LinkParamID]),
+      next: (v) => {
+        for (let index = 0; index < this.steps.length; index++) {
+          this.steps[index].Case_ID = v[0][0].Case_ID
+        }
+        this.api.UniCall(
+          {
+            CommandText: 'egsQAStepInsertUpdate',
+            Params: [
+              {
+                Param: '@stepJson',
+                Value: JSON.stringify(this.steps).toString()
+              }
+            ]
+          }
+        ).subscribe({
+          next: (e) => {
+            var finaljsonstep: any = [];
+            var tepstep = '';
+            for (let index = 0; index < e[0].length; index++) {
+              var tempStringForAttachmentStep = '';
+              for (let o = 0; o < this.attachmentsStep.length; o++) {
+                for (const key in this.attachmentsStep[o]) {
+                  if ("step" + e[0][index].Step_number == key) {
+                    tepstep = e[0][index].Case_StepID;
+                    tempStringForAttachmentStep = this.attachmentsStep[o][key].Attachment_ID + ',' + tempStringForAttachmentStep;
+                  }
+                }
+              }
+
+              var tempObject = {
+                Param: tepstep.toString(),
+                Value: tempStringForAttachmentStep.slice(0, -1).toString()
+              }
+              finaljsonstep.push(tempObject);
+            }
+            this.api.UniCall(
+              {
+                CommandText: 'egsQAAttachmentStepInsertUpdate',
+                Params: [
+                  {
+                    Param: '@AttachmentStepJson',
+                    Value: JSON.stringify(finaljsonstep)
+                  }
+                ]
+              }
+            ).subscribe({
+              next: (e) => {
+                if (this.deleteStepsFromEdit == '')
+                  this.router.navigate(["projects/repository/" + this.LinkParamID])
+              },
+              error: (e) => {
+                alert("500 Internal Server Errors")
+                console.log(e)
+              }
+            });
+
+            this.api.UniCall(
+              {
+                CommandText: 'egsQAStepDelete',
+                Params: [
+                  {
+                    Param: '@Case_StepID',
+                    Value: this.deleteStepsFromEdit
+                  },
+                  {
+                    Param: '@Case_ID',
+                    Value: this.caseID.toString()
+                  },
+                  {
+                    Param: '@deleteFromEdit',
+                    Value: '1'
+                  }
+                ]
+              }
+            ).subscribe({
+              next: (e) => {
+                // this.router.navigate(["projects/repository/" + this.LinkParamID])
+              },
+              error: (e) => {
+                alert("500 Internal Server Errors")
+                console.log(e)
+              }
+            });
+
+          },
+          error: (e) => {
+            alert("500 Internal Server Errors")
+            console.log(e)
+          }
+        });
+
+      },
       error: (e) => console.error(e),
       complete: () => console.info('complete')
     })
@@ -193,19 +379,22 @@ export class CaseCreateComponent implements OnInit {
     )
   }
   addAttachment(event: any) {
-    this.attachments.push(event);
-    console.log(this.attachments);
+    if (this.uploadFrom == 'case')
+      this.attachments.push(event[0]);
+    if (this.uploadFrom == 'step') {
+      this.attachmentsStep.push({ [this.attachmentsStepNo]: event[0] });
+      this.stepAttachments.push({ [this.attachmentsStepNo]: event[0] });
+    }
   }
   deleteAttachment(value: number) {
 
     var file_ID = value;
-    console.log(file_ID)
     //? Stored Procedure Name
-    var commandText = 'egsQATestCaseAttachmentDelete';
+    var commandText = 'egsQAAttachmentDelete';
 
     //? Parameter of the store procedure
     var Params = [{
-      Param: "@CaseAttachment_ID",
+      Param: "@Attachment_ID",
       Value: file_ID.toString()
     }]
 
@@ -234,5 +423,130 @@ export class CaseCreateComponent implements OnInit {
       }
     })
 
+  }
+
+  //? Function for downloading file
+  downloadFile(file_ID: any, filename: string) {
+
+    //? Stored Procedure Name
+    var commandText = 'egsQAAttachmentGet';
+
+    //? Parameter of the store procedure
+    var Params = [{
+      Param: "@Attachment_ID",
+      Value: file_ID.toString()
+    }]
+
+    //? Convert Param JSON to String So may the api able to read json
+    var stringParam = JSON.stringify(Params);
+    var formData = new FormData();
+
+
+    //? When we are using UniAttachment we need to use Formdata in angular allowing us
+    //? to create, read, update and delete files
+    //? When posting file the "isDownload field is required"
+    formData.append("CommandText", commandText);
+    formData.append("Params", stringParam);
+    formData.append("file_ID", file_ID.toString());
+    formData.append("isDownload", 'true');
+
+    this.api.UniAttachmentlist(formData, true).subscribe({
+      next: (result) => {
+        let blob: Blob = result.body as Blob;
+        let a = document.createElement('a');
+        a.download = filename;
+        a.href = window.URL.createObjectURL(blob);
+        a.click();
+      },
+      error: (msg) => {
+        console.log(msg);
+      }
+    })
+
+  }
+  deleteStep(value: step) {
+    const index: number = this.steps.indexOf(value);
+    console.log(value);
+    if (index !== -1) {
+      this.steps.splice(index, 1);
+    }
+    let i = 1;
+    this.steps.forEach(element => {
+      element.Step_number = i;
+      i++
+    });
+
+
+    if (this.deleteStepsFromEdit == "")
+      this.deleteStepsFromEdit = value.Case_StepID.toString();
+    else
+      this.deleteStepsFromEdit = this.deleteStepsFromEdit + ', ' + value.Case_StepID;
+
+
+  }
+
+  addSharedStep() {
+
+    this.api.UniCall(
+      {
+        CommandText: 'egsQASharedStepGet',
+        Params: [
+          {
+            Param: '@SharedStep_ID',
+            Value: this.selectedSharedstep.toString()
+          },
+          {
+            Param: '@WithSteps',
+            Value: '1'
+          }
+        ]
+      }
+    ).subscribe({
+      next: (e) => {
+        for (let index = 0; index < e[1].length; index++) {
+          e[1][index].Case_StepID = '0';
+          e[1][index].SharedStep_ID = '';
+          this.steps.push(e[1][index]);
+          console.log(this.steps);
+        }
+
+        let i = 1;
+        this.steps.forEach(element => {
+          element.Step_number = i;
+          i++
+        });
+        this.openSharedStepModalBTN?.nativeElement.click();
+
+      },
+      error: (e) => {
+        alert("500 Internal Server Errors")
+      }
+    });
+
+  }
+  setCurrentSharedstep(s: step) {
+    this.currentStep.push(s);
+  }
+  updateInsertSharedStep() {
+    this.api.UniCall(
+      {
+        CommandText: 'egsQASharedStepInsertUpdate',
+        Params: [
+          {
+            Param: '@SharedStep_Title',
+            Value: this.sharedStepsTitle
+          },
+          {
+            Param: '@stepJson',
+            Value: JSON.stringify(this.currentStep)
+          }
+        ]
+      }
+    ).subscribe({
+      complete: () => {
+        this.openSharedModalBtn?.nativeElement.click();
+
+      },
+    });
   }
 }

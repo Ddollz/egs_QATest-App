@@ -21,7 +21,7 @@
             </div>
 
             <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12 form-group">
-              <label for="0-status" class="required">Status</label>
+              <label for="0-status">Status</label>
               <mat-select class="select-item" [value]="'1'" formControlName="@Case_Status">
                 <mat-option value="1" class="select-item">
                   Actual
@@ -36,14 +36,14 @@
             </div>
 
             <div class="form-group">
-              <label for="description" class="control-label required">Description</label>
+              <label for="description" class="control-label">Description</label>
               <input class="form-control" type="Text" id="description" formControlName="@Case_Desc" placeholder="For example: We can authorize on page http://example.com/login">
               <div class="form-control-feedback hide"></div>
             </div>
 
 
             <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12 form-group">
-              <label for="0-status" class="required">Suite</label>
+              <label for="0-status" class="">Suite</label>
               <mat-select class="select-item" formControlName="@Suite_ID">
 
                 <mat-option *ngFor="let suite of suites" [value]="suite.Suite_ID" class="select-item">
@@ -53,7 +53,7 @@
               </mat-select>
             </div>
             <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12 form-group">
-              <label for="0-status" class="required">Severity</label>
+              <label for="0-status" class="">Severity</label>
               <mat-select class="select-item" [value]="'1'" formControlName="@Case_Severity">
                 <mat-option value="1" class="select-item">
                   Not set
@@ -80,7 +80,7 @@
             </div>
 
             <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12 form-group">
-              <label for="0-status" class="required">Priority</label>
+              <label for="0-status" class="">Priority</label>
               <mat-select class="select-item" [value]="'1'" formControlName="@Case_Priority">
                 <mat-option value="1" class="select-item">
                   Not set
@@ -98,7 +98,7 @@
             </div>
 
             <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12 form-group">
-              <label for="0-status" class="required">Type</label>
+              <label for="0-status" class="">Type</label>
               <mat-select class="select-item" [value]="'Other'" formControlName="@Case_Type">
                 <mat-option value="Other" class="select-item">
                   Other
@@ -137,7 +137,7 @@
             </div>
 
             <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12 form-group">
-              <label for="0-status" class="required">Layer</label>
+              <label for="0-status" class="">Layer</label>
               <mat-select class="select-item" [value]="'1'" formControlName="@Case_Layer">
                 <mat-option value="1" class="select-item">
                   Not set
@@ -155,7 +155,7 @@
             </div>
 
             <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12 form-group">
-              <label for="0-status" class="required">Is flaky</label>
+              <label for="0-status" class="">Is flaky</label>
               <mat-select class="select-item" [value]="'1'" formControlName="@Case_Flaky">
                 <mat-option value="1" class="select-item">
                   No
@@ -167,7 +167,7 @@
             </div>
 
             <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12 form-group">
-              <label for="0-status" class="required">Milestone</label>
+              <label for="0-status" class="">Milestone</label>
               <mat-select class="select-item" [value]="'0'" formControlName="@Case_Milestone">
                 <mat-option value="1" class="select-item">
                   Not set
@@ -176,7 +176,7 @@
             </div>
 
             <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12 form-group">
-              <label for="0-status" class="required">Behavior</label>
+              <label for="0-status" class="">Behavior</label>
               <mat-select class="select-item" [value]="'1'" formControlName="@Case_Behavior">
                 <mat-option value="1" class="select-item" selected>
                   Not set
@@ -194,7 +194,7 @@
             </div>
 
             <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12 form-group">
-              <label for="0-status" class="required">Automation status</label>
+              <label for="0-status" class="">Automation status</label>
               <mat-select class="select-item" [value]="'1'" formControlName="@Case_AutoStat">
                 <mat-option value="1" class="select-item" selected>
                   Not automated
@@ -212,12 +212,12 @@
           <div class="case-create-block mb-4">Conditions</div>
           <div class="row">
             <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 form-group">
-              <label for="title" class="control-label required">Pre-condition</label>
+              <label for="title" class="control-label">Pre-condition</label>
               <input class="form-control" type="Text" placeholder="Empty value" formControlName="@Case_PreCondition">
               <div class="form-control-feedback hide"></div>
             </div>
             <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 form-group">
-              <label for="title" class="control-label required">Post-conditions</label>
+              <label for="title" class="control-label">Post-conditions</label>
               <input class="form-control" type="Text" placeholder="Empty value" formControlName="@Case_PostCondition">
               <div class="form-control-feedback hide"></div>
             </div>
@@ -240,52 +240,45 @@
           <div class="col">
             <div id="case-attachments" class="attachments">
               <ng-container *ngFor="let attachment of attachments">
-                <ng-container *ngFor="let variable of attachment">
-                  <ng-container *ngIf="variable.byteFile.contentType.split('/')[0] == 'image'; else notImage">
 
-
-                    <div class="suitecase-attachment">
-                      <div class="suitecase-attachment-container">
-                        <div data-disable="false" class="suitecase-attachment-image" style="background: url(&quot;data:image/png;base64,{{variable.byteFile.fileContents}}&quot;);"><a class="suitecase-attachment-link is-image"></a>
-                          <div class="suitecase-attachment-overlay">
-                            <p class="suitecase-attachment-filename">{{variable.Filename}}</p>
-                            <div class="suitecase-attachment-overlay-bottom">
-                              <p class="suitecase-attachment-size"> {{variable.Filesize}}</p><button type="button" class="suitecase-attachment-remove"><i class="bi bi-x"></i></button>
-                            </div>
+                <ng-container *ngIf="attachment.byteFile.contentType.split('/')[0] == 'image'; else notImage">
+                  <div class="suitecase-attachment">
+                    <div class="suitecase-attachment-container">
+                      <div data-disable="false" class="suitecase-attachment-image" (click)="downloadFile(attachment.Attachment_ID,attachment.Filename)" style="background: url(&quot;data:image/png;base64,{{attachment.byteFile.fileContents}}&quot;);"><a class="suitecase-attachment-link is-image"></a>
+                        <div class="suitecase-attachment-overlay">
+                          <p class="suitecase-attachment-filename">{{attachment.Filename}}</p>
+                          <div class="suitecase-attachment-overlay-bottom">
+                            <p class="suitecase-attachment-size"> {{attachment.Filesize}}</p>
+                            <button type="button" class="suitecase-attachment-remove" (click)="deleteAttachment(attachment.Attachment_ID)"><i class="bi bi-x"></i></button>
                           </div>
                         </div>
                       </div>
                     </div>
-
-                  </ng-container>
-
-                  <ng-template #notImage>
-
-
-                    <div class="suitecase-attachment">
-                      <div class="suitecase-attachment-container">
-                        <div data-disable="false" class="suitecase-attachment-file">
-                          <a class="suitecase-attachment-link"></a>
-                          <span class="suitecase-attachment-extension">{{variable.byteFile.contentType.split('/')[0]}}</span>
-                          <div class="suitecase-attachment-overlay">
-                            <p class="suitecase-attachment-filename">{{variable.Filename}}</p>
-                            <div class="suitecase-attachment-overlay-bottom">
-                              <p class="suitecase-attachment-size"> {{variable.Filesize}}</p>
-                              <button type="button" class="suitecase-attachment-remove" (click)="deleteAttachment(variable.CaseAttachment_ID)"><i class="bi bi-x"></i></button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </ng-template>
-
-
-
+                  </div>
                 </ng-container>
+
+                <ng-template #notImage>
+                  <div class="suitecase-attachment">
+                    <div class="suitecase-attachment-container">
+                      <div data-disable="false" class="suitecase-attachment-file" (click)="downloadFile(attachment.Attachment_ID,attachment.Filename)">
+                        <a class="suitecase-attachment-link"></a>
+                        <span class="suitecase-attachment-extension">{{attachment.byteFile.contentType.split('/')[0]}}</span>
+                        <div class="suitecase-attachment-overlay">
+                          <p class="suitecase-attachment-filename">{{attachment.Filename}}</p>
+                          <div class="suitecase-attachment-overlay-bottom">
+                            <p class="suitecase-attachment-size"> {{attachment.Filesize}}</p>
+                            <button type="button" class="suitecase-attachment-remove" (click)="deleteAttachment(attachment.Attachment_ID)"><i class="bi bi-x"></i></button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+
               </ng-container>
 
             </div>
-            <button class="button-blue-transparent btn  b-0 p-0" type="button" data-bs-toggle="modal" data-bs-target="#UploadModal">
+            <button class="button-blue-transparent btn  b-0 p-0" type="button" data-bs-toggle="modal" data-bs-target="#UploadModal" (click)="uploadFrom = 'case'">
               <i class="bi bi-plus-circle-fill" style="color: var(--bs-blue-prime);"></i> Add attachment
             </button>
           </div>
@@ -303,51 +296,136 @@
         <div class="row mt-3">
           <div class="col">
             <ng-container *ngFor="let count of steps; let i = index">
-              <div class="d-flex flex-row">
-                <div class="stepNumber me-3" style="margin-top: 36px;">
-                  <ng-container *ngIf="count.Step_number">
-                    {{count.Step_number}}
+              <div class="d-flex flex-column">
+                <div class="row d-flex flex-row mt-3">
+                  <div class="stepNumber d-flex align-items-center justify-content-center text-center">
+                    <ng-container *ngIf="count.Step_number">
+                      {{count.Step_number}}
+                    </ng-container>
+                  </div>
+                  <div class="stepinput-row d-flex flex-row">
+                    <div class="form-group w-100 me-2">
+                      <label for="title" class="control-label required">Action</label>
+                      <input class="form-control" type="Text" placeholder="For example: Open Sign in page" [(ngModel)]="count.Step_Action" value="{{count.Step_Action}}">
+                      <div class="form-control-feedback hide"></div>
+                    </div>
+                    <div class="form-group w-100 me-2">
+                      <label for="title" class="control-label">Input data</label>
+                      <input class="form-control" type="Text" placeholder="For example: Login / password" [(ngModel)]="count.Step_InputData" value="{{count.Step_InputData}}">
+                      <div class="form-control-feedback hide"></div>
+                    </div>
+                    <div class="form-group w-100 me-2">
+                      <label for="title" class="control-label">Expected result</label>
+                      <input class="form-control" type="Text" placeholder="For example: popup is opened" [(ngModel)]="count.Step_ExpectedResult" value="{{count.Step_ExpectedResult}}">
+                      <div class="form-control-feedback hide"></div>
+                    </div>
+                  </div>
+                  <div class="step-controls d-flex align-content-center justify-content-evenly">
+                    <button class="button-gray-transparent" data-bs-toggle="modal" data-bs-target="#UploadModal" (click)="uploadFrom = 'step'; attachmentsStepNo ='step'+count.Step_number.toString()">
+                      <i class="bi bi-image-fill"></i>
+                    </button>
+                    <button class="button-gray-transparent" data-bs-toggle="modal" data-bs-target="#createSharedStep" (click)="setCurrentSharedstep(count)">
+                      <i class="bi bi-share-fill"></i>
+                    </button>
+                    <button class="button-gray-transparent">
+                      <i class="bi bi-clipboard"></i>
+                    </button>
+                    <button class="button-gray-transparent" (click)="deleteStep(count)">
+                      <i class="bi bi-trash-fill"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="space"> </div>
+                  <ng-container *ngFor="let attachment of stepAttachments">
+                    <ng-container *ngIf="attachment.hasOwnProperty('step'+count.Step_number)">
+
+                      <ng-container *ngIf="attachment['step'+count.Step_number].byteFile.contentType.split('/')[0] == 'image'; else notImage2">
+                        <div class="suitecase-attachment">
+                          <div class="suitecase-attachment-container">
+                            <div data-disable="false" class="suitecase-attachment-image" (click)="downloadFile(attachment['step'+count.Step_number].Attachment_ID,attachment.Filename)" [ngStyle]="{'background': 'url(&quot;data:image/png;base64,'+attachment['step'+count.Step_number].byteFile.fileContents+'&quot;)'}">
+                              <a class="suitecase-attachment-link is-image"></a>
+                              <div class="suitecase-attachment-overlay">
+                                <p class="suitecase-attachment-filename">{{attachment['step'+count.Step_number].Filename}}</p>
+                                <div class="suitecase-attachment-overlay-bottom">
+                                  <p class="suitecase-attachment-size"> {{attachment['step'+count.Step_number].Filesize}}</p>
+                                  <button type="button" class="suitecase-attachment-remove" (click)="deleteAttachment(attachment['step'+count.Step_number].Attachment_ID)"><i class="bi bi-x"></i></button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </ng-container>
+
+                    </ng-container>
+
+                    <ng-container *ngIf="attachment.Step_ID == count.Case_StepID">
+                      <ng-container *ngIf="attachment.byteFile.contentType.split('/')[0] == 'image'; else notImage">
+                        <div class="suitecase-attachment">
+                          <div class="suitecase-attachment-container">
+                            <div data-disable="false" class="suitecase-attachment-image" (click)="downloadFile(attachment.Attachment_ID,attachment.Filename)" style="background: url(&quot;data:image/png;base64,{{attachment.byteFile.fileContents}}&quot;);"><a class="suitecase-attachment-link is-image"></a>
+                              <div class="suitecase-attachment-overlay">
+                                <p class="suitecase-attachment-filename">{{attachment.Filename}}</p>
+                                <div class="suitecase-attachment-overlay-bottom">
+                                  <p class="suitecase-attachment-size"> {{attachment.Filesize}}</p>
+                                  <button type="button" class="suitecase-attachment-remove" (click)="deleteAttachment(attachment.Attachment_ID)"><i class="bi bi-x"></i></button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </ng-container>
+                    </ng-container>
+
+                    <ng-template #notImage>
+                      <div class="suitecase-attachment">
+                        <div class="suitecase-attachment-container">
+                          <div data-disable="false" class="suitecase-attachment-file" (click)="downloadFile(attachment.Attachment_ID,attachment.Filename)">
+                            <a class="suitecase-attachment-link"></a>
+                            <span class="suitecase-attachment-extension">{{attachment.byteFile.contentType.split('/')[0]}}</span>
+                            <div class="suitecase-attachment-overlay">
+                              <p class="suitecase-attachment-filename">{{attachment.Filename}}</p>
+                              <div class="suitecase-attachment-overlay-bottom">
+                                <p class="suitecase-attachment-size"> {{attachment.Filesize}}</p>
+                                <button type="button" class="suitecase-attachment-remove" (click)="deleteAttachment(attachment.Attachment_ID)"><i class="bi bi-x"></i></button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </ng-template>
+
+
+                    <ng-template #notImage2>
+                      <div class="suitecase-attachment">
+                        <div class="suitecase-attachment-container">
+                          <div data-disable="false" class="suitecase-attachment-file" (click)="downloadFile(attachment['step'+count.Step_number].Attachment_ID,attachment.Filename)">
+                            <a class="suitecase-attachment-link"></a>
+                            <span class="suitecase-attachment-extension">{{attachment['step'+count.Step_number].byteFile.contentType.split('/')[0]}}</span>
+                            <div class="suitecase-attachment-overlay">
+                              <p class="suitecase-attachment-filename">{{attachment['step'+count.Step_number].Filename}}</p>
+                              <div class="suitecase-attachment-overlay-bottom">
+                                <p class="suitecase-attachment-size"> {{attachment['step'+count.Step_number].Filesize}}</p>
+                                <button type="button" class="suitecase-attachment-remove" (click)="deleteAttachment(attachment['step'+count.Step_number].Attachment_ID)"><i class="bi bi-x"></i></button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </ng-template>
+
                   </ng-container>
-
-                </div>
-                <div class="stepinput-row d-flex flex-row">
-                  <div class="form-group w-100 me-2">
-                    <label for="title" class="control-label required">Action</label>
-                    <input class="form-control" type="Text" placeholder="For example: Open Sign in page" [(ngModel)]="count.Step_Action" value="{{count.Step_Action}}">
-                    <div class="form-control-feedback hide"></div>
-                  </div>
-                  <div class="form-group w-100 me-2">
-                    <label for="title" class="control-label required">Input data</label>
-                    <input class="form-control" type="Text" placeholder="For example: Login / password" [(ngModel)]="count.Step_InputData" value="{{count.Step_InputData}}">
-                    <div class="form-control-feedback hide"></div>
-                  </div>
-                  <div class="form-group w-100 me-2">
-                    <label for="title" class="control-label required">Expected result</label>
-                    <input class="form-control" type="Text" placeholder="For example: popup is opened" [(ngModel)]="count.Step_ExpectedResult" value="{{count.Step_ExpectedResult}}">
-                    <div class="form-control-feedback hide"></div>
-                  </div>
-                </div>
-
-                <div class="step-controls d-flex align-content-center justify-content-evenly">
-                  <button class="button-gray-transparent">
-                    <i class="bi bi-image-fill"></i>
-                  </button>
-                  <button class="button-gray-transparent">
-                    <i class="bi bi-share-fill"></i>
-                  </button>
-                  <button class="button-gray-transparent">
-                    <i class="bi bi-clipboard"></i>
-                  </button>
-                  <button class="button-gray-transparent">
-                    <i class="bi bi-trash-fill"></i>
-                  </button>
                 </div>
               </div>
             </ng-container>
 
-            <div id="case-attachments" class="attachments"></div>
-            <button class="button-blue-transparent btn  b-0 p-0" type="button" (click)="addStepInput()">
+            <!-- <div id="case-attachments" class="attachments"></div> -->
+            <button class="button-blue-transparent btn  b-0 p-0 me-3" type="button" (click)="addStepInput()">
               <i class="bi bi-plus-circle-fill" style="color: var(--bs-blue-prime);"></i> Add Step
+            </button>
+
+            <button class="button-blue-transparent btn  b-0 p-0" type="button" data-bs-toggle="modal" data-bs-target="#addSharedStep">
+              <i class="bi bi-plus-circle-fill" style="color: var(--bs-blue-prime);"></i> Add shared step
             </button>
           </div>
         </div>
@@ -355,8 +433,8 @@
         <div class="save-menu-wrapper">
           <div class="text-start save-menu">
             <button id="save-case" class="btn btn-primary me-3" (click)="createCase()">Save</button>
-            <button class="btn btn-secondary me-1" type="submit">Save and create another</button>
-            <button class="btn button-blue-transparent b-0">Cancel</button>
+            <button class="btn btn-secondary me-1" type="submit" [hidden]="editCase">Save and create another</button>
+            <button class="btn button-blue-transparent b-0" routerLink="../../4">Cancel</button>
           </div>
         </div>
       </div>
@@ -364,5 +442,56 @@
   </div>
 </div>
 
+<button #openAddSharedStepModal [hidden]="true" data-bs-toggle="modal" data-bs-target="#addSharedStep"></button>
+<!-- Add shared step Modal -->
+<div class="modal fade" id="addSharedStep" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body p-4">
+
+        <h4 class="modal-title mb-1"> Add shared step</h4>
+
+        <div class="form-floating mb-3">
+
+          <select class="form-select" id="floatingSelect" aria-label="Floating label select example" [(ngModel)]="selectedSharedstep">
+            <ng-container *ngFor="let shared of sharedSteps">
+              <option value='{{shared.SharedStep_ID}}'>{{shared.SharedStep_Title}}</option>
+            </ng-container>
+          </select>
+          <label for="floatingSelect">Choose shared step</label>
+        </div>
+        <div class="d-flex align-items-center justify-content-end">
+          <span class="cancel-span me-3" data-bs-dismiss="modal">Cancel</span>
+          <button type="button" class="btn btn-primary" (click)="addSharedStep()">Add</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<button #openCreateSharedModal [hidden]="true" data-bs-toggle="modal" data-bs-target="#createSharedStep"></button>
+<!-- Add create step Modal -->
+<div class="modal fade" id="createSharedStep" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body p-4">
+
+        <h4 class="modal-title mb-1"> Create shared step</h4>
+
+        <div class="form-floating mb-3">
+
+          <div class="form-group w-100 me-2">
+            <label for="sTitle" class="control-label required">Step title</label>
+            <input id="sTitle" class="form-control" type="Text" placeholder="For Example: Authorization" [(ngModel)]="sharedStepsTitle">
+          </div>
+        </div>
+        <div class="d-flex align-items-center justify-content-end">
+          <span class="cancel-span me-3" data-bs-dismiss="modal">Cancel</span>
+          <button type="button" class="btn btn-primary" (click)="updateInsertSharedStep()" [disabled]="!sharedStepsTitle">Create</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <app-upload-attachment Modal_Title="Upload Attachment" (uploadedEvent)="addAttachment($event)"></app-upload-attachment>

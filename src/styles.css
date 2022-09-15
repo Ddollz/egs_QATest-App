@@ -183,6 +183,16 @@ select {
 
 
 /* Forms  */
+.required:after {
+  color: #d0021b;
+  content: "*";
+  margin-left: 0.125rem;
+}
+
+.cancel-span {
+  cursor: pointer;
+}
+
 .invalid-f p {
   color: var(--bs-red-100);
 }
@@ -244,6 +254,11 @@ select {
 .btn-primary.active,
 .open>.dropdown-toggle.btn-primary {
   box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+}
+
+.btn:disabled {
+  background: var(--bs-red-100);
+
 }
 
 
@@ -456,6 +471,38 @@ select {
   flex-wrap: wrap;
 }
 
+
+.attachments .attachment {
+  text-align: center;
+  width: 10rem;
+  display: block;
+  margin-bottom: 1rem;
+  margin-right: 1.5rem;
+  cursor: pointer;
+}
+
+.attachments .attachment-image {
+  width: 10rem;
+  height: 6.75rem;
+  border-radius: 0.25rem;
+  background-size: cover !important;
+  transition: box-shadow .2s ease;
+  border: 1px solid #e0e2e6;
+  padding: 0.75rem;
+}
+
+.attachments .attachment-file {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 10rem;
+  height: 6.75rem;
+  background: #e9e9e9;
+  border-radius: 0.25rem;
+  transition: box-shadow .2s ease;
+  border: 1px solid #e0e2e6;
+}
+
 .suitecase-attachment {
   width: 10rem;
   display: block;
@@ -565,5 +612,28 @@ select {
 .suitecase-attachment-extension {
   text-decoration: none !important;
   font-weight: bold;
+  color: #000;
+}
+
+.attachments-small .attachment {
+  width: 36px;
+  margin-top: 0.5rem;
+  margin-right: 0.75rem;
+}
+
+.attachments-small .attachment-image {
+  width: 36px;
+  height: 36px;
+}
+
+.attachments-small .attachment-file {
+  width: 36px;
+  height: 36px;
+}
+
+.attachments .attachment a .attachment-extension {
+  text-decoration: none !important;
+  font-weight: bold;
+  font-size: 0.775rem;
   color: #000;
 }

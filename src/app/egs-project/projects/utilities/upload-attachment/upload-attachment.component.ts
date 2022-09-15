@@ -16,7 +16,7 @@ export class UploadAttachmentComponent implements OnInit, AfterViewInit {
   //Modal Variables
   @Input() Modal_Title: string = '';
   @ViewChild('UploadModal') myDiv?: ElementRef;
-
+  @ViewChild('myFileInput') myFileInput?: ElementRef;
   constructor(private http: HttpClient, private api: ApiService) {
   }
 
@@ -34,7 +34,7 @@ export class UploadAttachmentComponent implements OnInit, AfterViewInit {
   uploadImage(event: any) {
     console.log(event.target.files[0])
     //? Stored Procedure Name
-    var commandText = 'egsQATestCaseAttachmentInsertUpdate';
+    var commandText = 'egsQAAttachmentInsertUpdate';
 
     //? Parameter of the store procedure
     var Params =
@@ -57,17 +57,23 @@ export class UploadAttachmentComponent implements OnInit, AfterViewInit {
     formData.append("Params", stringParam);
     formData.append("files", event.target.files[0]);
 
+    if (this.myFileInput != undefined){
+      console.log("test")
+      this.myFileInput.nativeElement.value = "";}
     this.api.UniAttachmentlist(formData).subscribe({
       next: (result) => {
-        this.fileUploaded = result[1];
-        this.uploadedEvent.emit(this.fileUploaded);
+        console.log(result[0]);
+        this.fileUploaded = result[0];
+        this.uploadedEvent.emit(result[0]);
       },
       error: (msg) => {
         console.log(msg);
       },
-      complete: ()=>{
+      complete: () => {
         this.myDiv?.nativeElement.click();
+
       }
     })
+
   }
 }

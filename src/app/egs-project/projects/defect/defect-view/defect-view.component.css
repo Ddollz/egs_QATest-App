@@ -60,8 +60,24 @@
 }
 
 /* Icons */
-.bi-exclamation-circle-fill {
-color: #ffc107;
+.bi-exclamation-circle-fill,
+.bi-chevron-down {
+  color: #ffc107;
+}
+
+.bi-x-circle,
+.bi-x-circle-fill,
+.bi-chevron-double-up,
+.bi-chevron-up {
+  color: var(--bs-red-100);
+}
+
+.bi-hourglass-top {
+  color: #0dcaf0;
+}
+
+.bi-check-circle-fill {
+  color: #198754;
 }
 
 /* Misc */

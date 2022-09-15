@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services/api.service';
 import { milestone } from '../../../../models/project/project.model';
-import { Router } from '@angular/router';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-milestone-create',
@@ -56,7 +55,6 @@ export class MilestoneCreateComponent implements OnInit {
   }
 
   updateInsertMilestone() {
-    console.log(this.Milestone_ID);
     this.api.UniCall(
       {
         CommandText: 'egsQAMilestoneInsertUpdate',
