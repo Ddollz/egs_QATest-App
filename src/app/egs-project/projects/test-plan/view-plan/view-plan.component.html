@@ -8,7 +8,7 @@
                         <a routerLink="/projects/plan">
                             <i class="submenu-toggle bi bi-arrow-left"></i>
                         </a>
-                        Testplan Sample
+                        {{TestPlan_Title}}
                     </h2>
                 </div>
     
@@ -19,18 +19,24 @@
                         </button>
                     </div>
                     
+                    
                     <div class="dropdown">
                         <button class="btn btn-secondary" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="bi bi-three-dots"></i>
                         </button>
-
                         <div class="dropdown-menu dropdown-menu-end">
+                            <!-- <div class="dropdown-item">
+                                <a routerLink="/projects/plan/editplan/{{i}}">Edit</a>
+                            </div> -->
                             <div class="dropdown-item">
-                                <a href="#">Edit</a>
+                                <a routerLink="/projects/plan/editplan/">Edit</a>
                             </div>
                             <div class="dropdown-item">
                                 <a href="#">Export XLS</a>
                             </div>
+                            <!-- <div class="dropdown-item" (click)="openDeleteModal(element.TestPlan_ID, element.TestPlan_Title)">
+                                <a class="text-danger">Delete</a>
+                            </div> -->
                             <div class="dropdown-item">
                                 <a class="text-danger">Delete</a>
                             </div>
@@ -73,6 +79,24 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Delete Modal -->
+            <div class="modal fade" id="deleteModal" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-body p-4">
+                
+                        <h5 class="modal-title mb-3">Delete Test Plan</h5>
+                        <p class="mb-4">Are you sure, that you want to delete test plan "{{TestPlan_Title}}"?</p>
+                
+                        <div class="d-flex align-items-center justify-content-end">
+                            <span class="cancel-span me-2" data-bs-dismiss="modal">Cancel</span>
+                            <button type="button" class="btn btn-primary" (click)="deleteTestPlan()">Delete</button>
+                        </div>
                         </div>
                     </div>
                 </div>

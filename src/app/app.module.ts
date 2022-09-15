@@ -10,7 +10,6 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatDialogModule } from '@angular/material/dialog';
 
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { EgsLoginComponent } from './egs-login/egs-login.component';
@@ -43,6 +42,8 @@ import { ConfigComponent } from './egs-project/projects/config/config.component'
 import { DefectViewComponent } from './egs-project/projects/defect/defect-view/defect-view.component';
 import { EgsTestingComponentKarlComponent } from './egs-testing-component-karl/egs-testing-component-karl.component';
 import { QuillModule } from 'ngx-quill';
+import { ViewPlanComponent } from './egs-project/projects/test-plan/view-plan/view-plan.component';
+import { EditPlanComponent } from './egs-project/projects/test-plan/edit-plan/edit-plan.component';
 
 
 //Link Routes
@@ -56,6 +57,8 @@ const appRoute: Routes = [
   { path: 'projects/config', component: ConfigComponent },
   { path: 'projects/plan', component: TestPlanComponent },
   { path: 'projects/plan/createplan', component: CreatePlanComponent },
+  { path: 'projects/plan/editplan/:i', component: CreatePlanComponent },
+  { path: 'projects/plan/viewplan/:i', component: ViewPlanComponent },
   { path: 'projects/shared-steps', component: SharedStepsComponent },
   { path: 'projects/shared-steps/create', component: StepCreateComponent },
   { path: 'projects/shared-steps/edit/:i', component: StepCreateComponent },
@@ -101,6 +104,8 @@ const appRoute: Routes = [
     ConfigComponent,
     DefectViewComponent,
     EgsTestingComponentKarlComponent,
+    ViewPlanComponent,
+    EditPlanComponent,
   ],
   imports: [
     BrowserModule,

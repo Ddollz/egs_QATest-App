@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router'
+import { Router, ActivatedRoute} from '@angular/router';
 import { Location } from "@angular/common";
 import { testplan } from '../../../../models/project/project.model';
 import { ApiService } from '../../../../services/api.service';
@@ -11,17 +11,29 @@ import { ApiService } from '../../../../services/api.service';
 })
 export class CreatePlanComponent implements OnInit {
 
+  index: number = 0;
+  Page_title: string = 'Create Test Plan';
+  Button_title: string = 'Create Plan';
+
   //Update and Insert Variables
   TestPlan_ID: string = '';
   TestPlan_Title: string = '';
   TestPlan_Desc: string = '';
   TestPlan_CaseCount: string = '';
   TestPlan_RunTime: string = '';
-	Case_ID: string = '';
+  Case_ID: string = '';
   
   testplan: testplan[] = [];
 
-  constructor(private router: Router, private location: Location, private api: ApiService) { }
+  constructor(private router: Router, private route: ActivatedRoute, private location: Location, private api: ApiService) {
+    if (this.route.snapshot.params['i']) {
+      this.index = this.route.snapshot.params['i'];
+      this.Page_title = 'Edit Test Plan';
+      this.Button_title = 'Save';
+      this.getTestPlan();
+    }
+
+   }
 
   ngOnInit(): void {
   }
@@ -54,9 +66,28 @@ export class CreatePlanComponent implements OnInit {
         ]
       }
     ).subscribe({
-      next: (v) => this.router.navigate(["/projects/plan"]),
       error: (e) => console.error(e),
-      complete: () => console.info('complete')
+      complete: () => this.router.navigate(["/projects/plan"])
+    });
+  }
+
+  getTestPlan(){
+    this.api.UniCall(
+      {
+        CommandText: 'egsQATestPlanGet',
+        Params: [
+          {
+            Param: '@TestPlan_ID',
+            Value: null
+          }
+        ]
+      }
+    ).subscribe(value => {
+      this.testplan = value[0];
+      this.TestPlan_ID = value[0][this.index].TestPlan_ID;
+      this.TestPlan_Title = value[0][this.index].TestPlan_Title;
+      this.TestPlan_Desc = value[0][this.index].TestPlan_Desc;
+      this.TestPlan_CaseCount = value[0][this.index].TestPlan_CaseCount;
     });
   }
 }

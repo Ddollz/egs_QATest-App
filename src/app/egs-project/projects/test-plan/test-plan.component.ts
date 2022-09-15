@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { testplan } from '../../../models/project/project.model';
 import { ApiService } from '../../../services/api.service';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router'
+import { Router, NavigationExtras } from '@angular/router';
+import { reloadPage } from '../../../services/global-functions.service';
 
 @Component({
   selector: 'app-test-plan',
@@ -42,12 +43,27 @@ export class TestPlanComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  editViewPlan(id: string, name: string, desc: string, code: string){
-    this.router.navigate(['/projects/plan/editplan']);
+  openDeleteModal(id: string, title: string) {
     this.TestPlan_ID = id;
-    this.TestPlan_Title = name;
-    this.TestPlan_Desc = desc;
-    this.TestPlan_CaseCount = code;
+    this.TestPlan_Title = title;
+  }
+  
+  deleteTestPlan(){
+    console.log(this.TestPlan_ID)
+    this.api.UniCall(
+      {
+        CommandText: 'egsQATestPlanDelete',
+        Params: [
+          {
+            Param: '@TestPlan_ID',
+            Value: this.TestPlan_ID.toString()
+          }
+        ]
+      }
+    ).subscribe({
+      error: (e) => console.error(e),
+      complete: () => reloadPage()
+    });
   }
 
 }
