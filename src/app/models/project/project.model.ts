@@ -44,14 +44,13 @@ export interface testCase {
   Case_Tag: string;
 }
 
-export interface testCaseComment{
+export interface testCaseComment {
   Comment_ID: number;
   Comment_Content: string;
   Comment_Date: string;
   User_id: number;
   Case_ID: number;
 }
-
 
 export interface step {
   Case_StepID: number;
@@ -70,6 +69,7 @@ export interface sharedStep {
   SharedStep_ID: number;
   SharedStep_Title: string;
 }
+
 export interface defect {
   Defect_ID: number;
   Defect_Title: string;
@@ -80,6 +80,15 @@ export interface defect {
   Defect_Author: number;
   Defect_Status: number;
   Defect_DateCreated: string;
+}
+
+export interface defectComment {
+  Comment_ID: number;
+  Comment_Content: string;
+  Comment_Date: string;
+  User_ID: number;
+  Case_ID: number;
+  Defect_ID: number;
 }
 
 export interface milestone {
@@ -99,7 +108,7 @@ export interface testplan {
   Case_ID: number;
 }
 
-export interface testrun{
+export interface testrun {
   TestRun_ID: number;
   TestRun_Title: string;
   TestRun_Desc: number;
