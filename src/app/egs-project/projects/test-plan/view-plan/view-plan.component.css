@@ -66,6 +66,14 @@
     grid-template-rows: 28px calc(100% - 28px);
 } */
 
+/* Tabs */
+.custom-tab.active {
+    background: transparent !important;
+    color: white !important;
+    border-bottom: 2px solid yellow !important;
+    border-radius: 0px !important;
+}
+
 .tabs {
     padding-top: 1rem;
     display: grid;
@@ -117,9 +125,32 @@
     transition: all .3s ease-out;
 }
 
+/* Tabs Content */
+
 .tabs-content {
     padding-top: 1rem;
     min-width: 5rem;
+}
+
+.nav-tabs-bordered {
+    border-bottom: 2px solid #ebeef4;
+}
+.nav-tabs-bordered .nav-link {
+    margin-bottom: -2px;
+    border: none;
+    color: #444444;
+}
+.nav-tabs-bordered .nav-link:hover, .nav-tabs-bordered .nav-link:focus {
+    color: #e52325;
+}
+.nav-tabs-bordered .nav-link.active {
+    background-color: #fff;
+    color: #e52325;
+    border-bottom: 2px solid #e52325;
+}
+
+.card{
+    border: none;
 }
 
 .view-plan-details-item-header {
@@ -133,4 +164,46 @@
 
 .markdown-area {
     word-break: break-word;
+}
+
+.filters-block {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.filters-block-items {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.case-search-input {
+    position: static;
+}
+
+.me-2 {
+    margin-right: .5rem !important;
+}
+
+.add-filter-outer {
+    position: relative;
+}
+
+.add-filter-button {
+    font-size: .875rem;
+    text-decoration: none;
+    color: #e52325;
+    position: relative;
+    font-weight: 600;
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    white-space: nowrap;
+    outline: none;
+}
+
+.form-control{
+    width: 300px;
 }
