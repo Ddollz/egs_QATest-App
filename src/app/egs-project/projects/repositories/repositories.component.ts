@@ -122,21 +122,6 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
     }
     );
 
-    this.api.UniCall(
-      {
-        CommandText: 'egsQATestCaseGet',
-        Params: [
-          {
-            Param: '@Case_ID',
-            Value: ''
-          }
-        ],
-      }
-    ).subscribe(value => {
-      this.testCases = value[0];
-    }
-    );
-
 
   }
 
@@ -174,7 +159,7 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
     var sID = dom.getAttribute('suiteattri')
     this.api.UniCall(
       {
-        CommandText: 'egsQACaseAndStepInsert',
+        CommandText: 'egsQATestCaseInsertUpdate',
         Params: [
           {
             Param: '@Case_Title',
@@ -255,7 +240,6 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
     )
   }
   getCurrentProjectSuite() {
-
     this.api.UniCall(
       {
         CommandText: 'egsQASuiteGet',
@@ -268,8 +252,30 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
       }
     ).subscribe(value => {
       this.suites = value[0];
-      for (let index = 0; index < this.suites.length; index++) {
-        this.suites[index]['carretOpen'] = true;
+      console.log(this.suites)
+      if (this.suites) {
+        this.Suite_Root = 'ProjectRoot|' + this.project.Project_ID;
+        for (let index = 0; index < this.suites.length; index++) {
+          this.suites[index]['carretOpen'] = true;
+        }
+
+        this.api.UniCall(
+          {
+            CommandText: 'egsQATestCaseGet',
+            Params: [
+              {
+                Param: '@Case_ID',
+                Value: ''
+              }
+            ],
+          }
+        ).subscribe(value => {
+          this.testCases = value[0];
+        }
+        );
+      } else {
+        this.suites = []
+        this.testCases = [];
       }
     }
     );
@@ -855,6 +861,7 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
       }
       this.suitesDeleteArray = this.suitesDeleteArray + ', ' + this.currentSuiteDelete.Suite_ID;
       // console.log(this.suitesDeleteArray);
+      console.log(this.suitesDeleteArray.toString());
       this.api.UniCall(
         {
           CommandText: 'egsQASuiteDelete',

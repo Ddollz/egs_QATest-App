@@ -84,7 +84,7 @@
               </div>
               <div class="collapse show" [id]="'collapse-'+suite.Suite_ID+'-case'">
                 <div class="suite-description">
-                  {{suite.Suite_Desc}}
+                  {{suite.Suite_Desc}}S
                 </div>
                 <div class="caseContainer ">
                   <ng-container *ngFor="let testCase of testCases">
@@ -101,7 +101,9 @@
                   <input class="ms-5 mb-3 clearedInput" placeholder="+ Create quick test" [attr.suiteAttri]="suite.Suite_ID" (keyup.enter)="onQuickCaseEnter($event)">
                 </div>
                 <!-- Run Template to display looping Leaf -->
-                <ng-container *ngTemplateOutlet="treeCase; context:{ $implicit: suite}"></ng-container>
+                <div class="ms-3">
+                  <ng-container *ngTemplateOutlet="treeCase; context:{ $implicit: suite}"></ng-container>
+                </div>
               </div>
             </ng-container>
           </ng-container>
@@ -132,8 +134,11 @@
                   </ng-container>
                   <input class="ms-5 mb-3 clearedInput" placeholder="+ Create quick test" [attr.suiteAttri]="s.Suite_ID" (keyup.enter)="onQuickCaseEnter($event)">
                 </div>
+
                 <!-- Run the template leaf again -->
-                <ng-container *ngTemplateOutlet="treeCase; context: {$implicit:s}"></ng-container>
+                <div class="ms-3">
+                  <ng-container *ngTemplateOutlet="treeCase; context: {$implicit:s}"></ng-container>
+                </div>
               </div>
             </ng-container>
           </ng-container>
@@ -262,13 +267,14 @@
                 <div class="markdown-area">{{element.Step_ExpectedResult}}</div>
                 <div class="attachments attachments-small">
                   <ng-container *ngFor="let a of stepAttachments">
-
-                    <ng-container *ngIf="a.byteFile.contentType.split('/')[0] == 'image'; else notImage">
-                      <div class="attachment">
-                        <a href="" target="_blank" rel="noreferrer">
-                          <div class="attachment-image" [ngStyle]="{'background': 'url(&quot;data:image/png;base64,'+a.byteFile.fileContents+'&quot;)'}"></div>
-                        </a>
-                      </div>
+                    <ng-container *ngIf="a.Step_ID == element.Case_StepID">
+                      <ng-container *ngIf="a.byteFile.contentType.split('/')[0] == 'image'; else notImage">
+                        <div class="attachment">
+                          <a href="" target="_blank" rel="noreferrer">
+                            <div class="attachment-image" [ngStyle]="{'background': 'url(&quot;data:image/png;base64,'+a.byteFile.fileContents+'&quot;)'}"></div>
+                          </a>
+                        </div>
+                      </ng-container>
                     </ng-container>
 
                     <ng-template #notImage>
@@ -278,6 +284,7 @@
                         </a>
                       </div>
                     </ng-template>
+
                   </ng-container>
                 </div>
               </td>

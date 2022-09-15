@@ -393,3 +393,6 @@
 .modal-title i {
   color: var(--bs-red-100);
 }
+.collapsed {
+  position: relative;
+}

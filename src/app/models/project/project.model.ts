@@ -63,6 +63,7 @@ export interface step {
   Step_ExpectedResult: string;
   Step_Status: number;
   SharedStep_ID: number;
+  attachments_IDS?: Array<string>;
 }
 
 export interface sharedStep {
