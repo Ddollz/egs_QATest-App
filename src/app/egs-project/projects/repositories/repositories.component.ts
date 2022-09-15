@@ -130,6 +130,35 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
 
   }
+  collapseAllToggle(bol: boolean) {
+    var dom = document.getElementById('list-container');
+    if (dom) {
+      var domCollapse = dom.getElementsByClassName('collapse');
+      if (domCollapse) {
+        // console.log(dom);
+        for (let index = 0; index < domCollapse.length; index++) {
+          // const element = array[index];
+          console.log(domCollapse[index])
+          if (bol) {
+            domCollapse[index].classList.remove('show');
+
+            for (let index = 0; index < this.suites.length; index++) {
+              this.suites[index]['carretOpen'] = false;
+            }
+          }
+          if (!bol) {
+            domCollapse[index].classList.add('show');
+
+            for (let index = 0; index < this.suites.length; index++) {
+              this.suites[index]['carretOpen'] = true;
+            }
+          }
+
+        }
+
+      }
+    }
+  }
   toggleDropdown(event: Event, suite: any) {
     var element = event.currentTarget as HTMLElement;
     var dropdownLeft = element.getAttribute('data-bs-target')
@@ -264,8 +293,8 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
             CommandText: 'egsQATestCaseGet',
             Params: [
               {
-                Param: '@Case_ID',
-                Value: ''
+                Param: '@Project_ID',
+                Value:  this.LinkParamID.toString()
               }
             ],
           }

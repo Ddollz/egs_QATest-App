@@ -297,12 +297,54 @@ select {
 }
 
 
+.btn-light {
+
+
+  display: inline-block;
+  outline: none;
+  cursor: pointer;
+  font-weight: 500;
+  border-radius: .25rem;
+  padding: .4rem .75rem;
+  color: #fff;
+  background: var(--black-25);
+  line-height: 1.15;
+  font-size: .875rem;
+  word-spacing: 0px;
+  letter-spacing: .0892857143em;
+  text-decoration: none;
+  min-width: 64px;
+  border: none;
+  text-align: center;
+  box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
+  transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1);
+
+
+}
+
+.btn-light:hover,
+.btn-light:focus,
+.btn-light:active,
+.btn-light.active,
+.open>.dropdown-toggle.btn-light {
+  box-shadow: 0px 2px 4px -1px rgb(0 0 0 / 20%), 0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%);
+}
+
+.btn-light:active,
+.btn:active:focus,
+.btn-light.active,
+.open>.dropdown-toggle.btn-light {
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+}
+
+
 .clearedInput {
   outline: none;
   border: none;
   padding: 0.5rem;
   font-size: .775;
 }
+
 
 /* Dropdown Style */
 
@@ -637,3 +679,4 @@ select {
   font-size: 0.775rem;
   color: #000;
 }
+
