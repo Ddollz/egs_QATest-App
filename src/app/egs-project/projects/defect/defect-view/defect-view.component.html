@@ -63,11 +63,26 @@
           </div>
 
           <h6>Comments</h6>
+
+          <ng-container *ngFor="let comment of defectComments">
+            <div class="d-flex my-3">
+              <div>
+                <img class="author-img mt-2" src="../../assets/img/placeholder.jpg">
+              </div>
+              <div>
+                <span class="small-text author-name me-2">Lucky Me Beef</span>
+                <span class="small-text">Administrator</span><br>
+                <p class="small-text mb-2">{{comment.Comment_Content}}</p>
+                <span class="small-text comment-time">Some time ago</span>
+              </div>
+            </div>
+          </ng-container>
+
           <div class="d-flex align-items-center justify-content-middle">
             <img class="author-img" src="../../assets/img/placeholder.jpg">
-            <input type="text" class="form-control me-2" placeholder="Write a comment">
+            <input type="text" class="form-control me-2" placeholder="Write a comment" [(ngModel)]="Comment_Content">
             <!-- <button class="btn"><i class="bi bi-image-fill"></i></button> -->
-            <button class="btn btn-primary">Send</button>
+            <button class="btn btn-primary" (click)="insertComment()">Send</button>
           </div>
         </div>
 

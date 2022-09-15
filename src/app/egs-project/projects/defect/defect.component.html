@@ -138,8 +138,11 @@
           <ng-container matColumnDef="Milestone">
             <th mat-header-cell *matHeaderCellDef>Milestone</th>
             <td mat-cell *matCellDef="let element">
-              <!-- <div>{{getMilestone(element)}}</div> -->
-              <div>{{element.Defect_Milestone}}</div>
+              <ng-container *ngFor="let miles of milestones">
+                <ng-container *ngIf="miles.Milestone_ID == element.Defect_Milestone">
+                  {{miles.Milestone_Title}}
+                </ng-container>
+              </ng-container>
             </td>
           </ng-container>
 

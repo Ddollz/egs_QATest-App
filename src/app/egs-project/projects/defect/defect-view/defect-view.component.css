@@ -1,40 +1,52 @@
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i");
 
 :host() {
-    flex: 1;
-    overflow: auto;
-    position: relative;
+  flex: 1;
+  overflow: auto;
+  position: relative;
 }
 
 .app__content {
-    padding: 1rem 1.5rem;
-    display: flex;
-    flex: 1 1 0%;
-    flex-direction: column;
-    overflow: auto;
-    height: 100%;
+  padding: 1rem 1.5rem;
+  display: flex;
+  flex: 1 1 0%;
+  flex-direction: column;
+  overflow: auto;
+  height: 100%;
 }
 
 /* Labels */
 .page-title {
-    font-size: 24px;
-    font-weight: 600;
+  font-size: 24px;
+  font-weight: 600;
 }
 
 .page-label {
-    font-size: 0.75rem;
-    font-weight: 600;
-    margin-bottom: .25rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-bottom: .25rem;
+}
+
+.small-text {
+  font-size: .75rem;
+}
+
+.author-name {
+  font-weight: 500;
+}
+
+.comment-time {
+  opacity: .75;
 }
 
 .cancel-span {
-    font-weight: 600;
-    color: var(--bs-red-100);
-    padding: 0rem 0.75rem;
+  font-weight: 600;
+  color: var(--bs-red-100);
+  padding: 0rem 0.75rem;
 }
 
 .cancel-span:hover {
-    color: #eb7374;
+  color: #eb7374;
 }
 
 /* Images */
@@ -84,19 +96,19 @@
 .tooltip-i,
 .cancel-span,
 .bi-arrow-left {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .btn-primary {
-    white-space: nowrap;
+  white-space: nowrap;
 }
 
 /* Dropdown */
 .select-item {
-    background-color: var(--black-5);
-    padding: 0.375rem 0.75rem;
-    font-size: 1rem;
-    font-weight: 400;
-    line-height: 1.5;
-    border-radius: .25rem;
+  background-color: var(--black-5);
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  border-radius: .25rem;
 }

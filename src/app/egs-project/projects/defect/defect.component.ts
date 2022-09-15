@@ -67,11 +67,6 @@ export class DefectComponent implements OnInit {
     return "Created at some point in the past";
   }
 
-  getMilestone(element: any) {
-    // console.log(element);
-    // return this.milestones;
-  }
-
   openDeleteModal(id: string, title: string) {
     this.Defect_ID = id;
     this.Defect_Title = title;

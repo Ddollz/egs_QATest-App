@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, LOCALE_ID, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services/api.service';
-import { defect } from '../../../../models/project/project.model';
-import { Router, ActivatedRoute } from '@angular/router';
+import { defect, defectComment } from '../../../../models/project/project.model';
+import { ActivatedRoute } from '@angular/router';
 import { reloadPage } from '../../../../services/global-functions.service';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-defect-view',
@@ -26,9 +27,16 @@ export class DefectViewComponent implements OnInit {
 
   defects: defect[] = [];
 
+  Comment_Content: string = '';
+  Comment_Date: string = '';
+  User_ID: string = '1';
+  Case_ID: string = '1';
+
+  defectComments: defectComment[] = [];
+
   statusTitle: string = '';
 
-  constructor(private api: ApiService, private router: Router, private route: ActivatedRoute) { }
+  constructor(private api: ApiService, private route: ActivatedRoute, @Inject(LOCALE_ID) private locale: string) {}
 
   ngOnInit(): void {
     if (this.route.snapshot.params['i']) {
@@ -59,6 +67,59 @@ export class DefectViewComponent implements OnInit {
       this.Defect_Author = value[0][this.index].Defect_Author;
       this.Defect_Status = value[0][this.index].Defect_Status;
       this.Defect_DateCreated = value[0][this.index].Defect_DateCreated;
+      this.getDefectComment();
+    });
+  }
+
+  getDefectComment() {
+    this.api.UniCall(
+      {
+        CommandText: 'egsQADefectCommentGet',
+        Params: [
+          {
+            Param: '@Defect_ID',
+            Value: this.Defect_ID.toString()
+          }
+        ]
+      }
+    ).subscribe(value => {
+      this.defectComments = value[0];
+    });
+  }
+
+  insertComment() {
+    this.Comment_Date = new Date().toString();
+    this.Comment_Date = formatDate(Date.now(),'yyyy-MM-dd HH:mm:ss', this.locale);
+
+    this.api.UniCall(
+      {
+        CommandText: 'egsQADefectCommentInsertUpdate',
+        Params: [
+          {
+            Param: '@Comment_Content',
+            Value: this.Comment_Content
+          },
+          {
+            Param: '@Comment_Date',
+            Value: this.Comment_Date
+          },
+          {
+            Param: '@User_ID',
+            Value: this.User_ID
+          },
+          {
+            Param: '@Case_ID',
+            Value: this.Case_ID
+          },
+          {
+            Param: '@Defect_ID',
+            Value: this.Defect_ID.toString()
+          }
+        ]
+      }
+    ).subscribe({
+      error: (e) => console.error(e),
+      complete: () => reloadPage()
     });
   }
 
