@@ -61,11 +61,6 @@
     flex: 1 1 auto !important;
 }
 
-/* .tabs {
-    height: 100%;
-    grid-template-rows: 28px calc(100% - 28px);
-} */
-
 /* Tabs */
 .custom-tab.active {
     background: transparent !important;
