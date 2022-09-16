@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
+import { SelectionModel } from '@angular/cdk/collections';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 import { project, suite, testCase, step, testrun, defect } from '../../../models/project/project.model';
@@ -25,7 +26,6 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
 
   //testCaseComment
   caseComments: any = [];
-
 
   //Utilities
   LinkParamID: number = 0;
@@ -97,7 +97,45 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
   Suite_isLock: number = 0;
   Suite_TempUserID: number = 1; //! This is only temporary change/remove this when token/auth is on
 
+  // Selection variables
+  confirmString: string = '';
+  allowBoolSelected: boolean = false;
+  SelectedTestCase: string = '';
+  SelectedTestCaseCount: number = 0;
+  SelectedSuite: string = '';
+  SelectedSuiteCount: number = 0;
+  suiteModel = new SelectionModel(
+    true,   // multiple selection or not
+  );
 
+  testCaseModel = new SelectionModel(
+    true,   // multiple selection or not
+  );
+  selectedSuiteCheck(event: number, bool: boolean = false) {
+    if (bool) return this.suiteModel.deselect(event)
+    this.suiteModel.toggle(event)
+    if (this.suiteModel.isSelected(event)) {
+      let tempCases = this.testCases.filter(x => x.Suite_ID === event);
+      for (let index = 0; index < tempCases.length; index++) {
+        this.testCaseModel.select(tempCases[index].Case_ID)
+      }
+    } else {
+      let tempCases = this.testCases.filter(x => x.Suite_ID === event);
+      for (let index = 0; index < tempCases.length; index++) {
+        this.testCaseModel.deselect(tempCases[index].Case_ID)
+      }
+    }
+  }
+
+  selectedTestCaseCheck(event: number, sD: number) {
+    this.testCaseModel.toggle(event)
+    var child = this.testCases.filter(x => x.Suite_ID === sD);
+    if (child.length == this.testCaseModel.selected.length) {
+      this.selectedSuiteCheck(sD);
+    } else {
+      this.selectedSuiteCheck(sD, true);
+    }
+  }
   constructor(private api: ApiService, private activatedRoute: ActivatedRoute, private sidebarServ: sidebarService) {
 
     this.LinkParamID = Number(this.activatedRoute.snapshot.paramMap.get('id'));
@@ -121,10 +159,64 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
       this.Suite_Root = 'ProjectRoot|' + this.project.Project_ID;
     }
     );
+    this.suiteModel.changed.subscribe({
+      next: (e) => {
+        var test = '';
+        for (let index = 0; index < e.source.selected.length; index++) {
+          test = e.source.selected[index] + ',' + test
 
+        }
+        test = test.slice(0, -1) //'abcde'
+        this.SelectedSuite = test;
+        this.SelectedSuiteCount = this.suiteModel.selected.length;
+        console.log(this.SelectedSuite)
+      }
+    })
 
+    this.testCaseModel.changed.subscribe({
+      next: (e) => {
+        var test = '';
+        for (let index = 0; index < e.source.selected.length; index++) {
+          test = e.source.selected[index] + ',' + test
+        }
+        test = test.slice(0, -1) //'abcde'
+        this.SelectedTestCase = test;
+        this.SelectedTestCaseCount = this.testCaseModel.selected.length;
+        console.log(this.SelectedTestCase)
+      }
+    })
   }
-
+  confirmation() {
+    if (this.confirmString === "CONFIRM") {
+      this.allowBoolSelected = true;
+    } else {
+      this.allowBoolSelected = false;
+    }
+  }
+  multiDelete() {
+    this.api.UniCall(
+      {
+        CommandText: 'egsQATestCaseMultiDelete',
+        Params: [
+          {
+            Param: '@SuiteList',
+            Value: this.SelectedSuite
+          },
+          {
+            Param: '@TestcaseList',
+            Value: this.SelectedTestCase
+          }
+        ],
+      }
+    ).subscribe({
+      next: (e) => {
+        reloadPage();
+      },
+      error: (e) => {
+        console.log(e)
+      }
+    });
+  }
   ngOnInit(): void {
   }
   ngAfterViewInit(): void {
@@ -294,7 +386,7 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
             Params: [
               {
                 Param: '@Project_ID',
-                Value:  this.LinkParamID.toString()
+                Value: this.LinkParamID.toString()
               }
             ],
           }
@@ -500,9 +592,9 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
         ],
       }
     ).subscribe(value => {
+      if (!value[0]) return
       this.steps = value[0];
       this.stepdataSource = new MatTableDataSource<step>(this.steps);
-      this.steps = value[0];
       var Tempstring = ''
       this.steps.forEach(element => {
         Tempstring = element.Case_StepID + ',' + Tempstring
@@ -557,7 +649,7 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
         next: (result) => {
           this.stepAttachments = result[0];
 
-          console.log(this.stepAttachments);
+          // console.log(this.stepAttachments);
         },
         error: (msg) => {
           console.log(msg);
@@ -848,8 +940,6 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
         }
       ).subscribe(
         {
-          next: (result) => {
-          },
           error: (msg) => {
             console.log(msg);
             alert("500 Internal Server Errors")

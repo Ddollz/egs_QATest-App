@@ -2,7 +2,7 @@ InputFile
 <input type="file" (change)="createFile($event)">
 <br>
 Delete File
-<input type="number" (keyup.enter)="deleteFile($event)">
+<input type="number" (keyup.enter)="deleteFile($event)" autofocus>
 <br>
 <br>
 <ng-container *ngFor="let item of displayImage">

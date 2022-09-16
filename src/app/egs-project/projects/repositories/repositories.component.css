@@ -24,6 +24,10 @@
   font-size: 12px;
   font-weight: 500;
 }
+.selected-something{
+  font-size: 13px;
+  font-weight: 500;
+}
 
 .page-button {
   height: fit-content;

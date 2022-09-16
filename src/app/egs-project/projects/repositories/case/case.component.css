@@ -1,15 +1,15 @@
-:host(){
+:host() {
   cursor: pointer;
 }
+
 .r-col-header {
   width: 100%;
   border-radius: 6px;
   background-color: var(--black-5);
   padding: 0.5rem;
 }
-.check-box{
-  font-weight: 600;
-}
+
+
 .suite-buttons {
   border-radius: 6px;
   border: 1px solid transparent;
@@ -29,22 +29,53 @@
 .suite-buttons i {
   color: var(--black-50);
 }
+
 .suite-buttons:hover i {
   color: var(--c-text);
 }
-.suite-buttons:hover{
+
+.suite-buttons:hover {
   background-color: rgba(189, 188, 188, 0.37);
 }
-.suite-buttons.plus i{
+
+.suite-buttons.plus i {
   color: var(--bs-blue-second);
 }
-.suite-buttons.plus:hover i{
+
+.suite-buttons.plus:hover i {
   color: var(--bs-blue-prime);
 }
-.check-box{
+
+.suitename {
   font-size: 0.875rem;
+  font-weight: 600;
 }
 
-.caseControl{
-  display: none;
+
+.check-box {
+  opacity: 0;
+  transition: opacity 0.1s ease;
+}
+
+.controls {
+  opacity: 0;
+  transition: opacity 0.1s ease;
+}
+
+.r-col-c:hover .check-box,
+.r-col-c:hover .controls {
+  opacity: 1;
+}
+
+.r-col-header:hover .suitename {
+  color: var(--bs-blue-second) !important;
+
+}
+
+.mat-checkbox-checked {
+  opacity: 1;
+}
+
+.caseControl {
+  opacity: 1;
 }

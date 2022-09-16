@@ -13,8 +13,9 @@ export class CaseComponent implements OnInit {
   @Output() createNewEvent = new EventEmitter<number>();
   @Output() editNewEvent = new EventEmitter<number>();
   @Output() newDeleteEvent = new EventEmitter<number>();
+  @Output() selectEvent = new EventEmitter<number>();
 
-  checked: boolean = false;
+  @Input() checked: boolean = false;
   @Input() carretOpen: boolean = false;
   constructor() { }
 
@@ -40,6 +41,7 @@ export class CaseComponent implements OnInit {
     event.stopPropagation()
     event.preventDefault()
     this.checked = !this.checked;
+    this.selectEvent.emit(this.Suite.Suite_ID);
   }
 
 }

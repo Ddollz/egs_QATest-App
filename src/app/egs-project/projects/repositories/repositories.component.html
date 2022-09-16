@@ -4,7 +4,10 @@
 
     <div class="row">
       <div class="col">
-        <h2 class="my-3 page-title">{{project.Project_Name}} Repository<span class="ms-2 page-something">{{suites.length}} suites | {{testCases.length}} tests</span>
+        <h2 class="my-3 page-title">
+          {{project.Project_Name}} Repository<span class="ms-2 page-something">{{suites.length}} suites | {{testCases.length}} tests
+            <span class="selected-something" *ngIf="SelectedTestCaseCount != 0">Selected: {{SelectedTestCaseCount}} tests | {{SelectedSuiteCount}} suite</span>
+          </span>
         </h2>
       </div>
       <div class="col d-flex justify-content-end align-items-center">
@@ -22,6 +25,9 @@
         <div class="me-2">
           <a type="button" [routerLink]="'../create/'+LinkParamID" class="btn btn-primary">+ Case</a>
         </div>
+        <div class="me-2" *ngIf="SelectedTestCaseCount != 0">
+          <a type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#MultiSelectModal" ><i class="bi bi-trash2-fill"></i> Delete</a>
+        </div>
         <div class="me-2">
           <input type="text" class="form-control search_input" placeholder="Search for cases">
         </div>
@@ -32,7 +38,7 @@
     </div>
 
 
-    <div class="row mt-3 list-container" id = 'list-container'>
+    <div class="row mt-3 list-container" id='list-container'>
       <!-- LEFT COLUMN -->
       <div class="col-2 l-col">
         <div class="d-flex flex-row justify-content-between mb-2">
@@ -80,7 +86,7 @@
           <ng-container *ngIf="suite.Project_ID == LinkParamID">
             <ng-container *ngIf="suite.Parent_SuiteID == 0">
               <div class="collapsed" (click)="toggleDropdown($event, suite)" [ngClass]="suite.carretOpen? '':'mb-3'" [attr.data-bs-target]="'collapse-'+suite.Suite_ID" aria-expanded="true">
-                <app-case [Suite]="suite" [carretOpen]="suite.carretOpen" [projectID]="LinkParamID" (editNewEvent)="editSuite($event)" (newDeleteEvent)="deleteSuite($event)"></app-case>
+                <app-case [Suite]="suite" [checked]="suiteModel.isSelected(suite.Suite_ID)" [carretOpen]="suite.carretOpen" (selectEvent)="selectedSuiteCheck($event)" [projectID]="LinkParamID" (editNewEvent)="editSuite($event)" (newDeleteEvent)="deleteSuite($event)"></app-case>
               </div>
               <div class="collapse show" [id]="'collapse-'+suite.Suite_ID+'-case'">
                 <div class="suite-description">
@@ -90,7 +96,7 @@
                   <ng-container *ngFor="let testCase of testCases">
                     <ng-container *ngIf="testCase.Suite_ID == suite.Suite_ID">
                       <div class="caseRow d-flex flex-row align-items-center" (click)="openPanel($event, testCase)" tabindex="-1">
-                        <mat-checkbox class="ms-3 me-3">
+                        <mat-checkbox class="ms-3 me-3" (change)="selectedTestCaseCheck(testCase.Case_ID, suite.Suite_ID)" [checked]="testCaseModel.isSelected(testCase.Case_ID)">
                         </mat-checkbox>
                         <a class="button-blue-transparent">{{project.Project_Name}}</a>
                         <div class="caseDescription">{{testCase.Case_Title}}</div>
@@ -115,7 +121,7 @@
             <!-- Check if leaf does not exist end the loop.-->
             <ng-container *ngIf="data.Suite_ID == s.Parent_SuiteID">
               <div class="collapsed" (click)="toggleDropdown($event, s)" [ngClass]="s.carretOpen? '':'mb-3'" [attr.data-bs-target]="'collapse-'+s.Suite_ID" aria-expanded="true">
-                <app-case [Suite]="s" [carretOpen]="s.carretOpen" [projectID]="LinkParamID" (editNewEvent)="editSuite($event)" (newDeleteEvent)="deleteSuite($event)"></app-case>
+                <app-case [Suite]="s" [checked]="suiteModel.isSelected(s.Suite_ID)" [carretOpen]="s.carretOpen" (selectEvent)="selectedSuiteCheck($event)" [projectID]="LinkParamID" (editNewEvent)="editSuite($event)" (newDeleteEvent)="deleteSuite($event)"></app-case>
               </div>
               <div class="collapse show" [id]="'collapse-'+s.Suite_ID+'-case'">
                 <div class="suite-description">
@@ -125,7 +131,7 @@
                   <ng-container *ngFor="let testCase of testCases">
                     <ng-container *ngIf="testCase.Suite_ID == s.Suite_ID">
                       <div class="caseRow d-flex flex-row align-items-center" (click)="openPanel($event, testCase)" tabindex="-1">
-                        <mat-checkbox class="ms-3 me-3">
+                        <mat-checkbox class="ms-3 me-3" (change)="selectedTestCaseCheck(testCase.Case_ID, s.Suite_ID)" [checked]="testCaseModel.isSelected(testCase.Case_ID)">
                         </mat-checkbox>
                         <a class="button-blue-transparent">{{project.Project_Name}}</a>
                         <div class="caseDescription">{{testCase.Case_Title}}</div>
@@ -686,3 +692,26 @@
     </div>
   </div>
 </div>
+
+<button #openMultiSelectModal [hidden]="true" data-bs-toggle="modal" data-bs-target="#MultiSelectModal">Open Modal</button>
+<!-- Delete MultiSelect Modal -->
+<div class="modal fade" id="MultiSelectModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body p-4">
+
+        <h4 class="modal-title mb-1"> <i class="bi bi-exclamation-triangle-fill"></i> Delete test case</h4>
+        <p class="mt-2">You are going to delete test case from repository. To perform this action, please type CONFIRM in a form below.</p>
+
+        <div class="mb-3">
+          <input type="text" class="form-control" [(ngModel)]="confirmString" (keyup)="confirmation()" >
+        </div>
+        <div class="d-flex align-items-center justify-content-end">
+          <span class="cancel-span me-3" data-bs-dismiss="modal">Cancel</span>
+          <button type="button" class="btn btn-primary" (click)="multiDelete()" [disabled]="!allowBoolSelected">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
