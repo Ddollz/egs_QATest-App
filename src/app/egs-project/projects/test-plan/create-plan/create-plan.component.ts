@@ -45,7 +45,7 @@ export class CreatePlanComponent implements OnInit {
         Params: [
           {
             Param: '@TestPlan_ID',
-            Value: this.TestPlan_ID
+            Value: this.TestPlan_ID.toString()
           },
           {
             Param: '@TestPlan_Title',

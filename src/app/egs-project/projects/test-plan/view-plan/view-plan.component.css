@@ -139,6 +139,7 @@
     margin-bottom: -2px;
     border: none;
     color: #444444;
+    font-size: 13px;
 }
 .nav-tabs-bordered .nav-link:hover, .nav-tabs-bordered .nav-link:focus {
     color: #e52325;
