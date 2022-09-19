@@ -595,67 +595,72 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
       if (!value[0]) return
       this.steps = value[0];
       this.stepdataSource = new MatTableDataSource<step>(this.steps);
-      var Tempstring = ''
-      this.steps.forEach(element => {
-        Tempstring = element.Case_StepID + ',' + Tempstring
-      });
-
-      var Params =
-        [
-          {
-            Param: '@AttachmentStepIDs',
-            Value: Tempstring
-          }
-        ];
-
-
-      var formData = new FormData();
-      formData.append("CommandText", 'egsQAAttachmentStepGet');
-      formData.append("Params", JSON.stringify(Params));
-
-      //? API CALL
-      this.api.UniAttachmentlist(formData).subscribe({
-        next: (result) => {
-          this.stepAttachments = result[0];
-
-
-        },
-        error: (msg) => {
-          console.log(msg);
-          alert("500 Internal Server Errors")
-        }
-      });
       this.steps = value[0];
-      var Tempstring = ''
-      this.steps.forEach(element => {
-        Tempstring = element.Case_StepID + ',' + Tempstring
-      });
-
+      let AttachnmentLists: any = [];
+      for (let index = 0; index < this.steps.length; index++) {
+        let tmp = this.steps[index].Attachments_ID;
+        if (tmp == undefined) {
+          AttachnmentLists = [];
+        }
+        else {
+          AttachnmentLists = AttachnmentLists.concat(JSON.parse(tmp));
+        }
+      }
       var Params =
         [
           {
-            Param: '@AttachmentStepIDs',
-            Value: Tempstring
+            Param: "@List",
+            Value: JSON.stringify(AttachnmentLists)
           }
+
         ];
 
 
       var formData = new FormData();
-      formData.append("CommandText", 'egsQAAttachmentStepGet');
+      formData.append("CommandText", 'egsQAAttachmentGet');
       formData.append("Params", JSON.stringify(Params));
 
       //? API CALL
       this.api.UniAttachmentlist(formData).subscribe({
         next: (result) => {
+          console.log(result);
           this.stepAttachments = result[0];
-
-          // console.log(this.stepAttachments);
         },
         error: (msg) => {
           console.log(msg);
           alert("500 Internal Server Errors")
         }
-      });
+      })
+      // var Tempstring = ''
+      // this.steps.forEach(element => {
+      //   Tempstring = element.Case_StepID + ',' + Tempstring
+      // });
+
+      // var Params =
+      //   [
+      //     {
+      //       Param: '@AttachmentStepIDs',
+      //       Value: Tempstring
+      //     }
+      //   ];
+
+
+      // var formData = new FormData();
+      // formData.append("CommandText", 'egsQAAttachmentStepGet');
+      // formData.append("Params", JSON.stringify(Params));
+
+      // //? API CALL
+      // this.api.UniAttachmentlist(formData).subscribe({
+      //   next: (result) => {
+      //     this.stepAttachments = result[0];
+
+
+      //   },
+      //   error: (msg) => {
+      //     console.log(msg);
+      //     alert("500 Internal Server Errors")
+      //   }
+      // });
 
     }
     );
@@ -673,7 +678,7 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
     this.Case_Milestone = this.testCase.Case_Milestone.toString();
     this.Case_Behavior = this.testCase.Case_Behavior.toString();
     this.Case_AutoStat = this.testCase.Case_AutoStat.toString();
-
+    console.log(this.testCase.Attachments_ID)
     //? Get Attachments
     //? START
     var commandText = 'egsQAAttachmentGet';
@@ -681,8 +686,8 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
       [
 
         {
-          Param: "@Case_ID",
-          Value: this.testCase.Case_ID.toString()
+          Param: "@List",
+          Value: this.testCase.Attachments_ID
         }
 
       ];
@@ -840,7 +845,7 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
 
     //? Parameter of the store procedure
     var Params = [{
-      Param: "@ttachment_ID",
+      Param: "@attachment_ID",
       Value: file_ID.toString()
     }]
 
