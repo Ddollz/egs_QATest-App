@@ -1,0 +1,48 @@
+<div class="app__content">
+	<div class="row">
+		<div class="col-lg-12">
+
+			<h2 class="page-title my-3"><i class="bi bi-arrow-left me-4" data-bs-toggle="tooltip"
+					title="Go back" routerLink="/projects/milestone"></i>{{Page_title}}</h2>
+
+			<div class="row mb-3">
+				<div class="col-6">
+					<Label class="page-label">Milestone name*</Label>
+					<input [(ngModel)]="Milestone_Title" type="text" class="form-control" placeholder="For example: Release 1.0">
+				</div>
+			</div>
+
+			<div class="row mb-3">
+				<div class="col-6">
+					<Label class="page-label">Description*</Label>
+					<textarea [(ngModel)]="Milestone_Description" class="form-control"></textarea>
+				</div>
+			</div>
+
+			<div class="row mb-3">
+				<div class="col-4">
+					<Label class="page-label">Status</Label>
+					<mat-select [(ngModel)]="Milestone_Status" class="select-item">
+						<mat-option value="1" class="select-item">Active</mat-option>
+						<mat-option value="2" class="select-item">Completed</mat-option>
+					</mat-select>
+				</div>
+			</div>
+
+			<div class="row mb-5">
+				<div class="col-4">
+					<Label class="page-label">Due date</Label>
+					<input [(ngModel)]="Milestone_DueDate" type="date" class="form-control">
+				</div>
+			</div>
+
+			<div class="row mb-5">
+				<div class="d-flex align-items-center">
+					<button class="btn btn-primary me-3" (click)="updateInsertMilestone()">{{Button_title}}</button>
+					<span class="cancel-span" routerLink="/projects/milestone">Cancel</span>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>

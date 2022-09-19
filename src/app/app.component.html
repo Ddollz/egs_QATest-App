@@ -1,10 +1,10 @@
 <div class="layout">
   <app-header *ngIf="router.url !== '/login' && router.url !== '/register'"></app-header>
-  <div class = "Content">
-  <app-side-bar *ngIf="router.url !== '/login' && router.url !== '/register' && router.url !== '/projects'"></app-side-bar>
+  <div class="Content">
+    <app-side-bar
+      *ngIf="router.url !== '/login' && router.url !== '/register' && router.url !== '/projects' && router.url !== '/projects/create'">
+    </app-side-bar>
 
-  <router-outlet></router-outlet>
-
+    <router-outlet></router-outlet>
   </div>
 </div>
-

@@ -1,0 +1,135 @@
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i");
+
+:host() {
+    flex: 1;
+    overflow: auto;
+    position: relative;
+}
+
+.app__content {
+    padding: 1rem 1.5rem;
+    display: flex;
+    flex: 1 1 0%;
+    flex-direction: column;
+    overflow: hidden;
+    height: 100%;
+}
+
+/* Labels */
+.page-title {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.page-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-bottom: .25rem;
+}
+
+.column-title {
+    color: #222;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.column-title:hover {
+    color: #eb7374;
+}
+
+.cancel-span {
+    font-weight: 600;
+    color: var(--bs-red-100);
+    padding: 0rem 0.75rem;
+}
+
+.cancel-span:hover {
+    color: #eb7374;
+}
+
+/* Images */
+
+/* Buttons */
+.filter-btn {
+    font-weight: 600;
+    color: #393939;
+    background-color: #f3f3f3 !important;
+    border: none;
+}
+
+.filter-btn:hover,
+.filter-item:hover {
+    background-color: #efefef !important;
+}
+
+.filter-span:hover {
+    color: #eb7374;
+}
+
+/* Checkbox */
+input[type="checkbox"]:focus {
+    box-shadow: none !important;
+}
+
+input[type="checkbox"]:checked {
+    border-color: var(--bs-red-100) !important;
+    background-color: var(--bs-red-100) !important;
+}
+
+/* Icons */
+.three-dots {
+    padding: 0 8px;
+}
+
+/* Columns */
+.mat-header-cell {
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.mat-column-Title {
+    width: 25%;
+}
+
+.mat-column-Status {
+    width: 17.5%;
+}
+
+.mat-column-Description {
+    width: 17.5%;
+}
+
+.mat-column-Cases {
+    width: 17.5%;
+}
+
+.mat-column-DueDate {
+    width: 17.5%;
+}
+
+.mat-column-ThreeDots {
+    width: 5%;
+}
+
+/* Misc */
+.tooltip-i,
+.cancel-span,
+.column-title {
+    cursor: pointer;
+}
+
+.btn-primary,
+.filter-span {
+    white-space: nowrap;
+}
+
+/* Dropdown */
+.dropdown-item:hover {
+    background-color: white;
+    color: #eb7374;
+}
+
+.dropdown-item:active {
+    background-color: white;
+}

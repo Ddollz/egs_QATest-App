@@ -5,131 +5,214 @@
 			<h2 class="mt-2 page-title">Projects</h2>
 
 			<div class="row mt-3">
-				<div class="d-flex col">
+				<div class="d-flex align-items-center">
 					<div class="me-3">
-						<button type="button" class="btn btn-primary create-project-button">Create new project</button>
+						<button type="button" class="btn btn-primary" routerLink="/projects/create">
+							Create new project
+						</button>
 					</div>
-					<div class="me-2">
-						<input type="text" class="form-control search_input" placeholder="Search for projects">
+					<div class="me-3">
+						<input type="text" class="form-control search_input" placeholder="Search for projects"
+							(keyup)="applyFilter($event)">
 					</div>
-					<div class="filter-outer dropdown me-2">
-            <div class="filter-item" data-bs-toggle="dropdown" aria-expanded="false">
-              Status: <span id = 'filter-status'>Multiple</span>
-            </div>
-            <div class="dropdown-menu ">
-              test
-            </div>
-          </div>
-					<div class="me-2">
-						<a type="button" class="btn add-filter-button">+ Add filter</a>
-					</div>
-				</div>
-			</div>
-
-			<!-- TABLE HEAD -->
-			<div class="row mt-4 table-head">
-				<div class="col-4">
-					<div class="row">
-						<div class="col-1 px-0">
-							<!-- Favorites -->
-						</div>
-						<div class="col-1 px-0">
-							<!-- Project Image -->
-						</div>
-						<div class="col">
-							<label>Project Name</label>
+					<div class="me-3">
+						<div class="filter-item" data-bs-toggle="dropdown">Status</div>
+						<div class="dropdown-menu">
+							<div class="form-check">
+								<input class="form-check-input" type="checkbox" value="">
+								<label class="form-check-label">Active</label>
+							</div>
+							<div class="form-check">
+								<input class="form-check-input" type="checkbox" value="">
+								<label class="form-check-label">Archived</label>
+							</div>
+							<button type="button" class="btn btn-primary filter-btn mt-2">Select all</button>
 						</div>
 					</div>
-				</div>
-				<div class="col-8">
-					<div class="row">
-						<div class="col d-none d-lg-block">
-							<label>Unresolved Defects</label>
-						</div>
-						<div class="col d-none d-lg-block">
-							<label>Test Runs</label>
-						</div>
-						<div class="col d-none d-lg-block">
-							<label>Milestones</label>
-						</div>
-						<div class="col d-none d-lg-block">
-							<label>Team Members</label>
-						</div>
-						<div class="col-1">
-							<!-- Three Dots -->
+					<div class="d-flex align-items-center">
+						<span class="filter-span" data-bs-toggle="dropdown">+ Add filter</span>
+						<div class="dropdown-menu">
+							<div class="dropdown-item">Defects</div>
+							<div class="dropdown-item">Test runs</div>
+							<div class="dropdown-item">Milestones</div>
+							<div class="dropdown-item">Member</div>
 						</div>
 					</div>
 				</div>
 			</div>
-			<!-- END OF TABLE HEAD -->
 
-			<!-- TABLE BODY -->
 			<div class="row mt-2">
-				<div class="col-4">
-					<div class="row py-2 d-flex align-items-center project-row">
+				<table mat-table [dataSource]="dataSource" class="mat-elevation-z0">
+					<ng-container matColumnDef="Favorite">
+						<th mat-header-cell *matHeaderCellDef></th>
+						<td mat-cell *matCellDef="let element">
+							<div class="text-center">
+								<a href="#"><i class="bi bi-star"></i></a>
+							</div>
+						</td>
+					</ng-container>
 
-						<div class="col-1 px-0 text-center">
-							<a href="#">
-								<i class="bi bi-star"></i>
-							</a>
-						</div>
+					<ng-container matColumnDef="Project_Image">
+						<th mat-header-cell *matHeaderCellDef></th>
+						<td mat-cell *matCellDef="let element">
+							<div class="text-center project-image">
+								<img routerLink="/projects/repository" src="../../assets/img/placeholder.jpg">
+							</div>
+						</td>
+					</ng-container>
 
-						<div class="col-1 px-0 text-center project-image">
-							<a href="#">
+					<ng-container matColumnDef="Project_Name">
+						<th mat-header-cell *matHeaderCellDef>Project Name</th>
+						<td mat-cell *matCellDef="let element">
+							<div class="row d-flex align-items-center">
+								<div class="column-title" routerLink="/projects/repository/{{element.Project_ID}}">
+									{{element.Project_Name}}</div>
+								<div class="column-subtitle">{{element.Project_Desc}}</div>
+							</div>
+						</td>
+					</ng-container>
+
+					<ng-container matColumnDef="Unresolved">
+						<th mat-header-cell *matHeaderCellDef>Unresolved Defects</th>
+						<td mat-cell *matCellDef="let element">
+							<i class="bi bi-check me-1"></i>
+							<span>No open defects</span>
+						</td>
+					</ng-container>
+
+					<ng-container matColumnDef="TestRun">
+						<th mat-header-cell *matHeaderCellDef>Test Runs</th>
+						<td mat-cell *matCellDef="let element">
+							<span>No test runs</span>
+						</td>
+					</ng-container>
+
+					<ng-container matColumnDef="Milestone">
+						<th mat-header-cell *matHeaderCellDef>Milestones</th>
+						<td mat-cell *matCellDef="let element">
+							<span>No milestones</span>
+						</td>
+					</ng-container>
+
+					<ng-container matColumnDef="Members">
+						<th mat-header-cell *matHeaderCellDef>Team Members</th>
+						<td mat-cell *matCellDef="let element">
+							<div class="d-none d-lg-block project-team">
 								<img src="../../assets/img/placeholder.jpg">
-							</a>
-						</div>
+								<img src="../../assets/img/placeholder.jpg">
+								<img src="../../assets/img/placeholder.jpg">
+							</div>
+						</td>
+					</ng-container>
 
-						<div class="col">
-							<div>
-								<a class="project-name" routerLink="/projects/repository">ActivMenu</a>
+					<ng-container matColumnDef="Setting">
+						<th mat-header-cell *matHeaderCellDef></th>
+						<td mat-cell *matCellDef="let element">
+							<div class="d-flex justify-content-end">
+								<button class="btn three-dots" data-bs-toggle="dropdown">
+									<i class="bi bi-three-dots"></i>
+									<div class="dropdown-menu">
+										<div class="dropdown-item"
+											(click)="openUpdateModal(element.Project_ID, element.Project_Name, element.Project_Desc, element.Project_Code, element.Project_AccessType)"
+											data-bs-toggle="modal" data-bs-target="#settingsModal">Settings</div>
+										<div class="dropdown-item"
+											(click)="openDeleteModal(element.Project_ID, element.Project_Name)"
+											data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</div>
+									</div>
+								</button>
 							</div>
-							<div>
-								<span>47 test cases | 8 suites | 2 active runs</span>
-							</div>
+						</td>
+					</ng-container>
+
+					<tr mat-header-row *matHeaderRowDef=" displayedColumns"></tr>
+					<tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Settings Modal -->
+<div class="modal fade" id="settingsModal" tabindex="-1">
+	<div class="modal-dialog modal-dialog-centered modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">
+					<i class="bi bi-arrow-left me-4" data-bs-toggle="tooltip" title="Go back"
+						data-bs-dismiss="modal"></i>
+					Settings
+				</h5>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-3">
+						<div class="row">
+							<img src="../../assets/img/placeholder.jpg">
+						</div>
+						<div class="text-center mt-2">
+							<button class="btn update-btn"><i class="bi bi-upload me-2"></i>Update</button>
 						</div>
 					</div>
-				</div>
-				<div class="col-8">
-					<div class="row py-2 d-flex align-items-center project-row">
+					<div class="col-9">
+						<Label class="page-label">Project name</Label>
+						<input [(ngModel)]="Project_Name" type="text" class="form-control">
 
-						<div class="col d-none d-lg-block">
-							<div class="d-inline me-1">
-								<i class="bi bi-check"></i>
-							</div>
-							<div class="d-inline">
-								<span>No open defects</span>
-							</div>
-						</div>
-
-						<div class="col d-none d-lg-block">
-							<div>
-								<span>No test runs</span>
+						<div class="mt-4">
+							<Label class="page-label">Project code
+								<i class="bi bi-question-circle-fill tooltip-i" data-bs-toggle="tooltip"
+									data-bs-placement="top"
+									title="Code is short name of your project. It should be from 2 to 10 letters. Only latin characters and numbers are allowed.">
+								</i>
+							</Label>
+							<input [(ngModel)]="Project_Code" type="text" class="form-control">
+							<div class="mt-1">
+								<span>⚠️Changing the project code may break some external integrations and links.</span>
 							</div>
 						</div>
 
-						<div class="col d-none d-lg-block">
-							<div>
-								<span>No milestones</span>
-							</div>
+						<div class="mt-4">
+							<Label class="page-label">Description</Label>
+							<textarea [(ngModel)]="Project_Description" class="form-control"></textarea>
 						</div>
 
-						<div class="col d-none d-lg-block project-team">
-							<img src="../../assets/img/placeholder.jpg">
-							<img src="../../assets/img/placeholder.jpg">
-							<img src="../../assets/img/placeholder.jpg">
-						</div>
-
-						<div class="col-1 d-flex justify-content-end">
-							<button class="btn">
-								<i class="bi bi-three-dots"></i>
-							</button>
+						<div class="mt-4">
+							<Label class="page-label">Project access type</Label>
+							<mat-radio-group [(ngModel)]="Project_AccessType" class="d-flex flex-column">
+								<mat-radio-button value="1">Private</mat-radio-button>
+								<mat-radio-button value="2">Public</mat-radio-button>
+							</mat-radio-group>
 						</div>
 					</div>
 				</div>
 			</div>
-			<!-- END OF TABLE BODY -->
+			<div class="modal-footer">
+				<button type="button" class="btn btn-outline-primary">Archive project</button>
+				<button type="button" class="btn btn-primary" (click)="updateSettings()">Update settings</button>
+			</div>
+		</div>
+	</div>
+</div>
 
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">
+					<i class="bi bi-arrow-left me-4" data-bs-toggle="tooltip" title="Go back"
+						data-bs-dismiss="modal"></i>
+					Delete project
+				</h5>
+			</div>
+			<div class="modal-body">
+				<h6>Are you sure, that you want delete project "{{Project_Name}}"?</h6>
+				<p class="mb-0">This action can't be reversed. All entities including suites and cases will be removed.
+				</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Cancel</button>
+				<button type="button" class="btn btn-primary" (click)="deleteProject()">Delete project</button>
+			</div>
 		</div>
 	</div>
 </div>

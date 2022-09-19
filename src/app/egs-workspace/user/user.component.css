@@ -18,6 +18,22 @@
   cursor: pointer;
 }
 
+.mat-column-id {
+  width: 100px;
+}
+
+.mat-column-status {
+  width: 100px;
+}
+
+.mat-column-role {
+  width: 10%;
+}
+
+.mat-column-roleTitle {
+  width: 10%;
+}
+
 
 ::ng-deep .mat-select-value {
   color: var(--bs-blue-prime);

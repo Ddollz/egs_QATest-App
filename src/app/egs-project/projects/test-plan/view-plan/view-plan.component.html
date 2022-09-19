@@ -1,0 +1,178 @@
+<div class="app__content">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="view-plan-header">
+                <div class="view-plan-header-title">
+                
+                    <h2 class="page-title my-3">
+                        <a routerLink="/projects/plan">
+                            <i class="submenu-toggle bi bi-arrow-left"></i>
+                        </a>
+                        {{TestPlan_Title}}
+                    </h2>
+                </div>
+    
+                <div class="view-plan-header-buttons mt-3">
+                    <div class="tri-dot">
+                        <button type="button" class="btn btn-primary" routerLink="/projects/run">
+                            Start run
+                        </button>
+                    </div>
+                    
+                    
+                    <div class="dropdown">
+                        <button class="btn btn-secondary" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-three-dots"></i>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <!-- <div class="dropdown-item">
+                                <a routerLink="/projects/plan/editplan/{{i}}">Edit</a>
+                            </div> -->
+                            <div class="dropdown-item">
+                                <a routerLink="/projects/plan/editplan/">Edit</a>
+                            </div>
+                            <div class="dropdown-item">
+                                <a href="#">Export XLS</a>
+                            </div>
+                            <!-- <div class="dropdown-item" (click)="openDeleteModal(element.TestPlan_ID, element.TestPlan_Title)">
+                                <a class="text-danger">Delete</a>
+                            </div> -->
+                            <div class="dropdown-item">
+                                <a class="text-danger">Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nav Tabs -->
+            <div class="col-xl">
+                <div class="card">
+                    <div class="card-body pt-3">
+                        <ul class="nav nav-tabs nav-tabs-bordered" id="myTabs">
+                            <li class="nav-item">
+                                <button class="nav-link active" id="tabBtn1" type="button" data-bs-toggle="tab" data-bs-target="#tab1">Details</button>
+                            </li>
+
+                            <li class="nav-item">
+                                <button class="nav-link" id="tabBtn2" type="button" data-bs-toggle="tab" data-bs-target="#tab2">Test Cases</button>
+                            </li>
+
+                            <li class="nav-item">
+                                <button class="nav-link" id="tabBtn3" type="button" data-bs-toggle="tab" data-bs-target="#tab3">Test Runs</button>
+                            </li>
+                        </ul>
+
+                        <!-- Tab Content -->
+
+                        <!-- Details -->
+
+                        <div class="tab-content pt-2">
+                            <div id="tab1" class="tab-pane profile-overview">
+                                <div class="plan-view-details">
+                                    <div class="plan-view-details-item">
+                                        <p class="view-plan-details-item-header">Description</p>
+                                        <div class="markdown-area">
+                                            <div>
+                                                <div style="overflow-wrap: break-word;">
+                                                    <p>{{TestPlan_Desc}}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Test Cases -->
+                            <div id="tab2" class="tab-pane profile-overview">
+                                <div class="filters-block">
+                                    <div class="filters-block-items">
+                                        <div class="case-search-input me-2">
+                                            <input type="text" name="title" class="form-control form-control-sm" placeholder="Search for test cases" value="">
+                                        </div>
+                                    </div>
+                                    <div class="add-filter-outer">
+                                        <button class="add-filter-button">+ Add filter</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Test Runs -->
+                            <div id="tab3" class="tab-pane profile-overview">
+                                <div class="filters-block">
+                                    <div class="filters-block-items">
+                                        <div class="case-search-input me-2">
+                                            <input type="text" name="title" class="form-control form-control-sm" placeholder="Search for test runs" value="">
+                                        </div>
+                                    </div>
+                                    <div class="add-filter-outer">
+                                        <button class="add-filter-button">+ Add filter</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- <div class="view-plan-tabs flex-fill">
+                <div class="tabs">
+                    <div class="tabs-header-container">
+                        <div class="tabs-header">
+                            <div class="tabs-header-item active">
+                                <div class="tabs-header-item-wrapper">
+                                    <button id="tab-details" class="tabs-header-item-label tabs-header-item-btn">Details</button>
+                                </div>
+                            </div>
+                            <div class="tabs-header-item">
+                                <div class="tabs-header-item-wrapper">
+                                    <button id="tab-test-cases" class="tabs-header-item-btn">Test Cases</button>
+                                </div>
+                            </div>
+                            <div class="tabs-header-item">
+                                <div class="tabs-header-item-wrapper">
+                                    <button id="tab-test-runs" class="tabs-header-item-btn">Test runs</button>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="tabs-header-slider" style="width: 46px; left: -2px;"></span>
+                    </div>
+                    <div class="tabs-content">
+                        <div class="plan-view-details">
+                            <div class="plan-view-details-item">
+                                <p class="view-plan-details-item-header">Description</p>
+                                <div class="markdown-area">
+                                    <div>
+                                        <div style="overflow-wrap: break-word;">
+                                            <p>Sample</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+
+            <!-- Delete Modal -->
+            <div class="modal fade" id="deleteModal" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-body p-4">
+                
+                        <h5 class="modal-title mb-3">Delete Test Plan</h5>
+                        <p class="mb-4">Are you sure, that you want to delete test plan "{{TestPlan_Title}}"?</p>
+                
+                        <div class="d-flex align-items-center justify-content-end">
+                            <span class="cancel-span me-2" data-bs-dismiss="modal">Cancel</span>
+                            <button type="button" class="btn btn-primary" (click)="deleteTestPlan()">Delete</button>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

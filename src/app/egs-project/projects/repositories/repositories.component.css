@@ -1,0 +1,417 @@
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i");
+
+:host() {
+  flex: 1;
+  overflow: auto;
+  position: relative;
+}
+
+.app__content {
+  padding: 1rem 1rem 0.25rem 1.5rem;
+  display: flex;
+  flex: 1 1 0%;
+  flex-direction: column;
+  overflow: hidden;
+  height: 100%;
+}
+
+.page-title {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.page-something {
+  font-size: 12px;
+  font-weight: 500;
+}
+.selected-something{
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.page-button {
+  height: fit-content;
+}
+
+
+.l-col {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.l-col i {
+  width: 100px;
+}
+
+.r-col {
+  border-left: 2px solid lightgray;
+}
+
+.button-blue-transparent {
+  font-size: 0.775rem;
+  font-weight: 500
+}
+
+.suite-burger {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.chevron button {
+  padding: 0.175rem 0.45rem;
+}
+
+.modal-header,
+.modal-footer {
+  border: none;
+}
+
+.modal-body {
+  padding: 25px 29px 27px 32px;
+}
+
+.form-select,
+.form-select:hover,
+.form-select:focus,
+.form-select:active {
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.form-select {
+  background-color: var(--black-5);
+}
+
+.form-select:hover {
+  background-color: var(--black-10);
+}
+
+.form-select option {
+  background-color: #fff;
+  border: #fff;
+}
+
+.l-col .collapse {
+  margin-left: 0.625rem;
+  border-left: 1px solid rgb(224, 225, 228);
+}
+
+.actualcon {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.list-container {
+  height: 100px;
+  min-height: 0;
+  flex-grow: 1;
+}
+
+.r-col {
+  overflow-y: auto;
+  height: 100%;
+  min-height: 0;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.l-col {
+  overflow-y: auto;
+  height: 100%;
+  min-height: 0;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.collapsing {
+  margin-left: 0.625rem;
+
+}
+
+.caseContainer {
+  border-radius: 6px;
+}
+
+.caseRow {
+  cursor: pointer;
+}
+
+.caseRow a {
+  font-weight: unset;
+  color: var(--c-text-secondary);
+
+}
+
+.caseRow:hover {
+  background-color: var(--black-5);
+}
+
+.caseRow:focus {
+  background-color: var(--black-5);
+}
+
+.caseRow:focus .caseDescription,
+.caseRow:focus a {
+  font-weight: 500;
+}
+
+
+.caseDescription {
+  padding-left: 0.5rem;
+  word-break: break-word;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  flex-grow: 1;
+  font-size: 0.8rem;
+}
+
+.CasePanel {
+  top: var(--app-header-height);
+  right: 0;
+  bottom: 0;
+  z-index: 101;
+  min-width: 580px;
+  max-width: 30vw;
+  position: fixed;
+  display: none;
+  gap: 4px;
+  flex-direction: column;
+  padding: 1rem 1.25rem;
+  background: var(--bg-color-default);
+  box-shadow: var(--popup-shadow);
+}
+
+.projectPanelTitle {
+  font-size: 0.875rem;
+  color: var(--black-50);
+}
+
+.projectPanelTitle:hover {
+  color: var(--bs-blue-prime);
+}
+
+.panel-container {
+  overflow: auto;
+  height: 100%;
+  min-height: 0;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.panelClose {
+  cursor: pointer;
+}
+
+.panelClose i {
+  font-size: 32px;
+}
+
+.panelControl {
+  margin-bottom: 8px;
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.panelControl .btns {
+  border-radius: 6px;
+  border: 1px solid transparent;
+  outline: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  transition: all 0.1s ease;
+  position: relative;
+  font-weight: inherit;
+  background: var(--black-5);
+  color: inherit !important;
+  padding: 0.1875rem 0.375rem;
+  font-size: 0.875rem;
+}
+
+.panelControl .btns i {
+  margin-right: 8px;
+}
+
+.panelNav {
+  display: flex;
+  position: relative;
+  border-bottom: 2px solid rgb(240, 240, 240);
+  min-width: max-content;
+}
+
+.panelNav .btns {
+  position: relative;
+  border: none;
+  outline: none;
+  margin: 4px 12px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  background: none;
+  font-weight: 500;
+  font-size: 0.775rem;
+  color: inherit;
+}
+
+.panelNav .btns.active span {
+  width: 100%;
+}
+
+.panelNav .btns span {
+  position: absolute;
+  display: block;
+  height: 100%;
+  width: 0%;
+  left: 0;
+  bottom: -6px;
+  border-bottom: 2px solid var(--bs-blue-prime);
+  transition: width 0.2s linear;
+}
+
+.panelNav .btns.active {
+  color: var(--bs-blue-prime);
+}
+
+.panelTable {
+  width: 100%;
+}
+
+.panel-comments {
+  font-size: 0.875rem;
+}
+
+.panel-comments .comment-username {
+  font-size: 0.8rem;
+}
+
+.panel-comments .comment-role {
+  font-size: .75rem;
+  opacity: .75;
+}
+
+.comment-avatar {
+  position: relative;
+}
+
+.comment-date {
+  font-size: .75rem;
+  opacity: .75;
+}
+
+.comment-avatar::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  width: 1px;
+  height: 100%;
+  background-color: rgb(224, 225, 228);
+  ;
+}
+
+.panelContent {
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
+  height: 100%;
+}
+
+.panelContent .panelLabel {
+  font-size: 0.775rem;
+  margin-bottom: 5px;
+  font-weight: 600;
+}
+
+.panel-general {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.markdown-area {
+  word-break: break-word;
+  font-size: .775rem;
+}
+
+.table-steps {
+  width: 100%;
+}
+
+.table-steps td {
+  word-break: break-all;
+}
+
+.table-steps td:not(:last-child) {
+  padding-right: 1rem;
+}
+
+.mat-header-row {
+  height: 28px;
+}
+
+.mat-column-Step {
+  width: 10%;
+}
+
+.mat-column-Action {
+  width: 28%;
+}
+
+.mat-column-Input {
+  width: 28%;
+}
+
+.mat-column-Expected {
+  width: 43%;
+}
+
+.select-item {
+  background-color: var(--black-5);
+  padding: 0.375rem 0.75rem;
+  font-size: 0.775rem;
+  font-weight: 400;
+  line-height: 1.5;
+  border-radius: .25rem;
+}
+
+.suite-description {
+  padding: 0 0.5rem;
+  font-size: 0.8rem;
+  color: var(--c-text-secondary);
+}
+
+/* ::ng-deep .cdk-overlay-container {
+  z-index: 9999;
+} */
+
+.deleteSubPara {
+  font-weight: 600;
+  font-size: 1.125rem;
+  margin: 0;
+}
+
+.modal-title i {
+  color: var(--bs-red-100);
+}
+
+.collapsed {
+  position: relative;
+}
+
+.btn-light {
+  color: var(--c-text);
+  background-color: var(--black-5);
+  min-width: unset;
+  padding: 6px 8px;
+  box-shadow: none;
+}
+.btn-light:hover {
+  background-color: var(--black-25);
+}

@@ -1,33 +1,49 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
+const httpOptions = {
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+}
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
 
-  readonly ApiURL = "https://localhost:7020/api";
+  readonly ApiURL = environment.api_url;
+  readonly MethodUrl = environment.unicall_url;
+  readonly MethodUrlAttach = environment.uniattach_url;
+  readonly AuthUrl = environment.auth_url;
+  constructor(private http: HttpClient) { }
 
-  constructor(private http:HttpClient) { }
 
-  getAccountList():Observable<any[]>{
-    return this.http.get<any>(this.ApiURL+"/EgsAccounts");
+  UniCall(body: any): Observable<any> {
+    // console.log(JSON.stringify(body));
+    return this.http.post(
+      `${this.ApiURL}${this.MethodUrl}`,
+      JSON.stringify(body), httpOptions
+    );
   }
 
-  getAccount(id:number|string){
-    return this.http.get<any>(this.ApiURL+`/EgsAccounts/${id}`);
+  UniAttachmentlist(data: any, isResponseBlob: boolean = false): Observable<any> {
+    var httpOptions = {};
+    if (isResponseBlob) {
+      httpOptions = { observe: 'response', responseType: "blob" };
+    }
+    return this.http.post(
+      `${this.ApiURL}${this.MethodUrlAttach}`,
+      data, httpOptions
+    );
   }
 
-  addAccount(data:any){
-    return this.http.post(this.ApiURL+'/EgsAccounts',data)
+
+  RegisterCall(data: any) {
+    return this.http.post(this.ApiURL + this.AuthUrl + "register", data);
   }
 
-  updateAccount(id:number|string, data:any){
-    return this.http.post(this.ApiURL+`/EgsAccounts/${id}`,data);
+  LoginCall(data: any) {
+    return this.http.post(this.ApiURL + this.AuthUrl + "login", data, { responseType: "text" });
   }
 
-  deleteAccount(id:number|string){
-    return this.http.delete(this.ApiURL+`/EgsAccounts/${id}`);
-  }
 }

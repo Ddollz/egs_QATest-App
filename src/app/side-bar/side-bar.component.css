@@ -68,6 +68,15 @@
   white-space: nowrap;
   font-weight: 400;
 }
+
 .dropdown-item i{
  margin-right: .35rem;
+}
+
+.linkTag.active {
+  color: var(--c-sidebar-tag);
+}
+
+.linkTag:hover {
+  color: #eb7374;
 }

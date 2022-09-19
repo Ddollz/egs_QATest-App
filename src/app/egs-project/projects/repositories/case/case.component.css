@@ -1,0 +1,81 @@
+:host() {
+  cursor: pointer;
+}
+
+.r-col-header {
+  width: 100%;
+  border-radius: 6px;
+  background-color: var(--black-5);
+  padding: 0.5rem;
+}
+
+
+.suite-buttons {
+  border-radius: 6px;
+  border: 1px solid transparent;
+  outline: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  transition: all 0.1s ease;
+  position: relative;
+  font-weight: inherit;
+  font-size: 0.875rem;
+  padding: 2px 6px;
+  background-color: transparent;
+}
+
+.suite-buttons i {
+  color: var(--black-50);
+}
+
+.suite-buttons:hover i {
+  color: var(--c-text);
+}
+
+.suite-buttons:hover {
+  background-color: rgba(189, 188, 188, 0.37);
+}
+
+.suite-buttons.plus i {
+  color: var(--bs-blue-second);
+}
+
+.suite-buttons.plus:hover i {
+  color: var(--bs-blue-prime);
+}
+
+.suitename {
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+
+.check-box {
+  opacity: 0;
+  transition: opacity 0.1s ease;
+}
+
+.controls {
+  opacity: 0;
+  transition: opacity 0.1s ease;
+}
+
+.r-col-c:hover .check-box,
+.r-col-c:hover .controls {
+  opacity: 1;
+}
+
+.r-col-header:hover .suitename {
+  color: var(--bs-blue-second) !important;
+
+}
+
+.mat-checkbox-checked {
+  opacity: 1;
+}
+
+.caseControl {
+  opacity: 1;
+}

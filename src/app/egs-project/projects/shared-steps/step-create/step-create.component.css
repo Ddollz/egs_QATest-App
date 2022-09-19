@@ -1,0 +1,96 @@
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i");
+
+:host() {
+  flex: 1;
+  overflow: auto;
+  position: relative;
+}
+
+.app__content {
+  padding: 1rem 1.5rem;
+  display: flex;
+  flex: 1 1 0%;
+  flex-direction: column;
+  overflow: auto;
+  height: 100%;
+}
+
+/* Labels */
+.page-title {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.label-line {
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.25rem 0;
+  border-bottom: 1px solid lightgray;
+}
+
+.cancel-span {
+  font-weight: 600;
+  color: var(--bs-red-100);
+  padding: 0rem 0.75rem;
+}
+
+.add-step-span {
+  font-weight: 600;
+}
+
+.cancel-span:hover,
+.add-step-span:hover {
+  color: #eb7374;
+}
+
+
+.form-group,
+.input-group {
+  margin-bottom: 1.25rem;
+  position: relative;
+  z-index: 0;
+}
+
+.form-control:focus {
+  box-shadow: unset;
+  border-color: #b1adad;
+}
+
+.stepNumber {
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 17px;
+  color: var(--c-text);
+  opacity: 1;
+  white-space: nowrap;
+  width: 3%;
+}
+
+.stepinput-row {
+  width: 87%;
+}
+
+.step-controls {
+  width: 10%;
+}
+.space{
+  width: 3%;
+}
+
+
+/* Misc */
+.tooltip-i,
+.cancel-span,
+.add-step-span,
+.bi-image-fill,
+.bi-clipboard-fill,
+.bi-trash-fill,
+.bi-arrow-left {
+  cursor: pointer;
+}
+
+.btn-primary {
+  white-space: nowrap;
+}
+

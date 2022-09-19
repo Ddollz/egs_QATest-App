@@ -6,34 +6,39 @@
   position: relative;
 }
 
-.create-project-button{
-  font-size: .875rem;
-  border-radius: .25rem;
-  padding: .2rem .75rem;
-}
-
+/* Labels */
 .page-title {
   font-size: 24px;
   font-weight: 600;
 }
 
-
-.table-head label {
-  color: gray;
+.page-label {
+  font-size: 0.75rem;
   font-weight: 600;
+  margin-bottom: .25rem;
 }
 
-.project-row {
-  height: 100%;
-  border-bottom: 1px solid lightgray;
+.column-title {
+  color: #222;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 5px;
 }
 
-.project-name {
-  font-weight: 800;
+.column-title:hover {
+  color: #eb7374;
 }
 
+.filter-span,
+.update-btn {
+  font-weight: 600;
+  color: var(--bs-red-100);
+}
+
+/* Images */
 .project-image img {
   width: 2.5rem;
+  margin: 10px 0;
   border-radius: 6px;
   display: inline-block;
 }
@@ -46,3 +51,125 @@
   border-radius: 5px;
 }
 
+/* Buttons */
+.filter-btn {
+  font-weight: 600;
+  color: #393939;
+  background-color: #f3f3f3 !important;
+  border: none;
+}
+
+.filter-btn:hover,
+.filter-item:hover {
+  background-color: #efefef !important;
+}
+
+.filter-span:hover {
+  color: #eb7374;
+}
+
+/* Checkbox */
+input[type="checkbox"]:focus {
+  box-shadow: none !important;
+}
+
+input[type="checkbox"]:checked {
+  border-color: var(--bs-red-100) !important;
+  background-color: var(--bs-red-100) !important;
+}
+
+/* Radio Button */
+::ng-deep .mat-radio-label-content {
+  font-weight: 400;
+  font-size: 0.875rem;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+::ng-deep .mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element {
+  background-color: #e52325;
+}
+
+::ng-deep .mat-radio-button.mat-accent .mat-radio-inner-circle {
+  background-color: #e52325;
+}
+
+/* Icons */
+.bi-star {
+  opacity: 0;
+  font-size: 18px;
+  color: #ffc107;
+}
+
+.bi-star:hover {
+  opacity: 1;
+}
+
+.bi-check {
+  color: #37bd47;
+  font-size: 18px;
+}
+
+.three-dots {
+  padding: 0 8px;
+}
+
+/* Columns */
+.mat-header-cell {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.mat-column-Favorite {
+  width: 5%;
+}
+
+.mat-column-Project_Image {
+  width: 5%;
+}
+
+.mat-column-Project_Name {
+  width: 25%;
+}
+
+.mat-column-Unresolved {
+  width: 15%;
+}
+
+.mat-column-TestRun {
+  width: 15%;
+}
+
+.mat-column-Milestone {
+  width: 15%;
+}
+
+.mat-column-Members {
+  width: 15%;
+}
+
+.mat-column-Setting {
+  width: 5%;
+}
+
+/* Misc */
+.tooltip-i,
+.filter-span,
+.column-title,
+.project-image img {
+  cursor: pointer;
+}
+
+.btn-primary,
+.filter-span {
+  white-space: nowrap;
+}
+
+/* Dropdown */
+.dropdown-item:hover {
+  background-color: white;
+  color: #eb7374;
+}
+
+.dropdown-item:active {
+  background-color: white;
+}
