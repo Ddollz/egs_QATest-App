@@ -28,3 +28,49 @@ input[type='file'] {
   height: 100%;
   cursor: pointer;
 }
+
+
+.nav .btns {
+  position: relative;
+  border: none;
+  outline: none;
+  margin: 4px 12px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  background: none;
+  font-weight: 500;
+  font-size: 0.775rem;
+  color: inherit;
+}
+
+.nav .btns.active span {
+  width: 100%;
+}
+
+.nav .btns span {
+  position: absolute;
+  display: block;
+  height: 100%;
+  width: 0%;
+  left: 0;
+  bottom: -6px;
+  border-bottom: 2px solid var(--bs-blue-prime);
+  transition: width 0.2s linear;
+}
+.Browse{
+  display: none;
+  height: 500px;
+}
+.attachments{
+  height: 500px;
+}
+
+.attachments-list {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  overflow: auto;
+  height: 500px;
+}
+
