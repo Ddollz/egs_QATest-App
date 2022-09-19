@@ -510,6 +510,39 @@ export class CaseCreateComponent implements OnInit {
           i++
         });
         this.openSharedStepModalBTN?.nativeElement.click();
+        let AttachnmentLists: any = [];
+        for (let index = 0; index < this.steps.length; index++) {
+          let tmp = this.steps[index].Attachments_ID;
+          if (tmp == undefined) {
+            AttachnmentLists = [];
+          }
+          else {
+            AttachnmentLists = AttachnmentLists.concat(JSON.parse(tmp));
+          }
+        }
+        var Params =
+          [
+            {
+              Param: "@List",
+              Value: JSON.stringify(AttachnmentLists)
+            }
+
+          ];
+        var formData = new FormData();
+        formData.append("CommandText", 'egsQAAttachmentGet');
+        formData.append("Params", JSON.stringify(Params));
+
+        //? API CALL
+        this.api.UniAttachmentlist(formData).subscribe({
+          next: (result) => {
+            console.log(result);
+            this.listofAttachmentInStep = result[0];
+          },
+          error: (msg) => {
+            console.log(msg);
+            alert("500 Internal Server Errors")
+          }
+        })
 
       },
       error: (e) => {

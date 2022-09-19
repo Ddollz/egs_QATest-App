@@ -373,7 +373,6 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
       }
     ).subscribe(value => {
       this.suites = value[0];
-      console.log(this.suites)
       if (this.suites) {
         this.Suite_Root = 'ProjectRoot|' + this.project.Project_ID;
         for (let index = 0; index < this.suites.length; index++) {

@@ -53,43 +53,43 @@ export class StepCreateComponent implements OnInit {
         next: (e) => {
           this.SharedStep_ID = e[0][0].SharedStep_ID;
           this.SharedStep_Title = e[0][0].SharedStep_Title;
+          if (!e[1]) return
           this.steps = e[1]
-          if (e[1]) {
-            let AttachnmentLists: any = [];
-            for (let index = 0; index < this.steps.length; index++) {
-              let tmp = this.steps[index].Attachments_ID;
-              if (tmp == undefined) {
-                AttachnmentLists = [];
-              }
-              else {
-                AttachnmentLists = AttachnmentLists.concat(JSON.parse(tmp));
-              }
+          let AttachnmentLists: any = [];
+          for (let index = 0; index < this.steps.length; index++) {
+            let tmp = this.steps[index].Attachments_ID;
+            if (tmp == undefined) {
+              AttachnmentLists = [];
             }
-            var Params =
-              [
-                {
-                  Param: "@List",
-                  Value: JSON.stringify(AttachnmentLists)
-                }
-
-              ];
-            var formData = new FormData();
-            formData.append("CommandText", 'egsQAAttachmentGet');
-            formData.append("Params", JSON.stringify(Params));
-
-            //? API CALL
-            this.api.UniAttachmentlist(formData).subscribe({
-              next: (result) => {
-                console.log(result);
-                this.listofAttachmentInStep = result[0];
-              },
-              error: (msg) => {
-                console.log(msg);
-                alert("500 Internal Server Errors")
-              }
-            })
-
+            else {
+              AttachnmentLists = AttachnmentLists.concat(JSON.parse(tmp));
+            }
           }
+          var Params =
+            [
+              {
+                Param: "@List",
+                Value: JSON.stringify(AttachnmentLists)
+              }
+
+            ];
+          var formData = new FormData();
+          formData.append("CommandText", 'egsQAAttachmentGet');
+          formData.append("Params", JSON.stringify(Params));
+
+          //? API CALL
+          this.api.UniAttachmentlist(formData).subscribe({
+            next: (result) => {
+              console.log(result);
+              this.listofAttachmentInStep = result[0];
+            },
+            error: (msg) => {
+              console.log(msg);
+              alert("500 Internal Server Errors")
+            }
+          })
+
+
         },
         error: (e) => {
           alert("500 Internal Server Errors")
