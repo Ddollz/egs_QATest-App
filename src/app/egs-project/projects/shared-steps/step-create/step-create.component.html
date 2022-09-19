@@ -52,8 +52,8 @@
               <div class="row">
                 <div class="space me-3"> </div>
                 <ng-container *ngFor="let attachment of listofAttachmentInStep">
-                  <ng-container *ngIf="count.attachments_IDS != undefined">
-                    <ng-container *ngIf="count.attachments_IDS.includes(attachment.Attachment_ID)">
+                  <ng-container *ngIf="count.Attachments_ID != undefined">
+                    <ng-container *ngIf="count.Attachments_ID.includes(attachment.Attachment_ID)">
                       <ng-container *ngIf="attachment.byteFile.contentType.split('/')[0] == 'image'; else notImage">
                         <div class="suitecase-attachment p-0">
                           <div class="suitecase-attachment-container">
@@ -72,7 +72,7 @@
                     </ng-container>
                   </ng-container>
                   <ng-template #notImage>
-                    <div class="suitecase-attachment">
+                    <div class="suitecase-attachment p-0">
                       <div class="suitecase-attachment-container">
                         <div data-disable="false" class="suitecase-attachment-file" (click)="downloadFile(attachment.Attachment_ID,attachment.Filename)">
                           <a class="suitecase-attachment-link"></a>

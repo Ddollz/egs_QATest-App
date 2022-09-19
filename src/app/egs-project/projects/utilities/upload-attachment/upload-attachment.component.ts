@@ -58,7 +58,6 @@ export class UploadAttachmentComponent implements OnInit, AfterViewInit {
     formData.append("files", event.target.files[0]);
 
     if (this.myFileInput != undefined){
-      console.log("test")
       this.myFileInput.nativeElement.value = "";}
     this.api.UniAttachmentlist(formData).subscribe({
       next: (result) => {

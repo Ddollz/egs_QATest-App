@@ -43,7 +43,6 @@ export class CaseCreateComponent implements OnInit {
 
   //Attachment
   attachments: any = [];
-  stepAttachments: any = [];
   uploadFrom: string = 'case';
 
   listofAttachmentInStep: any = [];
@@ -112,54 +111,45 @@ export class CaseCreateComponent implements OnInit {
           }
         ).subscribe({
           next: (value) => {
+
             if (value[0]) {
               this.steps = value[0];
-
+              let AttachnmentLists: any = [];
               for (let index = 0; index < this.steps.length; index++) {
-                this.steps[index].attachments_IDS = []
+                let tmp = this.steps[index].Attachments_ID;
+                if (tmp == undefined) {
+                  AttachnmentLists = [];
+                }
+                else {
+                  AttachnmentLists = AttachnmentLists.concat(JSON.parse(tmp));
+                }
               }
-              console.log(this.steps);
-
-              var Tempstring = ''
-              this.steps.forEach(element => {
-                Tempstring = element.Case_StepID + ',' + Tempstring
-              });
-
               var Params =
                 [
                   {
-                    Param: '@AttachmentStepIDs',
-                    Value: Tempstring
+                    Param: "@List",
+                    Value: JSON.stringify(AttachnmentLists)
                   }
+
                 ];
 
 
               var formData = new FormData();
-              formData.append("CommandText", 'egsQAAttachmentStepGet');
+              formData.append("CommandText", 'egsQAAttachmentGet');
               formData.append("Params", JSON.stringify(Params));
 
               //? API CALL
               this.api.UniAttachmentlist(formData).subscribe({
                 next: (result) => {
-                  this.stepAttachments = result[0];
-                  // console.log(this.stepAttachments);
-
-                  for (let index = 0; index < this.steps.length; index++) {
-                    for (let o = 0; o < this.stepAttachments.length; o++) {
-                      if (!this.steps[index].attachments_IDS?.includes(this.stepAttachments[o].Attachment_ID)) {
-                        if (this.steps[index].Case_StepID == this.stepAttachments[o].Step_ID) {
-                          this.steps[index].attachments_IDS?.push(this.stepAttachments[o].Attachment_ID)
-                        }
-                      }
-                    }
-                  }
-                  console.log(this.steps);
+                  console.log(result);
+                  this.listofAttachmentInStep = result[0];
                 },
                 error: (msg) => {
                   console.log(msg);
                   alert("500 Internal Server Errors")
                 }
-              });
+              })
+
             }
 
           }
@@ -182,13 +172,11 @@ export class CaseCreateComponent implements OnInit {
         this.caseForm.controls['@Case_PostCondition'].setValue(value[0][0].Case_PostCondition);
         this.caseForm.controls['@Case_Tags'].setValue(value[0][0].Case_Tag);
         this.caseForm.controls['@User_ID'].setValue(value[0][0].User_ID);
-
-
         var Params =
           [
             {
-              Param: "@Case_ID",
-              Value: value[0][0].Case_ID.toString()
+              Param: "@List",
+              Value: value[0][0].Attachments_ID
             }
 
           ];
@@ -203,6 +191,7 @@ export class CaseCreateComponent implements OnInit {
           next: (result) => {
             if (result[0] != undefined)
               this.attachments = result[0];
+            console.log(this.attachments);
           },
           error: (msg) => {
             console.log(msg);
@@ -270,12 +259,14 @@ export class CaseCreateComponent implements OnInit {
     //? Param For attachment
     var tempStringForAttachment = '';
     for (let index = 0; index < this.attachments.length; index++) {
-      tempStringForAttachment = this.attachments[index].Attachment_ID + ',' + tempStringForAttachment;
+      if (tempStringForAttachment == '') tempStringForAttachment = this.attachments[index].Attachment_ID;
+      else tempStringForAttachment = + this.attachments[index].Attachment_ID + ',' + tempStringForAttachment;
     }
-
+    console.log(JSON.parse('[' + tempStringForAttachment + ']'))
+    console.log(typeof JSON.parse('[' + tempStringForAttachment + ']'))
     var attachmentParam = {
       Param: '@attachJson',
-      Value: tempStringForAttachment.slice(0, -1).toString()
+      Value: '[' + tempStringForAttachment + ']'
     }
     this.json['Params'].push(attachmentParam);
 
@@ -362,7 +353,7 @@ export class CaseCreateComponent implements OnInit {
         Step_ExpectedResult: "",
         Step_Status: 1,
         SharedStep_ID: 0,
-        attachments_IDS: []
+        Attachments_ID: '',
       }
     )
   }
@@ -374,13 +365,19 @@ export class CaseCreateComponent implements OnInit {
     if (this.uploadFrom == 'case')
       this.attachments.push(event[0]);
     if (this.uploadFrom == 'step') {
-      // this.stepAttachments.push({ [this.]: event[0] });
       this.listofAttachmentInStep.push(event[0])
-      console.log(this.listofAttachmentInStep)
       if (this.addingAttachmentTo != undefined) {
-        this.steps[this.addingAttachmentTo].attachments_IDS?.push(event[0].Attachment_ID)
+        var stepAttachment = this.steps[this.addingAttachmentTo].Attachments_ID;
+        var stepAttachmentJson;
+        console.log(stepAttachment);
+        if (stepAttachment == undefined || stepAttachment == '') {
+          stepAttachmentJson = [];
+        } else if (typeof stepAttachment == 'string') {
+          stepAttachmentJson = JSON.parse(stepAttachment);
+        }
+        stepAttachmentJson.push(event[0].Attachment_ID)
+        this.steps[this.addingAttachmentTo].Attachments_ID = JSON.stringify(stepAttachmentJson);
       }
-      console.log(this.steps);
     }
   }
   deleteAttachment(value: number) {
