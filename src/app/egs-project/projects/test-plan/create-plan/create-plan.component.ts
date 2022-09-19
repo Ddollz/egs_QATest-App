@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute} from '@angular/router';
 import { Location } from "@angular/common";
-import { testplan } from '../../../../models/project/project.model';
+import { testplan, testCase } from '../../../../models/project/project.model';
 import { ApiService } from '../../../../services/api.service';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-create-plan',
@@ -24,6 +25,10 @@ export class CreatePlanComponent implements OnInit {
   Case_ID: string = '';
   
   testplan: testplan[] = [];
+  testCase: testCase[] = [];
+  displayedColumns: string[] = ['TestPlan_Title', 'TestPlan_RunTime', 'TestPlan_CaseCount', 'ThreeDots'];
+  dataSource1 = new MatTableDataSource<testplan>();
+  dataSource2 = new MatTableDataSource<testCase>();
 
   constructor(private router: Router, private route: ActivatedRoute, private location: Location, private api: ApiService) {
     if (this.route.snapshot.params['i']) {
@@ -32,6 +37,21 @@ export class CreatePlanComponent implements OnInit {
       this.Button_title = 'Save';
       this.getTestPlan();
     }
+
+    this.api.UniCall(
+      {
+        CommandText: 'egsQATestCaseGet',
+        Params: [
+          {
+            Param: '@Case_ID',
+            Value: null
+          }
+        ],
+      }
+    ).subscribe(value => {
+      this.testCase = value[0];
+      this.dataSource2 = new MatTableDataSource<testCase>(this.testCase);
+    });
 
    }
 
@@ -89,5 +109,15 @@ export class CreatePlanComponent implements OnInit {
       this.TestPlan_Desc = value[0][this.index].TestPlan_Desc;
       this.TestPlan_CaseCount = value[0][this.index].TestPlan_CaseCount;
     });
+  }
+
+  applyFilter(event?: Event) {
+    this.dataSource2.filterPredicate = function(data, filter: string): boolean {
+      return data.Case_Title.toLowerCase().includes(filter) == filter.trim().toLowerCase().includes(filter);
+    }
+    if (event != null) {
+      const filterValue = (event.target as HTMLInputElement).value;
+      this.dataSource2.filter = filterValue.trim().toLowerCase();
+    }
   }
 }
