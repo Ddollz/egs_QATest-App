@@ -366,7 +366,7 @@ export class CaseCreateComponent implements OnInit {
       }
     )
   }
-  stepClicked(step: step, s: string, n: string) {
+  stepClicked(step: step, s: string) {
     this.addingAttachmentTo = this.steps.indexOf(step);
     this.uploadFrom = s;
   }

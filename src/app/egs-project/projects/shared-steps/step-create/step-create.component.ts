@@ -24,6 +24,10 @@ export class StepCreateComponent implements OnInit {
 
   stepDeleteArray: string = '';
 
+
+  listofAttachmentInStep: any = [];
+  addingAttachmentTo?: number;
+
   constructor(private api: ApiService, private router: Router, private route: ActivatedRoute) {
 
     if (this.route.snapshot.params['i']) {
@@ -73,7 +77,8 @@ export class StepCreateComponent implements OnInit {
         Step_InputData: "",
         Step_ExpectedResult: "",
         Step_Status: 0,
-        SharedStep_ID: 0
+        SharedStep_ID: 0,
+        attachments_IDS: []
       }
     )
   }
@@ -169,5 +174,96 @@ export class StepCreateComponent implements OnInit {
         }
       }
     });
+  }
+
+
+  stepClicked(step: step) {
+    this.addingAttachmentTo = this.steps.indexOf(step);
+    console.log(this.addingAttachmentTo)
+  }
+  addAttachment(event: any) {
+
+    this.listofAttachmentInStep.push(event[0])
+    if (this.addingAttachmentTo != undefined) {
+      this.steps[this.addingAttachmentTo].attachments_IDS?.push(event[0].Attachment_ID)
+    }
+  }
+
+  //? Function for downloading file
+  downloadFile(file_ID: any, filename: string) {
+
+    //? Stored Procedure Name
+    var commandText = 'egsQAAttachmentGet';
+
+    //? Parameter of the store procedure
+    var Params = [{
+      Param: "@Attachment_ID",
+      Value: file_ID.toString()
+    }]
+
+    //? Convert Param JSON to String So may the api able to read json
+    var stringParam = JSON.stringify(Params);
+    var formData = new FormData();
+
+
+    //? When we are using UniAttachment we need to use Formdata in angular allowing us
+    //? to create, read, update and delete files
+    //? When posting file the "isDownload field is required"
+    formData.append("CommandText", commandText);
+    formData.append("Params", stringParam);
+    formData.append("file_ID", file_ID.toString());
+    formData.append("isDownload", 'true');
+
+    this.api.UniAttachmentlist(formData, true).subscribe({
+      next: (result) => {
+        let blob: Blob = result.body as Blob;
+        let a = document.createElement('a');
+        a.download = filename;
+        a.href = window.URL.createObjectURL(blob);
+        a.click();
+      },
+      error: (msg) => {
+        console.log(msg);
+      }
+    })
+
+  }
+  deleteAttachment(value: number) {
+
+    var file_ID = value;
+    //? Stored Procedure Name
+    var commandText = 'egsQAAttachmentDelete';
+
+    //? Parameter of the store procedure
+    var Params = [{
+      Param: "@Attachment_ID",
+      Value: file_ID.toString()
+    }]
+
+    //? Convert Param JSON to String So may the api able to read json
+    var stringParam = JSON.stringify(Params);
+    var formData = new FormData();
+
+
+    //? When we are using UniAttachment we need to use Formdata in angular allowing us
+    //? to create, read, update and delete files
+    //? When delete file the "isDelete field is required"
+    formData.append("CommandText", commandText);
+    formData.append("Params", stringParam);
+    formData.append("file_ID", file_ID.toString());
+    formData.append("isDelete", 'true');
+
+    this.api.UniAttachmentlist(formData, false).subscribe({
+      next: (result) => {
+        console.log(result)
+      },
+      error: (msg) => {
+        console.log(msg);
+      },
+      complete: () => {
+        reloadPage();
+      }
+    })
+
   }
 }
