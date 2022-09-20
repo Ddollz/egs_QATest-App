@@ -145,22 +145,6 @@ export class CaseCreateComponent implements OnInit {
               this.api.UniAttachmentlist(formData).subscribe({
                 next: (result) => {
                   this.listofAttachmentInStep = result[0];
-                  for (let index = 0; index < this.steps.length; index++) {
-                    this.listofAttachmentInStepView['no' + this.steps[index].Step_number] = []
-                  }
-                  for (let index = 0; index < this.steps.length; index++) {
-                    for (let o = 0; o < this.listofAttachmentInStep.length; o++) {
-                      var temp = this.steps[index].Attachments_ID;
-                      if (temp == undefined || temp == '') continue
-                      else {
-                        var ttemp = JSON.parse(temp);
-                        if (ttemp.includes(this.listofAttachmentInStep[o].Attachment_ID)) {
-                          this.listofAttachmentInStepView['no' + this.steps[index].Step_number].push(this.listofAttachmentInStep[o])
-                        }
-                      }
-                    }
-                  }
-                  console.log(this.listofAttachmentInStepView);
                 },
                 error: (msg) => {
                   console.log(msg);
@@ -380,6 +364,7 @@ export class CaseCreateComponent implements OnInit {
       this.attachments_id.push(event[0].Attachment_ID)
     }
     if (this.uploadFrom == 'step') {
+
       if (!this.listofAttachmentInStep.includes(event[0]))
         this.listofAttachmentInStep.push(event[0])
       if (this.addingAttachmentTo != undefined) {

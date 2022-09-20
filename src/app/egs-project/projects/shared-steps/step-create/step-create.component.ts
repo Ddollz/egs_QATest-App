@@ -58,8 +58,8 @@ export class StepCreateComponent implements OnInit {
           let AttachnmentLists: any = [];
           for (let index = 0; index < this.steps.length; index++) {
             let tmp = this.steps[index].Attachments_ID;
-            if (tmp == undefined) {
-              AttachnmentLists = [];
+            if (tmp == undefined || tmp == '') {
+              continue;
             }
             else {
               AttachnmentLists = AttachnmentLists.concat(JSON.parse(tmp));
@@ -73,6 +73,8 @@ export class StepCreateComponent implements OnInit {
               }
 
             ];
+
+
           var formData = new FormData();
           formData.append("CommandText", 'egsQAAttachmentGet');
           formData.append("Params", JSON.stringify(Params));
@@ -80,8 +82,8 @@ export class StepCreateComponent implements OnInit {
           //? API CALL
           this.api.UniAttachmentlist(formData).subscribe({
             next: (result) => {
-              console.log(result);
               this.listofAttachmentInStep = result[0];
+              console.log(this.listofAttachmentInStep)
             },
             error: (msg) => {
               console.log(msg);
@@ -218,19 +220,19 @@ export class StepCreateComponent implements OnInit {
     console.log(this.addingAttachmentTo)
   }
   addAttachment(event: any) {
-
-
-    this.listofAttachmentInStep.push(event[0])
+    if (!this.listofAttachmentInStep.includes(event[0]))
+      this.listofAttachmentInStep.push(event[0])
     if (this.addingAttachmentTo != undefined) {
       var stepAttachment = this.steps[this.addingAttachmentTo].Attachments_ID;
+      console.log(this.steps[this.addingAttachmentTo])
       var stepAttachmentJson;
-      console.log(stepAttachment);
       if (stepAttachment == undefined || stepAttachment == '') {
         stepAttachmentJson = [];
       } else if (typeof stepAttachment == 'string') {
         stepAttachmentJson = JSON.parse(stepAttachment);
       }
-      stepAttachmentJson.push(event[0].Attachment_ID)
+      if (!stepAttachmentJson.includes(event[0].Attachment_ID))
+        stepAttachmentJson.push(event[0].Attachment_ID)
       this.steps[this.addingAttachmentTo].Attachments_ID = JSON.stringify(stepAttachmentJson);
     }
   }
