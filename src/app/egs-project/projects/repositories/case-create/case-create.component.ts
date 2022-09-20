@@ -365,7 +365,8 @@ export class CaseCreateComponent implements OnInit {
     }
     if (this.uploadFrom == 'step') {
 
-      if (!this.listofAttachmentInStep.includes(event[0]))
+      var attachmentObject = this.listofAttachmentInStep.find((x: any) => x.Attachment_ID === event[0].Attachment_ID);
+      if (!attachmentObject)
         this.listofAttachmentInStep.push(event[0])
       if (this.addingAttachmentTo != undefined) {
         var stepAttachment = this.steps[this.addingAttachmentTo].Attachments_ID;
