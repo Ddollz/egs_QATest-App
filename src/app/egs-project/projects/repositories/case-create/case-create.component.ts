@@ -512,8 +512,8 @@ export class CaseCreateComponent implements OnInit {
         let AttachnmentLists: any = [];
         for (let index = 0; index < this.steps.length; index++) {
           let tmp = this.steps[index].Attachments_ID;
-          if (tmp == undefined) {
-            AttachnmentLists = [];
+          if (tmp == undefined || tmp == '') {
+            continue;
           }
           else {
             AttachnmentLists = AttachnmentLists.concat(JSON.parse(tmp));
