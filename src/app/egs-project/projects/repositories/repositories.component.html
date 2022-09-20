@@ -11,9 +11,14 @@
         </h2>
       </div>
       <div class="col d-flex justify-content-end align-items-center">
-        <button class="btn btn-light page-button">
-          <i class="bi bi-three-dots"></i>
-        </button>
+        <div class="dropdown">
+          <button class="btn btn-light page-button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" [routerLink]="'../trashbin/' + LinkParamID "><i class="bi bi-trash2"></i> Trash bin</a></li>
+          </ul>
+        </div>
       </div>
     </div>
 

@@ -1,0 +1,11 @@
+:host() {
+  flex: 1;
+  overflow: auto;
+  position: relative;
+}
+
+.app__content {
+  box-sizing: border-box;
+  padding: 1rem 1rem 0.25rem 1.5rem;
+  display: block;
+}
