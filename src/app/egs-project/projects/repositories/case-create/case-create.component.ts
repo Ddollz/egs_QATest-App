@@ -41,10 +41,13 @@ export class CaseCreateComponent implements OnInit {
   caseForm !: FormGroup;
   stepForm !: FormGroup;
 
-  //Attachment
+  //Attachment Case
+  attachments_id: Array<number> = [];
   attachments: any = [];
   uploadFrom: string = 'case';
 
+  //Attachment CaseStep
+  listofAttachmentInStepView: any = {};
   listofAttachmentInStep: any = [];
   addingAttachmentTo?: number;
 
@@ -117,8 +120,8 @@ export class CaseCreateComponent implements OnInit {
               let AttachnmentLists: any = [];
               for (let index = 0; index < this.steps.length; index++) {
                 let tmp = this.steps[index].Attachments_ID;
-                if (tmp == undefined) {
-                  AttachnmentLists = [];
+                if (tmp == undefined || tmp == '') {
+                  continue;
                 }
                 else {
                   AttachnmentLists = AttachnmentLists.concat(JSON.parse(tmp));
@@ -141,8 +144,23 @@ export class CaseCreateComponent implements OnInit {
               //? API CALL
               this.api.UniAttachmentlist(formData).subscribe({
                 next: (result) => {
-                  console.log(result);
                   this.listofAttachmentInStep = result[0];
+                  for (let index = 0; index < this.steps.length; index++) {
+                    this.listofAttachmentInStepView['no' + this.steps[index].Step_number] = []
+                  }
+                  for (let index = 0; index < this.steps.length; index++) {
+                    for (let o = 0; o < this.listofAttachmentInStep.length; o++) {
+                      var temp = this.steps[index].Attachments_ID;
+                      if (temp == undefined || temp == '') continue
+                      else {
+                        var ttemp = JSON.parse(temp);
+                        if (ttemp.includes(this.listofAttachmentInStep[o].Attachment_ID)) {
+                          this.listofAttachmentInStepView['no' + this.steps[index].Step_number].push(this.listofAttachmentInStep[o])
+                        }
+                      }
+                    }
+                  }
+                  console.log(this.listofAttachmentInStepView);
                 },
                 error: (msg) => {
                   console.log(msg);
@@ -172,32 +190,34 @@ export class CaseCreateComponent implements OnInit {
         this.caseForm.controls['@Case_PostCondition'].setValue(value[0][0].Case_PostCondition);
         this.caseForm.controls['@Case_Tags'].setValue(value[0][0].Case_Tag);
         this.caseForm.controls['@User_ID'].setValue(value[0][0].User_ID);
-        var Params =
-          [
-            {
-              Param: "@List",
-              Value: value[0][0].Attachments_ID
+        if (value[0][0].Attachments_ID != undefined && value[0][0].Attachments_ID != '') {
+          var Params =
+            [
+              {
+                Param: "@List",
+                Value: value[0][0].Attachments_ID
+              }
+
+            ];
+          this.attachments_id = JSON.parse(value[0][0].Attachments_ID);
+          // console.log(this.attachments_id);
+          var formData = new FormData();
+          formData.append("CommandText", 'egsQAAttachmentGet');
+          formData.append("Params", JSON.stringify(Params));
+
+          //? API CALL
+          this.api.UniAttachmentlist(formData).subscribe({
+            next: (result) => {
+              if (result[0] != undefined)
+                this.attachments = result[0];
+              // console.log(this.attachments);
+            },
+            error: (msg) => {
+              console.log(msg);
+              alert("500 Internal Server Errors")
             }
-
-          ];
-
-
-        var formData = new FormData();
-        formData.append("CommandText", 'egsQAAttachmentGet');
-        formData.append("Params", JSON.stringify(Params));
-
-        //? API CALL
-        this.api.UniAttachmentlist(formData).subscribe({
-          next: (result) => {
-            if (result[0] != undefined)
-              this.attachments = result[0];
-            console.log(this.attachments);
-          },
-          error: (msg) => {
-            console.log(msg);
-            alert("500 Internal Server Errors")
-          }
-        })
+          })
+        }
 
       }
       );
@@ -257,16 +277,9 @@ export class CaseCreateComponent implements OnInit {
     }
     console.log(this.json);
     //? Param For attachment
-    var tempStringForAttachment = '';
-    for (let index = 0; index < this.attachments.length; index++) {
-      if (tempStringForAttachment == '') tempStringForAttachment = this.attachments[index].Attachment_ID;
-      else tempStringForAttachment = + this.attachments[index].Attachment_ID + ',' + tempStringForAttachment;
-    }
-    console.log(JSON.parse('[' + tempStringForAttachment + ']'))
-    console.log(typeof JSON.parse('[' + tempStringForAttachment + ']'))
     var attachmentParam = {
       Param: '@attachJson',
-      Value: '[' + tempStringForAttachment + ']'
+      Value: JSON.stringify(this.attachments_id)
     }
     this.json['Params'].push(attachmentParam);
 
@@ -280,7 +293,7 @@ export class CaseCreateComponent implements OnInit {
           for (let index = 0; index < this.steps.length; index++) {
             this.steps[index].Case_ID = v[0][0].Case_ID
           }
-          console.log(JSON.stringify(this.steps))
+          // console.log(JSON.stringify(this.steps))
           this.api.UniCall(
             {
               CommandText: 'egsQAStepInsertUpdate',
@@ -362,62 +375,62 @@ export class CaseCreateComponent implements OnInit {
     this.uploadFrom = s;
   }
   addAttachment(event: any) {
-    if (this.uploadFrom == 'case')
+    if (this.uploadFrom == 'case') {
       this.attachments.push(event[0]);
+      this.attachments_id.push(event[0].Attachment_ID)
+    }
     if (this.uploadFrom == 'step') {
-      this.listofAttachmentInStep.push(event[0])
+      if (!this.listofAttachmentInStep.includes(event[0]))
+        this.listofAttachmentInStep.push(event[0])
       if (this.addingAttachmentTo != undefined) {
         var stepAttachment = this.steps[this.addingAttachmentTo].Attachments_ID;
+        console.log(this.steps[this.addingAttachmentTo])
         var stepAttachmentJson;
-        console.log(stepAttachment);
         if (stepAttachment == undefined || stepAttachment == '') {
           stepAttachmentJson = [];
         } else if (typeof stepAttachment == 'string') {
           stepAttachmentJson = JSON.parse(stepAttachment);
         }
-        stepAttachmentJson.push(event[0].Attachment_ID)
+        if (!stepAttachmentJson.includes(event[0].Attachment_ID))
+          stepAttachmentJson.push(event[0].Attachment_ID)
         this.steps[this.addingAttachmentTo].Attachments_ID = JSON.stringify(stepAttachmentJson);
       }
     }
   }
-  deleteAttachment(value: number) {
+  popAttachment(value: number) {
+    this.attachments_id.pop()
+    var myIndex = this.attachments_id.indexOf(value);
+    if (myIndex !== -1) {
+      this.attachments_id.splice(myIndex, 1);
+    }
 
-    var file_ID = value;
-    //? Stored Procedure Name
-    var commandText = 'egsQAAttachmentDelete';
+    var attachmentObject = this.attachments.find((x: any) => x.Attachment_ID === value);
 
-    //? Parameter of the store procedure
-    var Params = [{
-      Param: "@Attachment_ID",
-      Value: file_ID.toString()
-    }]
-
-    //? Convert Param JSON to String So may the api able to read json
-    var stringParam = JSON.stringify(Params);
-    var formData = new FormData();
-
-
-    //? When we are using UniAttachment we need to use Formdata in angular allowing us
-    //? to create, read, update and delete files
-    //? When delete file the "isDelete field is required"
-    formData.append("CommandText", commandText);
-    formData.append("Params", stringParam);
-    formData.append("file_ID", file_ID.toString());
-    formData.append("isDelete", 'true');
-
-    this.api.UniAttachmentlist(formData, false).subscribe({
-      next: (result) => {
-        console.log(result)
-      },
-      error: (msg) => {
-        console.log(msg);
-      },
-      complete: () => {
-        reloadPage();
-      }
-    })
+    var attachmentObjectIndex = this.attachments.indexOf(attachmentObject);
+    if (attachmentObjectIndex !== -1) {
+      this.attachments.splice(attachmentObjectIndex, 1);
+    }
 
   }
+
+  popStepAttachment(event: Event, step: step, value: number) {
+    event.preventDefault();
+    event.stopPropagation();
+    var myIndex = this.steps[this.steps.indexOf(step)].Attachments_ID;
+    // console.log(this.steps[this.steps.indexOf(step)].Attachments_ID);
+    if (myIndex == undefined || myIndex == '') return
+
+    var jsonStepAttachment = JSON.parse(myIndex);
+
+
+    var tempAttachIndex = jsonStepAttachment.indexOf(value);
+    if (tempAttachIndex !== -1) {
+      jsonStepAttachment.splice(myIndex, 1);
+    }
+    this.steps[this.steps.indexOf(step)].Attachments_ID = JSON.stringify(jsonStepAttachment);
+    // console.log(this.steps[this.steps.indexOf(step)].Attachments_ID);
+  }
+
 
   //? Function for downloading file
   downloadFile(file_ID: any, filename: string) {

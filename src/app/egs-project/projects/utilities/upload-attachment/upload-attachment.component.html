@@ -4,6 +4,7 @@
     <div class="modal-content">
       <div class="modal-header border-0 pb-0">
         <h5 class="modal-title" id="UploadModalLabel">{{Modal_Title}}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <nav class="nav mb-4 pt-0" #Nav>
@@ -18,7 +19,7 @@
                   <ng-container *ngIf="attachment.byteFile.contentType.split('/')[0] == 'image'; else notImage">
                     <div class="suitecase-attachment">
                       <div class="suitecase-attachment-container">
-                        <div data-disable="false" class="suitecase-attachment-image" style="background: url(&quot;data:image/png;base64,{{attachment.byteFile.fileContents}}&quot;);"><a class="suitecase-attachment-link is-image"></a>
+                        <div data-disable="false" class="suitecase-attachment-image" (click)="AddImageFromServer(attachment)" style="background: url(&quot;data:image/png;base64,{{attachment.byteFile.fileContents}}&quot;);"><a class="suitecase-attachment-link is-image"></a>
                           <div class="suitecase-attachment-overlay">
                             <p class="suitecase-attachment-filename">{{attachment.Filename}}</p>
                             <div class="suitecase-attachment-overlay-bottom">
@@ -33,7 +34,7 @@
                   <ng-template #notImage>
                     <div class="suitecase-attachment">
                       <div class="suitecase-attachment-container">
-                        <div data-disable="false" class="suitecase-attachment-file">
+                        <div data-disable="false" class="suitecase-attachment-file" (click)="AddImageFromServer(attachment)" >
                           <a class="suitecase-attachment-link"></a>
                           <span class="suitecase-attachment-extension">{{attachment.byteFile.contentType.split('/')[0]}}</span>
                           <div class="suitecase-attachment-overlay">

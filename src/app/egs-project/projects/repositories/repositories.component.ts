@@ -598,8 +598,9 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
       let AttachnmentLists: any = [];
       for (let index = 0; index < this.steps.length; index++) {
         let tmp = this.steps[index].Attachments_ID;
-        if (tmp == undefined) {
-          AttachnmentLists = [];
+        console.log(tmp)
+        if (tmp == undefined || tmp == '') {
+          continue;
         }
         else {
           AttachnmentLists = AttachnmentLists.concat(JSON.parse(tmp));
@@ -677,36 +678,36 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
     this.Case_Milestone = this.testCase.Case_Milestone.toString();
     this.Case_Behavior = this.testCase.Case_Behavior.toString();
     this.Case_AutoStat = this.testCase.Case_AutoStat.toString();
-    console.log(this.testCase.Attachments_ID)
-    //? Get Attachments
-    //? START
-    var commandText = 'egsQAAttachmentGet';
-    var Params =
-      [
+    if (this.testCase.Attachments_ID != undefined && this.testCase.Attachments_ID != '') {//? Get Attachments
+      //? START
+      var commandText = 'egsQAAttachmentGet';
+      var Params =
+        [
 
-        {
-          Param: "@List",
-          Value: this.testCase.Attachments_ID
+          {
+            Param: "@List",
+            Value: this.testCase.Attachments_ID
+          }
+
+        ];
+
+      var stringParam = JSON.stringify(Params);
+
+      var formData = new FormData();
+      formData.append("CommandText", commandText);
+      formData.append("Params", stringParam);
+
+      this.api.UniAttachmentlist(formData).subscribe({
+        next: (result) => {
+          this.testCaseAttachment = result[0];
+        },
+        error: (msg) => {
+          console.log(msg);
+          alert("500 Internal Server Errors")
         }
-
-      ];
-
-    var stringParam = JSON.stringify(Params);
-
-    var formData = new FormData();
-    formData.append("CommandText", commandText);
-    formData.append("Params", stringParam);
-
-    this.api.UniAttachmentlist(formData).subscribe({
-      next: (result) => {
-        this.testCaseAttachment = result[0];
-      },
-      error: (msg) => {
-        console.log(msg);
-        alert("500 Internal Server Errors")
-      }
-    });
-    //? END
+      });
+      //? END
+    }
 
 
     this.api.UniCall(
@@ -797,44 +798,6 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
     )
   }
 
-  deleteAttachment(value: number) {
-
-    var file_ID = value;
-    //? Stored Procedure Name
-    var commandText = 'egsQAAttachmentDelete';
-
-    //? Parameter of the store procedure
-    var Params = [{
-      Param: "@Attachment_ID",
-      Value: file_ID.toString()
-    }]
-
-    //? Convert Param JSON to String So may the api able to read json
-    var stringParam = JSON.stringify(Params);
-    var formData = new FormData();
-
-
-    //? When we are using UniAttachment we need to use Formdata in angular allowing us
-    //? to create, read, update and delete files
-    //? When delete file the "isDelete field is required"
-    formData.append("CommandText", commandText);
-    formData.append("Params", stringParam);
-    formData.append("file_ID", file_ID.toString());
-    formData.append("isDelete", 'true');
-
-    this.api.UniAttachmentlist(formData, false).subscribe({
-      next: (result) => {
-        // console.log(result)
-      },
-      error: (msg) => {
-        console.log(msg);
-      },
-      complete: () => {
-        reloadPage();
-      }
-    })
-
-  }
 
   //? Function for downloading file
   downloadFile(file_ID: any, filename: string) {

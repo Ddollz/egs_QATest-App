@@ -34,7 +34,6 @@ input[type='file'] {
   position: relative;
   border: none;
   outline: none;
-  margin: 4px 12px;
   padding: 0;
   display: flex;
   align-items: center;

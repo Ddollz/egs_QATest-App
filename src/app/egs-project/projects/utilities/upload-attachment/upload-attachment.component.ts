@@ -23,6 +23,9 @@ export class UploadAttachmentComponent implements OnInit {
 
   UserAttachments: any;
 
+  // @Output() uploadFrom = new EventEmitter<any>();
+
+
   temporaryUserId: number = 1;
   constructor(private http: HttpClient, private api: ApiService) {
     var Params =
@@ -40,7 +43,6 @@ export class UploadAttachmentComponent implements OnInit {
     //? API CALL
     this.api.UniAttachmentlist(formData).subscribe({
       next: (result) => {
-        console.log(result);
         this.UserAttachments = result[0];
       },
       error: (msg) => {
@@ -124,7 +126,9 @@ export class UploadAttachmentComponent implements OnInit {
     })
 
   }
-
+  AddImageFromServer(event:any){
+    this.uploadedEvent.emit([event]);
+  }
   deleteAttachment(value: number) {
 
     var file_ID = value;
