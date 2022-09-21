@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {  AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute} from '@angular/router';
-import { Location } from "@angular/common";
-import { testplan, testCase } from '../../../../models/project/project.model';
+import { testplan, testCase, suite, project } from '../../../../models/project/project.model';
 import { ApiService } from '../../../../services/api.service';
 import { MatTableDataSource } from '@angular/material/table';
+import { sidebarService } from '../../../../services/global-functions.service';
 
 @Component({
   selector: 'app-create-plan',
@@ -12,6 +12,10 @@ import { MatTableDataSource } from '@angular/material/table';
 })
 export class CreatePlanComponent implements OnInit {
 
+  //Utilities
+  LinkParamID: number = 0;
+
+  //Activated Route
   index: number = 0;
   Page_title: string = 'Create Test Plan';
   Button_title: string = 'Create Plan';
@@ -23,37 +27,74 @@ export class CreatePlanComponent implements OnInit {
   TestPlan_CaseCount: string = '';
   TestPlan_RunTime: string = '';
   Case_ID: string = '';
-  
-  testplan: testplan[] = [];
-  testCase: testCase[] = [];
-  displayedColumns: string[] = ['TestPlan_Title', 'TestPlan_RunTime', 'TestPlan_CaseCount', 'ThreeDots'];
-  dataSource1 = new MatTableDataSource<testplan>();
-  dataSource2 = new MatTableDataSource<testCase>();
 
-  constructor(private router: Router, private route: ActivatedRoute, private location: Location, private api: ApiService) {
+  //Project Modals
+  suites: suite[] = [];
+  testplans: testplan[] = [];
+  testCases: testCase[] = [];
+  @Input() project = {} as project;
+  displayedColumns: string[] = ['TestPlan_Title', 'TestPlan_RunTime', 'TestPlan_CaseCount', 'ThreeDots'];
+  testPlandataSource = new MatTableDataSource<testplan>();
+  suitedataSource = new MatTableDataSource<suite>();
+
+  constructor(private router: Router, private route: ActivatedRoute, private api: ApiService, private sidebarServ: sidebarService) {
+    
     if (this.route.snapshot.params['i']) {
       this.index = this.route.snapshot.params['i'];
       this.Page_title = 'Edit Test Plan';
       this.Button_title = 'Save';
       this.getTestPlan();
+      
     }
+
+    // this.LinkParamID = Number(this.route.snapshot.paramMap.get('id'));
+    // this.sidebarServ.fetchProjectID(this.LinkParamID);
+    this.LinkParamID = sidebarServ.projectID;
+
+    // this.api.UniCall(
+    //   {
+    //     CommandText: 'egsQATestCaseGet',
+    //     Params: [
+    //       {
+    //         Param: '@Case_ID',
+    //         Value: null
+    //       }
+    //     ],
+    //   }
+    // ).subscribe(value => {
+    //   this.testCases = value[0];
+    //   this.testCasedataSource = new MatTableDataSource<suite>(this.suites);
+    // });
 
     this.api.UniCall(
       {
-        CommandText: 'egsQATestCaseGet',
+        CommandText: 'egsQAProjectGet',
         Params: [
           {
-            Param: '@Case_ID',
-            Value: null
+            Param: '@Project_ID',
+            Value: this.LinkParamID.toString()
           }
         ],
       }
     ).subscribe(value => {
-      this.testCase = value[0];
-      this.dataSource2 = new MatTableDataSource<testCase>(this.testCase);
+      this.project = value[0][0];
     });
 
-   }
+    this.api.UniCall(
+      {
+        CommandText: 'egsQASuiteGet',
+        Params: [
+          {
+            Param: '@Project_ID',
+            Value: this.LinkParamID.toString()
+          }
+        ],
+      }
+    ).subscribe(value => {
+      this.suites = value[0];
+    });
+
+  }
 
   ngOnInit(): void {
   }
@@ -98,26 +139,29 @@ export class CreatePlanComponent implements OnInit {
         Params: [
           {
             Param: '@TestPlan_ID',
-            Value: null
+            Value: this.index.toString()
           }
         ]
       }
     ).subscribe(value => {
-      this.testplan = value[0];
-      this.TestPlan_ID = value[0][this.index].TestPlan_ID;
-      this.TestPlan_Title = value[0][this.index].TestPlan_Title;
-      this.TestPlan_Desc = value[0][this.index].TestPlan_Desc;
-      this.TestPlan_CaseCount = value[0][this.index].TestPlan_CaseCount;
+      // console.log(value);
+      // console.log(value[0]);
+      // console.log(value[0][0]);
+      this.testplans = value[0][0];
+      this.TestPlan_ID = value[0][0].TestPlan_ID;
+      this.TestPlan_Title = value[0][0].TestPlan_Title;
+      this.TestPlan_Desc = value[0][0].TestPlan_Desc;
+      this.TestPlan_CaseCount = value[0][0].TestPlan_CaseCount;
     });
   }
 
   applyFilter(event?: Event) {
-    this.dataSource2.filterPredicate = function(data, filter: string): boolean {
-      return data.Case_Title.toLowerCase().includes(filter) == filter.trim().toLowerCase().includes(filter);
+    this.suitedataSource.filterPredicate = function(data, filter: string): boolean {
+      return data.Suite_Name.toLowerCase().includes(filter) == filter.trim().toLowerCase().includes(filter);
     }
     if (event != null) {
       const filterValue = (event.target as HTMLInputElement).value;
-      this.dataSource2.filter = filterValue.trim().toLowerCase();
+      this.suitedataSource.filter = filterValue.trim().toLowerCase();
     }
   }
 }

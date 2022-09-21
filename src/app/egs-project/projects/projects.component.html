@@ -65,7 +65,7 @@
 						<th mat-header-cell *matHeaderCellDef>Project Name</th>
 						<td mat-cell *matCellDef="let element">
 							<div class="row d-flex align-items-center">
-								<div class="column-title" routerLink="/projects/repository/{{element.Project_ID}}">
+								<div class="column-title" (click)="setLocalstorage(element.Project_ID)" routerLink="/projects/repository/{{element.Project_ID}}">
 									{{element.Project_Name}}</div>
 								<div class="column-subtitle">{{element.Project_Desc}}</div>
 							</div>

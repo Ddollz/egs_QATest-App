@@ -8,7 +8,7 @@ import { Subject } from 'rxjs';
 export class GlobalFunctionsService {
 
   constructor(private router: Router) { }
-  backPage(url:any) {
+  backPage(url: any) {
     this.router.navigate([url])
   }
 }
@@ -17,19 +17,33 @@ export class GlobalFunctionsService {
   providedIn: 'root'
 })
 export class sidebarService {
-  projectID: number = 1;
+  projectID: number = 0; //4
   selectedTitle: Subject<number> = new Subject<number>();
 
   constructor() {
+
+    if (this.projectID == 0) {
+      this.projectID = Number(localStorage.getItem('currentProjectID'));
+      this.selectedTitle.next(this.projectID);
+      console.log(this.projectID)
+    }
     this.selectedTitle.subscribe((value) => {
       this.projectID = value
     });
   }
 
   fetchProjectID(ID: any) {
-    this.projectID = ID
-    this.selectedTitle.next(this.projectID);
+    if (ID == null || ID == 0) {
+      this.projectID = Number(localStorage.getItem('currentProjectID'));
+      this.selectedTitle.next(this.projectID);
+      console.log(this.projectID)
+    } else {
+      this.projectID = ID
+      localStorage.setItem('currentProjectID', ID);
+      this.selectedTitle.next(this.projectID);
+    }
   }
+
 }
 
 export function reloadPage() {

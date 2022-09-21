@@ -9,3 +9,36 @@
   padding: 1rem 1rem 0.25rem 1.5rem;
   display: block;
 }
+
+.restore {
+  background: transparent;
+  border: 1px solid #286efa;
+  color: #286efa;
+  font-size: .775rem;
+  font-weight: 500;
+  padding: 0.375rem 0.75rem;
+  white-space: nowrap;
+  line-height: 1.125rem;
+  border-radius: .25rem;
+}
+
+.restore:hover {
+  border: 1px solid #5a90fb;
+  color: #5a90fb;
+}
+
+.mat-column-select {
+  width: 100px;
+}
+
+.mat-column-testcase {
+  font-size: 0.775rem;
+  font-weight: bold;
+  text-decoration: none;
+  color: #222 !important;
+}
+
+
+.mat-column-control {
+  width: 150px;
+}

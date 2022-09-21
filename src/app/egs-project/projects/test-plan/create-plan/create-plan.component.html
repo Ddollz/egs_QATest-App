@@ -106,85 +106,36 @@
                 <div class="row mt-3">
                     <!-- LEFT COLUMN -->
                     <div class="suites-column">
-                        <div class="row mt-2 d-flex align-items-center">
-                            <div class="col">
-                                <label><input type="checkbox" name="checkbox" value="value">  Login</label>
-                            </div>
-                            <div class="col-1 d-flex justify-content-end">
-                                <span class="me-1 l-col">0/3</span>
-                                <button type="button" class="btn p-0 l-col"><i class="bi bi-three-dots"></i></button>
-                            </div>
-                        </div>
-
-                        <div class="row mt-2 d-flex align-items-center">
-                            <div class="col">
-                                <label><input type="checkbox" name="checkbox" value="value">  Main Dashboard</label>
-                            </div>
-                            <div class="col-1 d-flex justify-content-end">
-                                <span class="me-1 l-col">0/7</span>
-                                <button type="button" class="btn p-0 l-col"><i class="bi bi-three-dots"></i></button>
-                            </div>
-                        </div>
-
-                        <div class="row mt-2 d-flex align-items-center">
-                            <div class="col">
-                                <label><input type="checkbox" name="checkbox" value="value">  Product Module</label>
-                            </div>
-                            <div class="col-2 d-flex justify-content-end">
-                                <span class="me-1 l-col">0/6</span>
-                                <button type="button" class="btn p-0 l-col"><i class="bi bi-three-dots"></i></button>
-                            </div>
-                        </div>
-
-                        <div class="row mt-2 d-flex align-items-center">
-                            <div class="col">
-                                <label><input type="checkbox" name="checkbox" value="value">  Recipe Module</label>
-                            </div>
-                            <div class="col-1 d-flex justify-content-end">
-                                <span class="me-1 l-col">0/10</span>
-                                <button type="button" class="btn p-0 l-col"><i class="bi bi-three-dots"></i></button>
-                            </div>
-                        </div>
-
-                        <div class="row mt-2 d-flex align-items-center">
-                            <div class="col">
-                                <label><input type="checkbox" name="checkbox" value="value">  Shopping List</label>
-                            </div>
-                            <div class="col-1 d-flex justify-content-end">
-                                <span class="me-1 l-col">0/9</span>
-                                <button type="button" class="btn p-0 l-col"><i class="bi bi-three-dots"></i></button>
-                            </div>
-                        </div>
-
-                        <div class="row mt-2 d-flex align-items-center">
-                            <div class="col">
-                                <label><input type="checkbox" name="checkbox" value="value">  Basket Module</label>
-                            </div>
-                            <div class="col-1 d-flex justify-content-end">
-                                <span class="me-1 l-col">0/5</span>
-                                <button type="button" class="btn p-0 l-col"><i class="bi bi-three-dots"></i></button>
-                            </div>
-                        </div>
-
-                        <div class="row mt-2 d-flex align-items-center">
-                            <div class="col">
-                                <label><input type="checkbox" name="checkbox" value="value">  Setting - Profile</label>
-                            </div>
-                            <div class="col-1 d-flex justify-content-end">
-                                <span class="me-1 l-col">0/6</span>
-                                <button type="button" class="btn p-0 l-col"><i class="bi bi-three-dots"></i></button>
-                            </div>
-                        </div>
-
-                        <div class="row mt-2 d-flex align-items-center">
-                            <div class="col">
-                                <label><input type="checkbox" name="checkbox" value="value">  ActivMenu</label>
-                            </div>
-                            <div class="col-1 d-flex justify-content-end">
-                                <span class="me-1 l-col">0/1</span>
-                                <button type="button" class="btn p-0 l-col"><i class="bi bi-three-dots"></i></button>
-                            </div>
-                        </div>
+                        <!-- Display Nodes -->
+                        <ng-container *ngFor="let suite of suites;">
+                            <ng-container *ngIf="suite.Project_ID == LinkParamID">
+                            <ng-container *ngIf="suite.Parent_SuiteID == 0">
+                                
+                                <app-suites-plan [Suite]="suite" [carretOpen]="suite.carretOpen"></app-suites-plan>
+                                
+                                <!-- <div class="collapse show" [id]="'collapse-'+suite.Suite_ID"> -->
+                                <!-- Run Template to display looping Leaf -->
+                                <ng-container *ngTemplateOutlet="tree; context:{ $implicit: suite}"></ng-container>
+                                <!-- </div> -->
+                            </ng-container>
+                            </ng-container>
+                        </ng-container>
+                        <!-- Display Leaf -->
+                        <ng-template #tree let-data>
+                            <ng-container *ngFor="let s of suites">
+                            <!-- Check if leaf exist display the leaf and loop again.-->
+                            <!-- Check if leaf does not exist end the loop.-->
+                            <ng-container *ngIf="data.Suite_ID == s.Parent_SuiteID">
+                                
+                                <app-suites-plan [Suite]="s" [carretOpen]="s.carretOpen"></app-suites-plan>
+                                
+                                <div class="collapse show" [id]="'collapse-'+s.Suite_ID">
+                                <!-- Run the template leaf again -->
+                                <ng-container *ngTemplateOutlet="tree; context: {$implicit:s}"></ng-container>
+                                </div>
+                            </ng-container>
+                            </ng-container>
+                        </ng-template>
                     </div>
 
                     <!-- RIGHT COLUMN -->
