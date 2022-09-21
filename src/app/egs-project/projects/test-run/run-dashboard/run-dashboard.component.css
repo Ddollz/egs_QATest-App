@@ -1,0 +1,263 @@
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i");
+
+:host() {
+  flex: 1;
+  overflow: auto;
+  position: relative;
+}
+
+.app__content {
+  padding: 1rem 1.5rem;
+  display: flex;
+  flex: 1 1 0%;
+  flex-direction: column;
+  overflow: auto;
+  height: 100%;
+}
+
+.right-col {
+  border-left: 1px solid #dbdbdb;
+}
+
+/* Labels */
+.page-title {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.project-title {
+  font-size: 0.875rem;
+  color: var(--black-50);
+}
+
+.passed-span {
+  color: #94c64a;
+  font-weight: 600;
+}
+
+.page-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-bottom: .25rem;
+}
+
+.column-title {
+  color: #222;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.defect-span {
+  color: var(--bs-red-100) !important;
+}
+
+.passed-bg {
+  background-color: #94c64a !important;
+}
+
+.failed-bg {
+  background-color: #f66384 !important;
+}
+
+.open-bg {
+  background-color: #ffc107 !important;
+}
+
+.in-progress-bg {
+  background-color: #0dcaf0 !important;
+}
+
+.invalid-bg {
+  background-color: var(--bs-red-100) !important;
+}
+
+.resolved-bg {
+  background-color: #198754 !important;
+}
+
+.filter-span {
+  font-weight: 600;
+  color: var(--bs-red-100);
+}
+
+.filter-span:hover,
+.defect-span:hover {
+  color: #eb7374 !important;
+}
+
+/* Images */
+.assignee-img,
+.author-img,
+.stat-img {
+  width: 1.5rem;
+  height: 1.5rem;
+  display: inline;
+  margin-right: 0.5rem;
+  border-radius: 5px;
+}
+
+.author-img {
+  margin-top: 0.25rem;
+}
+
+.stat-img {
+  width: 2rem;
+  height: 2rem;
+}
+
+/* Buttons */
+.filter-item:hover {
+  background-color: #efefef !important;
+}
+
+.three-dots {
+  padding: 0px 5px;
+  margin: 5px 0px;
+}
+
+/* Icons */
+
+/* Misc */
+.bi-arrow-left,
+.filter-span,
+.defect-span,
+.passed-pb,
+.failed-pb,
+.untested-pb,
+.bi-chevron-down,
+.bi-x-lg {
+  cursor: pointer;
+}
+
+.btn-primary,
+.filter-span {
+  white-space: nowrap;
+}
+
+.progress {
+  width: 10rem;
+  height: 0.5rem;
+  padding: 0;
+}
+
+.bi-check-square-fill {
+  color: #94c64a;
+}
+
+.passed-pb {
+  background-color: #94c64a;
+}
+
+.failed-pb {
+  background-color: #f66384;
+}
+
+.untested-pb {
+  background-color: #c1c1c1;
+}
+
+/* Dropdown */
+.select-item {
+  background-color: var(--black-5);
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  border-radius: .25rem;
+}
+
+/* Tabs */
+.nav-tabs-bordered,
+.nav-tabs-bordered-small {
+  border-bottom: 1px solid #dbdbdb;
+}
+
+.nav-tabs-bordered .nav-link,
+.nav-tabs-bordered-small .nav-link {
+  margin-bottom: -2px;
+  border: none;
+  color: var(--c-text);
+}
+
+.nav-tabs-bordered .nav-link:hover,
+.nav-tabs-bordered .nav-link:focus,
+.nav-tabs-bordered-small .nav-link:hover,
+.nav-tabs-bordered-small .nav-link:focus {
+  color: #eb7374;
+}
+
+.nav-tabs-bordered .nav-link.active,
+.nav-tabs-bordered-small .nav-link.active {
+  background-color: #fff;
+  color: var(--bs-red-100);
+  border-bottom: 2px solid var(--bs-red-100);
+}
+
+.nav-tabs-bordered-small .nav-link {
+  font-size: 0.775rem;
+  margin-bottom: -2px;
+}
+
+/* Columns */
+.mat-header-row,
+.mat-row {
+  height: auto;
+}
+
+.mat-header-cell {
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 5px 0px;
+}
+
+/* Case Columns */
+.mat-column-Checkbox {
+  width: 5%;
+}
+
+.mat-column-Result {
+  width: 10%;
+}
+
+.mat-column-Title {
+  width: 50%;
+}
+
+.mat-column-Assignee {
+  width: 20%;
+}
+
+.mat-column-TimeSpent {
+  width: 10%;
+}
+
+.mat-column-ThreeDots {
+  width: 5%;
+}
+
+/* Defect Columns */
+.mat-column-ID {
+  width: 5%;
+}
+
+/* Stat Columns */
+.mat-column-Image {
+  width: 5%;
+}
+
+/* Panel */
+.CasePanel {
+  top: var(--app-header-height);
+  right: 0;
+  bottom: 0;
+  z-index: 100;
+  min-width: 580px;
+  max-width: 30vw;
+  position: fixed;
+  display: none;
+  gap: 4px;
+  flex-direction: column;
+  padding: 1rem 1.25rem;
+  background: var(--bg-color-default);
+  box-shadow: var(--popup-shadow);
+}

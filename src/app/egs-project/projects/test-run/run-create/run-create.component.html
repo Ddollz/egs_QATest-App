@@ -1,0 +1,88 @@
+<div class="app__content">
+  <div class="row">
+    <div class="col-lg-12">
+
+      <h2 class="page-title my-3"><i class="bi bi-arrow-left me-4" data-bs-toggle="tooltip" title="Go back"
+          routerLink="/projects/run"></i>Start test run</h2>
+
+      <div class="mb-3">
+        <Label class="page-label">Run title*</Label>
+        <input type="text" class="form-control">
+      </div>
+
+      <div class="mb-3">
+        <Label class="page-label">Description</Label>
+        <input type="text" class="form-control" placeholder="For example: Regression">
+      </div>
+
+      <div class="mb-3">
+        <div class="row">
+          <div class="col-4">
+            <Label class="page-label">Plan</Label>
+            <mat-select class="select-item" [value]="''" placeholder="Select...">
+            </mat-select>
+          </div>
+          <div class="col-4">
+            <Label class="page-label">Environment</Label>
+            <mat-select class="select-item">
+              <mat-option class="select-item" value="0">Not set</mat-option>
+            </mat-select>
+          </div>
+          <div class="col-4">
+            <Label class="page-label">Milestone</Label>
+            <mat-select class="select-item">
+              <mat-option class="select-item" value="0">Not set</mat-option>
+            </mat-select>
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <div class="row">
+          <div class="col-4">
+            <Label class="page-label">Default assignee <i class="bi bi-question-circle-fill tooltip-i"
+                data-bs-toggle="tooltip"
+                title="All unassigned test cases will be assigned to selected user. Leave unassigned and any user will be able to take case during run."></i></Label>
+            <mat-select class="select-item" [value]="''" placeholder="Select...">
+            </mat-select>
+          </div>
+        </div>
+      </div>
+
+      <div class="row m-0 mb-4">
+        <span class="label-line ps-0">Tags</span>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-4">
+          <mat-select class="select-item" [value]="''" placeholder="Select...">
+          </mat-select>
+        </div>
+      </div>
+
+      <div class="row m-0 mb-4">
+        <span class="label-line ps-0">Test cases</span>
+      </div>
+
+      <div class="mb-4">
+        <span>0 test cases selected</span>
+      </div>
+
+      <div class="mb-3">
+        <span class="add-attach-span"><i class="bi bi-plus-circle-fill me-2"></i>Add cases</span>
+      </div>
+
+      <div class="row m-0 mb-3">
+        <span class="label-line ps-0"></span>
+      </div>
+
+      <div class="row mb-5">
+        <div class="d-flex align-items-center">
+          <button class="btn btn-primary me-3">Start run</button>
+          <span class="cancel-span" routerLink="/projects/run">Cancel</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

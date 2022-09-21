@@ -1,8 +1,7 @@
-import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
-import { MatRadioChange } from '@angular/material/radio';
 
 export interface testRun {
   id: number;
@@ -12,7 +11,6 @@ export interface testRun {
   time: string;
   status: number;
 }
-
 
 const DATA: testRun[] = [
   { id: 23, title: 'Test run 2022/05/23', environment: '', datestart: '2022/05/23', time: "00:00:00", status: 100 },
@@ -27,19 +25,19 @@ const DATA: testRun[] = [
   { id: 5, title: 'Test run 2022/05/30', environment: '', datestart: '2022/05/23', time: "00:00:00", status: 67 },
 ];
 
-
 @Component({
   selector: 'app-test-run',
   templateUrl: './test-run.component.html',
   styleUrls: ['./test-run.component.css']
 })
 export class TestRunComponent implements OnInit {
-  displayedColumns: string[] = ['title', 'environment', 'time', 'status'];
+
+  displayedColumns: string[] = ['Status', 'Title', 'Environment', 'Time', 'Progress', 'ThreeDots'];
   dataSource = new MatTableDataSource<testRun>(DATA);
   @ViewChild(MatSort) sort: any = MatSort;
   @ViewChild(MatPaginator) paginator: any = MatPaginator;
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit(): void {
   }

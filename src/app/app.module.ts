@@ -45,7 +45,8 @@ import { QuillModule } from 'ngx-quill';
 import { ViewPlanComponent } from './egs-project/projects/test-plan/view-plan/view-plan.component';
 import { EditPlanComponent } from './egs-project/projects/test-plan/edit-plan/edit-plan.component';
 import { TrashBinComponent } from './egs-project/projects/trash-bin/trash-bin.component';
-
+import { RunCreateComponent } from './egs-project/projects/test-run/run-create/run-create.component';
+import { RunDashboardComponent } from './egs-project/projects/test-run/run-dashboard/run-dashboard.component';
 
 //Link Routes
 const appRoute: Routes = [
@@ -56,6 +57,9 @@ const appRoute: Routes = [
   { path: 'projects/repository/create/:id', component: CaseCreateComponent },
   { path: 'projects/repository/trashbin/:id', component: TrashBinComponent },
   { path: 'projects/run', component: TestRunComponent },
+  { path: 'projects/run/create', component: RunCreateComponent },
+  { path: 'projects/run/edit/:i', component: RunCreateComponent },
+  { path: 'projects/run/dashboard/:i', component: RunDashboardComponent },
   { path: 'projects/config', component: ConfigComponent },
   { path: 'projects/plan', component: TestPlanComponent },
   { path: 'projects/plan/createplan', component: CreatePlanComponent },
@@ -109,6 +113,8 @@ const appRoute: Routes = [
     ViewPlanComponent,
     EditPlanComponent,
     TrashBinComponent,
+    RunCreateComponent,
+    RunDashboardComponent,
   ],
   imports: [
     BrowserModule,
