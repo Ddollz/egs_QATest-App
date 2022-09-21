@@ -106,12 +106,16 @@ export class ProjectsComponent implements OnInit {
   }
 
   applyFilter(event?: Event) {
-    this.dataSource.filterPredicate = function(data, filter: string): boolean {
+    this.dataSource.filterPredicate = function (data, filter: string): boolean {
       return data.Project_Name.toLowerCase().includes(filter) == filter.trim().toLowerCase().includes(filter);
     }
     if (event != null) {
       const filterValue = (event.target as HTMLInputElement).value;
       this.dataSource.filter = filterValue.trim().toLowerCase();
     }
+  }
+  setLocalstorage(id: string) {
+    localStorage.setItem('currentProjectID', id);
+    console.log(localStorage.getItem('currentProjectID'));
   }
 }

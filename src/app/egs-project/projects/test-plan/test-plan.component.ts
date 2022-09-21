@@ -3,7 +3,7 @@ import { testplan } from '../../../models/project/project.model';
 import { ApiService } from '../../../services/api.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router, NavigationExtras } from '@angular/router';
-import { reloadPage } from '../../../services/global-functions.service';
+import { reloadPage, sidebarService } from '../../../services/global-functions.service';
 
 @Component({
   selector: 'app-test-plan',
@@ -23,7 +23,8 @@ export class TestPlanComponent implements OnInit {
   displayedColumns: string[] = ['TestPlan_Title', 'TestPlan_RunTime', 'TestPlan_CaseCount', 'ThreeDots'];
   dataSource = new MatTableDataSource<testplan>();
 
-  constructor(private api: ApiService, private router: Router) {
+  constructor(private api: ApiService, private router: Router, private sidebarServ: sidebarService) {
+    console.log(sidebarServ.projectID)
     this.api.UniCall(
       {
         CommandText: 'egsQATestPlanGet',
@@ -38,7 +39,7 @@ export class TestPlanComponent implements OnInit {
       this.testplan = value[0];
       this.dataSource = new MatTableDataSource<testplan>(this.testplan);
     });
-   }
+  }
 
   ngOnInit(): void {
   }
@@ -47,8 +48,8 @@ export class TestPlanComponent implements OnInit {
     this.TestPlan_ID = id;
     this.TestPlan_Title = title;
   }
-  
-  deleteTestPlan(){
+
+  deleteTestPlan() {
     console.log(this.TestPlan_ID)
     this.api.UniCall(
       {

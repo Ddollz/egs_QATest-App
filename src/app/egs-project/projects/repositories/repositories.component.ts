@@ -138,11 +138,51 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
   }
   constructor(private api: ApiService, private activatedRoute: ActivatedRoute, private sidebarServ: sidebarService) {
 
-    this.LinkParamID = Number(this.activatedRoute.snapshot.paramMap.get('id'));
-    this.sidebarServ.fetchProjectID(this.LinkParamID);
+    this.LinkParamID = Number(localStorage.getItem('currentProjectID')); //? 4
+    // this.sidebarServ.fetchProjectID(this.LinkParamID);
 
+    this.api.UniCall(
+      {
+        CommandText: 'egsQASuiteGet',
+        Params: [
+          {
+            Param: '@Project_ID',
+            Value: this.LinkParamID.toString() //Project ID = 4
+          }
+        ],
+      }
+    ).subscribe(value => {
+      this.suites = value[0];
 
-    this.getCurrentProjectSuite();
+      //Dropdown
+      if (this.suites) {
+        this.Suite_Root = 'ProjectRoot|' + this.project.Project_ID;
+        for (let index = 0; index < this.suites.length; index++) {
+          this.suites[index]['carretOpen'] = true;
+        }
+
+        this.api.UniCall(
+          {
+            CommandText: 'egsQATestCaseGet',
+            Params: [
+              {
+                Param: '@Project_ID',
+                Value: this.LinkParamID.toString()
+              }
+            ],
+          }
+        ).subscribe(value => {
+          this.testCases = value[0];
+        }
+        );
+      } else {
+        this.suites = []
+        this.testCases = [];
+      }
+      //Dropdown End
+
+    }
+    );
 
     this.api.UniCall(
       {
@@ -150,16 +190,18 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
         Params: [
           {
             Param: '@Project_ID',
-            Value: this.LinkParamID.toString()
+            Value: this.LinkParamID.toString() //? 4
           }
         ],
       }
     ).subscribe(value => {
       this.project = value[0][0];
       console.log(this.project)
-      this.Suite_Root = 'ProjectRoot|' + this.project.Project_ID;
+      this.Suite_Root = 'ProjectRoot|' + this.project.Project_ID; //For dropdown value
     }
     );
+
+    //CHECKBOX
     this.suiteModel.changed.subscribe({
       next: (e) => {
         var test = '';
@@ -186,6 +228,7 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
         console.log(this.SelectedTestCase)
       }
     })
+    //END
   }
   confirmation() {
     if (this.confirmString === "CONFIRM") {
@@ -360,46 +403,6 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
         complete: () => reloadPage()
       }
     )
-  }
-  getCurrentProjectSuite() {
-    this.api.UniCall(
-      {
-        CommandText: 'egsQASuiteGet',
-        Params: [
-          {
-            Param: '@Project_ID',
-            Value: this.LinkParamID.toString()
-          }
-        ],
-      }
-    ).subscribe(value => {
-      this.suites = value[0];
-      if (this.suites) {
-        this.Suite_Root = 'ProjectRoot|' + this.project.Project_ID;
-        for (let index = 0; index < this.suites.length; index++) {
-          this.suites[index]['carretOpen'] = true;
-        }
-
-        this.api.UniCall(
-          {
-            CommandText: 'egsQATestCaseGet',
-            Params: [
-              {
-                Param: '@Project_ID',
-                Value: this.LinkParamID.toString()
-              }
-            ],
-          }
-        ).subscribe(value => {
-          this.testCases = value[0];
-        }
-        );
-      } else {
-        this.suites = []
-        this.testCases = [];
-      }
-    }
-    );
   }
 
   insertUpdateSuite() {
@@ -599,7 +602,6 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
       let AttachnmentLists: any = [];
       for (let index = 0; index < this.steps.length; index++) {
         let tmp = this.steps[index].Attachments_ID;
-        console.log(tmp)
         if (tmp == undefined || tmp == '') {
           continue;
         }
