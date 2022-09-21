@@ -22,7 +22,7 @@ export class sidebarService {
 
   constructor() {
 
-    if (this.projectID == 0 && Number(localStorage.getItem('currentProjectID')) == 0) {
+    if (this.projectID == 0) {
       this.projectID = Number(localStorage.getItem('currentProjectID'));
       this.selectedTitle.next(this.projectID);
       console.log(this.projectID)
