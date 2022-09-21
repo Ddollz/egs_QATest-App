@@ -45,6 +45,7 @@ import { QuillModule } from 'ngx-quill';
 import { ViewPlanComponent } from './egs-project/projects/test-plan/view-plan/view-plan.component';
 import { EditPlanComponent } from './egs-project/projects/test-plan/edit-plan/edit-plan.component';
 import { TrashBinComponent } from './egs-project/projects/trash-bin/trash-bin.component';
+import { SuitesPlanComponent } from './egs-project/projects/test-plan/suites-plan/suites-plan.component';
 
 
 //Link Routes
@@ -109,6 +110,7 @@ const appRoute: Routes = [
     ViewPlanComponent,
     EditPlanComponent,
     TrashBinComponent,
+    SuitesPlanComponent,
   ],
   imports: [
     BrowserModule,

@@ -156,6 +156,7 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
       }
     ).subscribe(value => {
       this.project = value[0][0];
+      console.log(this.project)
       this.Suite_Root = 'ProjectRoot|' + this.project.Project_ID;
     }
     );

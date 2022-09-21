@@ -40,16 +40,16 @@ export class ViewPlanComponent implements OnInit {
         Params: [
           {
             Param: '@TestPlan_ID',
-            Value: null
+            Value: this.index.toString()
           }
         ]
       }
     ).subscribe(value => {
-      this.testplan = value[0];
-      this.TestPlan_ID = value[0][this.index].TestPlan_ID;
-      this.TestPlan_Title = value[0][this.index].TestPlan_Title;
-      this.TestPlan_Desc = value[0][this.index].TestPlan_Desc;
-      this.TestPlan_CaseCount = value[0][this.index].TestPlan_CaseCount;
+      this.testplan = value[0][0];
+      this.TestPlan_ID = value[0][0].TestPlan_ID;
+      this.TestPlan_Title = value[0][0].TestPlan_Title;
+      this.TestPlan_Desc = value[0][0].TestPlan_Desc;
+      this.TestPlan_CaseCount = value[0][0].TestPlan_CaseCount;
     });
   }
 
