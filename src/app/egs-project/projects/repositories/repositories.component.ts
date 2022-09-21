@@ -138,7 +138,7 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
   }
   constructor(private api: ApiService, private activatedRoute: ActivatedRoute, private sidebarServ: sidebarService) {
 
-    this.LinkParamID = Number(localStorage.getItem('currentProjectID')); //? 4
+    this.LinkParamID = Number(this.activatedRoute.snapshot.paramMap.get('id')); //? 4
     // this.sidebarServ.fetchProjectID(this.LinkParamID);
 
     this.api.UniCall(
