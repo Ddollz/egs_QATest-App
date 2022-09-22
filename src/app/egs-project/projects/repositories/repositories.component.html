@@ -177,7 +177,7 @@
       <button (click)="changePanelContent('General', $event)" class="btns active" id="General"><span> </span>General</button>
       <button (click)="changePanelContent('Properties', $event)" class="btns" id="Properties"><span> </span>Properties</button>
       <button (click)="changePanelContent('Run', $event)" class="btns" id="Run"><span></span>Runs</button>
-      <!-- <button class="btns"><span></span>History</button> -->
+      <button (click)="changePanelContent('History', $event)" class="btns" id="History"><span></span>History</button>
       <button (click)="changePanelContent('Defects', $event)" class="btns" id="Defects"><span></span>Defects</button>
       <button (click)="changePanelContent('Comments', $event)" class="btns" id="Comments"><span></span>Comments</button>
     </div>
@@ -507,6 +507,36 @@
             <td class="mat-cell" colspan="4"> No run result yet. </td>
           </tr>
         </table>
+
+      </div>
+      <div class="panel-history" id="History" #History>
+
+        <div class="d-flex align-items-center  mt-3 ">
+          <div class="align-self-start me-2"><img class="lazy avatar-sm" src="../../../../assets/img/placeholder.jpg"></div>
+          <div class="revision-body">
+            <div class="history-user">
+              <div class="history-username"><span style="font-weight: bold;">Rica Isidto</span> has updated 1 field: Steps</div>
+              <div class="history-role">2022-09-14 16:02:57</div>
+            </div>
+
+            <div class="revision-body">
+              this is revised <br>
+              this is revised <br>
+              this is revised <br>
+              this is revised <br>
+              this is revised <br>
+              this is revised <br>
+              this is revised <br>
+              this is revised <br>
+              this is revised <br>
+              this is revised <br>
+              this is revised <br>
+              this is revised <br>
+              this is revised <br>
+              this is revised <br>
+            </div>
+          </div>
+        </div>
 
       </div>
       <div class="panel-defects" id="Defects" #Defects>

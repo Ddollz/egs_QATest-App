@@ -335,6 +335,24 @@
   overflow-x: hidden;
 }
 
+.panel-history {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.panel-history {
+  font-size: 0.875rem;
+}
+
+.panel-history .history-username {
+  font-size: 0.8rem;
+}
+
+.panel-history .history-role {
+  font-size: .75rem;
+  opacity: .75;
+}
+
 .markdown-area {
   word-break: break-word;
   font-size: .775rem;
