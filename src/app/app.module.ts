@@ -48,6 +48,7 @@ import { TrashBinComponent } from './egs-project/projects/trash-bin/trash-bin.co
 import { RunCreateComponent } from './egs-project/projects/test-run/run-create/run-create.component';
 import { RunDashboardComponent } from './egs-project/projects/test-run/run-dashboard/run-dashboard.component';
 import { SuitesPlanComponent } from './egs-project/projects/test-plan/suites-plan/suites-plan.component';
+import { CasePlanComponent } from './egs-project/projects/test-plan/case-plan/case-plan.component';
 
 
 //Link Routes
@@ -118,6 +119,7 @@ const appRoute: Routes = [
     RunCreateComponent,
     RunDashboardComponent,
     SuitesPlanComponent,
+    CasePlanComponent,
   ],
   imports: [
     BrowserModule,
