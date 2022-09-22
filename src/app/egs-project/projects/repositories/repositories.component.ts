@@ -12,7 +12,7 @@ import { reloadPage, sidebarService } from '../../../services/global-functions.s
   styleUrls: ['./repositories.component.css']
 })
 export class RepositoriesComponent implements OnInit, AfterViewInit {
-
+  temporaryUser: Number = 3; //!Karl User Account in database This is Temporary
   //toolbar
   editorOptions = {
     toolbar: [
@@ -394,6 +394,17 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
             Param: '@Case_Tags',
             Value: '1'
           },
+          {
+            Param: '@Case_Param',
+            Value: null
+          }, {
+            Param: '@LastModifiedUser',
+            Value: this.temporaryUser.toString()
+          }, {
+            Param: '@Project_ID',
+            Value: this.LinkParamID.toString()
+          },
+
         ],
       }
     ).subscribe(

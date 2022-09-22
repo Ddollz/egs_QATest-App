@@ -14,6 +14,8 @@ import { sidebarService } from '../../../../services/global-functions.service';
 })
 export class CaseCreateComponent implements OnInit {
 
+  temporaryUser: number = 3; //!Karl User Account in database This is Temporary
+
   //Utilities
   LinkParamID: number = 0;
   json: any = {};
@@ -241,7 +243,10 @@ export class CaseCreateComponent implements OnInit {
       '@Case_PreCondition': [null],
       '@Case_PostCondition': [null],
       '@Case_Tags': ['1'],
+      '@Case_Param': [null],
       '@User_ID': ['1'],
+      '@LastModifiedUser': [this.temporaryUser],
+      '@Project_ID': [this.LinkParamID],
     })
 
   }
@@ -351,6 +356,7 @@ export class CaseCreateComponent implements OnInit {
         Step_Status: 1,
         SharedStep_ID: 0,
         Attachments_ID: '',
+        LastModifiedUser: this.temporaryUser,
       }
     )
   }
@@ -402,17 +408,22 @@ export class CaseCreateComponent implements OnInit {
   popStepAttachment(event: Event, step: step, value: number) {
     event.preventDefault();
     event.stopPropagation();
+    console.log(value);
+    console.log(this.steps[this.steps.indexOf(step)].Attachments_ID);
     var myIndex = this.steps[this.steps.indexOf(step)].Attachments_ID;
     // console.log(this.steps[this.steps.indexOf(step)].Attachments_ID);
     if (myIndex == undefined || myIndex == '') return
+    console.log(myIndex);
 
     var jsonStepAttachment = JSON.parse(myIndex);
 
 
     var tempAttachIndex = jsonStepAttachment.indexOf(value);
     if (tempAttachIndex !== -1) {
-      jsonStepAttachment.splice(myIndex, 1);
+      jsonStepAttachment.splice(tempAttachIndex, 1);
     }
+    console.log(tempAttachIndex);
+    console.log(jsonStepAttachment);
     this.steps[this.steps.indexOf(step)].Attachments_ID = JSON.stringify(jsonStepAttachment);
     // console.log(this.steps[this.steps.indexOf(step)].Attachments_ID);
   }
