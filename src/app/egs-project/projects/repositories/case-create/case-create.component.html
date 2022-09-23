@@ -286,8 +286,10 @@
 
         <div class="case-create-block">Parameter</div>
         <div class="row mt-3">
-          <div class="col">
-            <input class="ms-3 clearedInput" placeholder="Param Title (Optional)" value="">
+          <div class="col d-flex flex-column" #Parameter>
+            <input class="ms-3 clearedInput" placeholder="Param Title (Optional)" (keyup.enter)="addParameter($event)">
+            <input class="ms-5 clearedInput" placeholder="Param Title (Optional)" (keyup.enter)="addParameter($event)">
+
           </div>
 
         </div>
