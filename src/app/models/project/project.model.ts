@@ -44,6 +44,8 @@ export interface testCase {
   Case_Tag: string;
   Case_Param: string;
   Attachments_ID?: string;
+  LastModifiedUser: number;
+  Project_ID: number;
 }
 
 export interface testCaseComment {

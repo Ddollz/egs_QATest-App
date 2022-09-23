@@ -96,4 +96,135 @@ export class TrashBinComponent implements OnInit {
     let user = this.users.find(x => x.User_ID === userID);
     return user?.User_Firstname + " " + user?.User_Lastname;
   }
+
+  restoreCase(testcase: testCase) {
+    console.log(testcase);
+    // @Case_ID
+    //    ,@Case_Title
+    //        ,@Case_Status
+    //        ,@Case_Desc
+    //        ,@Suite_ID
+    //        ,@Case_Severity
+    //        ,@Case_Priority
+    //        ,@Case_Type
+    //        ,@Case_Layer
+    //        ,@Case_Flaky
+    //        ,@Case_isLock
+    //        ,@User_ID
+    //        ,@Case_Milestone
+    //        ,@Case_Behavior
+    //        ,@Case_AutoStat
+    //        ,@Case_PreCondition
+    //        ,@Case_PostCondition
+    //        ,@Case_Tag
+    //        ,@Case_Param
+    //        ,@Attachments_ID
+    //        ,@LastModifiedUser
+    //        ,@Project_ID
+    let attachmentParameter = testcase.Attachments_ID
+    if (attachmentParameter?.length == 0 || attachmentParameter == undefined) {
+      attachmentParameter = undefined
+    }else{
+      attachmentParameter = attachmentParameter.toString()
+    }
+    this.api.UniCall(
+      {
+        CommandText: 'egsQATestCaseHistoryRestore',
+        Params: [
+          {
+            Param: '@Case_ID',
+            Value: testcase.Case_ID.toString()
+          },
+          {
+            Param: '@Case_Title',
+            Value: testcase.Case_Title
+          },
+          {
+            Param: '@Case_Status',
+            Value: testcase.Case_Status.toString()
+          },
+          {
+            Param: '@Case_Desc',
+            Value: testcase.Case_Desc
+          },
+          {
+            Param: '@Suite_ID',
+            Value: testcase.Suite_ID.toString()
+          },
+          {
+            Param: '@Case_Severity',
+            Value: testcase.Case_Severity.toString()
+          },
+          {
+            Param: '@Case_Priority',
+            Value: testcase.Case_Priority.toString()
+          },
+          {
+            Param: '@Case_Type',
+            Value: testcase.Case_Type.toString()
+          },
+          {
+            Param: '@Case_Layer',
+            Value: testcase.Case_Layer.toString()
+          },
+          {
+            Param: '@Case_Flaky',
+            Value: testcase.Case_Flaky.toString()
+          },
+          {
+            Param: '@Case_isLock',
+            Value: testcase.Case_isLock.toString()
+          },
+          {
+            Param: '@User_ID',
+            Value: testcase.User_ID.toString()
+          },
+          {
+            Param: '@Case_Milestone',
+            Value: testcase.Case_Milestone.toString()
+          },
+          {
+            Param: '@Case_Behavior',
+            Value: testcase.Case_Behavior.toString()
+          },
+          {
+            Param: '@Case_AutoStat',
+            Value: testcase.Case_AutoStat.toString()
+          },
+          {
+            Param: '@Case_PreCondition',
+            Value: testcase.Case_PreCondition
+          },
+          {
+            Param: '@Case_PostCondition',
+            Value: testcase.Case_PostCondition
+          },
+          {
+            Param: '@Case_Tag',
+            Value: testcase.Case_Tag
+          },
+          {
+            Param: '@Case_Param',
+            Value: testcase.Case_Param
+          },
+          {
+            Param: '@Attachments_ID',
+            Value: attachmentParameter
+          },
+          {
+            Param: '@LastModifiedUser',
+            Value: testcase.LastModifiedUser.toString()
+          },
+          {
+            Param: '@Project_ID',
+            Value: testcase.Project_ID.toString()
+          },
+        ],
+      }
+    ).subscribe(
+      {
+        error: (e) => console.error(e),
+      }
+    )
+  }
 }
