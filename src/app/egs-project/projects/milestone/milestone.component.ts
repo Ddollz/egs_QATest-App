@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { milestone } from '../../../models/project/project.model';
 import { ApiService } from '../../../services/api.service';
-import { MatTableDataSource } from '@angular/material/table';
 import { reloadPage } from '../../../services/global-functions.service';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-milestone',
@@ -14,10 +15,13 @@ export class MilestoneComponent implements OnInit {
   Milestone_ID: string = '';
   Milestone_Title: string = '';
 
-  //Table Initialize
   milestones: milestone[] = [];
   displayedColumns: string[] = ['Title', 'Status', 'Description', 'Cases', 'DueDate', 'ThreeDots'];
   dataSource = new MatTableDataSource<milestone>();
+
+  @ViewChild(MatPaginator) set matPaginator(paginator: MatPaginator) {
+    this.dataSource.paginator = paginator;
+  }
 
   constructor(private api: ApiService) {
     this.api.UniCall(
@@ -36,7 +40,7 @@ export class MilestoneComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   openDeleteModal(id: string, title: string) {
     this.Milestone_ID = id;

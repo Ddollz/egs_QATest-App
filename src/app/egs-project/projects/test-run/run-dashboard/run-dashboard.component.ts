@@ -58,18 +58,29 @@ export class RunDashboardComponent implements OnInit {
   statColumns: string[] = ['Image', 'User', 'StatTimeSpent', 'Passed', 'Failed', 'Blocked', 'Skipped', 'Invalid'];
   statDataSource = new MatTableDataSource<stat>(statData);
 
-  @ViewChild('casePanel') panel!: ElementRef;
+  @ViewChild('casePanel') casePanel!: ElementRef;
+  @ViewChild('caseRunPanel') caseRunPanel!: ElementRef;
 
   constructor() { }
 
   ngOnInit(): void { }
 
-  openPanel() {
-    this.panel.nativeElement.style.display = "flex";
+  openCasePanel() {
+    this.casePanel.nativeElement.style.display = "flex";
+    this.closeCaseRunPanel();
   }
 
-  closePanel() {
-    this.panel.nativeElement.style.display = "none";
+  closeCasePanel() {
+    this.casePanel.nativeElement.style.display = "none";
+  }
+
+  openCaseRunPanel() {
+    this.caseRunPanel.nativeElement.style.display = "flex";
+    this.closeCasePanel();
+  }
+
+  closeCaseRunPanel() {
+    this.caseRunPanel.nativeElement.style.display = "none";
   }
 
 }

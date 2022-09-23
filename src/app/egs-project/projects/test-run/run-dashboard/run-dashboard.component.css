@@ -47,6 +47,26 @@
   font-weight: 600;
 }
 
+.small-text {
+  font-size: .75rem;
+}
+
+.small-text-bold {
+  font-size: .75rem;
+  font-weight: 600;
+}
+
+.small-text-italic {
+  font-size: .75rem;
+  font-style: italic;
+  color: var(--bs-red-100) !important;
+}
+
+.small-text-case {
+  color: var(--bs-red-100);
+  font-size: .75rem;
+}
+
 .defect-span {
   color: var(--bs-red-100) !important;
 }
@@ -81,7 +101,8 @@
 }
 
 .filter-span:hover,
-.defect-span:hover {
+.defect-span:hover,
+.small-text-case:hover {
   color: #eb7374 !important;
 }
 
@@ -106,8 +127,34 @@
 }
 
 /* Buttons */
+.filter-item {
+  font-size: .875rem;
+  letter-spacing: .0892857143em;
+  font-weight: 500;
+}
+
 .filter-item:hover {
   background-color: #efefef !important;
+}
+
+.passed-btn {
+  background-color: rgb(41, 185, 95);
+}
+
+.failed-btn {
+  background-color: rgb(246, 99, 132);
+}
+
+.blocked-btn {
+  background-color: rgb(232, 167, 62);
+}
+
+.invalid-btn {
+  background-color: rgb(102, 16, 242);
+}
+
+.skipped-btn {
+  background-color: rgb(115, 115, 118);
 }
 
 .three-dots {
@@ -121,6 +168,7 @@
 .bi-arrow-left,
 .filter-span,
 .defect-span,
+.small-text-case,
 .passed-pb,
 .failed-pb,
 .untested-pb,
@@ -154,6 +202,14 @@
 
 .untested-pb {
   background-color: #c1c1c1;
+}
+
+.history-row {
+  border-bottom: 1px solid #dbdbdb;
+}
+
+.history-row:hover {
+  background-color: rgb(250, 250, 250);
 }
 
 /* Dropdown */
@@ -202,6 +258,10 @@
 .mat-header-row,
 .mat-row {
   height: auto;
+}
+
+.cases-row:hover {
+  background-color: rgb(250, 250, 250);
 }
 
 .mat-header-cell {
