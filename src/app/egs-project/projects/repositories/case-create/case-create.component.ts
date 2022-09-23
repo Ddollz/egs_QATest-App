@@ -179,6 +179,9 @@ export class CaseCreateComponent implements OnInit {
         this.caseForm.controls['@Case_PostCondition'].setValue(value[0][0].Case_PostCondition);
         this.caseForm.controls['@Case_Tags'].setValue(value[0][0].Case_Tag);
         this.caseForm.controls['@User_ID'].setValue(value[0][0].User_ID);
+        this.caseForm.controls['@LastModifiedUser'].setValue(value[0][0].LastModifiedUser);
+        this.caseForm.controls['@Project_ID'].setValue(value[0][0].Project_ID);
+
         if (value[0][0].Attachments_ID != undefined && value[0][0].Attachments_ID != '') {
           var Params =
             [

@@ -49,7 +49,11 @@
 
           <ng-container matColumnDef="control">
             <th mat-header-cell *matHeaderCellDef> </th>
-            <td mat-cell *matCellDef="let element" class="text-end"> <button class="btn btn-primary restore"><i class="bi bi-rewind-circle-fill"></i> Restore</button></td>
+            <td mat-cell *matCellDef="let element" class="text-end">
+              <button class="btn btn-primary restore" (click)="restoreCase(element  )">
+                <i class="bi bi-rewind-circle-fill"></i> Restore
+              </button>
+            </td>
           </ng-container>
 
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
