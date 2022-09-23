@@ -18,10 +18,8 @@ export class SideBarComponent implements OnInit {
   ddSecurity: boolean = true;
   ddIssue: boolean = true;
   constructor(public router: Router, private sidebarServ: sidebarService) {
-    this.projectID = this.sidebarServ.projectID;
-    this._asideSubscription = sidebarServ.selectedTitle.subscribe((value) => {
-      this.projectID = value
-    })
+    this.projectID = Number(localStorage.getItem('currentProjectID'));
+    // console.log(this.projectID)
   }
 
   ngOnInit(): void {

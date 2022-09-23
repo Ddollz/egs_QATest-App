@@ -12,7 +12,7 @@ import { reloadPage, sidebarService } from '../../../services/global-functions.s
   styleUrls: ['./repositories.component.css']
 })
 export class RepositoriesComponent implements OnInit, AfterViewInit {
-
+  temporaryUser: Number = 3; //!Karl User Account in database This is Temporary
   //toolbar
   editorOptions = {
     toolbar: [
@@ -138,11 +138,51 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
   }
   constructor(private api: ApiService, private activatedRoute: ActivatedRoute, private sidebarServ: sidebarService) {
 
-    this.LinkParamID = Number(this.activatedRoute.snapshot.paramMap.get('id'));
-    this.sidebarServ.fetchProjectID(this.LinkParamID);
+    this.LinkParamID = Number(this.activatedRoute.snapshot.paramMap.get('id')); //? 4
+    // this.sidebarServ.fetchProjectID(this.LinkParamID);
 
+    this.api.UniCall(
+      {
+        CommandText: 'egsQASuiteGet',
+        Params: [
+          {
+            Param: '@Project_ID',
+            Value: this.LinkParamID.toString() //Project ID = 4
+          }
+        ],
+      }
+    ).subscribe(value => {
+      this.suites = value[0];
 
-    this.getCurrentProjectSuite();
+      //Dropdown
+      if (this.suites) {
+        this.Suite_Root = 'ProjectRoot|' + this.project.Project_ID;
+        for (let index = 0; index < this.suites.length; index++) {
+          this.suites[index]['carretOpen'] = true;
+        }
+
+        this.api.UniCall(
+          {
+            CommandText: 'egsQATestCaseGet',
+            Params: [
+              {
+                Param: '@Project_ID',
+                Value: this.LinkParamID.toString()
+              }
+            ],
+          }
+        ).subscribe(value => {
+          this.testCases = value[0];
+        }
+        );
+      } else {
+        this.suites = []
+        this.testCases = [];
+      }
+      //Dropdown End
+
+    }
+    );
 
     this.api.UniCall(
       {
@@ -150,15 +190,18 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
         Params: [
           {
             Param: '@Project_ID',
-            Value: this.LinkParamID.toString()
+            Value: this.LinkParamID.toString() //? 4
           }
         ],
       }
     ).subscribe(value => {
       this.project = value[0][0];
-      this.Suite_Root = 'ProjectRoot|' + this.project.Project_ID;
+      console.log(this.project)
+      this.Suite_Root = 'ProjectRoot|' + this.project.Project_ID; //For dropdown value
     }
     );
+
+    //CHECKBOX
     this.suiteModel.changed.subscribe({
       next: (e) => {
         var test = '';
@@ -185,6 +228,7 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
         console.log(this.SelectedTestCase)
       }
     })
+    //END
   }
   confirmation() {
     if (this.confirmString === "CONFIRM") {
@@ -350,6 +394,17 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
             Param: '@Case_Tags',
             Value: '1'
           },
+          {
+            Param: '@Case_Param',
+            Value: null
+          }, {
+            Param: '@LastModifiedUser',
+            Value: this.temporaryUser.toString()
+          }, {
+            Param: '@Project_ID',
+            Value: this.LinkParamID.toString()
+          },
+
         ],
       }
     ).subscribe(
@@ -359,47 +414,6 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
         complete: () => reloadPage()
       }
     )
-  }
-  getCurrentProjectSuite() {
-    this.api.UniCall(
-      {
-        CommandText: 'egsQASuiteGet',
-        Params: [
-          {
-            Param: '@Project_ID',
-            Value: this.LinkParamID.toString()
-          }
-        ],
-      }
-    ).subscribe(value => {
-      this.suites = value[0];
-      console.log(this.suites)
-      if (this.suites) {
-        this.Suite_Root = 'ProjectRoot|' + this.project.Project_ID;
-        for (let index = 0; index < this.suites.length; index++) {
-          this.suites[index]['carretOpen'] = true;
-        }
-
-        this.api.UniCall(
-          {
-            CommandText: 'egsQATestCaseGet',
-            Params: [
-              {
-                Param: '@Project_ID',
-                Value: this.LinkParamID.toString()
-              }
-            ],
-          }
-        ).subscribe(value => {
-          this.testCases = value[0];
-        }
-        );
-      } else {
-        this.suites = []
-        this.testCases = [];
-      }
-    }
-    );
   }
 
   insertUpdateSuite() {
@@ -599,8 +613,8 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
       let AttachnmentLists: any = [];
       for (let index = 0; index < this.steps.length; index++) {
         let tmp = this.steps[index].Attachments_ID;
-        if (tmp == undefined) {
-          AttachnmentLists = [];
+        if (tmp == undefined || tmp == '') {
+          continue;
         }
         else {
           AttachnmentLists = AttachnmentLists.concat(JSON.parse(tmp));
@@ -678,36 +692,36 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
     this.Case_Milestone = this.testCase.Case_Milestone.toString();
     this.Case_Behavior = this.testCase.Case_Behavior.toString();
     this.Case_AutoStat = this.testCase.Case_AutoStat.toString();
-    console.log(this.testCase.Attachments_ID)
-    //? Get Attachments
-    //? START
-    var commandText = 'egsQAAttachmentGet';
-    var Params =
-      [
+    if (this.testCase.Attachments_ID != undefined && this.testCase.Attachments_ID != '') {//? Get Attachments
+      //? START
+      var commandText = 'egsQAAttachmentGet';
+      var Params =
+        [
 
-        {
-          Param: "@List",
-          Value: this.testCase.Attachments_ID
+          {
+            Param: "@List",
+            Value: this.testCase.Attachments_ID
+          }
+
+        ];
+
+      var stringParam = JSON.stringify(Params);
+
+      var formData = new FormData();
+      formData.append("CommandText", commandText);
+      formData.append("Params", stringParam);
+
+      this.api.UniAttachmentlist(formData).subscribe({
+        next: (result) => {
+          this.testCaseAttachment = result[0];
+        },
+        error: (msg) => {
+          console.log(msg);
+          alert("500 Internal Server Errors")
         }
-
-      ];
-
-    var stringParam = JSON.stringify(Params);
-
-    var formData = new FormData();
-    formData.append("CommandText", commandText);
-    formData.append("Params", stringParam);
-
-    this.api.UniAttachmentlist(formData).subscribe({
-      next: (result) => {
-        this.testCaseAttachment = result[0];
-      },
-      error: (msg) => {
-        console.log(msg);
-        alert("500 Internal Server Errors")
-      }
-    });
-    //? END
+      });
+      //? END
+    }
 
 
     this.api.UniCall(
@@ -798,44 +812,6 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
     )
   }
 
-  deleteAttachment(value: number) {
-
-    var file_ID = value;
-    //? Stored Procedure Name
-    var commandText = 'egsQAAttachmentDelete';
-
-    //? Parameter of the store procedure
-    var Params = [{
-      Param: "@Attachment_ID",
-      Value: file_ID.toString()
-    }]
-
-    //? Convert Param JSON to String So may the api able to read json
-    var stringParam = JSON.stringify(Params);
-    var formData = new FormData();
-
-
-    //? When we are using UniAttachment we need to use Formdata in angular allowing us
-    //? to create, read, update and delete files
-    //? When delete file the "isDelete field is required"
-    formData.append("CommandText", commandText);
-    formData.append("Params", stringParam);
-    formData.append("file_ID", file_ID.toString());
-    formData.append("isDelete", 'true');
-
-    this.api.UniAttachmentlist(formData, false).subscribe({
-      next: (result) => {
-        // console.log(result)
-      },
-      error: (msg) => {
-        console.log(msg);
-      },
-      complete: () => {
-        reloadPage();
-      }
-    })
-
-  }
 
   //? Function for downloading file
   downloadFile(file_ID: any, filename: string) {

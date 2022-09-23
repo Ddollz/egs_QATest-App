@@ -42,6 +42,7 @@ export interface testCase {
   Case_PreCondition: string;
   Case_PostCondition: string;
   Case_Tag: string;
+  Case_Param: string;
   Attachments_ID?: string;
 }
 
@@ -64,6 +65,7 @@ export interface step {
   Step_Status: number;
   SharedStep_ID: number;
   Attachments_ID?: string;
+  LastModifiedUser: number;
   // attachments_IDS?: Array<string>;
 }
 

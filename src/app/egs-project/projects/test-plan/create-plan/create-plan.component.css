@@ -14,7 +14,7 @@
     height: 100%;
 }
 
-/* Header */
+/* Create Plan content page */
 .submenu-toggle {
     cursor: pointer;
     font-size: 1rem !important;
@@ -28,6 +28,11 @@
 .page-title {
 	font-size: 24px;
 	font-weight: 600;
+}
+
+.page-something {
+	font-size: 12px;
+	font-weight: 500;
 }
 
 .plan-title {
@@ -54,10 +59,10 @@
 .pop-out {
     display:flex;
     position: fixed;
-    left: 50px;
-    top: 30px; 
-    bottom: 30px;
-    right: 50px;  
+    top: 10px; 
+    bottom: 10px;
+    right: 20px;  
+    left: 20px;
 }
 
 .modal-title{
@@ -67,9 +72,13 @@
     position: static;
 }
 
+.modal-content{
+    padding: 1rem 1rem 0.25rem 1.5rem;   
+}
+
 .modal-body{
     height: 80vh;
-    overflow-y: auto;
+    
 }
 
 .modal-select-cases-stats {
@@ -81,8 +90,7 @@
 .cases-count {
     font-size: 14px;
     line-height: 17px;
-    margin-bottom: 0;
-    margin-right: 27px;
+    margin-right: 20px;
     position: relative;
     right: 20px;
 }
@@ -114,14 +122,11 @@
 .btn-close {
     position: absolute;
     right: 30px;
-    top: 20px;
+    top: 30px;
     z-index: 99;
 }
-.add-filter-outer {
-    position: relative;
-}
 
-.add-filter-button {
+.filter-span{
     font-size: .875rem;
     text-decoration: none;
     color: #e52325;
@@ -135,18 +140,13 @@
     outline: none;
 }
 
+/* Modal Suites Column */
 .suites-column {
-    width: 346px;
+    width: 316px;
+    height: 320px;
     overflow-x: hidden;
     overflow-y: scroll;
     padding-right: 13px;
-}
-
-.cases-column {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    max-width: calc(100vw - (20px * 2) - (29px + 32px) - 346px - 21px);
 }
 
 .l-col {
@@ -154,27 +154,75 @@
 	font-weight: 600;
 }
 
+/* Modal Cases Column */
+.cases-column {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    max-width: calc(100vw - (20px * 2) - (29px + 32px) - 346px - 21px);
+}
+
 .r-col {
 	border-left: 2px solid lightgray;
 }
 
-.r-col-header {
-	width: 100%;
+.r-col-header{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    width: 100%;
+    align-items: baseline;
+}
+
+.r-col-header-desc{
+    font-size: 14px;
+	font-weight: 400;
+}
+
+.r-col-title {
 	margin-bottom: 8px;
-
-	font-size: 14px;
+	font-size: 20px;
 	font-weight: 600;
-
-	border-radius: 6px;
-	background-color: #00000008;
-
 }
 
-.page-something {
-	font-size: 12px;
-	font-weight: 500;
+.r-col-table{
+    margin-top: 12px;
+    height: 250px;
+    overflow-x: hidden;
+    overflow-y: scroll;
 }
 
- .page-button {
-	height: fit-content;
+.subtitle-content{
+    justify-content: space-between;
+}
+
+.btn-secondary{
+    margin-right: .5rem !important;
+}
+
+.btn-col{
+    font-size: 12px;
+}
+
+.mat-header-row {
+    display: none;
+  }
+  
+
+/* Dropdown */
+.dropdown-item:hover {
+    background-color: white;
+    color: #eb7374;
+    
+  }
+  
+.dropdown-item:active {
+    background-color: white;
+}
+
+.dropdown-menu{
+    height: 300px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    padding-right: 13px;
 }

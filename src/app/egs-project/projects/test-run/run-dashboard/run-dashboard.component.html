@@ -1,0 +1,649 @@
+<div class="app__content">
+  <div class="row h-100">
+
+    <!-- LEFT COL -->
+    <div class="col-10">
+
+      <div class="row my-3">
+        <div class="col d-flex align-items-center">
+          <h2 class="page-title mb-0"><i class="bi bi-arrow-left me-4" data-bs-toggle="tooltip" title="Go back"
+              routerLink="/projects/run"></i>Test run</h2>
+        </div>
+        <div class="col d-flex justify-content-end align-items-center">
+          <button class="btn btn-primary me-2"><i class="bi bi-play-circle-fill me-2"></i>Run again</button>
+          <button class="filter-item me-2"><i class="bi bi-share-fill me-2"></i>Share report</button>
+          <button class="filter-item me-2"><i class="bi bi-upload me-2"></i>Export</button>
+          <button class="filter-item" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></button>
+          <div class="dropdown-menu">
+            <div class="dropdown-item">Edit</div>
+            <div class="dropdown-item">Abort</div>
+          </div>
+        </div>
+      </div>
+
+      <h6 class="mb-0">Description</h6>
+      <div class="mb-2">
+        <span>Full regression</span>
+      </div>
+
+      <ul class="nav nav-tabs nav-tabs-bordered">
+        <li class="nav-item">
+          <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#casesTab">Test cases</button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#defectsTab">Defects</button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#statsTab">Team stats</button>
+        </li>
+      </ul>
+
+      <div class="tab-content">
+        <!-- TEST CASES TAB -->
+        <div class="tab-pane show active" id="casesTab">
+
+          <div class="row my-3">
+            <div class="d-flex align-items-center">
+              <div class="me-3">
+                <input type="text" class="form-control search_input" placeholder="Search...">
+              </div>
+
+              <div class="d-flex align-items-center">
+                <span class="filter-span" data-bs-toggle="dropdown">+ Add filter</span>
+                <div class="dropdown-menu">
+                  <div class="dropdown-item">Status</div>
+                  <div class="dropdown-item">Assigned To</div>
+                  <div class="dropdown-item">Author</div>
+                  <div class="dropdown-item">Priority</div>
+                  <div class="dropdown-item">Automation</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="d-flex align-items-center mb-2">
+            <h6 class="mb-1 me-1">Login</h6>
+            <i class="bi bi-chevron-down me-3"></i>
+
+            <div class="progress">
+              <div class="progress-bar passed-pb" data-bs-toggle="tooltip" title="Passed"
+                [ngStyle]="{'width.%': 33.33}"></div>
+              <div class="progress-bar failed-pb" data-bs-toggle="tooltip" title="Failed"
+                [ngStyle]="{'width.%': 66.66}"></div>
+              <div class="progress-bar untested-pb" data-bs-toggle="tooltip" title="Untested"
+                [ngStyle]="{'width.%': 0}"></div>
+            </div>
+          </div>
+
+          <div class="row px-3 mb-4">
+            <table mat-table [dataSource]="caseDataSource" class="mat-elevation-z0">
+              <ng-container matColumnDef="Checkbox">
+                <th mat-header-cell *matHeaderCellDef>
+                  <input type="checkbox">
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  <input type="checkbox">
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="Result">
+                <th mat-header-cell *matHeaderCellDef>Results</th>
+                <td mat-cell *matCellDef="let element" (click)="openCasePanel()">
+                  <ng-template [ngIf]="element.result == 1">
+                    <span class="badge bg-primary passed-bg">Passed</span>
+                  </ng-template>
+                  <ng-template [ngIf]="element.result == 0">
+                    <span class="badge bg-primary failed-bg">Failed</span>
+                  </ng-template>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="Title">
+                <th mat-header-cell *matHeaderCellDef>Title</th>
+                <td mat-cell *matCellDef="let element" (click)="openCasePanel()">{{element.title}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="Assignee">
+                <th mat-header-cell *matHeaderCellDef>Assignee</th>
+                <td mat-cell *matCellDef="let element" (click)="openCasePanel()">
+                  <img class="assignee-img" src="../../assets/img/placeholder.jpg">
+                  <span>User</span>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="TimeSpent">
+                <th mat-header-cell *matHeaderCellDef>Time spent</th>
+                <td mat-cell *matCellDef="let element" (click)="openCasePanel()">{{element.time}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="ThreeDots">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let element">
+                  <div class="d-flex justify-content-end">
+                    <button class="btn three-dots" data-bs-toggle="dropdown">
+                      <i class="bi bi-three-dots"></i>
+                      <div class="dropdown-menu">
+                        <div class="dropdown-item">View case</div>
+                      </div>
+                    </button>
+                  </div>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="caseColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: caseColumns;" class="cases-row"></tr>
+            </table>
+          </div>
+
+          <div class="d-flex align-items-center mb-2">
+            <h6 class="mb-1 me-1">Login</h6>
+            <i class="bi bi-chevron-down me-3"></i>
+
+            <div class="progress">
+              <div class="progress-bar untested-pb" data-bs-toggle="tooltip" title="Untested"
+                [ngStyle]="{'width.%': 100}"></div>
+            </div>
+          </div>
+
+          <div class="row px-3">
+            <table mat-table [dataSource]="caseDataSource" class="mat-elevation-z0">
+              <ng-container matColumnDef="Checkbox">
+                <th mat-header-cell *matHeaderCellDef>
+                  <input type="checkbox">
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  <input type="checkbox">
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="Result">
+                <th mat-header-cell *matHeaderCellDef>Results</th>
+                <td mat-cell *matCellDef="let element" (click)="openCaseRunPanel()"></td>
+              </ng-container>
+
+              <ng-container matColumnDef="Title">
+                <th mat-header-cell *matHeaderCellDef>Title</th>
+                <td mat-cell *matCellDef="let element" (click)="openCaseRunPanel()">{{element.title}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="Assignee">
+                <th mat-header-cell *matHeaderCellDef>Assignee</th>
+                <td mat-cell *matCellDef="let element" (click)="openCaseRunPanel()">
+                  <img class="assignee-img" src="../../assets/img/placeholder.jpg">
+                  <span>User</span>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="TimeSpent">
+                <th mat-header-cell *matHeaderCellDef>Time spent</th>
+                <td mat-cell *matCellDef="let element" (click)="openCaseRunPanel()">{{element.time}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="ThreeDots">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let element">
+                  <div class="d-flex justify-content-end">
+                    <button class="btn three-dots" data-bs-toggle="dropdown">
+                      <i class="bi bi-three-dots"></i>
+                      <div class="dropdown-menu">
+                        <div class="dropdown-item">View case</div>
+                      </div>
+                    </button>
+                  </div>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="caseColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: caseColumns;" class="cases-row"></tr>
+            </table>
+          </div>
+
+        </div>
+
+        <!-- DEFECTS TAB -->
+        <div class="tab-pane" id="defectsTab">
+
+          <div class="row px-3 mt-3">
+            <table mat-table [dataSource]="defectDataSource" class="mat-elevation-z0">
+              <ng-container matColumnDef="ID">
+                <th mat-header-cell *matHeaderCellDef>ID</th>
+                <td mat-cell *matCellDef="let element">{{element.id}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="Title">
+                <th mat-header-cell *matHeaderCellDef>Title</th>
+                <td mat-cell *matCellDef="let element">
+                  <span class="defect-span">{{element.title}}</span>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="ReportedBy">
+                <th mat-header-cell *matHeaderCellDef>Reported by</th>
+                <td mat-cell *matCellDef="let element">
+                  <img class="assignee-img" src="../../assets/img/placeholder.jpg">
+                  <span>User</span>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="DefectAssignee">
+                <th mat-header-cell *matHeaderCellDef>Assignee</th>
+                <td mat-cell *matCellDef="let element">Unassigned</td>
+              </ng-container>
+
+              <ng-container matColumnDef="External">
+                <th mat-header-cell *matHeaderCellDef>External Issue</th>
+                <td mat-cell *matCellDef="let element"></td>
+              </ng-container>
+
+              <ng-container matColumnDef="Status">
+                <th mat-header-cell *matHeaderCellDef>Status</th>
+                <td mat-cell *matCellDef="let element">
+                  <ng-template [ngIf]="element.status == 1">
+                    <span class="badge bg-primary open-bg">Open</span>
+                  </ng-template>
+                  <ng-template [ngIf]="element.status == 2">
+                    <span class="badge bg-primary in-progress-bg">In Progress</span>
+                  </ng-template>
+                  <ng-template [ngIf]="element.status == 3">
+                    <span class="badge bg-primary invalid-bg">Invalid</span>
+                  </ng-template>
+                  <ng-template [ngIf]="element.status == 4">
+                    <span class="badge bg-primary resolved-bg">Resolved</span>
+                  </ng-template>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="ThreeDots">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let element">
+                  <div class="d-flex justify-content-end">
+                    <button class="btn three-dots" data-bs-toggle="dropdown">
+                      <i class="bi bi-three-dots"></i>
+                      <div class="dropdown-menu">
+                        <div class="dropdown-item">View</div>
+                        <div class="dropdown-item">Assign to me</div>
+                        <div class="dropdown-item">Open</div>
+                        <div class="dropdown-item">Resolve</div>
+                        <div class="dropdown-item">Invalid</div>
+                        <div class="dropdown-item">Edit</div>
+                        <div class="dropdown-item">Delete</div>
+                      </div>
+                    </button>
+                  </div>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="defectColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: defectColumns;"></tr>
+            </table>
+          </div>
+        </div>
+
+        <!-- TEAM STATS TAB -->
+        <div class="tab-pane" id="statsTab">
+
+          <div class="row px-3 mt-3">
+            <table mat-table [dataSource]="statDataSource" class="mat-elevation-z0">
+              <ng-container matColumnDef="Image">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let element">
+                  <img class="stat-img" src="../../assets/img/placeholder.jpg">
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="User">
+                <th mat-header-cell *matHeaderCellDef>User</th>
+                <td mat-cell *matCellDef="let element">
+                  <div class="row d-flex align-items-center my-2">
+                    <div class="column-title mb-1">{{element.user}}</div>
+                    <div class="column-subtitle">{{element.role}}</div>
+                  </div>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="StatTimeSpent">
+                <th mat-header-cell *matHeaderCellDef>Time Spent</th>
+                <td mat-cell *matCellDef="let element">{{element.time}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="Passed">
+                <th mat-header-cell *matHeaderCellDef>Passed</th>
+                <td mat-cell *matCellDef="let element">{{element.passed}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="Failed">
+                <th mat-header-cell *matHeaderCellDef>Failed</th>
+                <td mat-cell *matCellDef="let element">{{element.failed}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="Blocked">
+                <th mat-header-cell *matHeaderCellDef>Blocked</th>
+                <td mat-cell *matCellDef="let element">{{element.blocked}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="Skipped">
+                <th mat-header-cell *matHeaderCellDef>Skipped</th>
+                <td mat-cell *matCellDef="let element">{{element.skipped}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="Invalid">
+                <th mat-header-cell *matHeaderCellDef>Invalid</th>
+                <td mat-cell *matCellDef="let element">{{element.invalid}}</td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="statColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: statColumns;"></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT COL -->
+    <div class="col-2 right-col">
+      <h5 class="my-3">Test Run Details</h5>
+
+      <h6 class="mb-0">Passed</h6>
+      <div class="mb-3">
+        <span>1</span>
+      </div>
+
+      <h6 class="mb-0">Failed</h6>
+      <div class="mb-3">
+        <span>2</span>
+      </div>
+
+      <h6 class="mb-0">Untested</h6>
+      <div class="mb-3">
+        <span>43</span>
+      </div>
+
+      <h6 class="mb-0">Completion rate</h6>
+      <div class="mb-3">
+        <span>Completed 6%</span>
+      </div>
+
+      <h6 class="mb-0">Started by</h6>
+      <div class="mb-3 d-flex align-items-center">
+        <img class="author-img" src="../../assets/img/placeholder.jpg">
+        <span>User</span>
+      </div>
+
+      <h6 class="mb-0">Start time</h6>
+      <div class="mb-3">
+        <span>2022-07-28 13:29:09</span>
+      </div>
+
+      <h6 class="mb-0">Estimated</h6>
+      <div class="mb-3">
+        <span>00:19:05</span>
+      </div>
+
+      <h6 class="mb-0">Time spent</h6>
+      <div class="mb-3">
+        <span>00:02:26</span>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Case Panel -->
+<div class="CasePanel" #casePanel>
+  <div class="row">
+    <div class="col-11">
+      <div class="mb-1">
+        <i class="bi bi-check-square-fill me-2"></i>
+        <span class="passed-span">Passed</span>
+      </div>
+      <div class="mb-1">
+        <span class="project-title">Project Name</span>
+      </div>
+      <h2 class="page-title mb-2">Login user for the first time</h2>
+    </div>
+    <div class="col d-flex justify-content-end">
+      <i class="bi bi-x-lg" (click)="closeCasePanel()"></i>
+    </div>
+  </div>
+
+  <ul class="nav nav-tabs nav-tabs-bordered-small">
+    <li class="nav-item">
+      <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#executionTab">Execution</button>
+    </li>
+    <li class="nav-item">
+      <button class="nav-link" data-bs-toggle="tab" data-bs-target="#infoTab">Info</button>
+    </li>
+    <li class="nav-item">
+      <button class="nav-link" data-bs-toggle="tab" data-bs-target="#historyTab">Run History</button>
+    </li>
+    <li class="nav-item">
+      <button class="nav-link" data-bs-toggle="tab" data-bs-target="#retriesTab">Retries</button>
+    </li>
+    <li class="nav-item">
+      <button class="nav-link" data-bs-toggle="tab" data-bs-target="#defectsPanelTab">Defects</button>
+    </li>
+  </ul>
+
+  <div class="tab-content">
+
+    <!-- EXECUTION TAB -->
+    <div class="tab-pane show active" id="executionTab">
+      <div class="row mt-3 mb-3">
+        <h6 class="small-text-bold mb-1">Suite description</h6>
+        <span class="small-text">Login user</span>
+      </div>
+
+      <div class="row mb-3">
+        <h6 class="small-text-bold mb-1">Description</h6>
+        <h6 class="small-text-bold mb-1">Expected:</h6>
+        <span class="small-text-italic">User should be able to login in the application without any errors.</span>
+      </div>
+
+      <div class="row">
+        <h6 class="small-text-bold mb-1">Pre-conditions</h6>
+        <span class="small-text">Must have internet connection</span>
+      </div>
+
+      <div class="row my-2 text-center">
+        <span class="small-text-bold defect-span">Show less</span>
+      </div>
+
+      <ng-container>
+        <div class="row g-0">
+          <div class="col d-flex align-items-center">
+            <span class="small-text-bold me-2">Open ActivMenu site - QA</span>
+            <i class="bi bi-chevron-down"></i>
+          </div>
+          <div class="col-auto d-flex align-items-center justify-content-end">
+            <i class="bi bi-box me-2" data-bs-toggle="tooltip" title="Input Data"></i>
+            <i class="bi bi-list-ul" data-bs-toggle="tooltip" title="Expected Result"></i>
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-container>
+        <div class="row g-0">
+          <div class="col d-flex align-items-center">
+            <span class="small-text-bold me-2">Click create an account</span>
+            <i class="bi bi-chevron-down"></i>
+          </div>
+          <div class="col-auto d-flex align-items-center justify-content-end">
+            <i class="bi bi-list-ul" data-bs-toggle="tooltip" title="Expected Result"></i>
+          </div>
+        </div>
+      </ng-container>
+
+    </div>
+
+    <!-- INFO TAB -->
+    <div class="tab-pane show" id="infoTab">
+      <div class="row mt-3 mb-3">
+        <h6 class="small-text-bold mb-1">Test Case</h6>
+        <span class="small-text-case">CASE NAME</span>
+      </div>
+
+      <div class="row mb-3">
+        <h6 class="small-text-bold mb-1">Executed by</h6>
+        <span class="small-text">User</span>
+      </div>
+
+      <div class="row mb-3">
+        <h6 class="small-text-bold mb-1">Started at</h6>
+        <div class="d-flex align-items-center">
+          <i class="bi bi-calendar4 me-1"></i>
+          <span class="small-text">2022-08-14 20:16:19</span>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <h6 class="small-text-bold mb-1">Duration</h6>
+        <div class="d-flex align-items-center">
+          <i class="bi bi-clock me-1"></i>
+          <span class="small-text">00:00:10</span>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <h6 class="small-text-bold mb-1">Finished at</h6>
+        <div class="d-flex align-items-center">
+          <i class="bi bi-calendar4 me-1"></i>
+          <span class="small-text">2022-08-14 20:16:19</span>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <h6 class="small-text-bold mb-1">Result type</h6>
+        <div class="d-flex align-items-center">
+          <i class="bi bi-person me-1"></i>
+          <span class="small-text">Manual</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- RUN HISTORY TAB -->
+    <div class="tab-pane show" id="historyTab">
+      <ng-container>
+        <div class="row p-1 g-0 history-row">
+          <div class="col d-flex align-items-center">
+            <span class="small-text me-2">R-8</span>
+            <span class="small-text-bold">Test run 2022/05/24</span>
+          </div>
+          <div class="col-auto d-flex align-items-center justify-content-end">
+            <span class="small-text me-2">00:00:11</span>
+            <span class="badge bg-primary passed-bg small-text">Passed</span>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+
+    <!-- RETRIES TAB -->
+    <div class="tab-pane show" id="retriesTab">
+      <ng-container>
+        <div class="row p-1 g-0 history-row">
+          <div class="col d-flex align-items-center">
+            <span class="small-text me-2">R-8</span>
+            <span class="small-text-bold">Test run 2022/05/24</span>
+          </div>
+          <div class="col-auto d-flex align-items-center justify-content-end">
+            <span class="small-text me-2">00:00:11</span>
+            <span class="badge bg-primary passed-bg small-text">Passed</span>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+
+    <!-- DEFECTS TAB -->
+    <div class="tab-pane show" id="defectsPanelTab">
+      <div class="mt-1 p-1">
+        <span class="project-title">No defects yet.</span>
+      </div>
+    </div>
+
+  </div><!-- TAB CONTENT -->
+</div>
+
+<!-- Case Run Panel -->
+<div class="CasePanel" #caseRunPanel>
+  <div class="row">
+    <div class="col">
+      <div class="mb-1">
+        <span class="project-title">Project Name</span>
+      </div>
+      <h2 class="page-title mb-2">Login user for the first time</h2>
+    </div>
+    <div class="col-auto d-flex justify-content-end">
+      <i class="bi bi-x-lg" (click)="closeCaseRunPanel()"></i>
+    </div>
+  </div>
+
+  <div class="row my-1">
+    <div class="d-flex">
+      <button class="filter-item me-2"><i class="bi bi-eye me-2"></i>View</button>
+      <button class="filter-item me-2"><i class="bi bi-pencil me-2"></i>Edit Case</button>
+    </div>
+  </div>
+
+  <ul class="nav nav-tabs nav-tabs-bordered-small">
+    <li class="nav-item">
+      <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#runExecutionTab">Execution</button>
+    </li>
+    <li class="nav-item">
+      <button class="nav-link" data-bs-toggle="tab" data-bs-target="#runHistoryTab">Run History</button>
+    </li>
+  </ul>
+
+  <div class="tab-content">
+
+    <!-- EXECUTION TAB -->
+    <div class="tab-pane show active" id="runExecutionTab">
+      <div class="row mt-3 mb-3">
+        <div class="d-flex">
+          <button class="btn btn-primary passed-btn px-2 py-1 me-2">
+            <i class="bi bi-check me-1"></i>
+            <span>Passed</span>
+          </button>
+          <button class="btn btn-primary failed-btn px-2 py-1 me-2">
+            <i class="bi bi-x me-1"></i>
+            <span>Failed</span>
+          </button>
+          <button class="btn btn-primary blocked-btn px-2 py-1 me-2">
+            <i class="bi bi-x-circle me-1"></i>
+            <span>Blocked</span>
+          </button>
+          <button class="btn btn-primary invalid-btn px-2 py-1 me-2">
+            <i class="bi bi-heartbreak me-1"></i>
+            <span>Invalid</span>
+          </button>
+          <button class="btn btn-primary skipped-btn px-2 py-1">
+            <i class="bi bi-arrow-bar-right me-1"></i>
+            <span>Skipped</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="row">
+        <h6 class="small-text-bold mb-1">Description</h6>
+        <h6 class="small-text-bold mb-1">Expected:</h6>
+        <span class="small-text-italic">User should be able to login in the application without any errors.</span>
+      </div>
+    </div>
+
+    <!-- RUN HISTORY TAB -->
+    <div class="tab-pane show" id="runHistoryTab">
+      <ng-container>
+        <div class="row p-1 g-0 history-row">
+          <div class="col d-flex align-items-center">
+            <span class="small-text me-2">R-8</span>
+            <span class="small-text-bold">Test run 2022/05/24</span>
+          </div>
+          <div class="col-auto d-flex align-items-center justify-content-end">
+            <span class="small-text me-2">00:00:11</span>
+            <span class="badge bg-primary passed-bg small-text">Passed</span>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+
+  </div><!-- TAB CONTENT -->
+</div>

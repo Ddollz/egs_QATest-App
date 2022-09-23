@@ -1,15 +1,64 @@
 <!-- Modal -->
 <div class="modal fade" id="UploadModal" tabindex="-1" aria-labelledby="UploadModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header border-0 pb-0">
         <h5 class="modal-title" id="UploadModalLabel">{{Modal_Title}}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form action="/v1/workspace/attachments/upload" class="dropzone" enctype="multipart/form-data">
-          <input type="file" (change)="uploadImage($event)" #myFileInput>
-          <div class="dz-message"><span>Drop files here to upload</span></div>
-        </form>
+        <nav class="nav mb-4 pt-0" #Nav>
+          <button class="btns active p-0 me-3" href="#" (click)="changePanelContent('Uploadnew', $event)" id="Uploadnew"><span> </span>Upload new</button>
+          <button class="btns p-0" href="#" (click)="changePanelContent('Browse', $event)" id="Browse"><span> </span>Browse</button>
+        </nav>
+        <div #Content>
+          <div class="Browse" id="Browse" #Browse>
+            <div class="attach-existing-form attachments">
+              <div class="attachments-list">
+                <ng-container *ngFor="let attachment of UserAttachments">
+                  <ng-container *ngIf="attachment.byteFile.contentType.split('/')[0] == 'image'; else notImage">
+                    <div class="suitecase-attachment">
+                      <div class="suitecase-attachment-container">
+                        <div data-disable="false" class="suitecase-attachment-image" (click)="AddImageFromServer(attachment)" style="background: url(&quot;data:image/png;base64,{{attachment.byteFile.fileContents}}&quot;);"><a class="suitecase-attachment-link is-image"></a>
+                          <div class="suitecase-attachment-overlay">
+                            <p class="suitecase-attachment-filename">{{attachment.Filename}}</p>
+                            <div class="suitecase-attachment-overlay-bottom">
+                              <p class="suitecase-attachment-size"> {{attachment.Filesize}}</p>
+                              <button type="button" class="suitecase-attachment-remove" (click)="deleteAttachment(attachment.Attachment_ID)"><i class="bi bi-x"></i></button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+                  <ng-template #notImage>
+                    <div class="suitecase-attachment">
+                      <div class="suitecase-attachment-container">
+                        <div data-disable="false" class="suitecase-attachment-file" (click)="AddImageFromServer(attachment)" >
+                          <a class="suitecase-attachment-link"></a>
+                          <span class="suitecase-attachment-extension">{{attachment.byteFile.contentType.split('/')[0]}}</span>
+                          <div class="suitecase-attachment-overlay">
+                            <p class="suitecase-attachment-filename">{{attachment.Filename}}</p>
+                            <div class="suitecase-attachment-overlay-bottom">
+                              <p class="suitecase-attachment-size"> {{attachment.Filesize}}</p>
+                              <button type="button" class="suitecase-attachment-remove" (click)="deleteAttachment(attachment.Attachment_ID)"><i class="bi bi-x"></i></button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-template>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+          <div class="Uploadnew" id="Uploadnew" #Uploadnew>
+            <form class="dropzone" enctype="multipart/form-data">
+              <input type="file" (change)="uploadImage($event)" #myFileInput>
+              <div class="dz-message"><span>Drop files here to upload</span></div>
+            </form>
+          </div>
+        </div>
       </div>
       <div class="modal-footer">
       </div>
@@ -17,4 +66,4 @@
   </div>
 </div>
 
-<button #UploadModal [hidden]="true"  data-bs-toggle="modal" data-bs-target="#UploadModal">Open Modal</button>
+<button #UploadModal [hidden]="true" data-bs-toggle="modal" data-bs-target="#UploadModal">Open Modal</button>

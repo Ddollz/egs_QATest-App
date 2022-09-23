@@ -10,6 +10,7 @@ import { reloadPage } from 'src/app/services/global-functions.service';
   styleUrls: ['./step-create.component.css']
 })
 export class StepCreateComponent implements OnInit {
+  temporaryUser: number = 3; //!Karl User Account in database This is Temporary
 
   index: number = 0;
   Page_title: string = 'Create shared step';
@@ -53,43 +54,45 @@ export class StepCreateComponent implements OnInit {
         next: (e) => {
           this.SharedStep_ID = e[0][0].SharedStep_ID;
           this.SharedStep_Title = e[0][0].SharedStep_Title;
+          if (!e[1]) return
           this.steps = e[1]
-          if (e[1]) {
-            let AttachnmentLists: any = [];
-            for (let index = 0; index < this.steps.length; index++) {
-              let tmp = this.steps[index].Attachments_ID;
-              if (tmp == undefined) {
-                AttachnmentLists = [];
-              }
-              else {
-                AttachnmentLists = AttachnmentLists.concat(JSON.parse(tmp));
-              }
+          let AttachnmentLists: any = [];
+          for (let index = 0; index < this.steps.length; index++) {
+            let tmp = this.steps[index].Attachments_ID;
+            if (tmp == undefined || tmp == '') {
+              continue;
             }
-            var Params =
-              [
-                {
-                  Param: "@List",
-                  Value: JSON.stringify(AttachnmentLists)
-                }
-
-              ];
-            var formData = new FormData();
-            formData.append("CommandText", 'egsQAAttachmentGet');
-            formData.append("Params", JSON.stringify(Params));
-
-            //? API CALL
-            this.api.UniAttachmentlist(formData).subscribe({
-              next: (result) => {
-                console.log(result);
-                this.listofAttachmentInStep = result[0];
-              },
-              error: (msg) => {
-                console.log(msg);
-                alert("500 Internal Server Errors")
-              }
-            })
-
+            else {
+              AttachnmentLists = AttachnmentLists.concat(JSON.parse(tmp));
+            }
           }
+          var Params =
+            [
+              {
+                Param: "@List",
+                Value: JSON.stringify(AttachnmentLists)
+              }
+
+            ];
+
+
+          var formData = new FormData();
+          formData.append("CommandText", 'egsQAAttachmentGet');
+          formData.append("Params", JSON.stringify(Params));
+
+          //? API CALL
+          this.api.UniAttachmentlist(formData).subscribe({
+            next: (result) => {
+              this.listofAttachmentInStep = result[0];
+              console.log(this.listofAttachmentInStep)
+            },
+            error: (msg) => {
+              console.log(msg);
+              alert("500 Internal Server Errors")
+            }
+          })
+
+
         },
         error: (e) => {
           alert("500 Internal Server Errors")
@@ -114,6 +117,8 @@ export class StepCreateComponent implements OnInit {
         Step_ExpectedResult: "",
         Step_Status: 0,
         SharedStep_ID: 0,
+        Attachments_ID: '',
+        LastModifiedUser: this.temporaryUser,
       }
     )
   }
@@ -130,7 +135,8 @@ export class StepCreateComponent implements OnInit {
         Step_ExpectedResult: result,
         Step_Status: 0,
         SharedStep_ID: 0,
-        Attachments_ID: ''
+        Attachments_ID: '',
+        LastModifiedUser: this.temporaryUser,
       }
     )
   }
@@ -218,19 +224,20 @@ export class StepCreateComponent implements OnInit {
     console.log(this.addingAttachmentTo)
   }
   addAttachment(event: any) {
-
-
-    this.listofAttachmentInStep.push(event[0])
+    var attachmentObject = this.listofAttachmentInStep.find((x: any) => x.Attachment_ID === event[0].Attachment_ID);
+    if (!attachmentObject)
+      this.listofAttachmentInStep.push(event[0])
     if (this.addingAttachmentTo != undefined) {
       var stepAttachment = this.steps[this.addingAttachmentTo].Attachments_ID;
+      console.log(this.steps[this.addingAttachmentTo])
       var stepAttachmentJson;
-      console.log(stepAttachment);
       if (stepAttachment == undefined || stepAttachment == '') {
         stepAttachmentJson = [];
       } else if (typeof stepAttachment == 'string') {
         stepAttachmentJson = JSON.parse(stepAttachment);
       }
-      stepAttachmentJson.push(event[0].Attachment_ID)
+      if (!stepAttachmentJson.includes(event[0].Attachment_ID))
+        stepAttachmentJson.push(event[0].Attachment_ID)
       this.steps[this.addingAttachmentTo].Attachments_ID = JSON.stringify(stepAttachmentJson);
     }
   }

@@ -11,9 +11,14 @@
         </h2>
       </div>
       <div class="col d-flex justify-content-end align-items-center">
-        <button class="btn btn-light page-button">
-          <i class="bi bi-three-dots"></i>
-        </button>
+        <div class="dropdown">
+          <button class="btn btn-light page-button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" [routerLink]="'../trashbin/' + LinkParamID "><i class="bi bi-trash2"></i> Trash bin</a></li>
+          </ul>
+        </div>
       </div>
     </div>
 
@@ -172,7 +177,7 @@
       <button (click)="changePanelContent('General', $event)" class="btns active" id="General"><span> </span>General</button>
       <button (click)="changePanelContent('Properties', $event)" class="btns" id="Properties"><span> </span>Properties</button>
       <button (click)="changePanelContent('Run', $event)" class="btns" id="Run"><span></span>Runs</button>
-      <!-- <button class="btns"><span></span>History</button> -->
+      <button (click)="changePanelContent('History', $event)" class="btns" id="History"><span></span>History</button>
       <button (click)="changePanelContent('Defects', $event)" class="btns" id="Defects"><span></span>Defects</button>
       <button (click)="changePanelContent('Comments', $event)" class="btns" id="Comments"><span></span>Comments</button>
     </div>
@@ -213,7 +218,7 @@
                         <p class="suitecase-attachment-filename">{{attachment.Filename}}</p>
                         <div class="suitecase-attachment-overlay-bottom">
                           <p class="suitecase-attachment-size"> {{attachment.Filesize}}</p>
-                          <button type="button" class="suitecase-attachment-remove" (click)="deleteAttachment(attachment.Attachment_ID)"><i class="bi bi-x"></i></button>
+                          <button type="button" class="suitecase-attachment-remove"><i class="bi bi-x"></i></button>
                         </div>
                       </div>
                     </div>
@@ -233,7 +238,7 @@
                         <p class="suitecase-attachment-filename">{{attachment.Filename}}</p>
                         <div class="suitecase-attachment-overlay-bottom">
                           <p class="suitecase-attachment-size"> {{attachment.Filesize}}</p>
-                          <button type="button" class="suitecase-attachment-remove" (click)="deleteAttachment(attachment.Attachment_ID)"><i class="bi bi-x"></i></button>
+                          <button type="button" class="suitecase-attachment-remove"><i class="bi bi-x"></i></button>
                         </div>
                       </div>
                     </div>
@@ -502,6 +507,36 @@
             <td class="mat-cell" colspan="4"> No run result yet. </td>
           </tr>
         </table>
+
+      </div>
+      <div class="panel-history" id="History" #History>
+
+        <div class="d-flex align-items-center  mt-3 ">
+          <div class="align-self-start me-2"><img class="lazy avatar-sm" src="../../../../assets/img/placeholder.jpg"></div>
+          <div class="revision-body">
+            <div class="history-user">
+              <div class="history-username"><span style="font-weight: bold;">Rica Isidto</span> has updated 1 field: Steps</div>
+              <div class="history-role">2022-09-14 16:02:57</div>
+            </div>
+
+            <div class="revision-body">
+              this is revised <br>
+              this is revised <br>
+              this is revised <br>
+              this is revised <br>
+              this is revised <br>
+              this is revised <br>
+              this is revised <br>
+              this is revised <br>
+              this is revised <br>
+              this is revised <br>
+              this is revised <br>
+              this is revised <br>
+              this is revised <br>
+              this is revised <br>
+            </div>
+          </div>
+        </div>
 
       </div>
       <div class="panel-defects" id="Defects" #Defects>
