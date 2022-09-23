@@ -35,7 +35,7 @@ export class CreatePlanComponent implements OnInit {
   @Input() project = {} as project;
 
   //Table
-  displayedColumns: string[] = ['TestPlan_Title', 'TestPlan_RunTime', 'TestPlan_CaseCount', 'ThreeDots'];
+  displayedColumns: string[] = ['TestCase_CheckBox', 'TestCase_Add', 'TestCase_Title'];
   testCasesdataSource = new MatTableDataSource<testCase>();
   suitedataSource = new MatTableDataSource<suite>();
 
@@ -86,7 +86,7 @@ export class CreatePlanComponent implements OnInit {
         Params: [
           {
             Param: '@Suite_ID',
-            Value: '1059'
+            Value: '1122'
             // Value: this.LinkParamID.toString()
           }
         ],

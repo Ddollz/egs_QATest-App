@@ -38,14 +38,6 @@
 .mat-column-TestPlan_RunTime {
     width: 20%;
 }
-  
-.mat-column-Project_Name {
-    width: 25%;
-}
-  
-.mat-column-Unresolved {
-    width: 15%;
-}
 
 .tooltip-i,
 .filter-span,

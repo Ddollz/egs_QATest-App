@@ -142,7 +142,7 @@
 
 /* Modal Suites Column */
 .suites-column {
-    width: 346px;
+    width: 316px;
     height: 320px;
     overflow-x: hidden;
     overflow-y: scroll;
@@ -203,6 +203,8 @@
 .btn-col{
     font-size: 12px;
 }
+
+::ng-deep thead{display: none;}
 
 /* Dropdown */
 .dropdown-item:hover {
