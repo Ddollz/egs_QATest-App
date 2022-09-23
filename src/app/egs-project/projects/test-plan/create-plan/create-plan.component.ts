@@ -33,8 +33,10 @@ export class CreatePlanComponent implements OnInit {
   testplans: testplan[] = [];
   testCases: testCase[] = [];
   @Input() project = {} as project;
-  displayedColumns: string[] = ['TestPlan_Title', 'TestPlan_RunTime', 'TestPlan_CaseCount', 'ThreeDots'];
-  testPlandataSource = new MatTableDataSource<testplan>();
+
+  //Table
+  displayedColumns: string[] = ['TestCase_CheckBox', 'TestCase_Add', 'TestCase_Title'];
+  testCasesdataSource = new MatTableDataSource<testCase>();
   suitedataSource = new MatTableDataSource<suite>();
 
   constructor(private router: Router, private route: ActivatedRoute, private api: ApiService, private sidebarServ: sidebarService) {
@@ -47,24 +49,8 @@ export class CreatePlanComponent implements OnInit {
       
     }
 
-    // this.LinkParamID = Number(this.route.snapshot.paramMap.get('id'));
-    // this.sidebarServ.fetchProjectID(this.LinkParamID);
     this.LinkParamID = sidebarServ.projectID;
-
-    // this.api.UniCall(
-    //   {
-    //     CommandText: 'egsQATestCaseGet',
-    //     Params: [
-    //       {
-    //         Param: '@Case_ID',
-    //         Value: null
-    //       }
-    //     ],
-    //   }
-    // ).subscribe(value => {
-    //   this.testCases = value[0];
-    //   this.testCasedataSource = new MatTableDataSource<suite>(this.suites);
-    // });
+    console.log(this.LinkParamID);
 
     this.api.UniCall(
       {
@@ -92,6 +78,24 @@ export class CreatePlanComponent implements OnInit {
       }
     ).subscribe(value => {
       this.suites = value[0];
+    });
+
+    this.api.UniCall(
+      {
+        CommandText: 'egsQATestCaseGet',
+        Params: [
+          {
+            Param: '@Suite_ID',
+            Value: '1122'
+            // Value: this.LinkParamID.toString()
+          }
+        ],
+      }
+    ).subscribe(value => {
+      this.testCases = value[0];
+      this.testCasesdataSource = new MatTableDataSource<testCase>(this.testCases);
+      console.log(this.testCases);
+      console.log(this.testCasesdataSource);
     });
 
   }

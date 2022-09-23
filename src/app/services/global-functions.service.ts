@@ -25,7 +25,7 @@ export class sidebarService {
     if (this.projectID == 0) {
       this.projectID = Number(localStorage.getItem('currentProjectID'));
       this.selectedTitle.next(this.projectID);
-      console.log(this.projectID)
+      // console.log(this.projectID)
     }
     this.selectedTitle.subscribe((value) => {
       this.projectID = value
@@ -36,7 +36,7 @@ export class sidebarService {
     if (ID == null || ID == 0) {
       this.projectID = Number(localStorage.getItem('currentProjectID'));
       this.selectedTitle.next(this.projectID);
-      console.log(this.projectID)
+      // console.log(this.projectID)
     } else {
       this.projectID = ID
       localStorage.setItem('currentProjectID', ID);

@@ -10,6 +10,7 @@ import { reloadPage } from 'src/app/services/global-functions.service';
   styleUrls: ['./step-create.component.css']
 })
 export class StepCreateComponent implements OnInit {
+  temporaryUser: number = 3; //!Karl User Account in database This is Temporary
 
   index: number = 0;
   Page_title: string = 'Create shared step';
@@ -116,6 +117,8 @@ export class StepCreateComponent implements OnInit {
         Step_ExpectedResult: "",
         Step_Status: 0,
         SharedStep_ID: 0,
+        Attachments_ID: '',
+        LastModifiedUser: this.temporaryUser,
       }
     )
   }
@@ -132,7 +135,8 @@ export class StepCreateComponent implements OnInit {
         Step_ExpectedResult: result,
         Step_Status: 0,
         SharedStep_ID: 0,
-        Attachments_ID: ''
+        Attachments_ID: '',
+        LastModifiedUser: this.temporaryUser,
       }
     )
   }

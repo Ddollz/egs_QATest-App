@@ -38,7 +38,21 @@
   color: #222 !important;
 }
 
+.mat-column-deleted {
+  font-size: 0.775rem;
+}
 
+.mat-column-steps {
+  font-size: 0.775rem;
+}
+
+.mat-column-testruns {
+  font-size: 0.775rem;
+}
+
+.mat-column-deletedby {
+  font-size: 0.775rem;
+}
 .mat-column-control {
   width: 150px;
 }

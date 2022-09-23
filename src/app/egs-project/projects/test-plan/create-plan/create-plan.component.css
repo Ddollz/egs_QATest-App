@@ -142,8 +142,8 @@
 
 /* Modal Suites Column */
 .suites-column {
-    width: 346px;
-    height: 300px;
+    width: 316px;
+    height: 320px;
     overflow-x: hidden;
     overflow-y: scroll;
     padding-right: 13px;
@@ -158,8 +158,6 @@
 .cases-column {
     display: flex;
     flex-direction: column;
-    overflow-y: scroll;
-    height: 300px;
     flex: 1;
     max-width: calc(100vw - (20px * 2) - (29px + 32px) - 346px - 21px);
 }
@@ -168,17 +166,45 @@
 	border-left: 2px solid lightgray;
 }
 
-.r-col-header {
-	width: 100%;
-	margin-bottom: 8px;
-
-	font-size: 14px;
-	font-weight: 600;
-
-	border-radius: 6px;
-	background-color: #00000008;
-
+.r-col-header{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    width: 100%;
+    align-items: baseline;
 }
+
+.r-col-header-desc{
+    font-size: 14px;
+	font-weight: 400;
+}
+
+.r-col-title {
+	margin-bottom: 8px;
+	font-size: 20px;
+	font-weight: 600;
+}
+
+.r-col-table{
+    margin-top: 12px;
+    height: 250px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.subtitle-content{
+    justify-content: space-between;
+}
+
+.btn-secondary{
+    margin-right: .5rem !important;
+}
+
+.btn-col{
+    font-size: 12px;
+}
+
+::ng-deep thead{display: none;}
 
 /* Dropdown */
 .dropdown-item:hover {

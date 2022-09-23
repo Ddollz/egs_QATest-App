@@ -19,7 +19,7 @@ export class SideBarComponent implements OnInit {
   ddIssue: boolean = true;
   constructor(public router: Router, private sidebarServ: sidebarService) {
     this.projectID = Number(localStorage.getItem('currentProjectID'));
-    console.log(this.projectID)
+    // console.log(this.projectID)
   }
 
   ngOnInit(): void {
