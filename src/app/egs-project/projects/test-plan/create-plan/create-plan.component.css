@@ -204,7 +204,10 @@
     font-size: 12px;
 }
 
-::ng-deep thead{display: none;}
+.mat-header-row {
+    display: none;
+  }
+  
 
 /* Dropdown */
 .dropdown-item:hover {

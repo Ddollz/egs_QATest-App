@@ -170,13 +170,13 @@
                         <div class="row ps-3 r-col-table">
                             <table mat-table [dataSource]="testCasesdataSource" class="mat-elevation-z0" cellspacing="0">
                                 <ng-container matColumnDef="TestCase_CheckBox">
-                                    <th mat-header-cell *matHeaderCellDef></th>
+                                    <tr mat-header-row *matHeaderCellDef></tr>
                                     <td mat-cell *matCellDef="let element;">
                                         <mat-checkbox></mat-checkbox>
                                     </td>
                                 </ng-container>
                                 <ng-container matColumnDef="TestCase_Add">
-                                    <th mat-header-cell *matHeaderCellDef></th>
+                                    <tr mat-header-row *matHeaderCellDef></tr>
                                     <td mat-cell *matCellDef="let element;">
                                         <a href="#">
                                             <i class="bi bi-plus-circle-fill"></i>
@@ -184,7 +184,7 @@
                                     </td>
                                 </ng-container>
                                 <ng-container matColumnDef="TestCase_Title">
-                                    <th mat-header-cell *matHeaderCellDef></th>
+                                    <tr mat-header-row *matHeaderCellDef></tr>
                                     <td mat-cell *matCellDef="let element;">
                                         <div class="row d-flex align-items-center">
                                             <div class="column-title">
