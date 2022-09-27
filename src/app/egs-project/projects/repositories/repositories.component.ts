@@ -606,11 +606,16 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
         ],
       }
     ).subscribe(value => {
-      if (!value[0]) return
+      if (!value[0]) {
+        this.steps = []
+        this.stepdataSource = new MatTableDataSource<step>(this.steps);
+        console.log("wala")
+        return
+      }
       this.steps = value[0];
       this.stepdataSource = new MatTableDataSource<step>(this.steps);
-      this.steps = value[0];
       let AttachnmentLists: any = [];
+
       for (let index = 0; index < this.steps.length; index++) {
         let tmp = this.steps[index].Attachments_ID;
         if (tmp == undefined || tmp == '') {
@@ -629,7 +634,7 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
 
         ];
 
-
+      console.log(JSON.stringify(AttachnmentLists))
       var formData = new FormData();
       formData.append("CommandText", 'egsQAAttachmentGet');
       formData.append("Params", JSON.stringify(Params));
@@ -637,44 +642,18 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
       //? API CALL
       this.api.UniAttachmentlist(formData).subscribe({
         next: (result) => {
-          console.log(result);
-          this.stepAttachments = result[0];
+          // console.log(result[0])
+          if (result != undefined || result.length != 0) {
+            this.stepAttachments = result[0];
+          } else {
+            this.stepAttachments = [];
+          }
         },
         error: (msg) => {
           console.log(msg);
           alert("500 Internal Server Errors")
         }
       })
-      // var Tempstring = ''
-      // this.steps.forEach(element => {
-      //   Tempstring = element.Case_StepID + ',' + Tempstring
-      // });
-
-      // var Params =
-      //   [
-      //     {
-      //       Param: '@AttachmentStepIDs',
-      //       Value: Tempstring
-      //     }
-      //   ];
-
-
-      // var formData = new FormData();
-      // formData.append("CommandText", 'egsQAAttachmentStepGet');
-      // formData.append("Params", JSON.stringify(Params));
-
-      // //? API CALL
-      // this.api.UniAttachmentlist(formData).subscribe({
-      //   next: (result) => {
-      //     this.stepAttachments = result[0];
-
-
-      //   },
-      //   error: (msg) => {
-      //     console.log(msg);
-      //     alert("500 Internal Server Errors")
-      //   }
-      // });
 
     }
     );
@@ -692,7 +671,8 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
     this.Case_Milestone = this.testCase.Case_Milestone.toString();
     this.Case_Behavior = this.testCase.Case_Behavior.toString();
     this.Case_AutoStat = this.testCase.Case_AutoStat.toString();
-    if (this.testCase.Attachments_ID != undefined && this.testCase.Attachments_ID != '') {//? Get Attachments
+    if (this.testCase.Attachments_ID != undefined && this.testCase.Attachments_ID != '') {
+      //? Get Attachments
       //? START
       var commandText = 'egsQAAttachmentGet';
       var Params =
@@ -721,6 +701,9 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
         }
       });
       //? END
+    } else {
+      this.testCaseAttachment = [];
+
     }
 
 

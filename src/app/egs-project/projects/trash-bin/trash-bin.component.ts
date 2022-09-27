@@ -4,7 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 import { step, testCase } from 'src/app/models/project/project.model';
 import { user } from 'src/app/models/workspace/workspace.model';
 import { ApiService } from 'src/app/services/api.service';
-import { sidebarService } from 'src/app/services/global-functions.service';
+import { SelectionModel } from '@angular/cdk/collections';
+import { reloadPage, sidebarService } from 'src/app/services/global-functions.service';
 export interface PeriodicElement {
   name: string;
   position: string;
@@ -25,6 +26,11 @@ export class TrashBinComponent implements OnInit {
 
   displayedColumns: string[] = ['select', 'testcase', 'deleted', 'deletedby', 'steps', 'testruns', 'control'];
   dataSource = new MatTableDataSource<testCase>();
+
+  testcaseSelect: any;
+  testCaseModel = new SelectionModel(
+    true,   // multiple selection or not
+  );
   constructor(public sidebarServ: sidebarService, private activatedRoute: ActivatedRoute, private api: ApiService) {
     this.projectID = Number(sidebarServ.projectID);
     this.api.UniCall(
@@ -57,15 +63,25 @@ export class TrashBinComponent implements OnInit {
         ],
       }
     ).subscribe(value => {
-      console.log(value);
       this.users = value[0];
-      console.log(value[0]);
     });
     //! end
+
+    this.testCaseModel.changed.subscribe({
+      next: (e) => {
+        // console.log(e)
+        // console.log(JSON.stringify(e.source.selected))
+        this.testcaseSelect = JSON.stringify(e.source.selected);
+      }
+    })
 
   }
 
   ngOnInit(): void {
+  }
+
+  selectedTestCaseCheck(event: number) {
+    this.testCaseModel.toggle(event)
   }
 
   getDateBetween(date: Date) {
@@ -96,35 +112,32 @@ export class TrashBinComponent implements OnInit {
     let user = this.users.find(x => x.User_ID === userID);
     return user?.User_Firstname + " " + user?.User_Lastname;
   }
+  MultiRestoreCase() {
 
+    this.api.UniCall(
+      {
+        CommandText: 'egsQATestCaseHistoryMultiRestore',
+        Params: [
+          {
+            Param: '@Case_Json',
+            Value: this.testcaseSelect
+          }
+        ],
+      }
+    ).subscribe(
+      {
+        error: (e) => console.error(e),
+        complete() {
+          reloadPage();
+        },
+      }
+    )
+  }
   restoreCase(testcase: testCase) {
-    console.log(testcase);
-    // @Case_ID
-    //    ,@Case_Title
-    //        ,@Case_Status
-    //        ,@Case_Desc
-    //        ,@Suite_ID
-    //        ,@Case_Severity
-    //        ,@Case_Priority
-    //        ,@Case_Type
-    //        ,@Case_Layer
-    //        ,@Case_Flaky
-    //        ,@Case_isLock
-    //        ,@User_ID
-    //        ,@Case_Milestone
-    //        ,@Case_Behavior
-    //        ,@Case_AutoStat
-    //        ,@Case_PreCondition
-    //        ,@Case_PostCondition
-    //        ,@Case_Tag
-    //        ,@Case_Param
-    //        ,@Attachments_ID
-    //        ,@LastModifiedUser
-    //        ,@Project_ID
     let attachmentParameter = testcase.Attachments_ID
     if (attachmentParameter?.length == 0 || attachmentParameter == undefined) {
       attachmentParameter = undefined
-    }else{
+    } else {
       attachmentParameter = attachmentParameter.toString()
     }
     this.api.UniCall(
@@ -224,6 +237,10 @@ export class TrashBinComponent implements OnInit {
     ).subscribe(
       {
         error: (e) => console.error(e),
+        complete() {
+          reloadPage();
+
+        },
       }
     )
   }
