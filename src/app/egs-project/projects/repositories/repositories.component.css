@@ -24,7 +24,8 @@
   font-size: 12px;
   font-weight: 500;
 }
-.selected-something{
+
+.selected-something {
   font-size: 13px;
   font-weight: 500;
 }
@@ -336,6 +337,8 @@
 }
 
 .panel-history {
+  position: relative;
+  height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -352,6 +355,47 @@
   font-size: .75rem;
   opacity: .75;
 }
+
+.revision-body {
+  padding-right: 1.5rem;
+  flex: 1;
+}
+
+.revision-body .element-title {
+  font-size: .875rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  border-bottom: 1px solid #dedede;
+}
+
+.revision-body .element-before,
+.revision-body .element-after {
+  flex: .5;
+  font-size: .875rem;
+  word-break: break-all;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.revision-body .element-divider {
+  flex: 0 0 0.75rem;
+}
+
+.revision-body .element-after {
+  flex: .5;
+  font-size: .875rem;
+  word-break: break-all;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.example-viewport {
+  height: 100%;
+  width: 100%;
+}
+
 
 .markdown-area {
   word-break: break-word;
@@ -430,6 +474,7 @@
   padding: 6px 8px;
   box-shadow: none;
 }
+
 .btn-light:hover {
   background-color: var(--black-25);
 }

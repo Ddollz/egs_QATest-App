@@ -9,6 +9,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatDialogModule } from '@angular/material/dialog';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -134,6 +135,7 @@ const appRoute: Routes = [
     MatCheckboxModule,
     MatRadioModule,
     MatDialogModule,
+    ScrollingModule,
     RouterModule.forRoot(appRoute),
     QuillModule.forRoot({
       modules: {

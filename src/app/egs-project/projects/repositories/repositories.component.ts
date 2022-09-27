@@ -1,11 +1,14 @@
 import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 import { project, suite, testCase, step, testrun, defect } from '../../../models/project/project.model';
 import { reloadPage, sidebarService } from '../../../services/global-functions.service';
+import { BehaviorSubject, Observable } from 'rxjs';
 
+const batchsize = 3;
 @Component({
   selector: 'app-repositories',
   templateUrl: './repositories.component.html',
@@ -87,6 +90,11 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
   Case_Milestone: string = '';
   Case_Behavior: string = '';
   Case_AutoStat: string = '';
+  testCase_History: any = [];
+  @ViewChild(CdkVirtualScrollViewport) viewport?: CdkVirtualScrollViewport;
+  theEnd = false;
+  offset = new BehaviorSubject(null);
+  infinite?: Observable<any[]>;
 
   Suite_ID: number = 0;
   Suite_Name: string = '';
@@ -111,6 +119,20 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
   testCaseModel = new SelectionModel(
     true,   // multiple selection or not
   );
+
+  nextBatch(e: any, offset: any){
+    if(this.theEnd) return
+    const end = this.viewport?.getRenderedRange().end;
+    const total = this.viewport?.getDataLength();
+    if(end===total){
+      this.offset.next(offset);
+    }
+
+  }
+  trackByIdx(i:any){
+    return i;
+  }
+
   selectedSuiteCheck(event: number, bool: boolean = false) {
     if (bool) return this.suiteModel.deselect(event)
     this.suiteModel.toggle(event)
@@ -609,7 +631,6 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
       if (!value[0]) {
         this.steps = []
         this.stepdataSource = new MatTableDataSource<step>(this.steps);
-        console.log("wala")
         return
       }
       this.steps = value[0];
@@ -747,10 +768,69 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
     )
     //? END
 
+    //? Get History
+    this.api.UniCall(
+      {
+        CommandText: 'egsQATestCaseHistoryGet',
+        Params: [
+          {
+            Param: '@Case_ID',
+            Value: this.testCase.Case_ID.toString()
+          }
+        ],
+      }
+    ).subscribe(value => {
+      console.log(value[0]);
+
+      this.testCase_History = value[0];
+    });
+
   }
   closePanel() {
     if (this.panel != null)
       this.panel.nativeElement.style.display = "none";
+  }
+  onChangePanel(parameter: string, newValue: any) {
+    if (parameter.substring(1) == "Case_Severity")
+      this.testCase.Case_Severity = Number(newValue);
+    if (parameter.substring(1) == "Case_Priority")
+      this.testCase.Case_Priority = Number(newValue);
+    if (parameter.substring(1) == "Case_Type")
+      this.testCase.Case_Type = newValue;
+    if (parameter.substring(1) == "Case_Flaky")
+      this.testCase.Case_Flaky = Number(newValue);
+    if (parameter.substring(1) == "Case_Milestone")
+      this.testCase.Case_Milestone = Number(newValue);
+    if (parameter.substring(1) == "Case_Behavior")
+      this.testCase.Case_Behavior = Number(newValue);
+    if (parameter.substring(1) == "Case_AutoStat")
+      this.testCase.Case_AutoStat = Number(newValue);
+
+    console.log(this.testCase)
+    //? START
+    this.api.UniCall(
+      {
+        CommandText: 'egsQATestCaseInsertUpdate',
+        Params: [
+          {
+            Param: '@Case_IDED',
+            Value: this.testCase.Case_ID.toString()
+          },
+          {
+            Param: parameter,
+            Value: newValue.toString()
+          }
+        ],
+      }
+    ).subscribe(
+      {
+        next: (v) => {
+          console.log(v);
+        },
+        error: (e) => console.error(e),
+      }
+    )
+    //? END
   }
   changePanelContent(value: string, event?: Event) {
     let panelNavchildren = this.panelNav?.nativeElement.children;
