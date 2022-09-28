@@ -1,0 +1,298 @@
+<ng-container *ngIf="noChanges; else hasChanges">
+  <div class="align-self-start me-2"><img class="lazy avatar-sm" src="../../../../assets/img/placeholder.jpg"></div>
+  <div class="revision-body">
+    <div class="history-user">
+      <div class="history-username">
+        <span style="font-weight: bold;">Rica Isidto</span> created a test case
+      </div>
+      <div class="history-role">{{testCase.SysStartTime | date :"yyyy-MM-dd HH:MM:ss"}}</div>
+    </div>
+  </div>
+</ng-container>
+<ng-template #hasChanges>
+
+  <div class="align-self-start me-2"><img class="lazy avatar-sm" src="../../../../assets/img/placeholder.jpg"></div>
+  <div class="revision-body">
+    <div class="history-user">
+      <div class="history-username">
+        <span style="font-weight: bold;">Rica Isidto</span>
+
+        <ng-container *ngIf="isLast;">
+          created a test case
+        </ng-container>
+        <ng-container *ngIf="index!=0 && !isFirst; else restore">
+          <ng-container *ngIf="currentObj.Case_Severity == prevObj.Case_Severity; else restore">
+
+            <ng-container *ngIf="currentObj.Case_Priority == prevObj.Case_Priority; else restore">
+
+              <ng-container *ngIf="currentObj.Case_Type == prevObj.Case_Type; else restore">
+
+                <ng-container *ngIf="currentObj.Case_Layer == prevObj.Case_Layer; else restore">
+
+                  <ng-container *ngIf="currentObj.Case_Flaky == prevObj.Case_Flaky; else restore">
+
+                    <ng-container *ngIf="currentObj.Case_Behavior == prevObj.Case_Behavior; else restore">
+
+                      <ng-container *ngIf="currentObj.Case_AutoStat == prevObj.Case_AutoStat; else restore">
+
+                      </ng-container>
+
+                    </ng-container>
+
+                  </ng-container>
+
+                </ng-container>
+
+              </ng-container>
+
+            </ng-container>
+
+          </ng-container>
+
+        </ng-container>
+
+        <ng-template #restore>
+          has updated the following field:
+        </ng-template>
+      </div>
+      <div class="history-role">{{currentObj.SysStartTime | date :"yyyy-MM-dd HH:MM:ss"}}</div>
+    </div>
+
+    <div class="revision-body">
+      <ng-container *ngIf="index!=0">
+
+        <ng-container *ngIf="currentObj.Case_Severity != prevObj.Case_Severity">
+          <div class="element mt-3">
+            <p class="element-title">Severity</p>
+            <div class="d-flex" style="align-items: baseline;">
+              <div class="element-before">
+                {{GFS.SeverityToText(currentObj.Case_Severity)}}
+              </div>
+              <div class="element-divider ms-3 me-3"><i class="bi bi-arrow-right-short"></i></div>
+              <div class="element-after">
+                {{GFS.SeverityToText(prevObj.Case_Severity)}}
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="currentObj.Case_Priority != prevObj.Case_Priority">
+          <div class="element mt-3">
+            <p class="element-title">Priority</p>
+            <div class="d-flex" style="align-items: baseline;">
+              <div class="element-before">
+                {{GFS.PriorityToText(currentObj.Case_Priority)}}
+              </div>
+              <div class="element-divider ms-3 me-3"><i class="bi bi-arrow-right-short"></i></div>
+              <div class="element-after">
+                {{GFS.PriorityToText(prevObj.Case_Priority)}}
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="currentObj.Case_Type != prevObj.Case_Type">
+          <div class="element mt-3">
+            <p class="element-title">Type</p>
+            <div class="d-flex" style="align-items: baseline;">
+              <div class="element-before">
+                {{currentObj.Case_Type}}
+              </div>
+              <div class="element-divider ms-3 me-3"><i class="bi bi-arrow-right-short"></i></div>
+              <div class="element-after">
+                {{prevObj.Case_Type}}
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="currentObj.Case_Layer != prevObj.Case_Layer">
+          <div class="element mt-3">
+            <p class="element-title">Layer</p>
+            <div class="d-flex" style="align-items: baseline;">
+              <div class="element-before">
+                {{GFS.LayerToText(currentObj.Case_Layer)}}
+              </div>
+              <div class="element-divider ms-3 me-3"><i class="bi bi-arrow-right-short"></i></div>
+              <div class="element-after">
+                {{GFS.LayerToText(prevObj.Case_Layer)}}
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="currentObj.Case_Flaky != prevObj.Case_Flaky">
+          <div class="element mt-3">
+            <p class="element-title">Flaky</p>
+            <div class="d-flex" style="align-items: baseline;">
+              <div class="element-before">
+                {{GFS.FlakyToText(currentObj.Case_Flaky)}}
+              </div>
+              <div class="element-divider ms-3 me-3"><i class="bi bi-arrow-right-short"></i></div>
+              <div class="element-after">
+                {{GFS.FlakyToText(prevObj.Case_Flaky)}}
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="currentObj.Case_Milestone != prevObj.Case_Milestone">
+          <div class="element mt-3">
+            <p class="element-title">Milestone</p>
+            <div class="d-flex" style="align-items: baseline;">
+              <div class="element-before">
+                {{currentObj.Case_Milestone}}
+              </div>
+              <div class="element-divider ms-3 me-3"><i class="bi bi-arrow-right-short"></i></div>
+              <div class="element-after">
+                {{prevObj.Case_Milestone}}
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="currentObj.Case_Behavior != prevObj.Case_Behavior">
+          <div class="element mt-3">
+            <p class="element-title">Behavior</p>
+            <div class="d-flex" style="align-items: baseline;">
+              <div class="element-before">
+                {{GFS.BehaviorToText(currentObj.Case_Behavior)}}
+              </div>
+              <div class="element-divider ms-3 me-3"><i class="bi bi-arrow-right-short"></i></div>
+              <div class="element-after">
+                {{GFS.BehaviorToText(prevObj.Case_Behavior)}}
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="currentObj.Case_AutoStat != prevObj.Case_AutoStat">
+          <div class="element mt-3">
+            <p class="element-title">Automation Status</p>
+            <div class="d-flex" style="align-items: baseline;">
+              <div class="element-before">
+                {{GFS.AutomationToText(currentObj.Case_AutoStat)}}
+              </div>
+              <div class="element-divider ms-3 me-3"><i class="bi bi-arrow-right-short"></i></div>
+              <div class="element-after">
+                {{GFS.AutomationToText(prevObj.Case_AutoStat)}}
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+      </ng-container>
+      <ng-container *ngIf="index==0">
+
+        <ng-container *ngIf="currentObj.Case_Severity != testCase.Case_Severity">
+          <div class="element mt-3">
+            <p class="element-title">Severity</p>
+            <div class="d-flex" style="align-items: baseline;">
+              <div class="element-before">
+                {{GFS.SeverityToText(currentObj.Case_Severity)}}
+              </div>
+              <div class="element-divider ms-3 me-3"><i class="bi bi-arrow-right-short"></i></div>
+              <div class="element-after">
+                {{GFS.SeverityToText(testCase.Case_Severity)}}
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="currentObj.Case_Priority != testCase.Case_Priority">
+          <div class="element mt-3">
+            <p class="element-title">Priority</p>
+            <div class="d-flex" style="align-items: baseline;">
+              <div class="element-before">
+                {{GFS.PriorityToText(currentObj.Case_Priority)}}
+              </div>
+              <div class="element-divider ms-3 me-3"><i class="bi bi-arrow-right-short"></i></div>
+              <div class="element-after">
+                {{GFS.PriorityToText(testCase.Case_Priority)}}
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="currentObj.Case_Type != testCase.Case_Type">
+          <div class="element mt-3">
+            <p class="element-title">Type</p>
+            <div class="d-flex" style="align-items: baseline;">
+              <div class="element-before">
+                {{currentObj.Case_Type}}
+              </div>
+              <div class="element-divider ms-3 me-3"><i class="bi bi-arrow-right-short"></i></div>
+              <div class="element-after">
+                {{testCase.Case_Type}}
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="currentObj.Case_Layer != testCase.Case_Layer">
+          <div class="element mt-3">
+            <p class="element-title">Layer</p>
+            <div class="d-flex" style="align-items: baseline;">
+              <div class="element-before">
+                {{GFS.LayerToText(currentObj.Case_Layer)}}
+              </div>
+              <div class="element-divider ms-3 me-3"><i class="bi bi-arrow-right-short"></i></div>
+              <div class="element-after">
+                {{GFS.LayerToText(testCase.Case_Layer)}}
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="currentObj.Case_Flaky != testCase.Case_Flaky">
+          <div class="element mt-3">
+            <p class="element-title">Flaky</p>
+            <div class="d-flex" style="align-items: baseline;">
+              <div class="element-before">
+                {{GFS.FlakyToText(currentObj.Case_Flaky)}}
+              </div>
+              <div class="element-divider ms-3 me-3"><i class="bi bi-arrow-right-short"></i></div>
+              <div class="element-after">
+                {{GFS.FlakyToText(testCase.Case_Flaky)}}
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="currentObj.Case_Milestone != testCase.Case_Milestone">
+          <div class="element mt-3">
+            <p class="element-title">Milestone</p>
+            <div class="d-flex" style="align-items: baseline;">
+              <div class="element-before">
+                {{currentObj.Case_Milestone}}
+              </div>
+              <div class="element-divider ms-3 me-3"><i class="bi bi-arrow-right-short"></i></div>
+              <div class="element-after">
+                {{testCase.Case_Milestone}}
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="currentObj.Case_Behavior != testCase.Case_Behavior">
+          <div class="element mt-3">
+            <p class="element-title">Behavior</p>
+            <div class="d-flex" style="align-items: baseline;">
+              <div class="element-before">
+                {{GFS.BehaviorToText(currentObj.Case_Behavior)}}
+              </div>
+              <div class="element-divider ms-3 me-3"><i class="bi bi-arrow-right-short"></i></div>
+              <div class="element-after">
+                {{GFS.BehaviorToText(prevObj.Case_Behavior)}}
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="currentObj.Case_AutoStat != testCase.Case_AutoStat">
+          <div class="element mt-3">
+            <p class="element-title">Automation Status/p>
+            <div class="d-flex" style="align-items: baseline;">
+              <div class="element-before">
+                {{GFS.AutomationToText(currentObj.Case_AutoStat)}}
+              </div>
+              <div class="element-divider ms-3 me-3"><i class="bi bi-arrow-right-short"></i></div>
+              <div class="element-after">
+                {{GFS.AutomationToText(testCase.Case_AutoStat)}}
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+      </ng-container>
+    </div>
+  </div>
+
+</ng-template>

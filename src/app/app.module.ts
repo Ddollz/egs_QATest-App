@@ -50,6 +50,7 @@ import { RunCreateComponent } from './egs-project/projects/test-run/run-create/r
 import { RunDashboardComponent } from './egs-project/projects/test-run/run-dashboard/run-dashboard.component';
 import { SuitesPlanComponent } from './egs-project/projects/test-plan/suites-plan/suites-plan.component';
 import { CasePlanComponent } from './egs-project/projects/test-plan/case-plan/case-plan.component';
+import { TestcaseHistoryComponent } from './egs-project/projects/repositories/testcase-history/testcase-history.component';
 
 
 //Link Routes
@@ -121,6 +122,7 @@ const appRoute: Routes = [
     RunDashboardComponent,
     SuitesPlanComponent,
     CasePlanComponent,
+    TestcaseHistoryComponent,
   ],
   imports: [
     BrowserModule,

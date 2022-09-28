@@ -8,7 +8,6 @@ import { project, suite, testCase, step, testrun, defect } from '../../../models
 import { reloadPage, sidebarService } from '../../../services/global-functions.service';
 import { BehaviorSubject, Observable } from 'rxjs';
 
-const batchsize = 3;
 @Component({
   selector: 'app-repositories',
   templateUrl: './repositories.component.html',
@@ -91,6 +90,7 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
   Case_Behavior: string = '';
   Case_AutoStat: string = '';
   testCase_History: any = [];
+  istestCase_HistoryNull: boolean = false;
   @ViewChild(CdkVirtualScrollViewport) viewport?: CdkVirtualScrollViewport;
   theEnd = false;
   offset = new BehaviorSubject(null);
@@ -120,16 +120,16 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
     true,   // multiple selection or not
   );
 
-  nextBatch(e: any, offset: any){
-    if(this.theEnd) return
+  nextBatch(e: any, offset: any) {
+    if (this.theEnd) return
     const end = this.viewport?.getRenderedRange().end;
     const total = this.viewport?.getDataLength();
-    if(end===total){
+    if (end === total) {
       this.offset.next(offset);
     }
 
   }
-  trackByIdx(i:any){
+  trackByIdx(i: any) {
     return i;
   }
 
@@ -780,12 +780,13 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
         ],
       }
     ).subscribe(value => {
-      console.log(value[0]);
-
+      if (value.length === 0)
+        this.istestCase_HistoryNull = true
       this.testCase_History = value[0];
     });
 
   }
+
   closePanel() {
     if (this.panel != null)
       this.panel.nativeElement.style.display = "none";
@@ -1045,4 +1046,5 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
     }
 
   }
+
 }
