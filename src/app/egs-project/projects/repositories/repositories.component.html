@@ -207,7 +207,7 @@
           <label for="0-postcondition" class="panelLabel">Attachments</label>
           <div class="d-flex flex-wrap">
 
-            <ng-container *ngFor="let attachment of this.testCaseAttachment">
+            <ng-container *ngFor="let attachment of testCaseAttachment">
               <ng-container *ngIf="attachment.byteFile.contentType.split('/')[0] == 'image'; else notImage">
 
                 <div class="suitecase-attachment">
@@ -312,7 +312,7 @@
 
           <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 form-group">
             <label class="panelLabel">Severity</label>
-            <mat-select class="select-item" [(value)]="this.Case_Severity">
+            <mat-select class="select-item" [(ngModel)]="Case_Severity" (ngModelChange)="onChangePanel('@Case_Severity',$event)">
               <mat-option value="1" class="select-item">
                 Not set
               </mat-option>
@@ -322,16 +322,16 @@
               <mat-option value="3" class="select-item">
                 Critical
               </mat-option>
-              <mat-option value="3" class="select-item">
+              <mat-option value="4" class="select-item">
                 Major
               </mat-option>
-              <mat-option value="3" class="select-item">
+              <mat-option value="5" class="select-item">
                 Normal
               </mat-option>
-              <mat-option value="3" class="select-item">
+              <mat-option value="6" class="select-item">
                 Minor
               </mat-option>
-              <mat-option value="3" class="select-item">
+              <mat-option value="7" class="select-item">
                 Trival
               </mat-option>
             </mat-select>
@@ -339,7 +339,7 @@
 
           <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 form-group">
             <label class="panelLabel">Priority</label>
-            <mat-select class="select-item" [(ngModel)]="this.Case_Priority">
+            <mat-select class="select-item" [(ngModel)]="Case_Priority" (ngModelChange)="onChangePanel('@Case_Priority',$event)">
               <mat-option value="1" class="select-item">
                 Not set
               </mat-option>
@@ -349,7 +349,7 @@
               <mat-option value="3" class="select-item">
                 Medium
               </mat-option>
-              <mat-option value="3" class="select-item">
+              <mat-option value="4" class="select-item">
                 Low
               </mat-option>
             </mat-select>
@@ -357,7 +357,7 @@
 
           <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 form-group">
             <label class="panelLabel">Type</label>
-            <mat-select class="select-item" [(ngModel)]="this.Case_Type">
+            <mat-select class="select-item" [(ngModel)]="Case_Type" (ngModelChange)="onChangePanel('@Case_Type',$event)">
               <mat-option value="Other" class="select-item">
                 Other
               </mat-option>
@@ -396,7 +396,7 @@
 
           <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 form-group">
             <label class="panelLabel">Layer</label>
-            <mat-select class="select-item" [(value)]="this.Case_Layer">
+            <mat-select class="select-item" [(ngModel)]="Case_Layer" (ngModelChange)="onChangePanel('@Case_Layer',$event)">
               <mat-option value="1" class="select-item">
                 Not set
               </mat-option>
@@ -406,7 +406,7 @@
               <mat-option value="3" class="select-item">
                 API
               </mat-option>
-              <mat-option value="3" class="select-item">
+              <mat-option value="4" class="select-item">
                 Unit
               </mat-option>
             </mat-select>
@@ -414,7 +414,7 @@
 
           <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 form-group">
             <label class="panelLabel">Is flaky</label>
-            <mat-select class="select-item" [(value)]="this.Case_Flaky">
+            <mat-select class="select-item" [(ngModel)]="Case_Flaky" (ngModelChange)="onChangePanel('@Case_Flaky',$event)">
               <mat-option value="1" class="select-item">
                 No
               </mat-option>
@@ -426,7 +426,7 @@
 
           <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 form-group">
             <label class="panelLabel">Milestone</label>
-            <mat-select class="select-item" [(value)]="this.Case_Milestone">
+            <mat-select class="select-item" [(ngModel)]="Case_Milestone" (ngModelChange)="onChangePanel('@Case_Milestone',$event)">
               <mat-option value="1" class="select-item">
                 Not set
               </mat-option>
@@ -435,7 +435,7 @@
 
           <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 form-group">
             <label class="panelLabel">Behavior</label>
-            <mat-select class="select-item" [(value)]="this.Case_Behavior">
+            <mat-select class="select-item" [(ngModel)]="Case_Behavior" (ngModelChange)="onChangePanel('@Case_Behavior',$event)">
               <mat-option value="1" class="select-item" selected>
                 Not set
               </mat-option>
@@ -445,7 +445,7 @@
               <mat-option value="3" class="select-item">
                 Negative
               </mat-option>
-              <mat-option value="3" class="select-item">
+              <mat-option value="4" class="select-item">
                 Destructive
               </mat-option>
             </mat-select>
@@ -453,7 +453,7 @@
 
           <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 form-group">
             <label class="panelLabel">Automation status</label>
-            <mat-select class="select-item" [(value)]="this.Case_AutoStat">
+            <mat-select class="select-item" [(ngModel)]="Case_AutoStat" (ngModelChange)="onChangePanel('@Case_AutoStat',$event)">
               <mat-option value="1" class="select-item" selected>
                 Not automated
               </mat-option>
@@ -511,32 +511,628 @@
       </div>
       <div class="panel-history" id="History" #History>
 
-        <div class="d-flex align-items-center  mt-3 ">
-          <div class="align-self-start me-2"><img class="lazy avatar-sm" src="../../../../assets/img/placeholder.jpg"></div>
-          <div class="revision-body">
-            <div class="history-user">
-              <div class="history-username"><span style="font-weight: bold;">Rica Isidto</span> has updated 1 field: Steps</div>
-              <div class="history-role">2022-09-14 16:02:57</div>
-            </div>
 
+        <cdk-virtual-scroll-viewport class="example-viewport" itemSize="50" minBufferPx="200" maxBufferPx="500">
+
+          <div *cdkVirtualFor="let item of testCase_History; let i = index; last as isLast" class="d-flex align-items-center  mt-3 ">
+            <div class="align-self-start me-2"><img class="lazy avatar-sm" src="../../../../assets/img/placeholder.jpg"></div>
             <div class="revision-body">
-              this is revised <br>
-              this is revised <br>
-              this is revised <br>
-              this is revised <br>
-              this is revised <br>
-              this is revised <br>
-              this is revised <br>
-              this is revised <br>
-              this is revised <br>
-              this is revised <br>
-              this is revised <br>
-              this is revised <br>
-              this is revised <br>
-              this is revised <br>
+              <div class="history-user">
+                <div class="history-username">
+                  <span style="font-weight: bold;">Rica Isidto</span>
+
+                  <ng-container *ngIf="isLast;">
+                    created a test case
+                  </ng-container>
+                  <ng-container *ngIf="i!=0">
+                    <ng-container *ngIf="testCase_History[i].Case_Severity == testCase_History[i-1].Case_Severity; else restore">
+
+                      <ng-container *ngIf="testCase_History[i].Case_Priority == testCase_History[i-1].Case_Priority; else restore">
+
+                        <ng-container *ngIf="testCase_History[i].Case_Type == testCase_History[i-1].Case_Type; else restore">
+
+                          <ng-container *ngIf="testCase_History[i].Case_Layer == testCase_History[i-1].Case_Layer; else restore">
+
+                            <ng-container *ngIf="testCase_History[i].Case_Flaky == testCase_History[i-1].Case_Flaky; else restore">
+
+                              <ng-container *ngIf="testCase_History[i].Case_Behavior == testCase_History[i-1].Case_Behavior; else restore">
+
+                                <ng-container *ngIf="testCase_History[i].Case_AutoStat == testCase_History[i-1].Case_AutoStat; else restore">
+
+                                </ng-container>
+
+                              </ng-container>
+
+                            </ng-container>
+
+                          </ng-container>
+
+                        </ng-container>
+
+                      </ng-container>
+
+                    </ng-container>
+
+                  </ng-container>
+
+                  <ng-template #restore>
+                    <ng-container *ngIf="i!=0">
+                      has updated the following field:
+                    </ng-container>
+                  </ng-template>
+                </div>
+                <div class="history-role">{{item.SysStartTime | date :"yyyy-MM-dd HH:MM:ss"}}</div>
+              </div>
+
+              <div class="revision-body">
+                <ng-container *ngIf="i!=0">
+
+                  <ng-container *ngIf="testCase_History[i].Case_Severity != testCase_History[i-1].Case_Severity">
+                    <div class="element mt-3">
+                      <p class="element-title">Severity</p>
+                      <div class="d-flex" style="align-items: baseline;">
+                        <div class="element-before">
+                          {{testCase_History[i].Case_Severity}}
+                          <ng-container *ngIf="testCase_History[i].Case_Severity == 1">
+                            Not set
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i].Case_Severity == 2">
+                            Blocker
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i].Case_Severity == 3">
+                            Critical
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i].Case_Severity == 4">
+                            Major
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i].Case_Severity == 5">
+                            Normal
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i].Case_Severity == 6">
+                            Minor
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i].Case_Severity == 7">
+                            Trival
+                          </ng-container>
+                        </div>
+                        <div class="element-divider ms-3 me-3"><i class="bi bi-arrow-right-short"></i></div>
+                        <div class="element-after">
+                          <ng-container *ngIf="testCase_History[i-1].Case_Severity == 1">
+                            Not set
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i-1].Case_Severity == 2">
+                            Blocker
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i-1].Case_Severity == 3">
+                            Critical
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i-1].Case_Severity == 4">
+                            Major
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i-1].Case_Severity == 5">
+                            Normal
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i-1].Case_Severity == 6">
+                            Minor
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i-1].Case_Severity == 7">
+                            Trival
+                          </ng-container>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+
+                  <ng-container *ngIf="testCase_History[i].Case_Priority != testCase_History[i-1].Case_Priority">
+                    <div class="element mt-3">
+                      <p class="element-title">Priority</p>
+                      <div class="d-flex" style="align-items: baseline;">
+                        <div class="element-before">
+                          <ng-container *ngIf="testCase_History[i].Case_Priority == 1">
+                            Not set
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i].Case_Priority == 2">
+                            High
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i].Case_Priority == 3">
+                            Medium
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i].Case_Priority == 4">
+                            Low
+                          </ng-container>
+                        </div>
+                        <div class="element-divider ms-3 me-3"><i class="bi bi-arrow-right-short"></i></div>
+                        <div class="element-after">
+                          <ng-container *ngIf="testCase_History[i-1].Case_Priority == 1">
+                            Not set
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i-1].Case_Priority == 2">
+                            High
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i-1].Case_Priority == 3">
+                            Medium
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i-1].Case_Priority == 4">
+                            Low
+                          </ng-container>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="testCase_History[i].Case_Type != testCase_History[i-1].Case_Type">
+                    <div class="element mt-3">
+                      <p class="element-title">Type</p>
+                      <div class="d-flex" style="align-items: baseline;">
+                        <div class="element-before">
+                          <ng-container *ngIf="testCase_History[i].Case_Type == 'Other'">
+                            Other
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i].Case_Type == 'Functional'">
+                            Functional
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i].Case_Type == 'Smoke'">
+                            Smoke
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i].Case_Type == 'Regression'">
+                            Regression
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i].Case_Type == 'Security'">
+                            Security
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i].Case_Type == 'Usability'">
+                            Usability
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i].Case_Type == 'Performance'">
+                            Performance
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i].Case_Type == 'Acceptance'">
+                            Acceptance
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i].Case_Type == 'Compatibility'">
+                            Compatibility
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i].Case_Type == 'Integration'">
+                            Integration
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i].Case_Type == 'Exploratory'">
+                            Exploratory
+                          </ng-container>
+                        </div>
+                        <div class="element-divider ms-3 me-3"><i class="bi bi-arrow-right-short"></i></div>
+                        <div class="element-after">
+                          <ng-container *ngIf="testCase_History[i-1].Case_Type == 'Other'">
+                            Other
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i-1].Case_Type == 'Functional'">
+                            Functional
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i-1].Case_Type == 'Smoke'">
+                            Smoke
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i-1].Case_Type == 'Regression'">
+                            Regression
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i-1].Case_Type == 'Security'">
+                            Security
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i-1].Case_Type == 'Usability'">
+                            Usability
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i-1].Case_Type == 'Performance'">
+                            Performance
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i-1].Case_Type == 'Acceptance'">
+                            Acceptance
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i-1].Case_Type == 'Compatibility'">
+                            Compatibility
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i-1].Case_Type == 'Integration'">
+                            Integration
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i-1].Case_Type == 'Exploratory'">
+                            Exploratory
+                          </ng-container>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="testCase_History[i].Case_Layer != testCase_History[i-1].Case_Layer">
+                    <div class="element mt-3">
+                      <p class="element-title">Layer</p>
+                      <div class="d-flex" style="align-items: baseline;">
+                        <div class="element-before">
+                          <ng-container *ngIf="testCase_History[i].Case_Layer == 1">
+                            Not set
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i].Case_Layer == 2">
+                            E2E
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i].Case_Layer == 3">
+                            API
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i].Case_Layer == 4">
+                            Unit
+                          </ng-container>
+                        </div>
+                        <div class="element-divider ms-3 me-3"><i class="bi bi-arrow-right-short"></i></div>
+                        <div class="element-after">
+                          <ng-container *ngIf="testCase_History[i-1].Case_Layer == 1">
+                            Not set
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i-1].Case_Layer == 2">
+                            E2E
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i-1].Case_Layer == 3">
+                            API
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i-1].Case_Layer == 4">
+                            Unit
+                          </ng-container>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="testCase_History[i].Case_Flaky != testCase_History[i-1].Case_Flaky">
+                    <div class="element mt-3">
+                      <p class="element-title">Flaky</p>
+                      <div class="d-flex" style="align-items: baseline;">
+                        <div class="element-before">
+                          <ng-container *ngIf="testCase_History[i].Case_Flaky == 1">
+                            No
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i].Case_Flaky == 2">
+                            Yes
+                          </ng-container>
+                        </div>
+                        <div class="element-divider ms-3 me-3"><i class="bi bi-arrow-right-short"></i></div>
+                        <div class="element-after">
+                          <ng-container *ngIf="testCase_History[i-1].Case_Flaky == 1">
+                            No
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i-1].Case_Flaky == 2">
+                            Yes
+                          </ng-container>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="testCase_History[i].Case_Milestone != testCase_History[i-1].Case_Milestone">
+                    <div class="element mt-3">
+                      <p class="element-title">Milestone</p>
+                      <div class="d-flex" style="align-items: baseline;">
+                        <div class="element-before">
+                          {{testCase_History[i].Case_Milestone}}
+                        </div>
+                        <div class="element-divider ms-3 me-3"><i class="bi bi-arrow-right-short"></i></div>
+                        <div class="element-after">
+                          {{testCase_History[i-1].Case_Milestone}}
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="testCase_History[i].Case_Behavior != testCase_History[i-1].Case_Behavior">
+                    <div class="element mt-3">
+                      <p class="element-title">Behavior</p>
+                      <div class="d-flex" style="align-items: baseline;">
+                        <div class="element-before">
+                          <ng-container *ngIf="testCase_History[i].Case_Behavior == 1">
+                            Not set
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i].Case_Behavior == 2">
+                            Positive
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i].Case_Behavior == 3">
+                            Negative
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i].Case_Behavior == 4">
+                            Destructive
+                          </ng-container>
+                        </div>
+                        <div class="element-divider ms-3 me-3"><i class="bi bi-arrow-right-short"></i></div>
+                        <div class="element-after">
+                          <ng-container *ngIf="testCase_History[i-1].Case_Behavior == 1">
+                            Not set
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i-1].Case_Behavior == 2">
+                            Positive
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i-1].Case_Behavior == 3">
+                            Negative
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i-1].Case_Behavior == 4">
+                            Destructive
+                          </ng-container>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="testCase_History[i].Case_AutoStat != testCase_History[i-1].Case_AutoStat">
+                    <div class="element mt-3">
+                      <p class="element-title">Automation Status</p>
+                      <div class="d-flex" style="align-items: baseline;">
+                        <div class="element-before">
+                          <ng-container *ngIf="testCase_History[i].Case_AutoStat == 1">
+                            Not automated
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i].Case_AutoStat == 2">
+                            To be automated
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i].Case_AutoStat == 3">
+                            Automated
+                          </ng-container>
+                        </div>
+                        <div class="element-divider ms-3 me-3"><i class="bi bi-arrow-right-short"></i></div>
+                        <div class="element-after">
+                          <ng-container *ngIf="testCase_History[i-1].Case_AutoStat == 1">
+                            Not automated
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i-1].Case_AutoStat == 2">
+                            To be automated
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i-1].Case_AutoStat == 3">
+                            Automated
+                          </ng-container>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+
+                </ng-container>
+                <ng-container *ngIf="i==0">
+
+                  <ng-container *ngIf="testCase_History[i].Case_Severity != testCase.Case_Severity">
+                    <div class="element mt-3">
+                      <p class="element-title">Severity</p>
+                      <div class="d-flex" style="align-items: baseline;">
+                        <div class="element-before">
+                          {{testCase_History[i].Case_Severity}}
+                          <ng-container *ngIf="testCase_History[i].Case_Severity == 1">
+                            Not set
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i].Case_Severity == 2">
+                            Blocker
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i].Case_Severity == 3">
+                            Critical
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i].Case_Severity == 4">
+                            Major
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i].Case_Severity == 5">
+                            Normal
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i].Case_Severity == 6">
+                            Minor
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i].Case_Severity == 7">
+                            Trival
+                          </ng-container>
+                        </div>
+                        <div class="element-divider ms-3 me-3"><i class="bi bi-arrow-right-short"></i></div>
+                        <div class="element-after">
+                          <ng-container *ngIf="testCase.Case_Severity == 1">
+                            Not set
+                          </ng-container>
+                          <ng-container *ngIf="testCase.Case_Severity == 2">
+                            Blocker
+                          </ng-container>
+                          <ng-container *ngIf="testCase.Case_Severity == 3">
+                            Critical
+                          </ng-container>
+                          <ng-container *ngIf="testCase.Case_Severity == 4">
+                            Major
+                          </ng-container>
+                          <ng-container *ngIf="testCase.Case_Severity == 5">
+                            Normal
+                          </ng-container>
+                          <ng-container *ngIf="testCase.Case_Severity == 6">
+                            Minor
+                          </ng-container>
+                          <ng-container *ngIf="testCase.Case_Severity == 7">
+                            Trival
+                          </ng-container>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+
+                  <ng-container *ngIf="testCase_History[i].Case_Priority != testCase.Case_Priority">
+                    <div class="element mt-3">
+                      <p class="element-title">Priority</p>
+                      <div class="d-flex" style="align-items: baseline;">
+                        <div class="element-before">
+                          <ng-container *ngIf="testCase_History[i].Case_Priority == 1">
+                            Not set
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i].Case_Priority == 2">
+                            High
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i].Case_Priority == 3">
+                            Medium
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i].Case_Priority == 4">
+                            Low
+                          </ng-container>
+                        </div>
+                        <div class="element-divider ms-3 me-3"><i class="bi bi-arrow-right-short"></i></div>
+                        <div class="element-after">
+                          <ng-container *ngIf="testCase.Case_Priority == 1">
+                            Not set
+                          </ng-container>
+                          <ng-container *ngIf="testCase.Case_Priority == 2">
+                            High
+                          </ng-container>
+                          <ng-container *ngIf="testCase.Case_Priority == 3">
+                            Medium
+                          </ng-container>
+                          <ng-container *ngIf="testCase.Case_Priority == 4">
+                            Low
+                          </ng-container>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="testCase_History[i].Case_Type != testCase.Case_Type">
+                    <div class="element mt-3">
+                      <p class="element-title">Type</p>
+                      <div class="d-flex" style="align-items: baseline;">
+                        <div class="element-before">
+                          {{testCase_History[i].Case_Type}}
+                        </div>
+                        <div class="element-divider ms-3 me-3"><i class="bi bi-arrow-right-short"></i></div>
+                        <div class="element-after">
+                          {{testCase.Case_Type}}
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="testCase_History[i].Case_Layer != testCase.Case_Layer">
+                    <div class="element mt-3">
+                      <p class="element-title">Layer</p>
+                      <div class="d-flex" style="align-items: baseline;">
+                        <div class="element-before">
+                          <ng-container *ngIf="testCase_History[i].Case_Layer == 1">
+                            Not set
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i].Case_Layer == 2">
+                            E2E
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i].Case_Layer == 3">
+                            API
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i].Case_Layer == 4">
+                            Unit
+                          </ng-container>
+                        </div>
+                        <div class="element-divider ms-3 me-3"><i class="bi bi-arrow-right-short"></i></div>
+                        <div class="element-after">
+                          <ng-container *ngIf="testCase.Case_Layer == 1">
+                            Not set
+                          </ng-container>
+                          <ng-container *ngIf="testCase.Case_Layer == 2">
+                            E2E
+                          </ng-container>
+                          <ng-container *ngIf="testCase.Case_Layer == 3">
+                            API
+                          </ng-container>
+                          <ng-container *ngIf="testCase.Case_Layer == 4">
+                            Unit
+                          </ng-container>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="testCase_History[i].Case_Flaky != testCase.Case_Flaky">
+                    <div class="element mt-3">
+                      <p class="element-title">Flaky</p>
+                      <div class="d-flex" style="align-items: baseline;">
+                        <div class="element-before">
+                          <ng-container *ngIf="testCase_History[i].Case_Flaky == 1">
+                            No
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i].Case_Flaky == 2">
+                            Yes
+                          </ng-container>
+                        </div>
+                        <div class="element-divider ms-3 me-3"><i class="bi bi-arrow-right-short"></i></div>
+                        <div class="element-after">
+                          <ng-container *ngIf="testCase.Case_Flaky == 1">
+                            No
+                          </ng-container>
+                          <ng-container *ngIf="testCase.Case_Flaky == 2">
+                            Yes
+                          </ng-container>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="testCase_History[i].Case_Milestone != testCase.Case_Milestone">
+                    <div class="element mt-3">
+                      <p class="element-title">Milestone</p>
+                      <div class="d-flex" style="align-items: baseline;">
+                        <div class="element-before">
+                          {{testCase_History[i].Case_Milestone}}
+                        </div>
+                        <div class="element-divider ms-3 me-3"><i class="bi bi-arrow-right-short"></i></div>
+                        <div class="element-after">
+                          {{testCase.Case_Milestone}}
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="testCase_History[i].Case_Behavior != testCase.Case_Behavior">
+                    <div class="element mt-3">
+                      <p class="element-title">Behavior</p>
+                      <div class="d-flex" style="align-items: baseline;">
+                        <div class="element-before">
+                          <ng-container *ngIf="testCase_History[i].Case_Behavior == 1">
+                            Not set
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i].Case_Behavior == 2">
+                            Positive
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i].Case_Behavior == 3">
+                            Negative
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i].Case_Behavior == 4">
+                            Destructive
+                          </ng-container>
+                        </div>
+                        <div class="element-divider ms-3 me-3"><i class="bi bi-arrow-right-short"></i></div>
+                        <div class="element-after">
+                          <ng-container *ngIf="testCase.Case_Behavior == 1">
+                            Not set
+                          </ng-container>
+                          <ng-container *ngIf="testCase.Case_Behavior == 2">
+                            Positive
+                          </ng-container>
+                          <ng-container *ngIf="testCase.Case_Behavior == 3">
+                            Negative
+                          </ng-container>
+                          <ng-container *ngIf="testCase.Case_Behavior == 4">
+                            Destructive
+                          </ng-container>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="testCase_History[i].Case_AutoStat != testCase.Case_AutoStat">
+                    <div class="element mt-3">
+                      <p class="element-title">Automation Status/p>
+                      <div class="d-flex" style="align-items: baseline;">
+                        <div class="element-before">
+                          <ng-container *ngIf="testCase_History[i].Case_AutoStat == 1">
+                            Not automated
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i].Case_AutoStat == 2">
+                            To be automated
+                          </ng-container>
+                          <ng-container *ngIf="testCase_History[i].Case_AutoStat == 3">
+                            Automated
+                          </ng-container>
+                        </div>
+                        <div class="element-divider ms-3 me-3"><i class="bi bi-arrow-right-short"></i></div>
+                        <div class="element-after">
+                          <ng-container *ngIf="testCase.Case_AutoStat == 1">
+                            Not automated
+                          </ng-container>
+                          <ng-container *ngIf="testCase.Case_AutoStat == 2">
+                            To be automated
+                          </ng-container>
+                          <ng-container *ngIf="testCase.Case_AutoStat == 3">
+                            Automated
+                          </ng-container>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+
+                </ng-container>
+              </div>
             </div>
           </div>
-        </div>
+        </cdk-virtual-scroll-viewport>
 
       </div>
       <div class="panel-defects" id="Defects" #Defects>

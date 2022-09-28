@@ -53,6 +53,9 @@ export class CaseCreateComponent implements OnInit {
   listofAttachmentInStep: any = [];
   addingAttachmentTo?: number;
 
+  //Parameter
+  @ViewChild('Parameter') param?: ElementRef;
+
   //SharedStep
   sharedStepsTitle: string = '';
   currentStep: step[] = [];
@@ -176,6 +179,9 @@ export class CaseCreateComponent implements OnInit {
         this.caseForm.controls['@Case_PostCondition'].setValue(value[0][0].Case_PostCondition);
         this.caseForm.controls['@Case_Tags'].setValue(value[0][0].Case_Tag);
         this.caseForm.controls['@User_ID'].setValue(value[0][0].User_ID);
+        this.caseForm.controls['@LastModifiedUser'].setValue(value[0][0].LastModifiedUser);
+        this.caseForm.controls['@Project_ID'].setValue(value[0][0].Project_ID);
+
         if (value[0][0].Attachments_ID != undefined && value[0][0].Attachments_ID != '') {
           var Params =
             [
@@ -243,21 +249,22 @@ export class CaseCreateComponent implements OnInit {
       '@Case_PreCondition': [null],
       '@Case_PostCondition': [null],
       '@Case_Tags': ['1'],
-      '@Case_Param': [null],
+      '@Case_Param': [[{ title: 'haha' }, { param: 'param' }]],
       '@User_ID': ['1'],
       '@LastModifiedUser': [this.temporaryUser],
       '@Project_ID': [this.LinkParamID],
     })
 
   }
+
   createCase() {
     this.json['CommandText'] = 'egsQATestCaseInsertUpdate';
     this.json['Params'] = [];
 
     for (const field in this.caseForm.controls) { // 'field' is a string
       var control = this.caseForm.get(field)?.value; // 'control' is a FormControl
-      if (control != null)
-        control = control.toString();
+      if (field == '@Case_Param') control = JSON.stringify(control);
+      else if (control != null) control = control.toString();
       var temp = {
         Param: field,
         Value: control
@@ -342,7 +349,10 @@ export class CaseCreateComponent implements OnInit {
       complete: () => console.info('complete')
     })
   }
-
+  addParameter(event: any) {
+    console.log(event.target.value)
+    console.log(event)
+  }
   addStepInput() {
     this.steps.push(
       {

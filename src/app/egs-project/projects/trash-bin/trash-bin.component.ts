@@ -4,7 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 import { step, testCase } from 'src/app/models/project/project.model';
 import { user } from 'src/app/models/workspace/workspace.model';
 import { ApiService } from 'src/app/services/api.service';
-import { sidebarService } from 'src/app/services/global-functions.service';
+import { SelectionModel } from '@angular/cdk/collections';
+import { reloadPage, sidebarService } from 'src/app/services/global-functions.service';
 export interface PeriodicElement {
   name: string;
   position: string;
@@ -25,6 +26,11 @@ export class TrashBinComponent implements OnInit {
 
   displayedColumns: string[] = ['select', 'testcase', 'deleted', 'deletedby', 'steps', 'testruns', 'control'];
   dataSource = new MatTableDataSource<testCase>();
+
+  testcaseSelect: any;
+  testCaseModel = new SelectionModel(
+    true,   // multiple selection or not
+  );
   constructor(public sidebarServ: sidebarService, private activatedRoute: ActivatedRoute, private api: ApiService) {
     this.projectID = Number(sidebarServ.projectID);
     this.api.UniCall(
@@ -57,15 +63,25 @@ export class TrashBinComponent implements OnInit {
         ],
       }
     ).subscribe(value => {
-      console.log(value);
       this.users = value[0];
-      console.log(value[0]);
     });
     //! end
+
+    this.testCaseModel.changed.subscribe({
+      next: (e) => {
+        // console.log(e)
+        // console.log(JSON.stringify(e.source.selected))
+        this.testcaseSelect = JSON.stringify(e.source.selected);
+      }
+    })
 
   }
 
   ngOnInit(): void {
+  }
+
+  selectedTestCaseCheck(event: number) {
+    this.testCaseModel.toggle(event)
   }
 
   getDateBetween(date: Date) {
@@ -95,5 +111,137 @@ export class TrashBinComponent implements OnInit {
   getUser(userID: number) {
     let user = this.users.find(x => x.User_ID === userID);
     return user?.User_Firstname + " " + user?.User_Lastname;
+  }
+  MultiRestoreCase() {
+
+    this.api.UniCall(
+      {
+        CommandText: 'egsQATestCaseHistoryMultiRestore',
+        Params: [
+          {
+            Param: '@Case_Json',
+            Value: this.testcaseSelect
+          }
+        ],
+      }
+    ).subscribe(
+      {
+        error: (e) => console.error(e),
+        complete() {
+          reloadPage();
+        },
+      }
+    )
+  }
+  restoreCase(testcase: testCase) {
+    let attachmentParameter = testcase.Attachments_ID
+    if (attachmentParameter?.length == 0 || attachmentParameter == undefined) {
+      attachmentParameter = undefined
+    } else {
+      attachmentParameter = attachmentParameter.toString()
+    }
+    this.api.UniCall(
+      {
+        CommandText: 'egsQATestCaseHistoryRestore',
+        Params: [
+          {
+            Param: '@Case_ID',
+            Value: testcase.Case_ID.toString()
+          },
+          {
+            Param: '@Case_Title',
+            Value: testcase.Case_Title
+          },
+          {
+            Param: '@Case_Status',
+            Value: testcase.Case_Status.toString()
+          },
+          {
+            Param: '@Case_Desc',
+            Value: testcase.Case_Desc
+          },
+          {
+            Param: '@Suite_ID',
+            Value: testcase.Suite_ID.toString()
+          },
+          {
+            Param: '@Case_Severity',
+            Value: testcase.Case_Severity.toString()
+          },
+          {
+            Param: '@Case_Priority',
+            Value: testcase.Case_Priority.toString()
+          },
+          {
+            Param: '@Case_Type',
+            Value: testcase.Case_Type.toString()
+          },
+          {
+            Param: '@Case_Layer',
+            Value: testcase.Case_Layer.toString()
+          },
+          {
+            Param: '@Case_Flaky',
+            Value: testcase.Case_Flaky.toString()
+          },
+          {
+            Param: '@Case_isLock',
+            Value: testcase.Case_isLock.toString()
+          },
+          {
+            Param: '@User_ID',
+            Value: testcase.User_ID.toString()
+          },
+          {
+            Param: '@Case_Milestone',
+            Value: testcase.Case_Milestone.toString()
+          },
+          {
+            Param: '@Case_Behavior',
+            Value: testcase.Case_Behavior.toString()
+          },
+          {
+            Param: '@Case_AutoStat',
+            Value: testcase.Case_AutoStat.toString()
+          },
+          {
+            Param: '@Case_PreCondition',
+            Value: testcase.Case_PreCondition
+          },
+          {
+            Param: '@Case_PostCondition',
+            Value: testcase.Case_PostCondition
+          },
+          {
+            Param: '@Case_Tag',
+            Value: testcase.Case_Tag
+          },
+          {
+            Param: '@Case_Param',
+            Value: testcase.Case_Param
+          },
+          {
+            Param: '@Attachments_ID',
+            Value: attachmentParameter
+          },
+          {
+            Param: '@LastModifiedUser',
+            Value: testcase.LastModifiedUser.toString()
+          },
+          {
+            Param: '@Project_ID',
+            Value: testcase.Project_ID.toString()
+          },
+        ],
+      }
+    ).subscribe(
+      {
+        error: (e) => console.error(e),
+        complete() {
+          reloadPage();
+
+        },
+      }
+    )
   }
 }
