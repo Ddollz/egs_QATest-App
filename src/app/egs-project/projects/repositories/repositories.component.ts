@@ -832,6 +832,23 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
       }
     )
     //? END
+
+    //? Get History
+    this.api.UniCall(
+      {
+        CommandText: 'egsQATestCaseHistoryGet',
+        Params: [
+          {
+            Param: '@Case_ID',
+            Value: this.testCase.Case_ID.toString()
+          }
+        ],
+      }
+    ).subscribe(value => {
+      if (value.length === 0)
+        this.istestCase_HistoryNull = true
+      this.testCase_History = value[0];
+    });
   }
   changePanelContent(value: string, event?: Event) {
     let panelNavchildren = this.panelNav?.nativeElement.children;

@@ -61,6 +61,82 @@
     <div class="revision-body">
       <ng-container *ngIf="index!=0">
 
+
+        <ng-container *ngIf="currentObj.Case_Title != prevObj.Case_Title">
+          <div class="element mt-3">
+            <p class="element-title">Title</p>
+            <div class="d-flex" style="align-items: baseline;">
+              <div class="element-before">
+                {{currentObj.Case_Title}}
+              </div>
+              <div class="element-divider ms-3 me-3"><i class="bi bi-arrow-right-short"></i></div>
+              <div class="element-after">
+                {{prevObj.Case_Title}}
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="currentObj.Case_Desc != prevObj.Case_Desc">
+          <div class="element mt-3">
+            <p class="element-title">Description</p>
+            <div class="d-flex" style="align-items: baseline;">
+              <div class="element-before">
+                {{currentObj.Case_Desc}}
+              </div>
+              <div class="element-divider ms-3 me-3"><i class="bi bi-arrow-right-short"></i></div>
+              <div class="element-after">
+                {{prevObj.Case_Desc}}
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="currentObj.Case_Status != prevObj.Case_Status">
+          <div class="element mt-3">
+            <p class="element-title">Status</p>
+            <div class="d-flex" style="align-items: baseline;">
+              <div class="element-before">
+                {{currentObj.Case_Status}}
+              </div>
+              <div class="element-divider ms-3 me-3"><i class="bi bi-arrow-right-short"></i></div>
+              <div class="element-after">
+                {{prevObj.Case_Status}}
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="currentObj.Case_PreCondition != prevObj.Case_PreCondition">
+          <div class="element mt-3">
+            <p class="element-title">Pre-condition</p>
+            <div class="d-flex" style="align-items: baseline;">
+              <div class="element-before">
+                {{currentObj.Case_PreCondition}}
+              </div>
+              <div class="element-divider ms-3 me-3"><i class="bi bi-arrow-right-short"></i></div>
+              <div class="element-after">
+                {{prevObj.Case_PreCondition}}
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="currentObj.Case_PostCondition != prevObj.Case_PostCondition">
+          <div class="element mt-3">
+            <p class="element-title">Post-condition</p>
+            <div class="d-flex" style="align-items: baseline;">
+              <div class="element-before">
+                {{currentObj.Case_PostCondition}}
+              </div>
+              <div class="element-divider ms-3 me-3"><i class="bi bi-arrow-right-short"></i></div>
+              <div class="element-after">
+                {{prevObj.Case_PostCondition}}
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
         <ng-container *ngIf="currentObj.Case_Severity != prevObj.Case_Severity">
           <div class="element mt-3">
             <p class="element-title">Severity</p>
@@ -176,6 +252,82 @@
 
       </ng-container>
       <ng-container *ngIf="index==0">
+
+
+        <ng-container *ngIf="currentObj.Case_Title != testCase.Case_Title">
+          <div class="element mt-3">
+            <p class="element-title">Title</p>
+            <div class="d-flex" style="align-items: baseline;">
+              <div class="element-before">
+                {{currentObj.Case_Title}}
+              </div>
+              <div class="element-divider ms-3 me-3"><i class="bi bi-arrow-right-short"></i></div>
+              <div class="element-after">
+                {{testCase.Case_Title}}
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="currentObj.Case_Desc != testCase.Case_Desc">
+          <div class="element mt-3">
+            <p class="element-title">Description</p>
+            <div class="d-flex" style="align-items: baseline;">
+              <div class="element-before">
+                {{currentObj.Case_Desc}}
+              </div>
+              <div class="element-divider ms-3 me-3"><i class="bi bi-arrow-right-short"></i></div>
+              <div class="element-after">
+                {{testCase.Case_Desc}}
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="currentObj.Case_Status != testCase.Case_Status">
+          <div class="element mt-3">
+            <p class="element-title">Status</p>
+            <div class="d-flex" style="align-items: baseline;">
+              <div class="element-before">
+                {{currentObj.Case_Status}}
+              </div>
+              <div class="element-divider ms-3 me-3"><i class="bi bi-arrow-right-short"></i></div>
+              <div class="element-after">
+                {{testCase.Case_Status}}
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="currentObj.Case_PreCondition != testCase.Case_PreCondition">
+          <div class="element mt-3">
+            <p class="element-title">Pre-condition</p>
+            <div class="d-flex" style="align-items: baseline;">
+              <div class="element-before">
+                {{currentObj.Case_PreCondition}}
+              </div>
+              <div class="element-divider ms-3 me-3"><i class="bi bi-arrow-right-short"></i></div>
+              <div class="element-after">
+                {{testCase.Case_PreCondition}}
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="currentObj.Case_PostCondition != testCase.Case_PostCondition">
+          <div class="element mt-3">
+            <p class="element-title">Post-condition</p>
+            <div class="d-flex" style="align-items: baseline;">
+              <div class="element-before">
+                {{currentObj.Case_PostCondition}}
+              </div>
+              <div class="element-divider ms-3 me-3"><i class="bi bi-arrow-right-short"></i></div>
+              <div class="element-after">
+                {{testCase.Case_PostCondition}}
+              </div>
+            </div>
+          </div>
+        </ng-container>
 
         <ng-container *ngIf="currentObj.Case_Severity != testCase.Case_Severity">
           <div class="element mt-3">
