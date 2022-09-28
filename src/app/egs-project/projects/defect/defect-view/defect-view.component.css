@@ -59,6 +59,12 @@
 }
 
 /* Button */
+.filter-item {
+  font-size: .875rem;
+  letter-spacing: .0892857143em;
+  font-weight: 500;
+}
+
 .filter-btn {
   font-weight: 600;
   color: #393939;

@@ -123,4 +123,8 @@ export interface testrun {
   TestRun_Tags: string;
   TestRun_CompletionRange: number;
   TestRun_DateCreated: number;
+  TestRun_Status: number;
+  TestRun_Passed: number;
+  TestRun_Failed: number;
+  TestRun_Untested: number;
 }

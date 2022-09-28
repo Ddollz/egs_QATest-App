@@ -3,51 +3,62 @@
     <div class="col-lg-12">
 
       <h2 class="page-title my-3"><i class="bi bi-arrow-left me-4" data-bs-toggle="tooltip" title="Go back"
-          routerLink="/projects/run"></i>Start test run</h2>
+          routerLink="/projects/run"></i>{{Page_title}}</h2>
 
       <div class="mb-3">
         <Label class="page-label">Run title*</Label>
-        <input type="text" class="form-control">
+        <input type="text" class="form-control" [(ngModel)]="TestRun_Title">
       </div>
 
       <div class="mb-3">
         <Label class="page-label">Description</Label>
-        <input type="text" class="form-control" placeholder="For example: Regression">
+        <input type="text" class="form-control" placeholder="For example: Full Regression" [(ngModel)]="TestRun_Desc">
       </div>
 
       <div class="mb-3">
         <div class="row">
-          <div class="col-4">
-            <Label class="page-label">Plan</Label>
-            <mat-select class="select-item" [value]="''" placeholder="Select...">
-            </mat-select>
-          </div>
+          <ng-template [ngIf]="Page_title == 'Start test run'">
+            <div class="col-4">
+              <Label class="page-label">Plan</Label>
+              <mat-select class="select-item" placeholder="Select..." [(ngModel)]="TestPlan_ID">
+                <mat-option class="select-item" *ngFor="let testplan of testplans" [value]="testplan.TestPlan_ID">
+                  <span>{{testplan.TestPlan_Title}} </span>
+                  <span style="color: #aaa;">{{testplan.TestPlan_CaseCount}} test cases</span>
+                </mat-option>
+              </mat-select>
+            </div>
+          </ng-template>
           <div class="col-4">
             <Label class="page-label">Environment</Label>
-            <mat-select class="select-item">
-              <mat-option class="select-item" value="0">Not set</mat-option>
+            <mat-select class="select-item" [(ngModel)]="TestRun_Environment">
+              <mat-option class="select-item" value="1">Not set</mat-option>
             </mat-select>
           </div>
           <div class="col-4">
             <Label class="page-label">Milestone</Label>
-            <mat-select class="select-item">
+            <mat-select class="select-item" [(ngModel)]="TestRun_Milestone">
               <mat-option class="select-item" value="0">Not set</mat-option>
+              <mat-option class="select-item" *ngFor="let milestone of milestones" [value]="milestone.Milestone_ID">
+                {{milestone.Milestone_Title}}</mat-option>
             </mat-select>
           </div>
         </div>
       </div>
 
-      <div class="mb-3">
-        <div class="row">
-          <div class="col-4">
-            <Label class="page-label">Default assignee <i class="bi bi-question-circle-fill tooltip-i"
-                data-bs-toggle="tooltip"
-                title="All unassigned test cases will be assigned to selected user. Leave unassigned and any user will be able to take case during run."></i></Label>
-            <mat-select class="select-item" [value]="''" placeholder="Select...">
-            </mat-select>
+      <ng-template [ngIf]="Page_title == 'Start test run'">
+        <div class="mb-3">
+          <div class="row">
+            <div class="col-4">
+              <Label class="page-label">Default assignee <i class="bi bi-question-circle-fill tooltip-i"
+                  data-bs-toggle="tooltip"
+                  title="All unassigned test cases will be assigned to selected user. Leave unassigned and any user will be able to take case during run."></i></Label>
+              <mat-select class="select-item" placeholder="Select..." [(ngModel)]="User_ID">
+                <mat-option class="select-item" value="0">No options</mat-option>
+              </mat-select>
+            </div>
           </div>
         </div>
-      </div>
+      </ng-template>
 
       <div class="row m-0 mb-4">
         <span class="label-line ps-0">Tags</span>
@@ -55,7 +66,8 @@
 
       <div class="row mb-3">
         <div class="col-4">
-          <mat-select class="select-item" [value]="''" placeholder="Select...">
+          <mat-select class="select-item" placeholder="Select..." [(ngModel)]="TestRun_Tags">
+            <mat-option class="select-item" value="0">No options</mat-option>
           </mat-select>
         </div>
       </div>
@@ -78,7 +90,7 @@
 
       <div class="row mb-5">
         <div class="d-flex align-items-center">
-          <button class="btn btn-primary me-3">Start run</button>
+          <button class="btn btn-primary me-3" (click)="updateInsertTestRun()">{{Button_title}}</button>
           <span class="cancel-span" routerLink="/projects/run">Cancel</span>
         </div>
       </div>
