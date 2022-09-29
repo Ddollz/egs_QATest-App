@@ -36,11 +36,9 @@
 }
 
 /* Images */
-.project-image img {
+.project-image {
   width: 2.5rem;
-  margin: 10px 0;
   border-radius: 6px;
-  display: inline-block;
 }
 
 .project-team img {
@@ -58,14 +56,6 @@
   font-weight: 500;
 }
 
-.filter-btn {
-  font-weight: 600;
-  color: #393939;
-  background-color: #f3f3f3 !important;
-  border: none;
-}
-
-.filter-btn:hover,
 .filter-item:hover {
   background-color: #efefef !important;
 }
@@ -100,16 +90,6 @@ input[type="checkbox"]:checked {
 }
 
 /* Icons */
-.bi-star {
-  opacity: 0;
-  font-size: 18px;
-  color: #ffc107;
-}
-
-.bi-star:hover {
-  opacity: 1;
-}
-
 .bi-check {
   color: #37bd47;
   font-size: 18px;
@@ -121,12 +101,13 @@ input[type="checkbox"]:checked {
 
 /* Columns */
 .mat-header-cell {
+  padding: 0 10px;
   font-size: 0.9rem;
   font-weight: 600;
 }
 
-.mat-column-Favorite {
-  width: 5%;
+.mat-cell {
+  padding: 10px;
 }
 
 .mat-column-Project_Image {
@@ -134,7 +115,7 @@ input[type="checkbox"]:checked {
 }
 
 .mat-column-Project_Name {
-  width: 25%;
+  width: 30%;
 }
 
 .mat-column-Unresolved {
@@ -161,7 +142,8 @@ input[type="checkbox"]:checked {
 .tooltip-i,
 .filter-span,
 .column-title,
-.project-image img {
+.project-image,
+.dropdown-item:hover {
   cursor: pointer;
 }
 

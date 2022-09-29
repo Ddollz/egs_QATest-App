@@ -1,8 +1,9 @@
-import { Component, OnInit, Inject, LOCALE_ID } from '@angular/core';
-import { testrun, testplan, milestone } from '../../../../models/project/project.model';
+import { Component, OnInit, Input, Inject, LOCALE_ID } from '@angular/core';
+import { project, suite, testCase, testrun, testplan, milestone } from '../../../../models/project/project.model';
 import { ApiService } from '../../../../services/api.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { formatDate } from '@angular/common';
+import { sidebarService } from '../../../../services/global-functions.service';
 
 @Component({
   selector: 'app-run-create',
@@ -15,7 +16,10 @@ export class RunCreateComponent implements OnInit {
   Page_title: string = 'Start test run';
   Button_title: string = 'Start run';
 
-  //Update and Insert Variables
+  // Utilities
+  LinkParamID: number = 0;
+
+  // Update and Insert Variables
   TestRun_ID: string = '';
   TestRun_Title: string = '';
   TestRun_Desc: string = '';
@@ -31,11 +35,14 @@ export class RunCreateComponent implements OnInit {
   TestRun_Failed: string = '0';
   TestRun_Untested: string = '0';
 
+  suites: suite[] = [];
+  testcases: testCase[] = [];
   testruns: testrun[] = [];
   testplans: testplan[] = [];
   milestones: milestone[] = [];
+  @Input() project = {} as project;
 
-  constructor(private api: ApiService, private router: Router, private route: ActivatedRoute, @Inject(LOCALE_ID) private locale: string) {
+  constructor(private api: ApiService, private router: Router, private route: ActivatedRoute, private sidebarServ: sidebarService, @Inject(LOCALE_ID) private locale: string) {
     if (this.route.snapshot.params['i']) {
       this.index = this.route.snapshot.params['i'];
       this.Page_title = 'Edit test run';
@@ -43,8 +50,13 @@ export class RunCreateComponent implements OnInit {
       this.getTestRun();
     }
 
+    this.getSuite();
+    this.getTestCase();
     this.getTestPlan();
     this.getMilestone();
+
+    this.LinkParamID = sidebarServ.projectID;
+    console.log('LinkParamID: ' + this.LinkParamID);
   }
 
   ngOnInit(): void {
@@ -88,6 +100,57 @@ export class RunCreateComponent implements OnInit {
       this.TestRun_Passed = value[0][this.index].TestRun_Passed;
       this.TestRun_Failed = value[0][this.index].TestRun_Failed;
       this.TestRun_Untested = value[0][this.index].TestRun_Untested;
+    });
+  }
+
+  getProject() {
+    this.api.UniCall(
+      {
+        CommandText: 'egsQAProjectGet',
+        Params: [
+          {
+            Param: '@Project_ID',
+            Value: this.LinkParamID.toString()
+          }
+        ],
+      }
+    ).subscribe(value => {
+      this.project = value[0][0];
+    });
+  }
+
+  getSuite() {
+    this.api.UniCall(
+      {
+        CommandText: 'egsQASuiteGet',
+        Params: [
+          {
+            Param: '@Project_ID',
+            Value: this.LinkParamID.toString()
+          }
+        ],
+      }
+    ).subscribe(value => {
+      this.suites = value[0];
+      console.log('Suites: ' + this.suites);
+    });
+  }
+
+  getTestCase() {
+    this.api.UniCall(
+      {
+        CommandText: 'egsQATestCaseGet',
+        Params: [
+          {
+            Param: '@Case_ID',
+            Value: '1122'
+            // Value: this.LinkParamID.toString()
+          }
+        ],
+      }
+    ).subscribe(value => {
+      this.testcases = value[0];
+      console.log('Cases: ' + this.testcases);
     });
   }
 
@@ -192,4 +255,7 @@ export class RunCreateComponent implements OnInit {
     });
   }
 
+  applyFilter(event?: Event) {
+
+  }
 }

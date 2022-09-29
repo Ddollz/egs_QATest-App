@@ -20,7 +20,7 @@ export class ProjectsComponent implements OnInit {
 
   //Table Initialize
   projects: project[] = [];
-  displayedColumns: string[] = ['Favorite', 'Project_Image', 'Project_Name', 'Unresolved', 'TestRun', 'Milestone', 'Members', 'Setting'];
+  displayedColumns: string[] = ['Project_Image', 'Project_Name', 'Unresolved', 'TestRun', 'Milestone', 'Members', 'Setting'];
   dataSource = new MatTableDataSource<project>();
 
   constructor(private api: ApiService) {

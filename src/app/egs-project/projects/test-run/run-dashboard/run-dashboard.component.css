@@ -100,8 +100,15 @@
   color: var(--bs-red-100);
 }
 
+.cancel-span {
+  font-weight: 600;
+  color: var(--bs-red-100);
+  padding: 0rem 0.75rem;
+}
+
 .filter-span:hover,
 .defect-span:hover,
+.cancel-span:hover,
 .small-text-case:hover {
   color: #eb7374 !important;
 }
@@ -168,6 +175,7 @@
 .bi-arrow-left,
 .filter-span,
 .defect-span,
+.cancel-span,
 .small-text-case,
 .passed-pb,
 .failed-pb,

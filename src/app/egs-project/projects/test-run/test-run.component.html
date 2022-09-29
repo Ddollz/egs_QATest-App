@@ -34,14 +34,15 @@
           <ng-container matColumnDef="Status">
             <th mat-header-cell *matHeaderCellDef></th>
             <td mat-cell *matCellDef="let element">
-              <div class="text-center">
-                <ng-template [ngIf]="element.TestRun_Status == 0">
-                  <i class="bi bi-record-circle-fill" data-bs-toggle="tooltip" title="Open"></i>
-                </ng-template>
-                <ng-template [ngIf]="element.TestRun_Status == 1">
-                  <i class="bi bi-check-circle-fill" data-bs-toggle="tooltip" title="Complete"></i>
-                </ng-template>
-              </div>
+              <ng-template [ngIf]="element.TestRun_Status == 0">
+                <i class="bi bi-record-circle-fill"></i>
+              </ng-template>
+              <ng-template [ngIf]="element.TestRun_Status == 1">
+                <i class="bi bi-check-circle-fill"></i>
+              </ng-template>
+              <ng-template [ngIf]="element.TestRun_Status == 2">
+                <i class="bi bi-x-circle-fill"></i>
+              </ng-template>
             </td>
           </ng-container>
 

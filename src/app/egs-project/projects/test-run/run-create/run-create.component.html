@@ -80,7 +80,7 @@
         <span>0 test cases selected</span>
       </div>
 
-      <div class="mb-3">
+      <div class="mb-3" data-bs-toggle="modal" data-bs-target="#addcases">
         <span class="add-attach-span"><i class="bi bi-plus-circle-fill me-2"></i>Add cases</span>
       </div>
 
@@ -93,6 +93,99 @@
           <button class="btn btn-primary me-3" (click)="updateInsertTestRun()">{{Button_title}}</button>
           <span class="cancel-span" routerLink="/projects/run">Cancel</span>
         </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Add cases modal -->
+<div class="modal" id="addcases" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header d-block">
+        <div class="row mb-2">
+          <div class="col d-flex align-items-center">
+            <h5 class="modal-title">Select test cases</h5>
+          </div>
+          <div class="col d-flex align-items-center justify-content-end">
+            <span class="me-2">0 test cases selected</span>
+            <i class="bi bi-x-lg"></i>
+          </div>
+        </div>
+
+        <div class="d-flex align-items-center">
+          <input type="text" class="form-control search_input me-2" placeholder="Search for cases">
+          <span class="filter-span" data-bs-toggle="dropdown">+ Add filter</span>
+          <div class="dropdown-menu">
+              <div class="dropdown-item">Priority</div>
+              <div class="dropdown-item">Severity</div>
+              <div class="dropdown-item">Type</div>
+              <div class="dropdown-item">Behavior</div>
+              <div class="dropdown-item">Status</div>
+              <div class="dropdown-item">Automation</div>
+              <div class="dropdown-item">Layer</div>
+              <div class="dropdown-item">Is flaky</div>
+              <div class="dropdown-item">Milestones</div>
+              <div class="dropdown-item">Tags</div>
+              <div class="dropdown-item">Steps</div>
+              <div class="dropdown-item">Author</div>
+              <div class="dropdown-item">Last Run Date</div>
+              <div class="dropdown-item">Creation Date</div>
+              <div class="dropdown-item">Last Update Date</div>
+              <div class="dropdown-item">External Issue</div>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div class="modal-body">
+
+        <div class="row gx-0">
+          <div class="col-3 modal-col">
+
+            <ng-container *ngFor="let suite of suites;">
+              <ng-container *ngIf="suite.Project_ID == LinkParamID">
+                <ng-container *ngIf="suite.Parent_SuiteID == 0">
+            
+                  <app-suites-plan [Suite]="suite"></app-suites-plan>
+
+                  <div class="ms-3">
+                    <ng-container *ngTemplateOutlet="tree; context:{$implicit: suite}"></ng-container>
+                  </div>
+                </ng-container>
+              </ng-container>
+            </ng-container>
+
+            <ng-template #tree let-data>
+              <ng-container *ngFor="let s of suites">
+                <!-- Check if leaf exist display the leaf and loop again.-->
+                <!-- Check if leaf does not exist end the loop.-->
+                <ng-container *ngIf="data.Suite_ID == s.Parent_SuiteID">
+                  <app-suites-plan [Suite]="s" [carretOpen]="s.carretOpen"></app-suites-plan>
+                  <div class="collapse show" [id]="'collapse-'+s.Suite_ID">
+                    <!-- Run the template leaf again -->
+                    <div class="ms-3">
+                      <ng-container *ngTemplateOutlet="tree; context: {$implicit:s}"></ng-container>
+                    </div>
+                  </div>
+                </ng-container>
+              </ng-container>
+            </ng-template>
+
+          </div>
+          <div class="col-9 modal-col">
+
+          </div>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <span class="cancel-span me-2" data-bs-dismiss="modal">Cancel</span>
+        <button type="button" class="btn btn-primary">Done</button>
       </div>
 
     </div>

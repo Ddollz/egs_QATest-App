@@ -113,17 +113,21 @@ input[type="checkbox"]:checked {
 
 /* Columns */
 .mat-header-cell {
+  padding: 0 10px;
   font-size: 0.9rem;
   font-weight: 600;
 }
 
+.mat-cell {
+  padding: 10px;
+}
+
 .mat-column-Status {
-  width: 5%;
+  width: 0;
 }
 
 .mat-column-Title {
-  width: 30%;
-  padding: 10px 0;
+  width: auto;
 }
 
 .mat-column-Environment {
