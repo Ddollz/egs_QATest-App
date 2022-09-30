@@ -146,35 +146,6 @@
         <div class="row gx-0">
           <div class="col-3 modal-col">
 
-            <ng-container *ngFor="let suite of suites;">
-              <ng-container *ngIf="suite.Project_ID == LinkParamID">
-                <ng-container *ngIf="suite.Parent_SuiteID == 0">
-            
-                  <app-suites-plan [Suite]="suite"></app-suites-plan>
-
-                  <div class="ms-3">
-                    <ng-container *ngTemplateOutlet="tree; context:{$implicit: suite}"></ng-container>
-                  </div>
-                </ng-container>
-              </ng-container>
-            </ng-container>
-
-            <ng-template #tree let-data>
-              <ng-container *ngFor="let s of suites">
-                <!-- Check if leaf exist display the leaf and loop again.-->
-                <!-- Check if leaf does not exist end the loop.-->
-                <ng-container *ngIf="data.Suite_ID == s.Parent_SuiteID">
-                  <app-suites-plan [Suite]="s" [carretOpen]="s.carretOpen"></app-suites-plan>
-                  <div class="collapse show" [id]="'collapse-'+s.Suite_ID">
-                    <!-- Run the template leaf again -->
-                    <div class="ms-3">
-                      <ng-container *ngTemplateOutlet="tree; context: {$implicit:s}"></ng-container>
-                    </div>
-                  </div>
-                </ng-container>
-              </ng-container>
-            </ng-template>
-
           </div>
           <div class="col-9 modal-col">
 
