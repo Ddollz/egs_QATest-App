@@ -83,14 +83,14 @@ export class RunDashboardComponent implements OnInit {
       this.index = this.route.snapshot.params['i'];
       this.getTestRun();
     }
+  }
 
+  ngOnInit(): void {
     this.getProject();
     this.getSuite();
     this.getCase();
     this.getDefect();
   }
-
-  ngOnInit(): void { }
 
   getTestRun() {
     this.api.UniCall(
@@ -145,7 +145,7 @@ export class RunDashboardComponent implements OnInit {
         Params: [
           {
             Param: '@Suite_ID',
-            Value: '1145'
+            Value: '1146'
           }
         ]
       }
@@ -161,7 +161,7 @@ export class RunDashboardComponent implements OnInit {
         Params: [
           {
             Param: '@Case_ID',
-            Value: '22'
+            Value: '29'
           }
         ]
       }
