@@ -1,7 +1,6 @@
 import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
-import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 import { project, suite, testCase, step, testrun, defect } from '../../../models/project/project.model';
@@ -90,8 +89,9 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
   Case_Behavior: string = '';
   Case_AutoStat: string = '';
   testCase_History: any = [];
+  displayHistoryData: any = []
+  displayHistoryDataNumber: number = 5;
   istestCase_HistoryNull: boolean = false;
-  @ViewChild(CdkVirtualScrollViewport) viewport?: CdkVirtualScrollViewport;
   theEnd = false;
   offset = new BehaviorSubject(null);
   infinite?: Observable<any[]>;
@@ -119,19 +119,6 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
   testCaseModel = new SelectionModel(
     true,   // multiple selection or not
   );
-
-  nextBatch(e: any, offset: any) {
-    if (this.theEnd) return
-    const end = this.viewport?.getRenderedRange().end;
-    const total = this.viewport?.getDataLength();
-    if (end === total) {
-      this.offset.next(offset);
-    }
-
-  }
-  trackByIdx(i: any) {
-    return i;
-  }
 
   selectedSuiteCheck(event: number, bool: boolean = false) {
     if (bool) return this.suiteModel.deselect(event)
@@ -616,6 +603,8 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
   }
 
   openPanel(event: Event, testc: testCase) {
+    this.displayHistoryDataNumber = 5
+    this.displayHistoryData = []
     this.changePanelContent('General')
     this.api.UniCall(
       {
@@ -655,7 +644,6 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
 
         ];
 
-      console.log(JSON.stringify(AttachnmentLists))
       var formData = new FormData();
       formData.append("CommandText", 'egsQAAttachmentGet');
       formData.append("Params", JSON.stringify(Params));
@@ -780,11 +768,24 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
         ],
       }
     ).subscribe(value => {
-      if (value.length === 0)
-        this.istestCase_HistoryNull = true
+      if (value.length === 0) {
+        this.istestCase_HistoryNull = true;
+      }
+      else {
+        this.istestCase_HistoryNull = false;
+      }
+
       this.testCase_History = value[0];
+      this.displayHistoryData = this.testCase_History.slice(0, this.displayHistoryDataNumber);
     });
 
+  }
+  showMoreHistory() {
+    this.displayHistoryDataNumber = this.displayHistoryDataNumber + 3;
+    if (this.displayHistoryDataNumber > this.testCase_History.length) {
+      this.displayHistoryDataNumber = this.testCase_History.length
+    }
+    this.displayHistoryData = this.testCase_History.slice(0, this.displayHistoryDataNumber);
   }
 
   closePanel() {
@@ -850,7 +851,7 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
       this.testCase_History = value[0];
     });
   }
-  changePanelContent(value: string, event?: Event) {
+  changePanelContent(value: string) {
     let panelNavchildren = this.panelNav?.nativeElement.children;
     let activePanel = this.panelNav?.nativeElement.querySelector('#' + value);
 
@@ -869,7 +870,9 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
 
       panelContentchildren[index].style.display = 'none';
     }
-
+    if(value ==='History')
+    activeContent.style.display = 'flex';
+    else
     activeContent.style.display = 'block';
 
   }

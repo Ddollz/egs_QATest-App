@@ -174,12 +174,12 @@
       <button class="btns " (click)="deleteCase(testCase.Case_ID)"><i class="bi bi-trash2"></i> Delete</button>
     </div>
     <div class="panelNav" #panelNav>
-      <button (click)="changePanelContent('General', $event)" class="btns active" id="General"><span> </span>General</button>
-      <button (click)="changePanelContent('Properties', $event)" class="btns" id="Properties"><span> </span>Properties</button>
-      <button (click)="changePanelContent('Run', $event)" class="btns" id="Run"><span></span>Runs</button>
-      <button (click)="changePanelContent('History', $event)" class="btns" id="History"><span></span>History</button>
-      <button (click)="changePanelContent('Defects', $event)" class="btns" id="Defects"><span></span>Defects</button>
-      <button (click)="changePanelContent('Comments', $event)" class="btns" id="Comments"><span></span>Comments</button>
+      <button (click)="changePanelContent('General')" class="btns active" id="General"><span> </span>General</button>
+      <button (click)="changePanelContent('Properties')" class="btns" id="Properties"><span> </span>Properties</button>
+      <button (click)="changePanelContent('Run')" class="btns" id="Run"><span></span>Runs</button>
+      <button (click)="changePanelContent('History')" class="btns" id="History"><span></span>History</button>
+      <button (click)="changePanelContent('Defects')" class="btns" id="Defects"><span></span>Defects</button>
+      <button (click)="changePanelContent('Comments')" class="btns" id="Comments"><span></span>Comments</button>
     </div>
     <div class="panelContent" #panelContent>
 
@@ -510,22 +510,21 @@
 
       </div>
       <div class="panel-history" id="History" #History>
+        <div>
+          <ng-container *ngFor="let item of displayHistoryData; let i = index; last as isLast; first as isFirst">
+            <app-testcase-history [currentObj]="item" [prevObj]="displayHistoryData[i-1]" [index]="i" [isFirst]="isFirst" [isLast]="isLast" [testCase]="testCase" >
+            </app-testcase-history>
+          </ng-container>
+        </div>
 
-        <ng-container *ngIf="!istestCase_HistoryNull; else NoHistory">
-          <cdk-virtual-scroll-viewport class="example-viewport" itemSize="50" minBufferPx="200" maxBufferPx="500">
-
-            <div *cdkVirtualFor="let item of testCase_History; let i = index; last as isLast; first as isFirst">
-              <app-testcase-history [currentObj]="item" [prevObj]="testCase_History[i-1]" [index]="i" [isFirst]="isFirst" [isLast]="isLast" [testCase]="testCase">
-              </app-testcase-history>
-            </div>
-          </cdk-virtual-scroll-viewport>
+        <ng-container *ngIf="displayHistoryDataNumber != this.testCase_History.length && displayHistoryDataNumber <= this.testCase_History.length ">
+          <button class="btn btn-secondary mt-5" (click)="showMoreHistory()">Show More</button>
         </ng-container>
 
-        <ng-template #NoHistory>
+        <ng-container *ngIf="displayHistoryDataNumber >= this.testCase_History.length">
           <app-testcase-history [noChanges]="true" [testCase]="testCase">
           </app-testcase-history>
-        </ng-template>
-
+        </ng-container>
       </div>
       <div class="panel-defects" id="Defects" #Defects>
         <table mat-table [dataSource]="defectsDataSource" class="mat-elevation-z0 panelTable mt-3">

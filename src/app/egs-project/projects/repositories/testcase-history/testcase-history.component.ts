@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Input } from '@angular/core';
+import { ApiService } from 'src/app/services/api.service';
 import { GlobalFunctionsService } from '../../../../services/global-functions.service';
 
 @Component({
@@ -15,9 +16,11 @@ export class TestcaseHistoryComponent implements OnInit {
   @Input() index: any;
   @Input() testCase: any;
   @Input() noChanges: any;
-  constructor(public GFS: GlobalFunctionsService) { }
+  constructor(public GFS: GlobalFunctionsService, private api: ApiService) {
+  }
 
   ngOnInit(): void {
+
   }
 
 }

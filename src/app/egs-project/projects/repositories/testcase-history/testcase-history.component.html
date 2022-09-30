@@ -9,6 +9,7 @@
     </div>
   </div>
 </ng-container>
+
 <ng-template #hasChanges>
 
   <div class="align-self-start me-2"><img class="lazy avatar-sm" src="../../../../assets/img/placeholder.jpg"></div>
@@ -16,9 +17,8 @@
     <div class="history-user">
       <div class="history-username">
         <span style="font-weight: bold;">Rica Isidto</span>
-
         <ng-container *ngIf="isLast;">
-          created a test case
+          created a test case and updated
         </ng-container>
         <ng-container *ngIf="index!=0 && !isFirst; else restore">
           <ng-container *ngIf="currentObj.Case_Severity == prevObj.Case_Severity; else restore">

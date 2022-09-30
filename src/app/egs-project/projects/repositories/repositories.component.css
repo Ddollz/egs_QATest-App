@@ -338,6 +338,8 @@
 
 .panel-history {
   position: relative;
+  display: flex;
+  flex-direction: column;
   height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
@@ -347,6 +349,19 @@
   font-size: 0.875rem;
 }
 
+.history-username {
+  font-size: 0.8rem;
+}
+
+.history-role {
+  font-size: .75rem;
+  opacity: .75;
+}
+
+.revision-body {
+  padding-right: 1.5rem;
+  flex: 1;
+}
 .example-viewport {
   height: 100%;
   width: 100%;
