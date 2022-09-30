@@ -11,8 +11,14 @@
     display: flex;
     flex: 1 1 0%;
     flex-direction: column;
-    overflow: hidden;
+    overflow: auto;
     height: 100%;
+}
+
+/* Label */
+.project-title {
+    font-size: 0.875rem;
+    color: var(--black-50);
 }
 
 .view-plan-header {
@@ -76,7 +82,6 @@
 
 .tabs-header-container {
     position: relative;
-    overflow: hidden;
 }
 
 .tabs-header {
@@ -128,8 +133,45 @@
 }
 
 .nav-tabs-bordered {
-    border-bottom: 2px solid #ebeef4;
+    border-bottom: 2px soli
+    d #ebeef4;
 }
+.nav-tabs-bordered-small {
+    border-bottom: 1px solid #dbdbdb;
+}
+/*  */
+/* Tabs */
+.nav-tabs-bordered,
+.nav-tabs-bordered-small {
+  border-bottom: 1px solid #dbdbdb;
+}
+
+.nav-tabs-bordered .nav-link,
+.nav-tabs-bordered-small .nav-link {
+  margin-bottom: -2px;
+  border: none;
+  color: var(--c-text);
+}
+
+.nav-tabs-bordered .nav-link:hover,
+.nav-tabs-bordered .nav-link:focus,
+.nav-tabs-bordered-small .nav-link:hover,
+.nav-tabs-bordered-small .nav-link:focus {
+  color: #eb7374;
+}
+
+.nav-tabs-bordered .nav-link.active,
+.nav-tabs-bordered-small .nav-link.active {
+  background-color: #fff;
+  color: var(--bs-red-100);
+  border-bottom: 2px solid var(--bs-red-100);
+}
+
+.nav-tabs-bordered-small .nav-link {
+  font-size: 0.775rem;
+  margin-bottom: -2px;
+}
+/*  */
 .nav-tabs-bordered .nav-link {
     margin-bottom: -2px;
     border: none;
@@ -161,6 +203,8 @@
 .markdown-area {
     word-break: break-word;
 }
+
+/* Search and Add Filter */
 
 .filters-block {
     display: flex;
@@ -203,3 +247,54 @@
 .form-control{
     width: 300px;
 }
+
+/* Test Cases Content */
+
+.cases-header-title{
+    font-size: 18px;
+	font-weight: 600;
+    margin-top: 20px;
+}
+
+.cases-table{
+    width: 100%;
+}
+
+.cases-row:hover {
+    background-color: rgb(250, 250, 250);
+    cursor: pointer;    
+}
+
+.mat-header-cell {
+    font-size: 0.775rem;
+    font-weight: 400;
+}
+
+.mat-column-Title {
+    width: 65%;
+}
+  
+.mat-column-Assignee {
+    width: 25%;
+}
+
+.mat-column-Expected-Duration {
+    width: 50%;
+}
+
+/* Panel */
+.CasePanel {
+    top: var(--app-header-height);
+    right: 0;
+    bottom: 0;
+    z-index: 100;
+    min-width: 580px;
+    max-width: 30vw;
+    position: fixed;
+    display: none;
+    gap: 4px;
+    flex-direction: column;
+    padding: 1rem 1.25rem;
+    background: var(--bg-color-default);
+    box-shadow: var(--popup-shadow);
+  }

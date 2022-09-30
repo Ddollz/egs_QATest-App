@@ -24,7 +24,7 @@ export class TestPlanComponent implements OnInit {
   dataSource = new MatTableDataSource<testplan>();
 
   constructor(private api: ApiService, private router: Router, private sidebarServ: sidebarService) {
-    console.log(sidebarServ.projectID)
+    // console.log(sidebarServ.projectID)
     this.api.UniCall(
       {
         CommandText: 'egsQATestPlanGet',
