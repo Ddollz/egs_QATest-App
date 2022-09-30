@@ -79,18 +79,18 @@ export class RunDashboardComponent implements OnInit {
   @ViewChild('caseRunPanel') caseRunPanel!: ElementRef;
 
   constructor(private api: ApiService, private route: ActivatedRoute) {
+    this.getProject();
+    this.getSuite();
+    this.getCase();
+    this.getDefect();
+
     if (this.route.snapshot.params['i']) {
       this.index = this.route.snapshot.params['i'];
       this.getTestRun();
     }
   }
 
-  ngOnInit(): void {
-    this.getProject();
-    this.getSuite();
-    this.getCase();
-    this.getDefect();
-  }
+  ngOnInit(): void {}
 
   getTestRun() {
     this.api.UniCall(
@@ -188,7 +188,7 @@ export class RunDashboardComponent implements OnInit {
     });
   }
 
-  changeStatus(status: number) {
+  changeStatus(status: string) {
     this.api.UniCall(
       {
         CommandText: 'egsQATestRunInsertUpdate',
