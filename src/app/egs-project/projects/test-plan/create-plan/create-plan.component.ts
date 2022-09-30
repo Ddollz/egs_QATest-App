@@ -161,10 +161,6 @@ export class CreatePlanComponent implements OnInit {
           {
             Param: '@TestPlan_RunTime',
             Value: this.TestPlan_RunTime
-          },
-          {
-            Param: '@Case_ID',
-            Value: this.Case_ID
           }
         ]
       }
