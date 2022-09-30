@@ -1,8 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute} from '@angular/router';
 import { testplan } from '../../../../models/project/project.model';
 import { ApiService } from '../../../../services/api.service';
 import { reloadPage } from '../../../../services/global-functions.service';
+import { MatTableDataSource } from '@angular/material/table';
+
+export interface testCase {
+  title: string;
+  time: string;
+}
+
+const caseData: testCase[] = [
+  { title: 'Access Shopping List Module', time: "00:00:15"},
+  { title: 'Create a Shopping List', time: "00:00:09"},
+  { title: 'Add product to Shopping List from Product List', time: "00:00:18"},
+  { title: 'Tag Shoplist as Favorite', time: "00:00:09"},
+  { title: 'Delete a Shopping List', time: "00:00:24"},
+  { title: 'Print a Shopping List', time: "00:00:09"},
+  { title: 'Add items to shopping list from basket', time: "00:00:12"},
+  { title: 'Add recipe to shopping list from recipe list', time: "00:00:18"},
+];
 
 @Component({
   selector: 'app-view-plan',
@@ -23,6 +40,12 @@ export class ViewPlanComponent implements OnInit {
 
   testplan: testplan[] = [];
 
+  caseColumns: string[] = ['Title', 'Assignee', 'Expected_Duration'];
+  caseDataSource = new MatTableDataSource<testCase>(caseData);
+
+  @ViewChild('casePanel') casePanel!: ElementRef;
+  @ViewChild('caseRunPanel') caseRunPanel!: ElementRef;
+
   constructor(private router: Router, private route: ActivatedRoute, private api: ApiService) {
     if (this.route.snapshot.params['i']) {
       this.index = this.route.snapshot.params['i'];
@@ -30,7 +53,9 @@ export class ViewPlanComponent implements OnInit {
     }
    }
 
+   
   ngOnInit(): void {
+    console.log(this.caseDataSource);
   }
 
   getTestPlan(){
@@ -50,6 +75,8 @@ export class ViewPlanComponent implements OnInit {
       this.TestPlan_Title = value[0][0].TestPlan_Title;
       this.TestPlan_Desc = value[0][0].TestPlan_Desc;
       this.TestPlan_CaseCount = value[0][0].TestPlan_CaseCount;
+      // this.Case_ID = value[0][0].Case_ID;
+      // console.log(this.Case_ID)
     });
   }
 
@@ -74,6 +101,24 @@ export class ViewPlanComponent implements OnInit {
       error: (e) => console.error(e),
       complete: () => reloadPage()
     });
+  }
+
+  openCasePanel() {
+    this.casePanel.nativeElement.style.display = "flex";
+    this.closeCaseRunPanel();
+  }
+
+  closeCasePanel() {
+    this.casePanel.nativeElement.style.display = "none";
+  }
+
+  openCaseRunPanel() {
+    this.caseRunPanel.nativeElement.style.display = "flex";
+    this.closeCasePanel();
+  }
+
+  closeCaseRunPanel() {
+    this.caseRunPanel.nativeElement.style.display = "none";
   }
 
 }

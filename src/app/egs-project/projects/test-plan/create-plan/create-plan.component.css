@@ -206,7 +206,11 @@
 
 .mat-header-row {
     display: none;
-  }
+}
+
+td.mat-cell {
+    height: 30px !important;
+}
   
 
 /* Dropdown */

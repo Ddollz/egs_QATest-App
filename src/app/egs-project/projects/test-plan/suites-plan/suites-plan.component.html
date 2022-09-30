@@ -1,11 +1,12 @@
-<div class="d-flex justify-content-between suite w-100" (click)="suiteOpen($event)" [ngClass]="carretOpen? 'open':''">
-    <mat-checkbox></mat-checkbox>
+<div class="d-flex justify-content-between suite w-100">
+  <mat-checkbox></mat-checkbox>
     <div class="d-flex align-items-center item-suite">
       <!-- ID is temporary -->
-      <a type="button" class="button-blue-transparent suite-name">{{Suite.Suite_Name}}</a>
+      <a type="button" class="button-blue-transparent suite-name" (click)="getSuiteID(Suite.Suite_ID); getSuiteName(Suite.Suite_Name); getSuiteDesc(Suite.Suite_Desc)">{{Suite.Suite_Name}}</a>
     </div>
     <div class="suite-setting">
       <span class="me-1">0/{{Suite.Case_Count}}</span>
     </div>
-  </div>
+</div>
   
+

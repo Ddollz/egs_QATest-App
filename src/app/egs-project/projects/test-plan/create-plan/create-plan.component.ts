@@ -14,6 +14,9 @@ export class CreatePlanComponent implements OnInit {
 
   //Utilities
   LinkParamID: number = 0;
+  S_ID: number = 0;
+  S_Name: string ='';
+  S_Desc: string ='';
 
   //Activated Route
   index: number = 0;
@@ -80,13 +83,30 @@ export class CreatePlanComponent implements OnInit {
       this.suites = value[0];
     });
 
+  }
+
+  ngOnInit(): void {
+  }
+
+  receiveName($event: string){
+    this.S_Name = $event
+  }
+  
+
+  receiveDesc($event: string){
+    this.S_Desc = $event
+  }
+
+  receiveID($event: number){
+    this.S_ID = $event
+
     this.api.UniCall(
       {
         CommandText: 'egsQATestCaseGet',
         Params: [
           {
             Param: '@Suite_ID',
-            Value: '1122'
+            Value: this.S_ID.toString()
             // Value: this.LinkParamID.toString()
           }
         ],
@@ -94,13 +114,27 @@ export class CreatePlanComponent implements OnInit {
     ).subscribe(value => {
       this.testCases = value[0];
       this.testCasesdataSource = new MatTableDataSource<testCase>(this.testCases);
-      console.log(this.testCases);
+      // console.log(this.testCases);
       console.log(this.testCasesdataSource);
+      console.log(this.testCasesdataSource.filteredData)
+      // console.log(this.S_ID);
     });
-
   }
 
-  ngOnInit(): void {
+  selectCase($event: any, ID: number, Name: string){
+    // alert(event.checked);
+    if($event.checked){
+      // alert(ID)
+      // alert(Name)
+
+    }
+    else{
+
+    }
+  }
+
+  getSelectedCaseID(ID: number){
+    alert(ID);
   }
 
   updateInsertTestPlan() {
@@ -127,6 +161,10 @@ export class CreatePlanComponent implements OnInit {
           {
             Param: '@TestPlan_RunTime',
             Value: this.TestPlan_RunTime
+          },
+          {
+            Param: '@Case_ID',
+            Value: this.Case_ID
           }
         ]
       }

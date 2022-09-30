@@ -113,8 +113,8 @@
                             <ng-container *ngIf="suite.Project_ID == LinkParamID">
                             <ng-container *ngIf="suite.Parent_SuiteID == 0">
                                 
-                                <app-suites-plan [Suite]="suite"></app-suites-plan>
-                                
+                                <app-suites-plan [Suite]="suite" (sendSuiteID)="receiveID($event)" (sendSuiteName)="receiveName($event)" (sendSuiteDesc)="receiveDesc($event)"></app-suites-plan>
+
                                 <!-- <div class="collapse show" [id]="'collapse-'+suite.Suite_ID"> -->
                                 <!-- Run Template to display looping Leaf -->
                                 <div class="ms-3">
@@ -130,13 +130,11 @@
                             <!-- Check if leaf exist display the leaf and loop again.-->
                             <!-- Check if leaf does not exist end the loop.-->
                             <ng-container *ngIf="data.Suite_ID == s.Parent_SuiteID">
-                                <app-suites-plan [Suite]="s" [carretOpen]="s.carretOpen"></app-suites-plan>
-                                <div class="collapse show" [id]="'collapse-'+s.Suite_ID">
+                                <app-suites-plan [Suite]="s" (sendSuiteID)="receiveID($event)" (sendSuiteName)="receiveName($event)" (sendSuiteDesc)="receiveDesc($event)"></app-suites-plan>
                                 <!-- Run the template leaf again -->
                                     <div class="ms-3">
                                         <ng-container *ngTemplateOutlet="tree; context: {$implicit:s}"></ng-container>
                                     </div>
-                                </div>
                             </ng-container>
                             </ng-container>
                         </ng-template>
@@ -146,7 +144,7 @@
                     <div class="cases-column ps-4">
                         <div class="r-col-header">
                             <div class="r-col-title">
-                                Login
+                                {{S_Name}}
                             </div>
                         
                             <div class="r-col-buttons">
@@ -164,7 +162,7 @@
                             </div>
                         </div>
                         <div class="r-col-header-desc">
-                            Login for ActiveMenu
+                            {{S_Desc}}
                         </div>
                         
                         <div class="row ps-3 r-col-table">
@@ -172,7 +170,8 @@
                                 <ng-container matColumnDef="TestCase_CheckBox">
                                     <tr mat-header-row *matHeaderCellDef></tr>
                                     <td mat-cell *matCellDef="let element;">
-                                        <mat-checkbox></mat-checkbox>
+                                        <!-- {{element.Case_ID}} -->
+                                        <mat-checkbox (change)="selectCase($event, element.Case_ID, S_Name)"></mat-checkbox>
                                     </td>
                                 </ng-container>
                                 <ng-container matColumnDef="TestCase_Add">

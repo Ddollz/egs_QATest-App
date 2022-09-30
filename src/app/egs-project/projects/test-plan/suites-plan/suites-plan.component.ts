@@ -10,12 +10,12 @@ export class SuitesPlanComponent implements OnInit {
 
   @Input() Suite = {} as suite;
 
-
-  @Input() carretOpen: boolean = false;
-
   Modal_Title: string = "Edit suite";
   Modal_btn: string = "Save";
 
+  @Output() sendSuiteID = new EventEmitter<number>()
+  @Output() sendSuiteName = new EventEmitter<string>()
+  @Output() sendSuiteDesc = new EventEmitter<string>()
   @Output() newItemEvent = new EventEmitter<number>();
   @Output() newDeleteEvent = new EventEmitter<number>();
   @Output() createNewEvent = new EventEmitter<number>();
@@ -25,6 +25,22 @@ export class SuitesPlanComponent implements OnInit {
 
   ngOnInit(): void {
   }
+
+  getSuiteID(ID: number){
+    //alert(ID)
+    this.sendSuiteID.emit(ID)
+  }
+
+  getSuiteName(Name: string){
+    // alert(Name)
+    this.sendSuiteName.emit(Name)
+  }
+
+  getSuiteDesc(Desc: string){
+    // alert(Desc)
+    this.sendSuiteDesc.emit(Desc)
+  }
+
 
   suiteOpen(event: Event) {
     var element = event.target as HTMLElement;
