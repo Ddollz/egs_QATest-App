@@ -67,8 +67,8 @@
     position: static;
 }
 
-.modal-body {
-    
+.modal-xl {
+    max-width: 95%;
 }
 
 .modal-content{
@@ -144,7 +144,8 @@
 /* Modal Suites Column */
 .suites-column {
     width: 316px;
-    max-height: calc(80vh - 140px);
+    /* max-height: calc(80vh - 140px); */
+    height: 100%;
     overflow-y: scroll;
     padding-right: 13px;
 }
@@ -160,7 +161,8 @@
     flex-direction: column;
     flex: 1;
     overflow-y: scroll;
-    max-height: calc(80vh - 140px);
+    /* max-height: calc(80vh - 140px); */
+    height: 100%;
     max-width: calc(100vw - (20px * 2) - (29px + 32px) - 346px - 21px);
 }
 

@@ -194,10 +194,6 @@
     margin-top: 20px;
 }
 
-.cases-table{
-    width: 100%;
-}
-
 .cases-row:hover {
     background-color: rgb(250, 250, 250);
     cursor: pointer;    
@@ -237,6 +233,6 @@
     box-shadow: var(--popup-shadow);
 }
 
-.bi-x-lg{
+.bi-x-lg:hover{
     cursor: pointer;
 }

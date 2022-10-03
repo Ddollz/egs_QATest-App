@@ -13,10 +13,6 @@
     flex-direction: column;
     overflow: auto;
     height: 100%;
-  }
-
-.cases-row{
-  height: 100%;
 }
 
 .column-title {
