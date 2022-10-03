@@ -181,35 +181,40 @@ export class CaseCreateComponent implements OnInit {
         this.caseForm.controls['@User_ID'].setValue(value[0][0].User_ID);
         this.caseForm.controls['@LastModifiedUser'].setValue(value[0][0].LastModifiedUser);
         this.caseForm.controls['@Project_ID'].setValue(value[0][0].Project_ID);
+        //? Get TEST CASE Attachments
+        //? START
+        var commandText = 'egsQAAttachmentGet';
+        var Params =
+          [
 
-        if (value[0][0].Attachments_ID != undefined && value[0][0].Attachments_ID != '') {
-          var Params =
-            [
-              {
-                Param: "@List",
-                Value: value[0][0].Attachments_ID
-              }
-
-            ];
-          this.attachments_id = JSON.parse(value[0][0].Attachments_ID);
-          // console.log(this.attachments_id);
-          var formData = new FormData();
-          formData.append("CommandText", 'egsQAAttachmentGet');
-          formData.append("Params", JSON.stringify(Params));
-
-          //? API CALL
-          this.api.UniAttachmentlist(formData).subscribe({
-            next: (result) => {
-              if (result[0] != undefined)
-                this.attachments = result[0];
-              // console.log(this.attachments);
-            },
-            error: (msg) => {
-              console.log(msg);
-              alert("500 Internal Server Errors")
+            {
+              Param: "@Case_ID",
+              Value: value[0][0].Case_ID.toString()
             }
-          })
-        }
+
+          ];
+
+        var stringParam = JSON.stringify(Params);
+
+        var formData = new FormData();
+        formData.append("CommandText", commandText);
+        formData.append("Params", stringParam);
+
+        this.api.UniAttachmentlist(formData).subscribe({
+          next: (result) => {
+            if (result[0] != undefined){
+              this.attachments = result[0];
+              for (let index = 0; index < this.attachments.length; index++) {
+                this.attachments_id.push(this.attachments[index].Attachment_ID);
+              }
+            }
+          },
+          error: (msg) => {
+            console.log(msg);
+            alert("500 Internal Server Errors")
+          }
+        });
+        //? END
 
       }
       );
@@ -278,7 +283,7 @@ export class CaseCreateComponent implements OnInit {
       Value: JSON.stringify(this.attachments_id)
     }
     this.json['Params'].push(attachmentParam);
-
+    console.log(JSON.stringify(this.attachments_id));
     this.api.UniCall(
       this.json
     ).subscribe({

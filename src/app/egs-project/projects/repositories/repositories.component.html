@@ -516,7 +516,6 @@
             </app-testcase-history>
           </ng-container>
         </div>
-
         <ng-container *ngIf="displayHistoryDataNumber != this.testCase_History.length && displayHistoryDataNumber <= this.testCase_History.length ">
           <button class="btn btn-secondary mt-5" (click)="showMoreHistory()">Show More</button>
         </ng-container>
@@ -525,6 +524,7 @@
           <app-testcase-history [noChanges]="true" [testCase]="testCase">
           </app-testcase-history>
         </ng-container>
+
       </div>
       <div class="panel-defects" id="Defects" #Defects>
         <table mat-table [dataSource]="defectsDataSource" class="mat-elevation-z0 panelTable mt-3">
