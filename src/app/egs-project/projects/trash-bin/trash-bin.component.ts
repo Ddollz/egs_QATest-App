@@ -221,10 +221,6 @@ export class TrashBinComponent implements OnInit {
             Value: testcase.Case_Param
           },
           {
-            Param: '@Attachments_ID',
-            Value: attachmentParameter
-          },
-          {
             Param: '@LastModifiedUser',
             Value: testcase.LastModifiedUser.toString()
           },

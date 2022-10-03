@@ -205,7 +205,6 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
       }
     ).subscribe(value => {
       this.project = value[0][0];
-      console.log(this.project)
       this.Suite_Root = 'ProjectRoot|' + this.project.Project_ID; //For dropdown value
     }
     );
@@ -680,40 +679,39 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
     this.Case_Milestone = this.testCase.Case_Milestone.toString();
     this.Case_Behavior = this.testCase.Case_Behavior.toString();
     this.Case_AutoStat = this.testCase.Case_AutoStat.toString();
-    if (this.testCase.Attachments_ID != undefined && this.testCase.Attachments_ID != '') {
-      //? Get Attachments
-      //? START
-      var commandText = 'egsQAAttachmentGet';
-      var Params =
-        [
 
-          {
-            Param: "@List",
-            Value: this.testCase.Attachments_ID
-          }
+    //? Get TEST CASE Attachments
+    //? START
+    var commandText = 'egsQAAttachmentGet';
+    var Params =
+      [
 
-        ];
-
-      var stringParam = JSON.stringify(Params);
-
-      var formData = new FormData();
-      formData.append("CommandText", commandText);
-      formData.append("Params", stringParam);
-
-      this.api.UniAttachmentlist(formData).subscribe({
-        next: (result) => {
-          this.testCaseAttachment = result[0];
-        },
-        error: (msg) => {
-          console.log(msg);
-          alert("500 Internal Server Errors")
+        {
+          Param: "@Case_ID",
+          Value: this.testCase.Case_ID.toString()
         }
-      });
-      //? END
-    } else {
-      this.testCaseAttachment = [];
 
-    }
+      ];
+
+    var stringParam = JSON.stringify(Params);
+
+    var formData = new FormData();
+    formData.append("CommandText", commandText);
+    formData.append("Params", stringParam);
+
+    this.api.UniAttachmentlist(formData).subscribe({
+      next: (result) => {
+        if (result[0] == undefined)
+          this.testCaseAttachment = [];
+        else
+          this.testCaseAttachment = result[0];
+      },
+      error: (msg) => {
+        console.log(msg);
+        alert("500 Internal Server Errors")
+      }
+    });
+    //? END
 
 
     this.api.UniCall(
@@ -770,13 +768,15 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
     ).subscribe(value => {
       if (value.length === 0) {
         this.istestCase_HistoryNull = true;
+        this.testCase_History = [];
       }
       else {
         this.istestCase_HistoryNull = false;
+
+        this.testCase_History = value[0];
+        this.displayHistoryData = this.testCase_History.slice(0, this.displayHistoryDataNumber);
       }
 
-      this.testCase_History = value[0];
-      this.displayHistoryData = this.testCase_History.slice(0, this.displayHistoryDataNumber);
     });
 
   }
@@ -870,10 +870,10 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
 
       panelContentchildren[index].style.display = 'none';
     }
-    if(value ==='History')
-    activeContent.style.display = 'flex';
+    if (value === 'History')
+      activeContent.style.display = 'flex';
     else
-    activeContent.style.display = 'block';
+      activeContent.style.display = 'block';
 
   }
   deleteCase(value: number) {

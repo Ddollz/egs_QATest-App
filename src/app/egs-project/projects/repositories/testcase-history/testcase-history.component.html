@@ -34,8 +34,10 @@
                     <ng-container *ngIf="currentObj.Case_Behavior == prevObj.Case_Behavior; else restore">
 
                       <ng-container *ngIf="currentObj.Case_AutoStat == prevObj.Case_AutoStat; else restore">
+                        <ng-container *ngIf="currentattachements!= undefined && prevattachements != undefined && testcaseattachements != undefined; else restore">
 
                       </ng-container>
+                    </ng-container>
 
                     </ng-container>
 
@@ -60,6 +62,57 @@
 
     <div class="revision-body">
       <ng-container *ngIf="index!=0">
+        <div class="element mt-3" *ngIf="currentattachements!= undefined || prevattachements != undefined || testcaseattachements != undefined">
+          <p class="element-title">Attachments</p>
+          <div class="d-flex" style="align-items: baseline;">
+            <div class="element-before">
+              <ng-container *ngFor="let item of  currentattachements ">
+                <div class="attachments">
+s
+                  <ng-container *ngIf="item.byteFile.contentType.split('/')[0] == 'image'; else notImage">
+                    <div class="attachment">
+                      <a href="" target="_blank" rel="noreferrer">
+                        <div class="attachment-image" [ngStyle]="{'background': 'url(&quot;data:image/png;base64,'+item.byteFile.fileContents+'&quot;)'}"></div>
+                      </a>
+                    </div>
+                  </ng-container>
+
+                  <ng-template #notImage>
+                    <div class="attachment">
+                      <a href="#" target="_blank" rel="noreferrer">
+                        <div class="attachment-file"><span class="attachment-extension">{{item.byteFile.contentType.split('/')[0]}}</span></div>
+                      </a>
+                    </div>
+                  </ng-template>
+                </div>
+              </ng-container>
+            </div>
+            <div class="element-divider ms-3 me-3"><i class="bi bi-arrow-right-short"></i></div>
+            <div class="element-after">
+
+              <ng-container *ngFor="let item of prevattachements">
+                <div class="attachments">
+                  <ng-container *ngIf="item.byteFile.contentType.split('/')[0] == 'image'; else notImage">
+                    <div class="attachment">
+                      <a href="" target="_blank" rel="noreferrer">
+                        <div class="attachment-image" [ngStyle]="{'background': 'url(&quot;data:image/png;base64,'+item.byteFile.fileContents+'&quot;)'}"></div>
+                      </a>
+                    </div>
+                  </ng-container>
+
+                  <ng-template #notImage>
+                    <div class="attachment">
+                      <a href="#" target="_blank" rel="noreferrer">
+                        <div class="attachment-file"><span class="attachment-extension">{{item.byteFile.contentType.split('/')[0]}}</span></div>
+                      </a>
+                    </div>
+                  </ng-template>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+
 
 
         <ng-container *ngIf="currentObj.Case_Title != prevObj.Case_Title">
@@ -253,6 +306,57 @@
       </ng-container>
       <ng-container *ngIf="index==0">
 
+        <div class="element mt-3" *ngIf="currentattachements!= undefined || prevattachements != undefined || testcaseattachements != undefined">
+          <p class="element-title">Attachments</p>
+          <div class="d-flex" style="align-items: baseline;">
+            <div class="element-before">
+              <ng-container *ngFor="let item of  currentattachements ">
+                <div class="attachments">
+
+                  <ng-container *ngIf="item.byteFile.contentType.split('/')[0] == 'image'; else notImage">
+                    <div class="attachment">
+                      <a href="" target="_blank" rel="noreferrer">
+                        <div class="attachment-image" [ngStyle]="{'background': 'url(&quot;data:image/png;base64,'+item.byteFile.fileContents+'&quot;)'}"></div>
+                      </a>
+                    </div>
+                  </ng-container>
+
+                  <ng-template #notImage>
+                    <div class="attachment">
+                      <a href="#" target="_blank" rel="noreferrer">
+                        <div class="attachment-file"><span class="attachment-extension">{{item.byteFile.contentType.split('/')[0]}}</span></div>
+                      </a>
+                    </div>
+                  </ng-template>
+                </div>
+              </ng-container>
+            </div>
+            <div class="element-divider ms-3 me-3"><i class="bi bi-arrow-right-short"></i></div>
+            <div class="element-after">
+
+              <ng-container *ngFor="let item of testcaseattachements">
+                <div class="attachments">
+                  <ng-container *ngIf="item.byteFile.contentType.split('/')[0] == 'image'; else notImage">
+                    <div class="attachment">
+                      <a href="" target="_blank" rel="noreferrer">
+                        <div class="attachment-image" [ngStyle]="{'background': 'url(&quot;data:image/png;base64,'+item.byteFile.fileContents+'&quot;)'}"></div>
+                      </a>
+                    </div>
+                  </ng-container>
+
+                  <ng-template #notImage>
+                    <div class="attachment">
+                      <a href="#" target="_blank" rel="noreferrer">
+                        <div class="attachment-file"><span class="attachment-extension">{{item.byteFile.contentType.split('/')[0]}}</span></div>
+                      </a>
+                    </div>
+                  </ng-template>
+                </div>
+              </ng-container>
+
+            </div>
+          </div>
+        </div>
 
         <ng-container *ngIf="currentObj.Case_Title != testCase.Case_Title">
           <div class="element mt-3">
