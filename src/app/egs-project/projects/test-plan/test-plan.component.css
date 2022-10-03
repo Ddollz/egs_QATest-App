@@ -11,9 +11,13 @@
     display: flex;
     flex: 1 1 0%;
     flex-direction: column;
-    overflow: hidden;
+    overflow: auto;
     height: 100%;
   }
+
+.cases-row{
+  height: 100%;
+}
 
 .column-title {
     color: #222;

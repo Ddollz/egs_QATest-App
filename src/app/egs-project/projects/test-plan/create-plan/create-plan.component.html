@@ -62,8 +62,8 @@
 </div>
 
 <!-- Add cases modal -->
-<div class="modal modal-dialog modal-xl" id="addcases" tabindex="-1" aria-labelledby="casesLabel" aria-hidden="true">
-    <div class="modal-dialog pop-out">
+<div class="modal fade" id="addcases" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
             <!-- Modal Header -->
             <div class="modal-header">
@@ -105,7 +105,7 @@
             </div>
 
             <div class="modal-body">
-                <div class="row">
+                <div class="row cases-row">
                     <!-- LEFT COLUMN -->
                     <div class="suites-column">
                         <!-- Display Nodes -->
@@ -142,81 +142,83 @@
 
                     <!-- RIGHT COLUMN -->
                     <div class="cases-column ps-4">
-                        <div class="r-col-header">
-                            <div class="r-col-title">
-                                {{S_Name}}
-                            </div>
-                        
-                            <div class="r-col-buttons">
-                                <button type="button" class="btn btn-secondary btn-col">
-                                    Select all
-                                </button>
-                        
-                                <button type="button" class="btn btn-secondary btn-col">
-                                    Unselect all
-                                </button>
-                        
-                                <button type="button" class="btn btn-secondary btn-col">
-                                    Assign selected
-                                </button>
-                            </div>
-                        </div>
-                        <div class="r-col-header-desc">
-                            {{S_Desc}}
-                        </div>
-                        
-                        <div class="row ps-3 r-col-table">
-                            <table mat-table [dataSource]="testCasesdataSource" class="mat-elevation-z0" cellspacing="0">
-                                <ng-container matColumnDef="TestCase_CheckBox">
-                                    <tr mat-header-row *matHeaderCellDef></tr>
-                                    <td mat-cell *matCellDef="let element;">
-                                        <!-- {{element.Case_ID}} -->
-                                        <mat-checkbox (change)="selectCase($event, element.Case_ID, S_Name)"></mat-checkbox>
-                                    </td>
-                                </ng-container>
-                                <ng-container matColumnDef="TestCase_Add">
-                                    <tr mat-header-row *matHeaderCellDef></tr>
-                                    <td mat-cell *matCellDef="let element;">
-                                        <a href="#">
-                                            <i class="bi bi-plus-circle-fill"></i>
-                                        </a> 
-                                    </td>
-                                </ng-container>
-                                <ng-container matColumnDef="TestCase_Title">
-                                    <tr mat-header-row *matHeaderCellDef></tr>
-                                    <td mat-cell *matCellDef="let element;">
-                                        <div class="row d-flex align-items-center">
-                                            <div class="column-title">
-                                                {{element.Case_Title}}
-                                            </div>
+                        <div class="cases-block">
+                            <div class="r-col-header">
+                                <div class="r-col-title">
+                                    {{S_Name}}
+                                </div>
                             
-                                            <div class="row column-subtitle mt-2">
-                                                <div class="col">
-                                                    {{element.Case_Desc}}
+                                <div class="r-col-buttons">
+                                    <button type="button" class="btn btn-secondary btn-col">
+                                        Select all
+                                    </button>
+                            
+                                    <button type="button" class="btn btn-secondary btn-col">
+                                        Unselect all
+                                    </button>
+                            
+                                    <button type="button" class="btn btn-secondary btn-col">
+                                        Assign selected
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="r-col-header-desc">
+                                {{S_Desc}}
+                            </div>
+                            
+                            <div class="row ps-3 r-col-table">
+                                <table mat-table [dataSource]="testCasesdataSource" class="mat-elevation-z0" cellspacing="0">
+                                    <ng-container matColumnDef="TestCase_CheckBox">
+                                        <tr mat-header-row *matHeaderCellDef></tr>
+                                        <td mat-cell *matCellDef="let element;">
+                                            <!-- {{element.Case_ID}} -->
+                                            <mat-checkbox (change)="selectCase($event, element.Case_ID, S_Name)"></mat-checkbox>
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="TestCase_Add">
+                                        <tr mat-header-row *matHeaderCellDef></tr>
+                                        <td mat-cell *matCellDef="let element;">
+                                            <a href="#">
+                                                <i class="bi bi-plus-circle-fill"></i>
+                                            </a> 
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="TestCase_Title">
+                                        <tr mat-header-row *matHeaderCellDef></tr>
+                                        <td mat-cell *matCellDef="let element;">
+                                            <div class="row d-flex align-items-center">
+                                                <div class="column-title">
+                                                    {{element.Case_Title}}
                                                 </div>
-                                                <div class="col">
-                                                    Normal
-                                                </div>
-                                                <div class="col">
-                                                    Not set
-                                                </div>
-                                                <div class="col">
-                                                    Other
-                                                </div>
-                                                <div class="col">
-                                                    Not set
-                                                </div>
-                                                <div class="col">
-                                                    Last run:
+                                
+                                                <div class="row column-subtitle mt-2">
+                                                    <div class="col">
+                                                        {{element.Case_Desc}}
+                                                    </div>
+                                                    <div class="col">
+                                                        Normal
+                                                    </div>
+                                                    <div class="col">
+                                                        Not set
+                                                    </div>
+                                                    <div class="col">
+                                                        Other
+                                                    </div>
+                                                    <div class="col">
+                                                        Not set
+                                                    </div>
+                                                    <div class="col">
+                                                        Last run:
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                </ng-container>
-
-                                <tr mat-header-row *matHeaderRowDef=" displayedColumns"></tr>
-			                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                            </table>
+                                        </td>
+                                    </ng-container>
+    
+                                    <tr mat-header-row *matHeaderRowDef=" displayedColumns"></tr>
+                                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -56,13 +56,8 @@
 }
 
 /* Modal */
-.pop-out {
-    display:flex;
-    position: fixed;
-    top: 10px; 
-    bottom: 10px;
-    right: 20px;  
-    left: 20px;
+.cases-row{
+    height: 100%;
 }
 
 .modal-title{
@@ -72,14 +67,20 @@
     position: static;
 }
 
-.modal-content{
-    padding: 1rem 1rem 0.25rem 1.5rem;   
-}
-
-.modal-body{
-    height: 80vh;
+.modal-body {
     
 }
+
+.modal-content{
+    padding: 1rem 1rem 0.25rem 1.5rem;  
+    height: calc(100vh - (20px * 2));
+    width: calc(100vw - (20px * 2));
+    max-width: initial;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
 
 .modal-select-cases-stats {
     float: right;
@@ -143,8 +144,7 @@
 /* Modal Suites Column */
 .suites-column {
     width: 316px;
-    height: 320px;
-    overflow-x: hidden;
+    max-height: calc(80vh - 140px);
     overflow-y: scroll;
     padding-right: 13px;
 }
@@ -159,7 +159,15 @@
     display: flex;
     flex-direction: column;
     flex: 1;
+    overflow-y: scroll;
+    max-height: calc(80vh - 140px);
     max-width: calc(100vw - (20px * 2) - (29px + 32px) - 346px - 21px);
+}
+
+.cases-block{
+    flex: 1;
+    padding-left: 4px;
+    margin-top: .75rem;
 }
 
 .r-col {
@@ -187,9 +195,6 @@
 
 .r-col-table{
     margin-top: 12px;
-    height: 250px;
-    overflow-x: hidden;
-    overflow-y: scroll;
 }
 
 .subtitle-content{
