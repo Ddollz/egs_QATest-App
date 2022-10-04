@@ -673,6 +673,24 @@ select {
   height: 36px;
 }
 
+
+.attachments-small-half .attachment {
+  width: 72px;
+  margin-top: 0.5rem;
+  margin-right: 0.75rem;
+}
+
+.attachments-small-half .attachment-image {
+  width: 72px;
+  height: 72px;
+}
+
+.attachments-small-half .attachment-file {
+  width: 72px;
+  height: 72px;
+}
+
+
 .attachments .attachment a .attachment-extension {
   text-decoration: none !important;
   font-weight: bold;

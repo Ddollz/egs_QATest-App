@@ -247,7 +247,7 @@ export class CaseCreateComponent implements OnInit {
       '@Case_Type': ['Other'],
       '@Case_Layer': ['1'],
       '@Case_Flaky': ['1'],
-      '@Case_isLock': ['1'],
+      '@Case_isLock': ['0'],
       '@Case_Milestone': ['1'],
       '@Case_Behavior': ['1'],
       '@Case_AutoStat': ['1'],

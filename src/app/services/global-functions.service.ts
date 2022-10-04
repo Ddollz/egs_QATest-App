@@ -10,6 +10,11 @@ export class GlobalFunctionsService {
   constructor() { }
 
 
+  LockToText(value: number) {
+    if (value === 0) return 'Active'
+    if (value === 1) return 'Inactive'
+    else return 'Inactive'
+  }
   SeverityToText(value: number) {
     if (value === 1) return 'Not set'
     if (value === 2) return 'Blocker'

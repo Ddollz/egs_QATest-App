@@ -79,7 +79,11 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
   @ViewChild('panelContent') panelContent?: ElementRef;
   @ViewChild('casePanel') panel?: ElementRef;
   @ViewChild('General') General?: ElementRef;
-  @ViewChild('Properties') Properties?: ElementRef;
+
+  @ViewChild('panelNavsub') panelNavsub?: ElementRef;
+  @ViewChild('subpanelContent') subpanelContent?: ElementRef;
+  @ViewChild('Descriptions') Descriptions?: ElementRef;
+
   Case_Severity: string = '';
   Case_Priority: string = '';
   Case_Type: string = '';
@@ -89,9 +93,13 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
   Case_Behavior: string = '';
   Case_AutoStat: string = '';
   testCase_History: any = [];
+  testCase_HistoryAttachment: any = [];
   displayHistoryData: any = []
   displayHistoryDataNumber: number = 5;
+  displayHistoryDataAttachment: any = []
+  displayHistoryDataAttachmentNumber: number = 5;
   istestCase_HistoryNull: boolean = false;
+  istestCase_HistoryAttachmentNull: boolean = false;
   theEnd = false;
   offset = new BehaviorSubject(null);
   infinite?: Observable<any[]>;
@@ -257,6 +265,9 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
           {
             Param: '@TestcaseList',
             Value: this.SelectedTestCase
+          },{
+            Param: '@LastModifiedUser',
+            Value: this.temporaryUser.toString()
           }
         ],
       }
@@ -372,7 +383,7 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
           },
           {
             Param: '@Case_isLock',
-            Value: '1'
+            Value: '0'
           },
           {
             Param: '@User_ID',
@@ -602,9 +613,10 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
   }
 
   openPanel(event: Event, testc: testCase) {
-    this.displayHistoryDataNumber = 5
-    this.displayHistoryData = []
-    this.changePanelContent('General')
+    this.displayHistoryDataNumber = 5;
+    this.displayHistoryData = [];
+    this.changePanelContent('General');
+    this.changeSubPanelContent('Descriptions');
     this.api.UniCall(
       {
         CommandText: 'egsQAStepGet',
@@ -775,17 +787,75 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
 
         this.testCase_History = value[0];
         this.displayHistoryData = this.testCase_History.slice(0, this.displayHistoryDataNumber);
+        // testCase_History: any = [];
+        // testCase_HistoryAttachment: any = [];
+        // displayHistoryData: any = []
+        // displayHistoryDataNumber: number = 5;
+        // displayHistoryDataAttachment: any = []
+        // displayHistoryDataAttachmentNumber: number = 5;
+        // istestCase_HistoryNull: boolean = false;
+        // istestCase_HistoryAttachmentNull: boolean = false;
+        var Params =
+          [
+
+            {
+              Param: '@Case_ID',
+              Value: this.testCase.Case_ID.toString()
+            }
+
+          ];
+
+        var formData = new FormData();
+        formData.append("CommandText", 'egsAttachmentMasterHistoryGet');
+        formData.append("Params", JSON.stringify(Params));
+
+        //? API CALL
+        this.api.UniAttachmentlist(formData).subscribe({
+          next: (value) => {
+
+            if (value.length === 0) {
+              this.istestCase_HistoryAttachmentNull = true;
+              this.testCase_HistoryAttachment = [];
+            }
+            else {
+              this.istestCase_HistoryAttachmentNull = false;
+              this.testCase_HistoryAttachment = value[0]
+            }
+            console.log(this.testCase_HistoryAttachment)
+            console.log(value)
+          },
+          error: (msg) => {
+            console.log(msg);
+            alert("500 Internal Server Errors")
+          }
+        })
+
+
+
       }
 
     });
 
   }
-  showMoreHistory() {
-    this.displayHistoryDataNumber = this.displayHistoryDataNumber + 3;
-    if (this.displayHistoryDataNumber > this.testCase_History.length) {
-      this.displayHistoryDataNumber = this.testCase_History.length
+  showMoreHistory(value: string) {
+    if (value == '1') {
+      this.displayHistoryDataNumber = this.displayHistoryDataNumber + 3;
+      if (this.displayHistoryDataNumber > this.testCase_History.length) {
+        this.displayHistoryDataNumber = this.testCase_History.length
+      }
+      this.displayHistoryData = this.testCase_History.slice(0, this.displayHistoryDataNumber);
     }
-    this.displayHistoryData = this.testCase_History.slice(0, this.displayHistoryDataNumber);
+    if (value == '2') {
+
+      this.displayHistoryDataAttachmentNumber = this.displayHistoryDataAttachmentNumber + 3;
+      if (this.displayHistoryDataAttachmentNumber > this.testCase_HistoryAttachment.length) {
+        this.displayHistoryDataAttachmentNumber = this.testCase_HistoryAttachment.length
+      }
+      this.displayHistoryDataAttachment = this.testCase_HistoryAttachment.slice(0, this.displayHistoryDataAttachmentNumber);
+      console.log(this.displayHistoryDataAttachment)
+    }
+    if (value == '3') {
+    }
   }
 
   closePanel() {
@@ -876,6 +946,30 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
       activeContent.style.display = 'block';
 
   }
+
+  // @ViewChild('panelNavsub') panelNavsub?: ElementRef;
+  // @ViewChild('subpanelContent') subpanelContent?: ElementRef;
+  // @ViewChild('Descriptions') Descriptions?: ElementRef;
+  changeSubPanelContent(value: string) {
+    let panelNavchildren = this.panelNavsub?.nativeElement.children;
+    let activePanel = this.panelNavsub?.nativeElement.querySelector('#' + value);
+
+    let panelContentchildren = this.subpanelContent?.nativeElement.children;
+    let activeContent = this.panelContent?.nativeElement.querySelector('#' + value + '-sub');
+    for (let index = 0; index < panelNavchildren.length; index++) {
+
+      panelNavchildren[index].classList.remove('active');
+
+    }
+
+    activePanel.classList.add('active');
+
+    for (let index = 0; index < panelContentchildren.length; index++) {
+
+      panelContentchildren[index].style.display = 'none';
+    };
+    activeContent.style.display = 'flex';
+  }
   deleteCase(value: number) {
     this.api.UniCall(
       {
@@ -884,6 +978,9 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
           {
             Param: '@Case_ID',
             Value: value.toString()
+          },{
+            Param: '@LastModifiedUser',
+            Value: this.temporaryUser.toString()
           }
         ],
       }
