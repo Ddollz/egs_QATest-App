@@ -248,6 +248,7 @@
   border-bottom: 2px solid rgb(240, 240, 240);
   min-width: max-content;
 }
+
 .panelNav .btns {
   position: relative;
   border: none;
@@ -344,21 +345,35 @@
   overflow-x: hidden;
 }
 
-.sub .btns{
+.sub .btns {
   font-size: 0.7rem;
 }
-.Descriptions{
+
+.Descriptions {
   display: flex;
   flex-direction: column;
 }
-.Attachments{
+
+.Attachments {
   display: flex;
   flex-direction: column;
 }
-.Steps{
+
+.Steps {
   display: flex;
   flex-direction: column;
 }
+
+.Steps .table {
+  font-size: .775rem;
+}
+
+.Steps .table th {
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.54);
+}
+
 .history-username {
   font-size: 0.8rem;
 }
@@ -372,6 +387,7 @@
   padding-right: 1.5rem;
   flex: 1;
 }
+
 .history-username {
   font-size: 0.8rem;
 }

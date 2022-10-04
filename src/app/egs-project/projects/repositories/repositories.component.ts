@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 import { project, suite, testCase, step, testrun, defect } from '../../../models/project/project.model';
 import { reloadPage, sidebarService } from '../../../services/global-functions.service';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, find, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-repositories',
@@ -62,6 +62,11 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = ['Step', 'Action', 'Input', 'Expected'];
   stepdataSource = new MatTableDataSource<step>();
   stepAttachments: any = [];
+  stepHistory: any = [];
+  stepHistoryDisplay: any = [];
+  stepHistoryLimit: any = [];
+  isstepHistoryNull: boolean = false;
+
 
   //Table test runs
   runDisplayedColumns: string[] = ['title', 'environment', 'time', 'status'];
@@ -265,7 +270,7 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
           {
             Param: '@TestcaseList',
             Value: this.SelectedTestCase
-          },{
+          }, {
             Param: '@LastModifiedUser',
             Value: this.temporaryUser.toString()
           }
@@ -615,6 +620,8 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
   openPanel(event: Event, testc: testCase) {
     this.displayHistoryDataNumber = 5;
     this.displayHistoryData = [];
+    this.stepHistoryDisplay = [];
+    this.stepHistoryLimit = 5;
     this.changePanelContent('General');
     this.changeSubPanelContent('Descriptions');
     this.api.UniCall(
@@ -787,14 +794,6 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
 
         this.testCase_History = value[0];
         this.displayHistoryData = this.testCase_History.slice(0, this.displayHistoryDataNumber);
-        // testCase_History: any = [];
-        // testCase_HistoryAttachment: any = [];
-        // displayHistoryData: any = []
-        // displayHistoryDataNumber: number = 5;
-        // displayHistoryDataAttachment: any = []
-        // displayHistoryDataAttachmentNumber: number = 5;
-        // istestCase_HistoryNull: boolean = false;
-        // istestCase_HistoryAttachmentNull: boolean = false;
         var Params =
           [
 
@@ -831,6 +830,35 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
         })
 
 
+        //? START
+        this.api.UniCall(
+          {
+            CommandText: 'egsQAStepHistoryGet',
+            Params: [
+              {
+                Param: '@Case_ID',
+                Value: this.testCase.Case_ID.toString()
+              }
+            ],
+          }
+        ).subscribe(
+          {
+            next: (v) => {
+
+              if (v.length === 0) {
+                this.isstepHistoryNull = true;
+                this.stepHistory = [];
+              }
+              else {
+                this.isstepHistoryNull = false;
+                this.stepHistory = v[0]
+                this.stepHistoryDisplay = this.stepHistory.slice(0, this.stepHistoryLimit);
+              }
+            },
+            error: (e) => console.error(e),
+          }
+        )
+        //? END
 
       }
 
@@ -852,12 +880,26 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
         this.displayHistoryDataAttachmentNumber = this.testCase_HistoryAttachment.length
       }
       this.displayHistoryDataAttachment = this.testCase_HistoryAttachment.slice(0, this.displayHistoryDataAttachmentNumber);
-      console.log(this.displayHistoryDataAttachment)
     }
     if (value == '3') {
+
+      this.stepHistoryLimit = this.stepHistoryLimit + 3;
+      if (this.stepHistoryLimit > this.stepHistory.length) {
+        this.stepHistoryLimit = this.stepHistory.length
+      }
+      this.stepHistoryDisplay = this.stepHistory.slice(0, this.stepHistoryLimit);
+      console.log(this.stepHistoryDisplay)
+
     }
   }
-
+  checkPrev(item: any) {
+    var child = this.stepHistory.filter((x: any) => x.Case_StepID === item.Case_StepID);
+    if (child.length > 1) {
+      return true
+    } else {
+      return false
+    }
+  }
   closePanel() {
     if (this.panel != null)
       this.panel.nativeElement.style.display = "none";
@@ -978,7 +1020,7 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
           {
             Param: '@Case_ID',
             Value: value.toString()
-          },{
+          }, {
             Param: '@LastModifiedUser',
             Value: this.temporaryUser.toString()
           }
