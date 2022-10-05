@@ -33,7 +33,6 @@ export class CaseCreateComponent implements OnInit {
   //Models
   suites: suite[] = [];
   steps: step[] = [];
-  stepsTemp: step[] = [];
   testCase = {} as testCase;
 
   //Modal Variables
@@ -123,25 +122,27 @@ export class CaseCreateComponent implements OnInit {
 
             if (value[0]) {
               this.steps = value[0];
-              this.stepsTemp = value[0];
-              let AttachnmentLists: any = [];
+              let StepId_list: any = [];
+
               for (let index = 0; index < this.steps.length; index++) {
-                let tmp = this.steps[index].Attachments_ID;
+                let tmp = this.steps[index].Case_StepID.toString();
                 if (tmp == undefined || tmp == '') {
                   continue;
                 }
                 else {
-                  AttachnmentLists = AttachnmentLists.concat(JSON.parse(tmp));
+                  StepId_list = StepId_list.concat(JSON.parse(tmp));
                 }
               }
               var Params =
                 [
                   {
-                    Param: "@List",
-                    Value: JSON.stringify(AttachnmentLists)
+                    Param: "@Step_IDList",
+                    Value: JSON.stringify(StepId_list)
                   }
 
                 ];
+
+
 
 
               var formData = new FormData();
@@ -288,7 +289,7 @@ export class CaseCreateComponent implements OnInit {
       this.json
     ).subscribe({
       next: (v) => {
-        console.log(this.steps.length)
+        console.log(JSON.stringify(this.steps))
 
         if (this.steps.length != 0) {
           for (let index = 0; index < this.steps.length; index++) {
@@ -306,7 +307,7 @@ export class CaseCreateComponent implements OnInit {
             }
           ).subscribe({
             next: (e) => {
-              if (this.editCase != 0) {
+              if (this.editCase != 0 && this.deleteStepsFromEdit != '' && this.deleteStepsFromEdit != undefined) {
                 this.api.UniCall(
                   {
                     CommandText: 'egsQAStepDelete',
@@ -345,7 +346,6 @@ export class CaseCreateComponent implements OnInit {
             }
           });
         } else {
-          console.log(this.deleteStepsFromEdit)
           this.api.UniCall(
             {
               CommandText: 'egsQAStepDelete',
@@ -416,7 +416,6 @@ export class CaseCreateComponent implements OnInit {
         this.listofAttachmentInStep.push(event[0])
       if (this.addingAttachmentTo != undefined) {
         var stepAttachment = this.steps[this.addingAttachmentTo].Attachments_ID;
-        console.log(this.steps[this.addingAttachmentTo])
         var stepAttachmentJson;
         if (stepAttachment == undefined || stepAttachment == '') {
           stepAttachmentJson = [];
@@ -448,12 +447,9 @@ export class CaseCreateComponent implements OnInit {
   popStepAttachment(event: Event, step: step, value: number) {
     event.preventDefault();
     event.stopPropagation();
-    console.log(value);
-    console.log(this.steps[this.steps.indexOf(step)].Attachments_ID);
     var myIndex = this.steps[this.steps.indexOf(step)].Attachments_ID;
     // console.log(this.steps[this.steps.indexOf(step)].Attachments_ID);
     if (myIndex == undefined || myIndex == '') return
-    console.log(myIndex);
 
     var jsonStepAttachment = JSON.parse(myIndex);
 
@@ -462,10 +458,7 @@ export class CaseCreateComponent implements OnInit {
     if (tempAttachIndex !== -1) {
       jsonStepAttachment.splice(tempAttachIndex, 1);
     }
-    console.log(tempAttachIndex);
-    console.log(jsonStepAttachment);
     this.steps[this.steps.indexOf(step)].Attachments_ID = JSON.stringify(jsonStepAttachment);
-    // console.log(this.steps[this.steps.indexOf(step)].Attachments_ID);
   }
 
 
@@ -551,7 +544,6 @@ export class CaseCreateComponent implements OnInit {
           e[1][index].Case_StepID = '0';
           e[1][index].SharedStep_ID = '';
           this.steps.push(e[1][index]);
-          console.log(this.steps);
         }
 
         let i = 1;
@@ -560,21 +552,23 @@ export class CaseCreateComponent implements OnInit {
           i++
         });
         this.openSharedStepModalBTN?.nativeElement.click();
-        let AttachnmentLists: any = [];
+        let StepId_list: any = [];
+
         for (let index = 0; index < this.steps.length; index++) {
-          let tmp = this.steps[index].Attachments_ID;
+          let tmp = this.steps[index].Case_StepID.toString();
           if (tmp == undefined || tmp == '') {
             continue;
           }
           else {
-            AttachnmentLists = AttachnmentLists.concat(JSON.parse(tmp));
+            StepId_list = StepId_list.concat(JSON.parse(tmp));
           }
         }
+        console.log(JSON.stringify(StepId_list))
         var Params =
           [
             {
-              Param: "@List",
-              Value: JSON.stringify(AttachnmentLists)
+              Param: "@Step_IDList",
+              Value: JSON.stringify(StepId_list)
             }
 
           ];

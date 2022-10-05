@@ -56,21 +56,21 @@ export class StepCreateComponent implements OnInit {
           this.SharedStep_Title = e[0][0].SharedStep_Title;
           if (!e[1]) return
           this.steps = e[1]
-          let AttachnmentLists: any = [];
+          let StepId_list: any = [];
           for (let index = 0; index < this.steps.length; index++) {
-            let tmp = this.steps[index].Attachments_ID;
+            let tmp = this.steps[index].Case_StepID.toString();
             if (tmp == undefined || tmp == '') {
               continue;
             }
             else {
-              AttachnmentLists = AttachnmentLists.concat(JSON.parse(tmp));
+              StepId_list = StepId_list.concat(JSON.parse(tmp));
             }
           }
           var Params =
             [
               {
-                Param: "@List",
-                Value: JSON.stringify(AttachnmentLists)
+                Param: "@Step_IDList",
+                Value: JSON.stringify(StepId_list)
               }
 
             ];
@@ -162,6 +162,8 @@ export class StepCreateComponent implements OnInit {
   }
 
   updateInsertSharedStep(another: boolean = false) {
+    console.log(this.SharedStep_ID.toString())
+    console.log(this.SharedStep_Title)
     console.log(JSON.stringify(this.steps))
 
     this.api.UniCall(
@@ -281,6 +283,24 @@ export class StepCreateComponent implements OnInit {
     })
 
   }
+
+  popStepAttachment(event: Event, step: step, value: number) {
+    event.preventDefault();
+    event.stopPropagation();
+    var myIndex = this.steps[this.steps.indexOf(step)].Attachments_ID;
+    // console.log(this.steps[this.steps.indexOf(step)].Attachments_ID);
+    if (myIndex == undefined || myIndex == '') return
+
+    var jsonStepAttachment = JSON.parse(myIndex);
+
+
+    var tempAttachIndex = jsonStepAttachment.indexOf(value);
+    if (tempAttachIndex !== -1) {
+      jsonStepAttachment.splice(tempAttachIndex, 1);
+    }
+    this.steps[this.steps.indexOf(step)].Attachments_ID = JSON.stringify(jsonStepAttachment);
+  }
+
   deleteAttachment(value: number) {
 
     var file_ID = value;

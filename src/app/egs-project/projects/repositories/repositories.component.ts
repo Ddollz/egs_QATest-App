@@ -642,25 +642,46 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
       }
       this.steps = value[0];
       this.stepdataSource = new MatTableDataSource<step>(this.steps);
-      let AttachnmentLists: any = [];
+      let StepId_list: any = [];
 
       for (let index = 0; index < this.steps.length; index++) {
-        let tmp = this.steps[index].Attachments_ID;
+        let tmp = this.steps[index].Case_StepID.toString();
         if (tmp == undefined || tmp == '') {
           continue;
         }
         else {
-          AttachnmentLists = AttachnmentLists.concat(JSON.parse(tmp));
+          StepId_list = StepId_list.concat(JSON.parse(tmp));
         }
       }
+      console.log(JSON.stringify(StepId_list))
       var Params =
         [
           {
-            Param: "@List",
-            Value: JSON.stringify(AttachnmentLists)
+            Param: "@Step_IDList",
+            Value: JSON.stringify(StepId_list)
           }
 
         ];
+
+      // let AttachnmentLists: any = [];
+
+      // for (let index = 0; index < this.steps.length; index++) {
+      //   let tmp = this.steps[index].Attachments_ID;
+      //   if (tmp == undefined || tmp == '') {
+      //     continue;
+      //   }
+      //   else {
+      //     AttachnmentLists = AttachnmentLists.concat(JSON.parse(tmp));
+      //   }
+      // }
+      // var Params =
+      //   [
+      //     {
+      //       Param: "@List",
+      //       Value: JSON.stringify(AttachnmentLists)
+      //     }
+
+      //   ];
 
       var formData = new FormData();
       formData.append("CommandText", 'egsQAAttachmentGet');
@@ -669,12 +690,13 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
       //? API CALL
       this.api.UniAttachmentlist(formData).subscribe({
         next: (result) => {
-          // console.log(result[0])
+          console.log(result)
           if (result != undefined || result.length != 0) {
             this.stepAttachments = result[0];
           } else {
             this.stepAttachments = [];
           }
+          console.log(this.stepAttachments)
         },
         error: (msg) => {
           console.log(msg);
@@ -820,8 +842,6 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
               this.istestCase_HistoryAttachmentNull = false;
               this.testCase_HistoryAttachment = value[0]
             }
-            console.log(this.testCase_HistoryAttachment)
-            console.log(value)
           },
           error: (msg) => {
             console.log(msg);
