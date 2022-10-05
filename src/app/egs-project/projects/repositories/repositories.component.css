@@ -345,8 +345,33 @@
   overflow-x: hidden;
 }
 
-.panel-history {
-  font-size: 0.875rem;
+.sub .btns {
+  font-size: 0.7rem;
+}
+
+.Descriptions {
+  display: flex;
+  flex-direction: column;
+}
+
+.Attachments {
+  display: flex;
+  flex-direction: column;
+}
+
+.Steps {
+  display: flex;
+  flex-direction: column;
+}
+
+.Steps .table {
+  font-size: .775rem;
+}
+
+.Steps .table th {
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.54);
 }
 
 .history-username {
@@ -362,6 +387,52 @@
   padding-right: 1.5rem;
   flex: 1;
 }
+
+.history-username {
+  font-size: 0.8rem;
+}
+
+.history-role {
+  font-size: .75rem;
+  opacity: .75;
+}
+
+.revision-body {
+  padding-right: 1.5rem;
+  flex: 1;
+}
+
+
+.revision-body .element-title {
+  font-size: .875rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  border-bottom: 1px solid #dedede;
+}
+
+.revision-body .element-before,
+.revision-body .element-after {
+  flex: .5;
+  font-size: .875rem;
+  word-break: break-all;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.revision-body .element-divider {
+  flex: 0 0 0.75rem;
+}
+
+.revision-body .element-after {
+  flex: .5;
+  font-size: .875rem;
+  word-break: break-all;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
 .example-viewport {
   height: 100%;
   width: 100%;

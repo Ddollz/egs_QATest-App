@@ -33,6 +33,7 @@ export class CaseCreateComponent implements OnInit {
   //Models
   suites: suite[] = [];
   steps: step[] = [];
+  stepsTemp: step[] = [];
   testCase = {} as testCase;
 
   //Modal Variables
@@ -122,6 +123,7 @@ export class CaseCreateComponent implements OnInit {
 
             if (value[0]) {
               this.steps = value[0];
+              this.stepsTemp = value[0];
               let AttachnmentLists: any = [];
               for (let index = 0; index < this.steps.length; index++) {
                 let tmp = this.steps[index].Attachments_ID;
@@ -202,7 +204,7 @@ export class CaseCreateComponent implements OnInit {
 
         this.api.UniAttachmentlist(formData).subscribe({
           next: (result) => {
-            if (result[0] != undefined){
+            if (result[0] != undefined) {
               this.attachments = result[0];
               for (let index = 0; index < this.attachments.length; index++) {
                 this.attachments_id.push(this.attachments[index].Attachment_ID);
@@ -247,7 +249,7 @@ export class CaseCreateComponent implements OnInit {
       '@Case_Type': ['Other'],
       '@Case_Layer': ['1'],
       '@Case_Flaky': ['1'],
-      '@Case_isLock': ['1'],
+      '@Case_isLock': ['0'],
       '@Case_Milestone': ['1'],
       '@Case_Behavior': ['1'],
       '@Case_AutoStat': ['1'],
@@ -276,14 +278,12 @@ export class CaseCreateComponent implements OnInit {
       }
       this.json['Params'].push(temp);
     }
-    console.log(this.json);
     //? Param For attachment
     var attachmentParam = {
       Param: '@attachJson',
       Value: JSON.stringify(this.attachments_id)
     }
     this.json['Params'].push(attachmentParam);
-    console.log(JSON.stringify(this.attachments_id));
     this.api.UniCall(
       this.json
     ).subscribe({
@@ -294,7 +294,6 @@ export class CaseCreateComponent implements OnInit {
           for (let index = 0; index < this.steps.length; index++) {
             this.steps[index].Case_ID = v[0][0].Case_ID
           }
-          // console.log(JSON.stringify(this.steps))
           this.api.UniCall(
             {
               CommandText: 'egsQAStepInsertUpdate',
@@ -307,7 +306,6 @@ export class CaseCreateComponent implements OnInit {
             }
           ).subscribe({
             next: (e) => {
-
               if (this.editCase != 0) {
                 this.api.UniCall(
                   {
@@ -347,7 +345,34 @@ export class CaseCreateComponent implements OnInit {
             }
           });
         } else {
-          this.router.navigate(["projects/repository/" + this.LinkParamID])
+          console.log(this.deleteStepsFromEdit)
+          this.api.UniCall(
+            {
+              CommandText: 'egsQAStepDelete',
+              Params: [
+                {
+                  Param: '@Case_StepID',
+                  Value: this.deleteStepsFromEdit
+                },
+                {
+                  Param: '@Case_ID',
+                  Value: this.caseID.toString()
+                },
+                {
+                  Param: '@deleteFromEdit',
+                  Value: '1'
+                }
+              ]
+            }
+          ).subscribe({
+            next: (e) => {
+              this.router.navigate(["projects/repository/" + this.LinkParamID])
+            },
+            error: (e) => {
+              alert("500 Internal Server Errors")
+              console.log(e)
+            }
+          });
         }
       },
       error: (e) => console.error(e),
