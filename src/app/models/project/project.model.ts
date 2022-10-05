@@ -100,7 +100,7 @@ export interface defectComment {
 export interface milestone {
   Milestone_ID: number;
   Milestone_Title: string;
-  Milestone_Description: string;
+  Milestone_Desc: string;
   Milestone_Status: number;
   Milestone_DueDate: string;
 }

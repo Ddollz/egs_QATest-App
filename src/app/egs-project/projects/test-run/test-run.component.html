@@ -48,9 +48,9 @@
 
           <ng-container matColumnDef="Title">
             <th mat-header-cell *matHeaderCellDef>Title</th>
-            <td mat-cell *matCellDef="let element; let i = index">
-              <div class="column-title" routerLink="/projects/run/dashboard/{{i}}">{{element.TestRun_Title}}</div>
-              <div class="column-subtitle">{{element.TestRun_DateCreated}}</div>
+            <td mat-cell *matCellDef="let element">
+              <div class="column-title" routerLink="/projects/run/dashboard/{{element.TestRun_ID}}">{{element.TestRun_Title}}</div>
+              <div class="column-subtitle">Started at {{formatDate(element.TestRun_DateCreated)}}</div>
             </td>
           </ng-container>
 
@@ -88,7 +88,7 @@
                     <div class="dropdown-item">Dashboard</div>
                     <div class="dropdown-item">Open Wizard</div>
                     <div class="dropdown-item">Clone run</div>
-                    <div class="dropdown-item" routerLink="/projects/run/edit/{{i}}">Edit run</div>
+                    <div class="dropdown-item" routerLink="/projects/run/edit/{{element.TestRun_ID}}">Edit run</div>
                     <div class="dropdown-item" (click)="openDeleteModal(element.TestRun_ID, element.TestRun_Title)"
                       data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</div>
                   </div>
@@ -106,9 +106,10 @@
             </td>
           </tr>
         </table>
-        <ng-template [ngIf]="dataSource.filteredData.length > 5">
-          <mat-paginator [pageSizeOptions]="[10, 5, 20, 50]"></mat-paginator>
-        </ng-template>
+
+        <!-- <ng-template [ngIf]="dataSource.filteredData.length > 5"> -->
+        <mat-paginator [pageSizeOptions]="[10, 5, 20, 50]"></mat-paginator>
+        <!-- </ng-template> -->
       </div>
 
     </div>

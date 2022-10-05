@@ -38,7 +38,7 @@
             <Label class="page-label">Milestone</Label>
             <mat-select class="select-item" [(ngModel)]="TestRun_Milestone">
               <mat-option class="select-item" value="0">Not set</mat-option>
-              <mat-option class="select-item" *ngFor="let milestone of milestones" [value]="milestone.Milestone_ID">
+              <mat-option class="select-item" *ngFor="let milestone of milestones" [value]="milestone.Milestone_ID.toString()">
                 {{milestone.Milestone_Title}}</mat-option>
             </mat-select>
           </div>
@@ -119,22 +119,22 @@
           <input type="text" class="form-control search_input me-2" placeholder="Search for cases">
           <span class="filter-span" data-bs-toggle="dropdown">+ Add filter</span>
           <div class="dropdown-menu">
-              <div class="dropdown-item">Priority</div>
-              <div class="dropdown-item">Severity</div>
-              <div class="dropdown-item">Type</div>
-              <div class="dropdown-item">Behavior</div>
-              <div class="dropdown-item">Status</div>
-              <div class="dropdown-item">Automation</div>
-              <div class="dropdown-item">Layer</div>
-              <div class="dropdown-item">Is flaky</div>
-              <div class="dropdown-item">Milestones</div>
-              <div class="dropdown-item">Tags</div>
-              <div class="dropdown-item">Steps</div>
-              <div class="dropdown-item">Author</div>
-              <div class="dropdown-item">Last Run Date</div>
-              <div class="dropdown-item">Creation Date</div>
-              <div class="dropdown-item">Last Update Date</div>
-              <div class="dropdown-item">External Issue</div>
+            <div class="dropdown-item">Priority</div>
+            <div class="dropdown-item">Severity</div>
+            <div class="dropdown-item">Type</div>
+            <div class="dropdown-item">Behavior</div>
+            <div class="dropdown-item">Status</div>
+            <div class="dropdown-item">Automation</div>
+            <div class="dropdown-item">Layer</div>
+            <div class="dropdown-item">Is flaky</div>
+            <div class="dropdown-item">Milestones</div>
+            <div class="dropdown-item">Tags</div>
+            <div class="dropdown-item">Steps</div>
+            <div class="dropdown-item">Author</div>
+            <div class="dropdown-item">Last Run Date</div>
+            <div class="dropdown-item">Creation Date</div>
+            <div class="dropdown-item">Last Update Date</div>
+            <div class="dropdown-item">External Issue</div>
           </div>
         </div>
 
@@ -144,9 +144,35 @@
       <div class="modal-body">
 
         <div class="row gx-0">
+          <!-- LEFT COL -->
           <div class="col-3 modal-col">
 
+            <!-- Display Nodes -->
+            <ng-container *ngFor="let suite of suites;">
+              <ng-container *ngIf="suite.Project_ID == LinkParamID">
+                <ng-container *ngIf="suite.Parent_SuiteID == 0">
+                  <app-suites-plan [Suite]="suite"></app-suites-plan>
+                  <div class="ms-3">
+                    <ng-container *ngTemplateOutlet="tree; context:{$implicit: suite}"></ng-container>
+                  </div>
+                </ng-container>
+              </ng-container>
+            </ng-container>
+
+            <!-- Display Leaf -->
+            <ng-template #tree let-data>
+              <ng-container *ngFor="let suite of suites">
+                <ng-container *ngIf="data.Suite_ID == suite.Parent_SuiteID">
+                  <app-suites-plan [Suite]="suite"></app-suites-plan>
+                  <div class="ms-3">
+                    <ng-container *ngTemplateOutlet="tree; context: {$implicit: suite}"></ng-container>
+                  </div>
+                </ng-container>
+              </ng-container>
+            </ng-template>
+
           </div>
+          <!-- RIGHT COL -->
           <div class="col-9 modal-col">
 
           </div>

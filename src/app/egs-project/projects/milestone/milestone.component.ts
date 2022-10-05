@@ -2,8 +2,9 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { milestone } from '../../../models/project/project.model';
 import { ApiService } from '../../../services/api.service';
 import { reloadPage } from '../../../services/global-functions.service';
-import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-milestone',
@@ -16,14 +17,25 @@ export class MilestoneComponent implements OnInit {
   Milestone_Title: string = '';
 
   milestones: milestone[] = [];
-  displayedColumns: string[] = ['Title', 'Status', 'Description', 'Cases', 'DueDate', 'ThreeDots'];
+
+  displayedColumns: string[] = ['Milestone_Title', 'Milestone_Status', 'Milestone_Desc', 'Milestone_Case', 'Milestone_DueDate', 'ThreeDots'];
   dataSource = new MatTableDataSource<milestone>();
 
   @ViewChild(MatPaginator) set matPaginator(paginator: MatPaginator) {
     this.dataSource.paginator = paginator;
   }
 
-  constructor(private api: ApiService) {
+  @ViewChild(MatSort) set matSort(sort: MatSort) {
+    this.dataSource.sort = sort;
+  }
+
+  constructor(private api: ApiService) { }
+
+  ngOnInit(): void {
+    this.getMilestone();
+  }
+
+  getMilestone() {
     this.api.UniCall(
       {
         CommandText: 'egsQAMilestoneGet',
@@ -39,8 +51,6 @@ export class MilestoneComponent implements OnInit {
       this.dataSource = new MatTableDataSource<milestone>(this.milestones);
     });
   }
-
-  ngOnInit(): void { }
 
   openDeleteModal(id: string, title: string) {
     this.Milestone_ID = id;
@@ -63,5 +73,4 @@ export class MilestoneComponent implements OnInit {
       complete: () => reloadPage()
     });
   }
-
 }

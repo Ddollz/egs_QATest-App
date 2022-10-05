@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { defect, milestone } from '../../../models/project/project.model';
 import { ApiService } from '../../../services/api.service';
-import { MatTableDataSource } from '@angular/material/table';
 import { reloadPage } from '../../../services/global-functions.service';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-defect',
@@ -10,6 +11,8 @@ import { reloadPage } from '../../../services/global-functions.service';
   styleUrls: ['./defect.component.css']
 })
 export class DefectComponent implements OnInit {
+
+  statusTitle: string = '';
 
   Defect_ID: string = '';
   Defect_Title: string = '';
@@ -21,16 +24,24 @@ export class DefectComponent implements OnInit {
   Defect_Status: string = '';
   Defect_DateCreated: string = '';
 
-  //Table Initialize
   defects: defect[] = [];
+  milestones: milestone[] = [];
+
   displayedColumns: string[] = ['Status', 'Defect', 'Author', 'Assignee', 'Severity', 'Milestone', 'External', 'ThreeDots'];
   dataSource = new MatTableDataSource<defect>();
 
-  milestones: milestone[] = [];
+  @ViewChild(MatPaginator) set matPaginator(paginator: MatPaginator) {
+    this.dataSource.paginator = paginator;
+  }
 
-  statusTitle: string = '';
+  constructor(private api: ApiService) { }
 
-  constructor(private api: ApiService) {
+  ngOnInit(): void {
+    this.getDefect();
+    this.getMilestone();
+  }
+
+  getDefect() {
     this.api.UniCall(
       {
         CommandText: 'egsQADefectGet',
@@ -45,7 +56,9 @@ export class DefectComponent implements OnInit {
       this.defects = value[0];
       this.dataSource = new MatTableDataSource<defect>(this.defects);
     });
+  }
 
+  getMilestone() {
     this.api.UniCall(
       {
         CommandText: 'egsQAMilestoneGet',
@@ -61,10 +74,8 @@ export class DefectComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
-
-  getDaysAgo(date: Date) {
-    return "Created at some point in the past";
+  formatDate(date: string) {
+    return date.substring(0, 10) + ' ' + date.substring(11, 21);
   }
 
   openDeleteModal(id: string, title: string) {
@@ -94,7 +105,7 @@ export class DefectComponent implements OnInit {
     if (status == 1) {
       this.statusTitle = 'Open';
     }
-    if (status == 2) {
+    else if (status == 2) {
       this.statusTitle = 'In Progress';
     }
     else if (status == 3) {
@@ -130,7 +141,7 @@ export class DefectComponent implements OnInit {
   }
 
   applyFilter(event?: Event) {
-    this.dataSource.filterPredicate = function(data, filter: string): boolean {
+    this.dataSource.filterPredicate = function (data, filter: string): boolean {
       return data.Defect_Title.toLowerCase().includes(filter) == filter.trim().toLowerCase().includes(filter);
     }
     if (event != null) {

@@ -10,15 +10,13 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class MilestoneCreateComponent implements OnInit {
 
-  index: number = 0;
   Page_title: string = 'Create milestone';
   Button_title: string = 'Create milestone';
 
-  //Update and Insert Variables
   Milestone_ID: string = '';
   Milestone_Title: string = '';
   Milestone_Status: string = '1';
-  Milestone_Description: string = '';
+  Milestone_Desc: string = '';
   Milestone_DueDate: string = '';
 
   milestones: milestone[] = [];
@@ -26,8 +24,8 @@ export class MilestoneCreateComponent implements OnInit {
   constructor(private api: ApiService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    if (this.route.snapshot.params['i']) {
-      this.index = this.route.snapshot.params['i'];
+    if (this.route.snapshot.params['id']) {
+      this.Milestone_ID = this.route.snapshot.params['id'];
       this.Page_title = 'Edit milestone';
       this.Button_title = 'Save';
       this.getMilestone();
@@ -41,16 +39,16 @@ export class MilestoneCreateComponent implements OnInit {
         Params: [
           {
             Param: '@Milestone_ID',
-            Value: null
+            Value: this.Milestone_ID
           }
         ]
       }
     ).subscribe(value => {
-      this.Milestone_ID = value[0][this.index].Milestone_ID;
-      this.Milestone_Title = value[0][this.index].Milestone_Title;
-      this.Milestone_Description = value[0][this.index].Milestone_Desc;
-      this.Milestone_Status = value[0][this.index].Milestone_Status.toString();
-      this.Milestone_DueDate = value[0][this.index].Milestone_DueDate.substr(0,10);
+      this.Milestone_ID = value[0][0].Milestone_ID;
+      this.Milestone_Title = value[0][0].Milestone_Title;
+      this.Milestone_Desc = value[0][0].Milestone_Desc;
+      this.Milestone_Status = value[0][0].Milestone_Status.toString();
+      this.Milestone_DueDate = value[0][0].Milestone_DueDate.substring(0,10);
     });
   }
 
@@ -73,7 +71,7 @@ export class MilestoneCreateComponent implements OnInit {
           },
           {
             Param: '@Milestone_Desc',
-            Value: this.Milestone_Description
+            Value: this.Milestone_Desc
           },
           {
             Param: '@Milestone_DueDate',

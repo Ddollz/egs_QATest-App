@@ -49,7 +49,7 @@
             </div>
             <ng-template [ngIf]="Defect_Status == '1'">
               <div>
-                <button type="button" class="btn btn-primary filter-btn" routerLink="/projects/defect/edit/{{index}}">
+                <button type="button" class="filter-item" routerLink="/projects/defect/edit/{{Defect_ID}}">
                   <i class="bi bi-pencil-fill"></i>
                   Edit
                 </button>
@@ -57,23 +57,23 @@
             </ng-template>
           </div>
 
-          <h6>Description</h6>
-          <div class="mb-4">
+          <h6 class="mb-1">Description</h6>
+          <div class="mb-3">
             <span>{{Defect_ActualResult}}</span>
           </div>
 
-          <h6>Comments</h6>
+          <h6 class="mb-3">Comments</h6>
 
-          <ng-container *ngFor="let comment of defectComments">
-            <div class="d-flex my-3">
+          <ng-container *ngFor="let element of defectComments">
+            <div class="d-flex mb-3">
               <div>
                 <img class="author-img mt-2" src="../../assets/img/placeholder.jpg">
               </div>
               <div>
-                <span class="small-text author-name me-2">Lucky Me Beef</span>
+                <span class="small-text author-name me-2">User</span>
                 <span class="small-text">Administrator</span><br>
-                <p class="small-text mb-2">{{comment.Comment_Content}}</p>
-                <span class="small-text comment-time">Some time ago</span>
+                <p class="small-text mb-1">{{element.Comment_Content}}</p>
+                <span class="small-text comment-time">{{formatDate(element.Comment_Date)}}</span>
               </div>
             </div>
           </ng-container>
@@ -81,14 +81,14 @@
           <div class="d-flex align-items-center justify-content-middle">
             <img class="author-img" src="../../assets/img/placeholder.jpg">
             <input type="text" class="form-control me-2" placeholder="Write a comment" [(ngModel)]="Comment_Content">
-            <!-- <button class="btn"><i class="bi bi-image-fill"></i></button> -->
+            <button class="filter-item me-2"><i class="bi bi-image-fill"></i></button>
             <button class="btn btn-primary" (click)="insertComment()">Send</button>
           </div>
         </div>
 
         <div class="col-4">
-          <h6>Status</h6>
-          <div class="mb-4">
+          <h6 class="mb-1">Status</h6>
+          <div class="mb-3">
             <ng-template [ngIf]="Defect_Status == '1'">
               <i class="bi bi-exclamation-circle-fill me-2" data-bs-toggle="tooltip" title="Open"></i>
               <span>Open</span>
@@ -107,8 +107,8 @@
             </ng-template>
           </div>
 
-          <h6>Severity</h6>
-          <div class="mb-4">
+          <h6 class="mb-1">Severity</h6>
+          <div class="mb-3">
             <ng-template [ngIf]="Defect_Severity == '0'">
               <i class="bi bi-dash-lg me-2"></i><span>Not set</span>
             </ng-template>
@@ -132,25 +132,31 @@
             </ng-template>
           </div>
 
-          <h6>Milestone</h6>
-          <div class="mb-4">
-            <span>{{Defect_Milestone}}</span>
-          </div>
+          <ng-template [ngIf]="Defect_Milestone != 0">
+            <h6 class="mb-1">Milestone</h6>
+            <div class="mb-3">
+              <ng-container *ngFor="let milestone of milestones">
+                <ng-container *ngIf="milestone.Milestone_ID == Defect_Milestone">
+                  <span>{{milestone.Milestone_Title}}</span>
+                </ng-container>
+              </ng-container>
+            </div>
+          </ng-template>
 
-          <h6>Reporter</h6>
-          <div class="mb-4 d-flex align-items-center">
+          <h6 class="mb-1">Reporter</h6>
+          <div class="mb-3 d-flex align-items-center">
             <img class="author-img" src="../../assets/img/placeholder.jpg">
             <span>User</span>
           </div>
 
-          <h6>Assignee</h6>
-          <div class="mb-4">
+          <h6 class="mb-1">Assignee</h6>
+          <div class="mb-3">
             <span>Unassigned</span>
           </div>
 
-          <h6>Created</h6>
-          <div class="mb-4">
-            <span>{{Defect_DateCreated}}</span>
+          <h6 class="mb-1">Created</h6>
+          <div class="mb-3">
+            <span>{{formatDate(Defect_DateCreated)}}</span>
           </div>
         </div>
       </div>

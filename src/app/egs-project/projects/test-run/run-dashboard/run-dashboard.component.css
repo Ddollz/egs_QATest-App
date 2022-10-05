@@ -30,6 +30,10 @@
   color: var(--black-50);
 }
 
+.add-attach-span {
+  font-weight: 600;
+}
+
 .passed-span {
   color: #94c64a;
   font-weight: 600;
@@ -109,6 +113,7 @@
 .filter-span:hover,
 .defect-span:hover,
 .cancel-span:hover,
+.add-attach-span:hover,
 .small-text-case:hover {
   color: #eb7374 !important;
 }
@@ -170,12 +175,17 @@
 }
 
 /* Icons */
+.bi-plus-circle-fill {
+  color: var(--bs-red-100);
+}
 
 /* Misc */
+.dropdown-item,
 .bi-arrow-left,
 .filter-span,
 .defect-span,
 .cancel-span,
+.add-attach-span,
 .small-text-case,
 .passed-pb,
 .failed-pb,
@@ -328,4 +338,14 @@
   padding: 1rem 1.25rem;
   background: var(--bg-color-default);
   box-shadow: var(--popup-shadow);
+}
+
+/* Dropdown */
+.dropdown-item:hover {
+  background-color: white;
+  color: #eb7374;
+}
+
+.dropdown-item:active {
+  background-color: white;
 }

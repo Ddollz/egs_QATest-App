@@ -16,6 +16,7 @@ export class TestRunComponent implements OnInit {
   TestRun_Title: string = '';
 
   testruns: testrun[] = [];
+
   displayedColumns: string[] = ['Status', 'Title', 'Environment', 'Time', 'Progress', 'ThreeDots'];
   dataSource = new MatTableDataSource<testrun>();
 
@@ -23,7 +24,13 @@ export class TestRunComponent implements OnInit {
     this.dataSource.paginator = paginator;
   }
 
-  constructor(private api: ApiService) {
+  constructor(private api: ApiService) { }
+
+  ngOnInit(): void {
+    this.getTestRun();
+  }
+
+  getTestRun() {
     this.api.UniCall(
       {
         CommandText: 'egsQATestRunGet',
@@ -40,8 +47,8 @@ export class TestRunComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    console.log(this.dataSource.filteredData.length);
+  formatDate(date: string) {
+    return date.substring(0, 10) + ' ' + date.substring(11, 21);
   }
 
   openDeleteModal(id: string, title: string) {
@@ -65,5 +72,4 @@ export class TestRunComponent implements OnInit {
       complete: () => reloadPage()
     });
   }
-
 }

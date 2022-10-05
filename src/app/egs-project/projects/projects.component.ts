@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../../services/api.service';
-import { MatTableDataSource } from '@angular/material/table';
 import { project } from '../../models/project/project.model';
+import { ApiService } from '../../services/api.service';
 import { reloadPage } from '../../services/global-functions.service';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-projects',
@@ -11,19 +11,24 @@ import { reloadPage } from '../../services/global-functions.service';
 })
 export class ProjectsComponent implements OnInit {
 
-  //Update and Insert Variables
   Project_ID: string = '';
   Project_Name: string = '';
   Project_Code: string = '';
   Project_Description: string = '';
   Project_AccessType: string = '';
 
-  //Table Initialize
   projects: project[] = [];
+
   displayedColumns: string[] = ['Project_Image', 'Project_Name', 'Unresolved', 'TestRun', 'Milestone', 'Members', 'Setting'];
   dataSource = new MatTableDataSource<project>();
 
-  constructor(private api: ApiService) {
+  constructor(private api: ApiService) { }
+
+  ngOnInit(): void {
+    this.getProject();
+  }
+
+  getProject() {
     this.api.UniCall(
       {
         CommandText: 'egsQAProjectGet',
@@ -39,8 +44,6 @@ export class ProjectsComponent implements OnInit {
       this.dataSource = new MatTableDataSource<project>(this.projects);
     });
   }
-
-  ngOnInit(): void { }
 
   openUpdateModal(id: string, name: string, desc: string, code: string, access: string) {
     this.Project_ID = id;

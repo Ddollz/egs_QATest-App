@@ -12,28 +12,25 @@ import { sidebarService } from '../../../../services/global-functions.service';
 })
 export class RunCreateComponent implements OnInit {
 
-  index: number = 0;
   Page_title: string = 'Start test run';
   Button_title: string = 'Start run';
 
-  // Utilities
   LinkParamID: number = 0;
 
-  // Update and Insert Variables
   TestRun_ID: string = '';
   TestRun_Title: string = '';
   TestRun_Desc: string = '';
   TestPlan_ID: string = '';
-  TestRun_Environment: string = '1';
+  TestRun_Environment: string = '';
   TestRun_Milestone: string = '';
-  User_ID: string = '1';
+  User_ID: string = '';
   TestRun_Tags: string = '';
   TestRun_CompletionRange: string = '';
   TestRun_DateCreated: string = '';
-  TestRun_Status: string = '0';
-  TestRun_Passed: string = '0';
-  TestRun_Failed: string = '0';
-  TestRun_Untested: string = '0';
+  TestRun_Status: string = '';
+  TestRun_Passed: string = '';
+  TestRun_Failed: string = '';
+  TestRun_Untested: string = '';
 
   suites: suite[] = [];
   testcases: testCase[] = [];
@@ -42,35 +39,31 @@ export class RunCreateComponent implements OnInit {
   milestones: milestone[] = [];
   @Input() project = {} as project;
 
-  constructor(private api: ApiService, private router: Router, private route: ActivatedRoute, private sidebarServ: sidebarService, @Inject(LOCALE_ID) private locale: string) {
-    if (this.route.snapshot.params['i']) {
-      this.index = this.route.snapshot.params['i'];
+  constructor(private api: ApiService, private router: Router, private route: ActivatedRoute, private sidebarServ: sidebarService, @Inject(LOCALE_ID) private locale: string) { }
+
+  ngOnInit(): void {
+    if (this.route.snapshot.params['id']) {
+      this.TestRun_ID = this.route.snapshot.params['id'];
       this.Page_title = 'Edit test run';
       this.Button_title = 'Save';
       this.getTestRun();
     }
-
+    this.LinkParamID = this.sidebarServ.projectID;
     this.getSuite();
     this.getTestCase();
     this.getTestPlan();
     this.getMilestone();
 
-    this.LinkParamID = sidebarServ.projectID;
-    console.log('LinkParamID: ' + this.LinkParamID);
-  }
-
-  ngOnInit(): void {
-    var today = new Date();
-    var dd = String(today.getDate()).padStart(2, '0');
-    var mm = String(today.getMonth() + 1).padStart(2, '0');
-    var yyyy = today.getFullYear();
-
-    this.TestRun_DateCreated = formatDate(Date.now(),'yyyy-MM-dd HH:mm:ss', this.locale);
-
     // Default values
-    this.TestRun_Title = 'Test run ' + yyyy + '/' + mm + '/' + dd;
+    this.TestRun_Title = 'Test run ' + formatDate(Date.now(), 'yyyy/MM/dd', this.locale);
+    this.TestRun_DateCreated = formatDate(Date.now(), 'yyyy-MM-dd HH:mm:ss', this.locale);
     this.TestRun_Environment = '1';
     this.TestRun_Milestone = '0';
+    this.TestRun_Status = '0';
+    this.TestRun_Passed = '0';
+    this.TestRun_Failed = '0';
+    this.TestRun_Untested = '0';
+    this.User_ID = '1';
   }
 
   getTestRun() {
@@ -80,26 +73,25 @@ export class RunCreateComponent implements OnInit {
         Params: [
           {
             Param: '@TestRun_ID',
-            Value: null
+            Value: this.TestRun_ID
           }
         ]
       }
     ).subscribe(value => {
-      console.log(value[0]);
       this.testruns = value[0];
-      this.TestRun_ID = value[0][this.index].TestRun_ID;
-      this.TestRun_Title = value[0][this.index].TestRun_Title;
-      this.TestRun_Desc = value[0][this.index].TestRun_Desc;
-      this.TestPlan_ID = value[0][this.index].TestPlan_ID;
-      this.TestRun_Environment = value[0][this.index].TestRun_Environment;
-      this.TestRun_Milestone = value[0][this.index].TestRun_Milestone;
-      this.User_ID = value[0][this.index].User_ID;
-      this.TestRun_CompletionRange = value[0][this.index].TestRun_CompletionRange;
-      this.TestRun_DateCreated = value[0][this.index].TestRun_DateCreated;
-      this.TestRun_Status = value[0][this.index].TestRun_Status;
-      this.TestRun_Passed = value[0][this.index].TestRun_Passed;
-      this.TestRun_Failed = value[0][this.index].TestRun_Failed;
-      this.TestRun_Untested = value[0][this.index].TestRun_Untested;
+      this.TestRun_ID = value[0][0].TestRun_ID;
+      this.TestRun_Title = value[0][0].TestRun_Title;
+      this.TestRun_Desc = value[0][0].TestRun_Desc;
+      this.TestPlan_ID = value[0][0].TestPlan_ID;
+      this.TestRun_Environment = value[0][0].TestRun_Environment.toString();
+      this.TestRun_Milestone = value[0][0].TestRun_Milestone.toString();
+      this.User_ID = value[0][0].User_ID;
+      this.TestRun_CompletionRange = value[0][0].TestRun_CompletionRange;
+      this.TestRun_DateCreated = value[0][0].TestRun_DateCreated;
+      this.TestRun_Status = value[0][0].TestRun_Status;
+      this.TestRun_Passed = value[0][0].TestRun_Passed;
+      this.TestRun_Failed = value[0][0].TestRun_Failed;
+      this.TestRun_Untested = value[0][0].TestRun_Untested;
     });
   }
 
@@ -115,7 +107,7 @@ export class RunCreateComponent implements OnInit {
         ],
       }
     ).subscribe(value => {
-      this.project = value[0][0];
+      this.project = value[0];
     });
   }
 
@@ -132,7 +124,6 @@ export class RunCreateComponent implements OnInit {
       }
     ).subscribe(value => {
       this.suites = value[0];
-      console.log('Suites: ' + this.suites);
     });
   }
 
@@ -150,7 +141,6 @@ export class RunCreateComponent implements OnInit {
       }
     ).subscribe(value => {
       this.testcases = value[0];
-      console.log('Cases: ' + this.testcases);
     });
   }
 

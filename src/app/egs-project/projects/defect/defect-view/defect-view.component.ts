@@ -1,6 +1,6 @@
 import { Component, Inject, LOCALE_ID, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services/api.service';
-import { defect, defectComment } from '../../../../models/project/project.model';
+import { defect, defectComment, milestone } from '../../../../models/project/project.model';
 import { ActivatedRoute } from '@angular/router';
 import { reloadPage } from '../../../../services/global-functions.service';
 import { formatDate } from '@angular/common';
@@ -12,36 +12,36 @@ import { formatDate } from '@angular/common';
 })
 export class DefectViewComponent implements OnInit {
 
-  index: number = 0;
+  statusTitle: string = '';
 
   Defect_ID: string = '';
   Defect_Title: string = '';
   Defect_ActualResult: string = '';
-  Defect_Milestone: string = '';
+  Defect_Milestone: number = 0;
   Defect_Severity: string = '';
   Defect_Assignee: string = '';
   Defect_Author: string = '';
   Defect_Status: string = '';
-  Defect_Status2: string = '';
+  Defect_StatusTemp: string = '';
   Defect_DateCreated: string = '';
-
-  defects: defect[] = [];
 
   Comment_Content: string = '';
   Comment_Date: string = '';
   User_ID: string = '1';
   Case_ID: string = '1';
 
+  defects: defect[] = [];
   defectComments: defectComment[] = [];
+  milestones: milestone[] = [];
 
-  statusTitle: string = '';
-
-  constructor(private api: ApiService, private route: ActivatedRoute, @Inject(LOCALE_ID) private locale: string) {}
+  constructor(private api: ApiService, private route: ActivatedRoute, @Inject(LOCALE_ID) private locale: string) { }
 
   ngOnInit(): void {
-    if (this.route.snapshot.params['i']) {
-      this.index = this.route.snapshot.params['i'];
+    if (this.route.snapshot.params['id']) {
+      this.Defect_ID = this.route.snapshot.params['id'];
       this.getDefect();
+      this.getDefectComment();
+      this.getMilestone();
     }
   }
 
@@ -51,23 +51,22 @@ export class DefectViewComponent implements OnInit {
         CommandText: 'egsQADefectGet',
         Params: [
           {
-            Param: '@WithAll',
-            Value: 'true'
+            Param: '@Defect_ID',
+            Value: this.Defect_ID
           }
         ]
       }
     ).subscribe(value => {
       this.defects = value[0];
-      this.Defect_ID = value[0][this.index].Defect_ID;
-      this.Defect_Title = value[0][this.index].Defect_Title;
-      this.Defect_ActualResult = value[0][this.index].Defect_ActualResult;
-      this.Defect_Milestone = value[0][this.index].Defect_Milestone;
-      this.Defect_Severity = value[0][this.index].Defect_Severity;
-      this.Defect_Assignee = value[0][this.index].Defect_Assignee;
-      this.Defect_Author = value[0][this.index].Defect_Author;
-      this.Defect_Status = value[0][this.index].Defect_Status;
-      this.Defect_DateCreated = value[0][this.index].Defect_DateCreated;
-      this.getDefectComment();
+      this.Defect_ID = value[0][0].Defect_ID;
+      this.Defect_Title = value[0][0].Defect_Title;
+      this.Defect_ActualResult = value[0][0].Defect_ActualResult;
+      this.Defect_Milestone = value[0][0].Defect_Milestone;
+      this.Defect_Severity = value[0][0].Defect_Severity;
+      this.Defect_Assignee = value[0][0].Defect_Assignee;
+      this.Defect_Author = value[0][0].Defect_Author;
+      this.Defect_Status = value[0][0].Defect_Status;
+      this.Defect_DateCreated = value[0][0].Defect_DateCreated;
     });
   }
 
@@ -87,8 +86,27 @@ export class DefectViewComponent implements OnInit {
     });
   }
 
+  getMilestone() {
+    this.api.UniCall(
+      {
+        CommandText: 'egsQAMilestoneGet',
+        Params: [
+          {
+            Param: '@Milestone_ID',
+            Value: null
+          }
+        ]
+      }
+    ).subscribe(value => {
+      this.milestones = value[0];
+    });
+  }
+
+  formatDate(date: string) {
+    return date.substring(0, 10) + ' ' + date.substring(11, 21);
+  }
+
   insertComment() {
-    this.Comment_Date = new Date().toString();
     this.Comment_Date = formatDate(Date.now(),'yyyy-MM-dd HH:mm:ss', this.locale);
 
     this.api.UniCall(
@@ -138,7 +156,7 @@ export class DefectViewComponent implements OnInit {
     }
 
     this.Defect_ID = id;
-    this.Defect_Status2 = status.toString();
+    this.Defect_StatusTemp = status.toString();
   }
 
   changeStatus() {
@@ -152,7 +170,7 @@ export class DefectViewComponent implements OnInit {
           },
           {
             Param: '@Defect_Status',
-            Value: this.Defect_Status2
+            Value: this.Defect_StatusTemp
           }
         ]
       }
@@ -161,5 +179,4 @@ export class DefectViewComponent implements OnInit {
       complete: () => reloadPage()
     });
   }
-
 }
