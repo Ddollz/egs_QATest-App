@@ -1,6 +1,6 @@
 import {  AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute} from '@angular/router';
-import { testplan, testCase, suite, project } from '../../../../models/project/project.model';
+import { testplan, testCase, suite, project, testplanCases } from '../../../../models/project/project.model';
 import { ApiService } from '../../../../services/api.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { sidebarService } from '../../../../services/global-functions.service';
@@ -17,6 +17,8 @@ export class CreatePlanComponent implements OnInit {
   S_ID: number = 0;
   S_Name: string ='';
   S_Desc: string ='';
+
+  test: number = 8;
 
   //Activated Route
   index: number = 0;
@@ -35,12 +37,14 @@ export class CreatePlanComponent implements OnInit {
   suites: suite[] = [];
   testplans: testplan[] = [];
   testCases: testCase[] = [];
+  testplanCases: testplanCases [] = [];
   @Input() project = {} as project;
 
   //Table
   displayedColumns: string[] = ['TestCase_CheckBox', 'TestCase_Add', 'TestCase_Title'];
   testCasesdataSource = new MatTableDataSource<testCase>();
   suitedataSource = new MatTableDataSource<suite>();
+  tpCasesDataSource = new MatTableDataSource<testplanCases>();
 
   constructor(private router: Router, private route: ActivatedRoute, private api: ApiService, private sidebarServ: sidebarService) {
     
@@ -81,6 +85,22 @@ export class CreatePlanComponent implements OnInit {
       }
     ).subscribe(value => {
       this.suites = value[0];
+    });
+
+    this.api.UniCall(
+      {
+        CommandText: 'egsQATestPlanCasesGet',
+        Params: [
+          {
+            Param: '@TestPlan_ID',
+            Value: this.test.toString()
+          }
+        ]
+      }
+    ).subscribe(value => {
+      this.testplanCases = value[0];
+      this.tpCasesDataSource = new MatTableDataSource<testplanCases>(this.testplanCases);
+      console.log(this.tpCasesDataSource.filteredData);
     });
 
   }
@@ -124,7 +144,7 @@ export class CreatePlanComponent implements OnInit {
   selectCase($event: any, ID: number, Name: string){
     // alert(event.checked);
     if($event.checked){
-      // alert(ID)
+      alert(ID)
       // alert(Name)
 
     }
@@ -161,6 +181,31 @@ export class CreatePlanComponent implements OnInit {
           {
             Param: '@TestPlan_RunTime',
             Value: this.TestPlan_RunTime
+          },
+          {
+            Param: '@Case_ID',
+            Value: "[29,28]"
+          }
+        ]
+      }
+    ).subscribe({
+      error: (e) => console.error(e),
+      complete: () => this.router.navigate(["/projects/plan"])
+    });
+  }
+
+  updateInsertTestPlanCases(){
+    this.api.UniCall(
+      {
+        CommandText: 'egsQATestPlanCasesInsertUpdate',
+        Params: [
+          {
+            Param: '@TestPlan_ID',
+            Value: this.TestPlan_ID.toString()
+          },
+          {
+            Param: '@Case_ID',
+            Value: this.Case_ID.toString()
           }
         ]
       }

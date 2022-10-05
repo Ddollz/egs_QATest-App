@@ -114,6 +114,11 @@ export interface testplan {
   Case_ID: number;
 }
 
+export interface testplanCases {
+  TestPlan_ID: number;
+  Case_ID: number;
+}
+
 export interface testrun {
   TestRun_ID: number;
   TestRun_Title: string;

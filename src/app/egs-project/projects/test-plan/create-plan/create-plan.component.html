@@ -142,30 +142,29 @@
 
                     <!-- RIGHT COLUMN -->
                     <div class="cases-column ps-4">
+                        <div class="r-col-header">
+                            <div class="r-col-title">
+                                {{S_Name}}
+                            </div>
+                        
+                            <div class="r-col-buttons">
+                                <button type="button" class="btn btn-secondary btn-col">
+                                    Select all
+                                </button>
+                        
+                                <button type="button" class="btn btn-secondary btn-col">
+                                    Unselect all
+                                </button>
+                        
+                                <button type="button" class="btn btn-secondary btn-col">
+                                    Assign selected
+                                </button>
+                            </div>
+                        </div>
+                        <div class="r-col-header-desc">
+                            {{S_Desc}}
+                        </div>
                         <div class="cases-block">
-                            <div class="r-col-header">
-                                <div class="r-col-title">
-                                    {{S_Name}}
-                                </div>
-                            
-                                <div class="r-col-buttons">
-                                    <button type="button" class="btn btn-secondary btn-col">
-                                        Select all
-                                    </button>
-                            
-                                    <button type="button" class="btn btn-secondary btn-col">
-                                        Unselect all
-                                    </button>
-                            
-                                    <button type="button" class="btn btn-secondary btn-col">
-                                        Assign selected
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="r-col-header-desc">
-                                {{S_Desc}}
-                            </div>
-                            
                             <div class="row ps-3 r-col-table">
                                 <table mat-table [dataSource]="testCasesdataSource" class="mat-elevation-z0" cellspacing="0">
                                     <ng-container matColumnDef="TestCase_CheckBox">

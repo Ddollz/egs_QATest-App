@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute} from '@angular/router';
-import { testplan } from '../../../../models/project/project.model';
+import { testplan, testplanCases } from '../../../../models/project/project.model';
 import { ApiService } from '../../../../services/api.service';
 import { reloadPage } from '../../../../services/global-functions.service';
 import { MatTableDataSource } from '@angular/material/table';
@@ -55,7 +55,7 @@ export class ViewPlanComponent implements OnInit {
 
    
   ngOnInit(): void {
-    console.log(this.caseDataSource);
+    
   }
 
   getTestPlan(){

@@ -58,6 +58,7 @@
 /* Modal */
 .cases-row{
     height: 100%;
+    width: 100%;
 }
 
 .modal-title{
@@ -69,6 +70,7 @@
 
 .modal-xl {
     max-width: 95%;
+    max-height: 90%;
 }
 
 .modal-content{
@@ -77,8 +79,11 @@
     width: calc(100vw - (20px * 2));
     max-width: initial;
     display: flex;
-    flex-direction: column;
-    overflow: hidden;
+    align-items: stretch;
+}
+
+.modal-body {
+   height: 50%;
 }
 
 
@@ -160,7 +165,6 @@
     display: flex;
     flex-direction: column;
     flex: 1;
-    overflow-y: scroll;
     /* max-height: calc(80vh - 140px); */
     height: 100%;
     max-width: calc(100vw - (20px * 2) - (29px + 32px) - 346px - 21px);
@@ -170,6 +174,8 @@
     flex: 1;
     padding-left: 4px;
     margin-top: .75rem;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 .r-col {
