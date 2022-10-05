@@ -277,9 +277,7 @@
               <td mat-cell *matCellDef="let element">
                 <div class="markdown-area">{{element.Step_ExpectedResult}}</div>
                 <div class="attachments attachments-small">
-                  {{ element.Case_StepID}}
                   <ng-container *ngFor="let a of stepAttachments">
-                    {{ element.Step_ID}}
                     <ng-container *ngIf="a.Step_ID == element.Case_StepID">
                       <ng-container *ngIf="a.byteFile.contentType.split('/')[0] == 'image'; else notImage">
                         <div class="attachment">

@@ -148,11 +148,32 @@ export class CaseCreateComponent implements OnInit {
               var formData = new FormData();
               formData.append("CommandText", 'egsQAAttachmentGet');
               formData.append("Params", JSON.stringify(Params));
-
+              console.log(StepId_list);
               //? API CALL
               this.api.UniAttachmentlist(formData).subscribe({
                 next: (result) => {
                   this.listofAttachmentInStep = result[0];
+
+                  console.log(this.listofAttachmentInStep)
+                  this.listofAttachmentInStep.filter((t: any) => {
+                    for (let index = 0; index < this.steps.length; index++) {
+                      var sattac = this.steps[index].Attachments_ID;
+                      if (t.Step_ID == this.steps[index].Case_StepID) {
+                        if (this.steps[index].Attachments_ID == undefined) {
+                          this.steps[index].Attachments_ID = '[' + t.Attachment_ID + ']';
+                        } else if (sattac != undefined) {
+                          var s = JSON.parse(sattac)
+                          s.push(t.Attachment_ID);
+                          this.steps[index].Attachments_ID = JSON.stringify(s);
+                        }
+                      }
+                      console.log(this.steps[index].Attachments_ID)
+                    }
+                    console.log(t.Attachment_ID)
+
+                  });
+                  console.log(this.listofAttachmentInStep)
+                  console.log(this.steps);
                 },
                 error: (msg) => {
                   console.log(msg);
@@ -323,6 +344,9 @@ export class CaseCreateComponent implements OnInit {
                       {
                         Param: '@deleteFromEdit',
                         Value: '1'
+                      }, {
+                        Param: '@LastModifiedUser',
+                        Value: this.temporaryUser
                       }
                     ]
                   }
@@ -361,6 +385,10 @@ export class CaseCreateComponent implements OnInit {
                 {
                   Param: '@deleteFromEdit',
                   Value: '1'
+                },
+                {
+                  Param: '@LastModifiedUser',
+                  Value: this.temporaryUser
                 }
               ]
             }
@@ -410,7 +438,7 @@ export class CaseCreateComponent implements OnInit {
       this.attachments_id.push(event[0].Attachment_ID)
     }
     if (this.uploadFrom == 'step') {
-
+      console.log(this.steps)
       var attachmentObject = this.listofAttachmentInStep.find((x: any) => x.Attachment_ID === event[0].Attachment_ID);
       if (!attachmentObject)
         this.listofAttachmentInStep.push(event[0])
@@ -581,6 +609,16 @@ export class CaseCreateComponent implements OnInit {
           next: (result) => {
             console.log(result);
             this.listofAttachmentInStep = result[0];
+            // for (let index = 0; index < this.listofAttachmentInStep.length; index++) {
+            //   let tempAtt = [];
+            //   for (let o = 0; o < this.steps.length; o++) {
+            //     if (this.steps[o].Case_StepID == this.listofAttachmentInStep[index].Case_StepID) {
+            //       tempAtt.push(this.listofAttachmentInStep[index].Attachment_ID)
+            //       // this.listofAttachmentInStep[index].Case_StepID.toString();
+            //     }
+            //     this.steps[o].Attachments_ID = JSON.stringify(tempAtt);
+            //   }
+            // }
           },
           error: (msg) => {
             console.log(msg);
