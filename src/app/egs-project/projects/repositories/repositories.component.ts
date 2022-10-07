@@ -64,7 +64,7 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
   stepAttachments: any = [];
   stepHistory: any = [];
   stepHistoryDisplay: any = [];
-  stepHistoryLimit: any = [];
+  stepHistoryLimit: number = 5;
   isstepHistoryNull: boolean = false;
 
 
@@ -653,7 +653,6 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
           StepId_list = StepId_list.concat(JSON.parse(tmp));
         }
       }
-      console.log(JSON.stringify(StepId_list))
       var Params =
         [
           {
@@ -663,26 +662,6 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
 
         ];
 
-      // let AttachnmentLists: any = [];
-
-      // for (let index = 0; index < this.steps.length; index++) {
-      //   let tmp = this.steps[index].Attachments_ID;
-      //   if (tmp == undefined || tmp == '') {
-      //     continue;
-      //   }
-      //   else {
-      //     AttachnmentLists = AttachnmentLists.concat(JSON.parse(tmp));
-      //   }
-      // }
-      // var Params =
-      //   [
-      //     {
-      //       Param: "@List",
-      //       Value: JSON.stringify(AttachnmentLists)
-      //     }
-
-      //   ];
-
       var formData = new FormData();
       formData.append("CommandText", 'egsQAAttachmentGet');
       formData.append("Params", JSON.stringify(Params));
@@ -690,13 +669,11 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
       //? API CALL
       this.api.UniAttachmentlist(formData).subscribe({
         next: (result) => {
-          console.log(result)
           if (result != undefined || result.length != 0) {
             this.stepAttachments = result[0];
           } else {
             this.stepAttachments = [];
           }
-          console.log(this.stepAttachments)
         },
         error: (msg) => {
           console.log(msg);
@@ -835,7 +812,6 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
                 this.isstepHistoryNull = false;
                 this.stepHistory = v[0]
                 this.stepHistoryDisplay = this.stepHistory.slice(0, this.stepHistoryLimit);
-                console.log(this.stepHistoryDisplay);
               }
             },
             error: (e) => console.error(e),
@@ -916,6 +892,7 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
     }
   }
   checkPrev(item: any) {
+    console.log("hgse")
     var child = this.stepHistory.filter((x: any) => x.Case_StepID === item.Case_StepID);
     if (child.length > 1) {
       return true
