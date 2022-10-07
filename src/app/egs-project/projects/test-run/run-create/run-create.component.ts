@@ -1,9 +1,10 @@
 import { Component, OnInit, Input, Inject, LOCALE_ID } from '@angular/core';
-import { project, suite, testCase, testrun, testplan, milestone } from '../../../../models/project/project.model';
+import { suite, testCase, testrun, testplan, milestone } from '../../../../models/project/project.model';
 import { ApiService } from '../../../../services/api.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { formatDate } from '@angular/common';
 import { sidebarService } from '../../../../services/global-functions.service';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-run-create',
@@ -16,6 +17,12 @@ export class RunCreateComponent implements OnInit {
   Button_title: string = 'Start run';
 
   LinkParamID: number = 0;
+  Suite_ID: string = '';
+  Suite_Name: string = '';
+  Suite_Desc: string = '';
+  addCasesLength = 0;
+  ACLength = 0;
+  finalAddCases ='';
 
   TestRun_ID: string = '';
   TestRun_Title: string = '';
@@ -37,7 +44,10 @@ export class RunCreateComponent implements OnInit {
   testruns: testrun[] = [];
   testplans: testplan[] = [];
   milestones: milestone[] = [];
-  @Input() project = {} as project;
+  addCases : number[] = []
+
+  displayedColumns: string[] = ['Checkbox', 'Title'];
+  dataSource = new MatTableDataSource<testCase>();
 
   constructor(private api: ApiService, private router: Router, private route: ActivatedRoute, private sidebarServ: sidebarService, @Inject(LOCALE_ID) private locale: string) { }
 
@@ -95,20 +105,18 @@ export class RunCreateComponent implements OnInit {
     });
   }
 
-  getProject() {
-    this.api.UniCall(
-      {
-        CommandText: 'egsQAProjectGet',
-        Params: [
-          {
-            Param: '@Project_ID',
-            Value: this.LinkParamID.toString()
-          }
-        ],
-      }
-    ).subscribe(value => {
-      this.project = value[0];
-    });
+  receiveID($event: number) {
+    this.Suite_ID = $event.toString();
+    this.getTestCase();
+    console.log(this.testcases);
+  }
+
+  receiveName($event: string) {
+    this.Suite_Name = $event;
+  }
+
+  receiveDesc($event: string) {
+    this.Suite_Desc = $event;
   }
 
   getSuite() {
@@ -133,14 +141,14 @@ export class RunCreateComponent implements OnInit {
         CommandText: 'egsQATestCaseGet',
         Params: [
           {
-            Param: '@Case_ID',
-            Value: '1122'
-            // Value: this.LinkParamID.toString()
+            Param: '@Suite_ID',
+            Value: this.Suite_ID.toString()
           }
         ],
       }
     ).subscribe(value => {
       this.testcases = value[0];
+      this.dataSource = new MatTableDataSource<testCase>(this.testcases);
     });
   }
 
@@ -176,7 +184,25 @@ export class RunCreateComponent implements OnInit {
     });
   }
 
+  selectCase($event: any, ID: number){
+    if($event.checked){
+      this.addCases.push(ID)
+      this.addCases = [...new Set(this.addCases)]
+      this.addCasesLength = this.addCases.length
+    }
+  }
+
+  getSelectedCase(){
+    this.finalAddCases = "[" + this.addCases + "]"
+    this.ACLength = this.addCasesLength
+  }
+
+  closeAddCases(){
+    this.addCases = [];
+  }
+
   updateInsertTestRun() {
+    console.log(this.finalAddCases);
     this.api.UniCall(
       {
         CommandText: 'egsQATestRunInsertUpdate',
@@ -236,6 +262,10 @@ export class RunCreateComponent implements OnInit {
           {
             Param: '@TestRun_Untested',
             Value: this.TestRun_Untested
+          },
+          {
+            Param: '@Case_ID',
+            Value: this.finalAddCases.toString()
           },
         ]
       }

@@ -38,7 +38,8 @@
             <Label class="page-label">Milestone</Label>
             <mat-select class="select-item" [(ngModel)]="TestRun_Milestone">
               <mat-option class="select-item" value="0">Not set</mat-option>
-              <mat-option class="select-item" *ngFor="let milestone of milestones" [value]="milestone.Milestone_ID.toString()">
+              <mat-option class="select-item" *ngFor="let milestone of milestones"
+                [value]="milestone.Milestone_ID.toString()">
                 {{milestone.Milestone_Title}}</mat-option>
             </mat-select>
           </div>
@@ -137,21 +138,18 @@
             <div class="dropdown-item">External Issue</div>
           </div>
         </div>
-
-
       </div>
 
       <div class="modal-body">
-
         <div class="row gx-0">
           <!-- LEFT COL -->
-          <div class="col-3 modal-col">
+          <div class="col-2 modal-col">
 
-            <!-- Display Nodes -->
             <ng-container *ngFor="let suite of suites;">
               <ng-container *ngIf="suite.Project_ID == LinkParamID">
                 <ng-container *ngIf="suite.Parent_SuiteID == 0">
-                  <app-suites-plan [Suite]="suite"></app-suites-plan>
+                  <app-suites-plan [Suite]="suite" (sendSuiteID)="receiveID($event)"
+                    (sendSuiteName)="receiveName($event)" (sendSuiteDesc)="receiveDesc($event)"></app-suites-plan>
                   <div class="ms-3">
                     <ng-container *ngTemplateOutlet="tree; context:{$implicit: suite}"></ng-container>
                   </div>
@@ -159,11 +157,11 @@
               </ng-container>
             </ng-container>
 
-            <!-- Display Leaf -->
             <ng-template #tree let-data>
               <ng-container *ngFor="let suite of suites">
                 <ng-container *ngIf="data.Suite_ID == suite.Parent_SuiteID">
-                  <app-suites-plan [Suite]="suite"></app-suites-plan>
+                  <app-suites-plan [Suite]="suite" (sendSuiteID)="receiveID($event)" (sendSuiteName)="receiveName($event)"
+                    (sendSuiteDesc)="receiveDesc($event)"></app-suites-plan>
                   <div class="ms-3">
                     <ng-container *ngTemplateOutlet="tree; context: {$implicit: suite}"></ng-container>
                   </div>
@@ -173,16 +171,49 @@
 
           </div>
           <!-- RIGHT COL -->
-          <div class="col-9 modal-col">
+          <div class="col-10 modal-col px-3">
+            <ng-template [ngIf]="Suite_Name != ''">
+              <div class="row mb-2">
+                <div class="col d-flex align-items-center">
+                  <h2 class="page-title m-0">{{Suite_Name}}</h2>
+                </div>
+                <div class="col d-flex align-items-center justify-content-end">
+                  <button class="filter-item me-2">Select all</button>
+                  <button class="filter-item me-2">Unselect all</button>
+                  <button class="filter-item">Assign selected</button>
+                </div>
+              </div>
 
+              <div class="mb-2">
+                <span>{{Suite_Desc}}</span>
+              </div>
+
+              <div>
+                <table mat-table [dataSource]="dataSource" class="mat-elevation-z0 w-100">
+                  <ng-container matColumnDef="Checkbox">
+                    <td mat-cell *matCellDef="let element">
+                      <mat-checkbox (change)="selectCase($event, element.Case_ID)"></mat-checkbox>
+                    </td>
+                  </ng-container>
+        
+                  <ng-container matColumnDef="Title">
+                    <td mat-cell *matCellDef="let element">
+                      <div class="column-title">{{element.Case_Title}}</div>
+                      <div class="column-subtitle">{{element.Case_ID}}</div>
+                    </td>
+                  </ng-container>
+        
+                  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+              </div>
+            </ng-template>
           </div>
         </div>
-
       </div>
 
       <div class="modal-footer">
-        <span class="cancel-span me-2" data-bs-dismiss="modal">Cancel</span>
-        <button type="button" class="btn btn-primary">Done</button>
+        <span class="cancel-span me-2" data-bs-dismiss="modal" (click)="closeAddCases()">Cancel</span>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="getSelectedCase()">Done</button>
       </div>
 
     </div>

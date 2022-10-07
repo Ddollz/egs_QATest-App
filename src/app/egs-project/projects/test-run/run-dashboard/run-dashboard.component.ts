@@ -4,6 +4,7 @@ import { ApiService } from '../../../../services/api.service';
 import { ActivatedRoute } from '@angular/router';
 import { reloadPage } from '../../../../services/global-functions.service';
 import { MatTableDataSource } from '@angular/material/table';
+import { sidebarService } from '../../../../services/global-functions.service';
 
 export interface stat {
   user: string;
@@ -29,13 +30,16 @@ const statData: stat[] = [
 })
 export class RunDashboardComponent implements OnInit {
 
+  LinkParamID: number = 0;
+  Result: string = '';
+
   TestRun_ID: string = '';
   TestRun_Title: string = '';
   TestRun_Desc: string = '';
   TestPlan_ID: string = '';
   TestRun_Environment: string = '1';
   TestRun_Milestone: string = '';
-  User_ID: string = '1';
+  User_ID: string = '';
   TestRun_Tags: string = '';
   TestRun_CompletionRange: string = '';
   TestRun_DateCreated: string = '';
@@ -43,6 +47,12 @@ export class RunDashboardComponent implements OnInit {
   TestRun_Passed: string = '';
   TestRun_Failed: string = '';
   TestRun_Untested: string = '';
+
+  Case_ID: string = '';
+  Case_Title: string = '';
+  Case_Desc: string = '';
+  Case_Result: string = '';
+  Case_Comment: string = '';
 
   projects: project[] = [];
   suites: suite[] = [];
@@ -63,15 +73,15 @@ export class RunDashboardComponent implements OnInit {
   @ViewChild('casePanel') casePanel!: ElementRef;
   @ViewChild('caseRunPanel') caseRunPanel!: ElementRef;
 
-  constructor(private api: ApiService, private route: ActivatedRoute) { }
+  constructor(private api: ApiService, private route: ActivatedRoute, private sidebarServ: sidebarService) { }
 
   ngOnInit(): void {
     if (this.route.snapshot.params['id']) {
       this.TestRun_ID = this.route.snapshot.params['id'];
       this.getTestRun();
     }
+    this.LinkParamID = this.sidebarServ.projectID;
     this.getProject();
-    this.getSuite();
     this.getCase();
     this.getDefect();
   }
@@ -88,7 +98,6 @@ export class RunDashboardComponent implements OnInit {
         ]
       }
     ).subscribe(value => {
-      console.log(value[0]);
       this.testruns = value[0];
       this.TestRun_ID = value[0][0].TestRun_ID;
       this.TestRun_Title = value[0][0].TestRun_Title;
@@ -113,7 +122,7 @@ export class RunDashboardComponent implements OnInit {
         Params: [
           {
             Param: '@Project_ID',
-            Value: '4'
+            Value: this.LinkParamID.toString()
           }
         ]
       }
@@ -128,10 +137,10 @@ export class RunDashboardComponent implements OnInit {
         CommandText: 'egsQASuiteGet',
         Params: [
           {
-            Param: '@Suite_ID',
-            Value: '1146'
+            Param: '@Project_ID',
+            Value: this.LinkParamID.toString()
           }
-        ]
+        ],
       }
     ).subscribe(value => {
       this.suites = value[0];
@@ -141,11 +150,11 @@ export class RunDashboardComponent implements OnInit {
   getCase() {
     this.api.UniCall(
       {
-        CommandText: 'egsQATestCaseGet',
+        CommandText: 'egsQATestRunCasesGet',
         Params: [
           {
-            Param: '@Case_ID',
-            Value: '29'
+            Param: '@TestRun_ID',
+            Value: this.TestRun_ID
           }
         ]
       }
@@ -172,7 +181,7 @@ export class RunDashboardComponent implements OnInit {
     });
   }
 
-  changeStatus(status: string) {
+  changeRunStatus(status: string) {
     this.api.UniCall(
       {
         CommandText: 'egsQATestRunInsertUpdate',
@@ -193,6 +202,39 @@ export class RunDashboardComponent implements OnInit {
     });
   }
 
+  openCaseModal(result: string) {
+    this.Case_Result = result;
+  }
+
+  changeCaseResult() {
+    this.api.UniCall(
+      {
+        CommandText: 'egsQATestRunCasesUpdate',
+        Params: [
+          {
+            Param: '@TestRun_ID',
+            Value: this.TestRun_ID.toString()
+          },
+          {
+            Param: '@Case_ID',
+            Value: this.Case_ID.toString()
+          },
+          {
+            Param: '@Case_Result',
+            Value: this.Case_Result.toString()
+          },
+          {
+            Param: '@Case_Comment',
+            Value: this.Case_Comment
+          }
+        ]
+      }
+    ).subscribe({
+      error: (e) => console.error(e),
+      complete: () => reloadPage()
+    });
+  }
+
   openCasePanel() {
     this.casePanel.nativeElement.style.display = "flex";
     this.closeCaseRunPanel();
@@ -202,8 +244,13 @@ export class RunDashboardComponent implements OnInit {
     this.casePanel.nativeElement.style.display = "none";
   }
 
-  openCaseRunPanel() {
+  openCaseRunPanel(id: string, title: string, desc: string, comment: string) {
     this.caseRunPanel.nativeElement.style.display = "flex";
+    this.Case_ID = id;
+    this.Case_Title = title;
+    this.Case_Desc = desc;
+    this.Case_Comment = comment;
+    this.getSuite();
     this.closeCasePanel();
   }
 
