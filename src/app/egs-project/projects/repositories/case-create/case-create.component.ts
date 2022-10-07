@@ -568,8 +568,17 @@ export class CaseCreateComponent implements OnInit {
       }
     ).subscribe({
       next: (e) => {
+        let StepId_list: any = [];
         for (let index = 0; index < e[1].length; index++) {
-          e[1][index].Case_StepID = '0';
+
+          let tmp = e[1][index].Case_StepID.toString();
+          if (tmp == undefined || tmp == '') {
+            continue;
+          }
+          else {
+            StepId_list = StepId_list.concat(JSON.parse(tmp));
+          }
+          // e[1][index].Case_StepID = '0';
           e[1][index].SharedStep_ID = '';
           this.steps.push(e[1][index]);
         }
@@ -580,18 +589,7 @@ export class CaseCreateComponent implements OnInit {
           i++
         });
         this.openSharedStepModalBTN?.nativeElement.click();
-        let StepId_list: any = [];
-
-        for (let index = 0; index < this.steps.length; index++) {
-          let tmp = this.steps[index].Case_StepID.toString();
-          if (tmp == undefined || tmp == '') {
-            continue;
-          }
-          else {
-            StepId_list = StepId_list.concat(JSON.parse(tmp));
-          }
-        }
-        console.log(JSON.stringify(StepId_list))
+        // console.log(JSON.stringify(StepId_list))
         var Params =
           [
             {
@@ -607,18 +605,32 @@ export class CaseCreateComponent implements OnInit {
         //? API CALL
         this.api.UniAttachmentlist(formData).subscribe({
           next: (result) => {
-            console.log(result);
             this.listofAttachmentInStep = result[0];
-            // for (let index = 0; index < this.listofAttachmentInStep.length; index++) {
-            //   let tempAtt = [];
-            //   for (let o = 0; o < this.steps.length; o++) {
-            //     if (this.steps[o].Case_StepID == this.listofAttachmentInStep[index].Case_StepID) {
-            //       tempAtt.push(this.listofAttachmentInStep[index].Attachment_ID)
-            //       // this.listofAttachmentInStep[index].Case_StepID.toString();
-            //     }
-            //     this.steps[o].Attachments_ID = JSON.stringify(tempAtt);
-            //   }
-            // }
+            console.log(this.listofAttachmentInStep);
+            // console.log(e);
+            this.listofAttachmentInStep.filter((t: any) => {
+              for (let index = 0; index < this.steps.length; index++) {
+                var sattac = this.steps[index].Attachments_ID;
+                if (t.Step_ID == this.steps[index].Case_StepID) {
+                  if (this.steps[index].Attachments_ID == undefined) {
+                    this.steps[index].Attachments_ID = '[' + t.Attachment_ID + ']';
+                  } else if (sattac != undefined) {
+                    var s = JSON.parse(sattac)
+                    s.push(t.Attachment_ID);
+                    this.steps[index].Attachments_ID = JSON.stringify(s);
+                  }
+                }
+                console.log(this.steps[index].Attachments_ID)
+              }
+              console.log(t.Attachment_ID)
+
+            });
+
+            for (let index = 0; index < this.steps.length; index++) {
+              if (StepId_list.includes(this.steps[index].Case_StepID))
+                this.steps[index].Case_StepID = 0;
+            }
+            console.log(this.steps)
           },
           error: (msg) => {
             console.log(msg);
