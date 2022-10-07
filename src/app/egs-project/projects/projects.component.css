@@ -4,6 +4,7 @@
   flex: 1;
   overflow: auto;
   position: relative;
+  background-color: var(--bg-color);
 }
 
 /* Labels */
@@ -19,7 +20,7 @@
 }
 
 .column-title {
-  color: #222;
+  color: var(--c-text);
   font-size: 14px;
   font-weight: 600;
   margin-bottom: 5px;
@@ -96,6 +97,7 @@ input[type="checkbox"]:checked {
 }
 
 .three-dots {
+  color: var(--c-text);
   padding: 0 8px;
 }
 
@@ -120,6 +122,10 @@ input[type="checkbox"]:checked {
 
 .mat-column-Unresolved {
   width: 15%;
+}
+
+td {
+  color: var(--c-text);
 }
 
 .mat-column-TestRun {
@@ -153,6 +159,17 @@ input[type="checkbox"]:checked {
 }
 
 /* Dropdown */
+.dropdown-menu {
+
+  background: var(--bg-dropdown);
+  box-shadow: var(--popup-shadow);
+  border: var(--popup-border);
+}
+
+.dropdown-item {
+  color: var(--c-text);
+}
+
 .dropdown-item:hover {
   background-color: white;
   color: #eb7374;

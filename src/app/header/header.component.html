@@ -1,11 +1,27 @@
-<div class ="d-flex">
-  <img class="" src="../../assets/img/CalcLogo.png" alt="">
-  <ul class="nav">
-    <li class="nav-item">
-      <a class="nav-link" routerLink="projects">Projects</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" routerLink="workspace/user">Workspace</a>
-    </li>
-  </ul>
+<div class="d-flex justify-content-between">
+  <div class="d-flex head-nav">
+    <img class="" src="../../assets/img/CalcLogo.png" alt="">
+    <ul class="nav">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="projects">Projects</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="workspace/user">Workspace</a>
+      </li>
+    </ul>
+  </div>
+  <div class="profile dropdown">
+    <img class="profile-img" alt="" type="button" data-bs-toggle="dropdown" aria-expanded="false" src="https://d2cxucsjd6xvsd.cloudfront.net/public/user/thumb/P0WwpmprGdEtlGp1c1eba6bC0k1B1wpmvl26ufpG.jpg">
+
+    <ul class="dropdown-menu mt-2  px-0">
+      <li class="ps-3 d-flex flex-row" (click)="toggle(theme)">
+        <a class="dropdown-Tag"><i class="bi bi-brush-fill"></i> Appearance</a>
+      </li>
+      <!-- <li class="ps-3"><a class="dropdown-Tag" href="#">Another action</a></li> -->
+      <li class="ps-3 mb-2">
+        <div class="divider"></div>
+      </li>
+      <li class="ps-3"><a class="dropdown-Tag" href="#"><i class="bi bi-arrow-bar-right"></i> Sign out</a></li>
+    </ul>
+  </div>
 </div>
