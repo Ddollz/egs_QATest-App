@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, Renderer2 } from '@angular/core';
 import { filter, Observable } from 'rxjs';
 import { ApiService } from './services/api.service';
 import { Router, NavigationStart, NavigationEnd } from '@angular/router';
+import { DOCUMENT } from '@angular/common';
+
+export type Theme = 'light-theme' | 'dark-theme';
 
 @Component({
   selector: 'app-root',
@@ -10,17 +13,23 @@ import { Router, NavigationStart, NavigationEnd } from '@angular/router';
 })
 export class AppComponent implements OnInit {
 
+  theme: Theme = 'light-theme';
+
   roleList$!: Observable<any[]>;
 
   showHead: boolean = false;
   showSide: boolean = false;
 
-  constructor(private api: ApiService, public router: Router) {
+  constructor(
+    @Inject(DOCUMENT) private document: Document,
+    private renderer: Renderer2,
+    private api: ApiService, public router: Router
+  ) {
     //theme toggle
-    document.body.classList.toggle("light-theme");
+    document.body.classList.toggle("dark-theme");
   }
   ngOnInit(): void {
-
+    this.initializeTheme();
     //Sample Post Methods
     // this.api.UniCall(
     //   {
@@ -41,4 +50,8 @@ export class AppComponent implements OnInit {
     //     complete() { console.log('Finished sequence'); }
     //   })
   }
+  themeSwitch() {
+    this.document.body.classList.replace(this.theme, this.theme === 'light-theme' ? (this.theme = 'dark-theme') : (this.theme = 'light-theme'))
+  }
+  initializeTheme = (): void => this.renderer.addClass(this.document.body, this.theme);
 }
