@@ -1,7 +1,8 @@
 <div class="layout">
-  <app-header *ngIf="router.url !== '/login' && router.url !== '/register'" (toggleMode)="themeSwitch();"></app-header>
+  <app-header *ngIf="router.url !== '/login' && router.url !== '/register'"></app-header>
   <div class="Content">
-    <app-side-bar *ngIf="router.url !== '/login' && router.url !== '/register' && router.url !== '/projects' && router.url !== '/projects/create'">
+    <app-side-bar
+      *ngIf="router.url !== '/login' && router.url !== '/register' && router.url !== '/projects' && router.url !== '/projects/create'">
     </app-side-bar>
 
     <router-outlet></router-outlet>
