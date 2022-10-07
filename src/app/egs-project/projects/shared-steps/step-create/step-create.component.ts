@@ -85,6 +85,25 @@ export class StepCreateComponent implements OnInit {
             next: (result) => {
               this.listofAttachmentInStep = result[0];
               console.log(this.listofAttachmentInStep)
+              this.listofAttachmentInStep.filter((t: any) => {
+                for (let index = 0; index < this.steps.length; index++) {
+                  var sattac = this.steps[index].Attachments_ID;
+                  if (t.Step_ID == this.steps[index].Case_StepID) {
+                    if (this.steps[index].Attachments_ID == undefined) {
+                      this.steps[index].Attachments_ID = '[' + t.Attachment_ID + ']';
+                    } else if (sattac != undefined) {
+                      var s = JSON.parse(sattac)
+                      s.push(t.Attachment_ID);
+                      this.steps[index].Attachments_ID = JSON.stringify(s);
+                    }
+                  }
+                  console.log(this.steps[index].Attachments_ID)
+                }
+                console.log(t.Attachment_ID)
+
+              });
+              console.log(this.listofAttachmentInStep)
+              console.log(this.steps);
             },
             error: (msg) => {
               console.log(msg);
