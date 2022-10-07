@@ -7,8 +7,18 @@
   width: 100%;
   box-shadow: 0 0 6px RGBA(0, 0, 0, 0.2);
   padding: 0 1rem;
-  background-color: var(--bg-color-header);
 }
+
+
+/* a {
+  font-weight: 500;
+  padding: 0.875rem 1rem;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 0.875rem;
+  vertical-align: top;
+  margin-left: 0.125rem;
+} */
 
 
 a,
@@ -21,29 +31,4 @@ a:active {
   vertical-align: top;
   margin-left: 0.125rem;
   font-weight: 500;
-}
-
-.head-nav {
-  width: 50%;
-}
-
-.profile {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  width: 2rem;
-  height: 100%;
-  cursor: pointer;
-}
-
-.profile-img {
-  width: 2rem;
-  height: 2rem;
-  display: inline-block;
-  border-radius: 5px;
-}
-
-.dropdown-menu {
-  background: var(--bg-color-header) !important;
 }
