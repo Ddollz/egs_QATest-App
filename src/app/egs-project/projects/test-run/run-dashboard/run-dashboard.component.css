@@ -83,6 +83,18 @@
   background-color: #f66384 !important;
 }
 
+.blocked-bg {
+  background-color: rgb(221, 181, 10) !important;
+}
+
+.invalid-bg {
+  background-color: rgb(95, 1, 185) !important;
+}
+
+.skipped-bg {
+  background-color: rgb(175, 175, 175) !important;
+}
+
 .open-bg {
   background-color: #ffc107 !important;
 }
@@ -91,7 +103,7 @@
   background-color: #0dcaf0 !important;
 }
 
-.invalid-bg {
+.invalid-d-bg {
   background-color: var(--bs-red-100) !important;
 }
 
@@ -285,7 +297,11 @@
 .mat-header-cell {
   font-size: 0.9rem;
   font-weight: 600;
-  padding: 5px 0px;
+  padding: 5px 10px;
+}
+
+.mat-cell {
+  padding: 0 10px;
 }
 
 /* Case Columns */

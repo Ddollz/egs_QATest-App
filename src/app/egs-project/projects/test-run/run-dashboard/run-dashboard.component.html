@@ -16,7 +16,7 @@
             <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#completeModal">
               <i class="bi bi-check-lg me-2"></i>Complete</button>
           </ng-template>
-          
+
           <ng-template [ngIf]="TestRun_Status == '1'">
             <button class="btn btn-primary me-2"><i class="bi bi-play-circle-fill me-2"></i>Run again</button>
           </ng-template>
@@ -71,147 +71,92 @@
             </div>
           </div>
 
-          <ng-template [ngIf]="TestRun_Status == '0' || TestRun_Status == '2'">
-            <div class="d-flex align-items-center mb-2">
-              <h6 class="mb-1 me-1">Login</h6>
-              <i class="bi bi-chevron-down me-3"></i>
+          <!-- CASES TABLE -->
+          <!-- <ng-template> -->
+          <div class="d-flex align-items-center mb-2">
+            <h6 class="mb-1 me-1">Login</h6>
+            <i class="bi bi-chevron-down me-3"></i>
 
-              <div class="progress">
-                <div class="progress-bar untested-pb" data-bs-toggle="tooltip" title="Untested"
-                  [ngStyle]="{'width.%': 100}"></div>
-              </div>
+            <div class="progress">
+              <div class="progress-bar untested-pb" data-bs-toggle="tooltip" title="Untested"
+                [ngStyle]="{'width.%': 100}"></div>
             </div>
+          </div>
 
-            <div class="row px-3">
-              <table mat-table [dataSource]="caseDataSource" class="mat-elevation-z0">
-                <ng-container matColumnDef="Checkbox">
-                  <th mat-header-cell *matHeaderCellDef>
-                    <input type="checkbox">
-                  </th>
-                  <td mat-cell *matCellDef="let element">
-                    <input type="checkbox">
-                  </td>
-                </ng-container>
+          <div class="row px-3">
+            <table mat-table [dataSource]="caseDataSource" class="mat-elevation-z0">
+              <ng-container matColumnDef="Checkbox">
+                <th mat-header-cell *matHeaderCellDef>
+                  <input type="checkbox">
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  <input type="checkbox">
+                </td>
+              </ng-container>
 
-                <ng-container matColumnDef="Result">
-                  <th mat-header-cell *matHeaderCellDef>Results</th>
-                  <td mat-cell *matCellDef="let element" (click)="openCaseRunPanel()"></td>
-                </ng-container>
+              <ng-container matColumnDef="Result">
+                <th mat-header-cell *matHeaderCellDef>Results</th>
+                <td mat-cell *matCellDef="let element"
+                  (click)="openCaseRunPanel(element.Case_ID, element.Case_Title, element.Case_Desc, element.Case_Comment)">
+                  <ng-template [ngIf]="element.Case_Result == '1'">
+                    <span class="badge badge-primary passed-bg">Passed</span>
+                  </ng-template>
+                  <ng-template [ngIf]="element.Case_Result == '2'">
+                    <span class="badge badge-primary failed-bg">Failed</span>
+                  </ng-template>
+                  <ng-template [ngIf]="element.Case_Result == '3'">
+                    <span class="badge badge-primary blocked-bg">Blocked</span>
+                  </ng-template>
+                  <ng-template [ngIf]="element.Case_Result == '4'">
+                    <span class="badge badge-primary invalid-bg">Invalid</span>
+                  </ng-template>
+                  <ng-template [ngIf]="element.Case_Result == '5'">
+                    <span class="badge badge-primary skipped-bg">Skipped</span>
+                  </ng-template>
+                </td>
+              </ng-container>
 
-                <ng-container matColumnDef="Title">
-                  <th mat-header-cell *matHeaderCellDef>Title</th>
-                  <td mat-cell *matCellDef="let element" (click)="openCaseRunPanel()">{{element.Case_Title}}</td>
-                </ng-container>
+              <ng-container matColumnDef="Title">
+                <th mat-header-cell *matHeaderCellDef>Title</th>
+                <td mat-cell *matCellDef="let element"
+                  (click)="openCaseRunPanel(element.Case_ID, element.Case_Title, element.Case_Desc, element.Case_Comment)">
+                  {{element.Case_Title}}</td>
+              </ng-container>
 
-                <ng-container matColumnDef="Assignee">
-                  <th mat-header-cell *matHeaderCellDef>Assignee</th>
-                  <td mat-cell *matCellDef="let element" (click)="openCaseRunPanel()">
-                    <img class="assignee-img" src="../../assets/img/placeholder.jpg">
-                    <span>User</span>
-                  </td>
-                </ng-container>
+              <ng-container matColumnDef="Assignee">
+                <th mat-header-cell *matHeaderCellDef>Assignee</th>
+                <td mat-cell *matCellDef="let element"
+                  (click)="openCaseRunPanel(element.Case_ID, element.Case_Title, element.Case_Desc, element.Case_Comment)">
+                  <img class="assignee-img" src="../../assets/img/placeholder.jpg">
+                  <span>User</span>
+                </td>
+              </ng-container>
 
-                <ng-container matColumnDef="TimeSpent">
-                  <th mat-header-cell *matHeaderCellDef>Time spent</th>
-                  <td mat-cell *matCellDef="let element" (click)="openCaseRunPanel()"></td>
-                </ng-container>
+              <ng-container matColumnDef="TimeSpent">
+                <th mat-header-cell *matHeaderCellDef>Time spent</th>
+                <td mat-cell *matCellDef="let element"
+                  (click)="openCaseRunPanel(element.Case_ID, element.Case_Title, element.Case_Desc, element.Case_Comment)"></td>
+              </ng-container>
 
-                <ng-container matColumnDef="ThreeDots">
-                  <th mat-header-cell *matHeaderCellDef></th>
-                  <td mat-cell *matCellDef="let element">
-                    <div class="d-flex justify-content-end">
-                      <button class="btn three-dots" data-bs-toggle="dropdown">
-                        <i class="bi bi-three-dots"></i>
-                        <div class="dropdown-menu">
-                          <div class="dropdown-item">View case</div>
-                        </div>
-                      </button>
-                    </div>
-                  </td>
-                </ng-container>
+              <ng-container matColumnDef="ThreeDots">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let element">
+                  <div class="d-flex justify-content-end">
+                    <button class="btn three-dots" data-bs-toggle="dropdown">
+                      <i class="bi bi-three-dots"></i>
+                      <div class="dropdown-menu">
+                        <div class="dropdown-item">View case</div>
+                      </div>
+                    </button>
+                  </div>
+                </td>
+              </ng-container>
 
-                <tr mat-header-row *matHeaderRowDef="caseColumns"></tr>
-                <tr mat-row *matRowDef="let row; columns: caseColumns;" class="cases-row"></tr>
-              </table>
-            </div>
-          </ng-template>
-
-          <ng-template [ngIf]="TestRun_Status == '1'">
-            <div class="d-flex align-items-center mb-2">
-              <h6 class="mb-1 me-1">Login</h6>
-              <i class="bi bi-chevron-down me-3"></i>
-
-              <div class="progress">
-                <div class="progress-bar passed-pb" data-bs-toggle="tooltip" title="Passed"
-                  [ngStyle]="{'width.%': 100}"></div>
-                <div class="progress-bar failed-pb" data-bs-toggle="tooltip" title="Failed" [ngStyle]="{'width.%': 0}">
-                </div>
-                <div class="progress-bar untested-pb" data-bs-toggle="tooltip" title="Untested"
-                  [ngStyle]="{'width.%': 0}"></div>
-              </div>
-            </div>
-
-            <div class="row px-3 mb-4">
-              <table mat-table [dataSource]="caseDataSource" class="mat-elevation-z0">
-                <ng-container matColumnDef="Checkbox">
-                  <th mat-header-cell *matHeaderCellDef>
-                    <input type="checkbox">
-                  </th>
-                  <td mat-cell *matCellDef="let element">
-                    <input type="checkbox">
-                  </td>
-                </ng-container>
-
-                <ng-container matColumnDef="Result">
-                  <th mat-header-cell *matHeaderCellDef>Results</th>
-                  <td mat-cell *matCellDef="let element" (click)="openCasePanel()">
-                    <!-- <ng-template [ngIf]="element.result == 1"> -->
-                    <span class="badge bg-primary passed-bg">Passed</span>
-                    <!-- </ng-template>
-                    <ng-template [ngIf]="element.result == 0"> -->
-                    <!-- <span class="badge bg-primary failed-bg">Failed</span> -->
-                    <!-- </ng-template> -->
-                  </td>
-                </ng-container>
-
-                <ng-container matColumnDef="Title">
-                  <th mat-header-cell *matHeaderCellDef>Title</th>
-                  <td mat-cell *matCellDef="let element" (click)="openCasePanel()">{{element.Case_Title}}</td>
-                </ng-container>
-
-                <ng-container matColumnDef="Assignee">
-                  <th mat-header-cell *matHeaderCellDef>Assignee</th>
-                  <td mat-cell *matCellDef="let element" (click)="openCasePanel()">
-                    <img class="assignee-img" src="../../assets/img/placeholder.jpg">
-                    <span>User</span>
-                  </td>
-                </ng-container>
-
-                <ng-container matColumnDef="TimeSpent">
-                  <th mat-header-cell *matHeaderCellDef>Time spent</th>
-                  <td mat-cell *matCellDef="let element" (click)="openCasePanel()"></td>
-                </ng-container>
-
-                <ng-container matColumnDef="ThreeDots">
-                  <th mat-header-cell *matHeaderCellDef></th>
-                  <td mat-cell *matCellDef="let element">
-                    <div class="d-flex justify-content-end">
-                      <button class="btn three-dots" data-bs-toggle="dropdown">
-                        <i class="bi bi-three-dots"></i>
-                        <div class="dropdown-menu">
-                          <div class="dropdown-item">View case</div>
-                        </div>
-                      </button>
-                    </div>
-                  </td>
-                </ng-container>
-
-                <tr mat-header-row *matHeaderRowDef="caseColumns"></tr>
-                <tr mat-row *matRowDef="let row; columns: caseColumns;" class="cases-row"></tr>
-              </table>
-            </div>
-          </ng-template>
-
+              <tr mat-header-row *matHeaderRowDef="caseColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: caseColumns;" class="cases-row"></tr>
+            </table>
+          </div>
+          <!-- </ng-template> -->
         </div>
 
         <!-- DEFECTS TAB -->
@@ -259,7 +204,7 @@
                     <span class="badge bg-primary in-progress-bg">In Progress</span>
                   </ng-template>
                   <ng-template [ngIf]="element.Defect_Status == 3">
-                    <span class="badge bg-primary invalid-bg">Invalid</span>
+                    <span class="badge bg-primary invalid-d-bg">Invalid</span>
                   </ng-template>
                   <ng-template [ngIf]="element.Defect_Status == 4">
                     <span class="badge bg-primary resolved-bg">Resolved</span>
@@ -414,9 +359,9 @@
         <span class="passed-span">Passed</span>
       </div>
       <div class="mb-1">
-        <span class="project-title">{{this.projects[0].Project_Name}}</span>
+        <span class="project-title">Project QAs</span>
       </div>
-      <h2 class="page-title mb-2">{{this.testcases[0].Case_Title}}</h2>
+      <h2 class="page-title mb-2">{{Case_Title}}</h2>
     </div>
     <div class="col d-flex justify-content-end">
       <i class="bi bi-x-lg" (click)="closeCasePanel()"></i>
@@ -447,18 +392,17 @@
     <div class="tab-pane show active" id="executionTab">
       <div class="row mt-3 mb-3">
         <h6 class="small-text-bold mb-1">Suite description</h6>
-        <span class="small-text">{{this.suites[0].Suite_Desc}}</span>
+        <!-- <span class="small-text">{{this.suites[0].Suite_Desc}}</span> -->
       </div>
 
       <div class="row mb-3">
         <h6 class="small-text-bold mb-1">Description</h6>
-        <h6 class="small-text-bold mb-1">Expected:</h6>
-        <span class="small-text-italic">{{this.testcases[0].Case_Desc}}</span>
+        <span class="small-text-italic">{{Case_Desc}}</span>
       </div>
 
       <div class="row">
         <h6 class="small-text-bold mb-1">Pre-conditions</h6>
-        <span class="small-text">{{this.suites[0].Suite_PreCondition}}</span>
+        <!-- <span class="small-text">{{this.suites[0].Suite_PreCondition}}</span> -->
       </div>
 
       <div class="row my-2 text-center">
@@ -496,7 +440,7 @@
     <div class="tab-pane show" id="infoTab">
       <div class="row mt-3 mb-3">
         <h6 class="small-text-bold mb-1">Test Case</h6>
-        <span class="small-text-case">{{this.testcases[0].Case_Title}}</span>
+        <span class="small-text-case">{{Case_Title}}</span>
       </div>
 
       <div class="row mb-3">
@@ -584,9 +528,9 @@
   <div class="row">
     <div class="col">
       <div class="mb-1">
-        <span class="project-title">{{this.projects[0].Project_Name}}</span>
+        <span class="project-title">Project QAs</span>
       </div>
-      <h2 class="page-title mb-2">{{this.testcases[0].Case_Title}}</h2>
+      <h2 class="page-title mb-2">{{Case_Title}}</h2>
     </div>
     <div class="col-auto d-flex justify-content-end">
       <i class="bi bi-x-lg" (click)="closeCaseRunPanel()"></i>
@@ -616,33 +560,42 @@
       <ng-template [ngIf]="TestRun_Status != '2'">
         <div class="row mt-3 mb-3">
           <div class="d-flex">
-            <button class="btn btn-primary passed-btn px-2 py-1 me-2" data-bs-toggle="modal" data-bs-target="#resultModal">
+            <button class="btn btn-primary passed-btn px-2 py-1 me-2" data-bs-toggle="modal"
+              data-bs-target="#resultModal" (click)="openCaseModal('1')">
               <i class="bi bi-check me-1"></i>
               <span>Passed</span>
             </button>
-            <button class="btn btn-primary failed-btn px-2 py-1 me-2" data-bs-toggle="modal" data-bs-target="#resultModal">
+            <button class="btn btn-primary failed-btn px-2 py-1 me-2" data-bs-toggle="modal"
+              data-bs-target="#resultModal" (click)="openCaseModal('2')">
               <i class="bi bi-x me-1"></i>
               <span>Failed</span>
             </button>
-            <button class="btn btn-primary blocked-btn px-2 py-1 me-2" data-bs-toggle="modal" data-bs-target="#resultModal">
+            <button class="btn btn-primary blocked-btn px-2 py-1 me-2" data-bs-toggle="modal"
+              data-bs-target="#resultModal" (click)="openCaseModal('3')">
               <i class="bi bi-x-circle me-1"></i>
               <span>Blocked</span>
             </button>
-            <button class="btn btn-primary invalid-btn px-2 py-1 me-2" data-bs-toggle="modal" data-bs-target="#resultModal">
+            <button class="btn btn-primary invalid-btn px-2 py-1 me-2" data-bs-toggle="modal"
+              data-bs-target="#resultModal" (click)="openCaseModal('4')">
               <i class="bi bi-heartbreak me-1"></i>
               <span>Invalid</span>
             </button>
-            <button class="btn btn-primary skipped-btn px-2 py-1" data-bs-toggle="modal" data-bs-target="#resultModal">
+            <button class="btn btn-primary skipped-btn px-2 py-1" data-bs-toggle="modal" data-bs-target="#resultModal"
+              (click)="openCaseModal('5')">
               <i class="bi bi-arrow-bar-right me-1"></i>
               <span>Skipped</span>
             </button>
           </div>
         </div>
 
+        <div class="row mb-3">
+          <h6 class="small-text-bold mb-1">Description:</h6>
+          <span class="small-text-italic">{{Case_Desc}}</span>
+        </div>
+
         <div class="row">
-          <h6 class="small-text-bold mb-1">Description</h6>
-          <h6 class="small-text-bold mb-1">Expected:</h6>
-          <span class="small-text-italic">{{this.testcases[0].Case_Desc}}</span>
+          <h6 class="small-text-bold mb-1">Comment:</h6>
+          <span class="small-text">{{Case_Comment}}</span>
         </div>
       </ng-template>
     </div>
@@ -677,7 +630,7 @@
 
         <div class="d-flex align-items-center justify-content-end">
           <span class="cancel-span me-2" data-bs-dismiss="modal">Cancel</span>
-          <button type="button" class="btn btn-primary" (click)="changeStatus('1')">Submit</button>
+          <button type="button" class="btn btn-primary" (click)="changeRunStatus('1')">Submit</button>
         </div>
       </div>
     </div>
@@ -695,7 +648,7 @@
 
         <div class="d-flex align-items-center justify-content-end">
           <span class="cancel-span me-2" data-bs-dismiss="modal">Cancel</span>
-          <button type="button" class="btn btn-primary" (click)="changeStatus('2')">Abort</button>
+          <button type="button" class="btn btn-primary" (click)="changeRunStatus('2')">Abort</button>
         </div>
       </div>
     </div>
@@ -714,7 +667,7 @@
         <div class="row mb-2">
           <div class="col-6">
             <label class="page-label">Result</label>
-            <mat-select class="select-item" value="1">
+            <mat-select class="select-item" [(ngModel)]="Case_Result">
               <mat-option class="select-item" value="1">Passed</mat-option>
               <mat-option class="select-item" value="2">Failed</mat-option>
               <mat-option class="select-item" value="3">Blocked</mat-option>
@@ -730,7 +683,8 @@
 
         <div class="mb-3">
           <label class="page-label">Comment</label>
-          <textarea class="form-control" placeholder="Add some additional information here"></textarea>
+          <textarea class="form-control" placeholder="Add some additional information here"
+            [(ngModel)]="Case_Comment"></textarea>
         </div>
 
         <div class="mb-4">
@@ -739,7 +693,7 @@
 
         <div class="d-flex align-items-center justify-content-end">
           <span class="cancel-span me-2" data-bs-dismiss="modal">Cancel</span>
-          <button type="button" class="btn btn-primary">Add result</button>
+          <button type="button" class="btn btn-primary" (click)="changeCaseResult()">Add result</button>
         </div>
       </div>
     </div>
