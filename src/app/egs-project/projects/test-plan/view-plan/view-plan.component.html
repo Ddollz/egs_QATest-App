@@ -98,13 +98,13 @@
 
                                 <div class="cases-content mt-2">
                                     <div class="cases-header-title">
-                                        Shopping List
+                                        Cases
                                     </div>
                                     <div class="row">
-                                        <table mat-table [dataSource]="caseDataSource" class="mat-elevation-z0">
+                                        <table mat-table [dataSource]="casesDataSource" class="mat-elevation-z0">
                                             <ng-container matColumnDef="Title">
                                               <th mat-header-cell *matHeaderCellDef>Title</th>
-                                              <td mat-cell *matCellDef="let element" (click)="openCasePanel()">{{element.title}}</td>
+                                              <td mat-cell *matCellDef="let element" (click)="openCasePanel()">{{element.Case_Title}}</td>
                                             </ng-container>
                               
                                             <ng-container matColumnDef="Assignee">
@@ -116,11 +116,11 @@
                               
                                             <ng-container matColumnDef="Expected_Duration">
                                               <th mat-header-cell *matHeaderCellDef>Expected Duration</th>
-                                              <td mat-cell *matCellDef="let element" (click)="openCasePanel()">{{element.time}}</td>
+                                              <td mat-cell *matCellDef="let element" (click)="openCasePanel()">0:00:00</td>
                                             </ng-container>
                             
-                                            <tr mat-header-row *matHeaderRowDef="caseColumns"></tr>
-                                            <tr mat-row *matRowDef="let row; columns: caseColumns;" class="cases-row"></tr>
+                                            <tr mat-header-row *matHeaderRowDef="casesColumns"></tr>
+                                            <tr mat-row *matRowDef="let row; columns: casesColumns;" class="cases-row"></tr>
                                           </table>
                                     </div>
                                 </div>

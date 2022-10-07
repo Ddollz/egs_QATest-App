@@ -17,8 +17,9 @@ export class CreatePlanComponent implements OnInit {
   S_ID: number = 0;
   S_Name: string ='';
   S_Desc: string ='';
-
-  test: number = 8;
+  addCasesLength = 0;
+  ACLength = 0;
+  finalAddCases ='';
 
   //Activated Route
   index: number = 0;
@@ -38,11 +39,12 @@ export class CreatePlanComponent implements OnInit {
   testplans: testplan[] = [];
   testCases: testCase[] = [];
   testplanCases: testplanCases [] = [];
+  addCases : number[] = []
   @Input() project = {} as project;
 
   //Table
   displayedColumns: string[] = ['TestCase_CheckBox', 'TestCase_Add', 'TestCase_Title'];
-  testCasesdataSource = new MatTableDataSource<testCase>();
+  casesDataSource = new MatTableDataSource<testCase>();
   suitedataSource = new MatTableDataSource<suite>();
   tpCasesDataSource = new MatTableDataSource<testplanCases>();
 
@@ -57,7 +59,7 @@ export class CreatePlanComponent implements OnInit {
     }
 
     this.LinkParamID = sidebarServ.projectID;
-    console.log(this.LinkParamID);
+    // console.log(this.LinkParamID);
 
     this.api.UniCall(
       {
@@ -85,22 +87,6 @@ export class CreatePlanComponent implements OnInit {
       }
     ).subscribe(value => {
       this.suites = value[0];
-    });
-
-    this.api.UniCall(
-      {
-        CommandText: 'egsQATestPlanCasesGet',
-        Params: [
-          {
-            Param: '@TestPlan_ID',
-            Value: this.test.toString()
-          }
-        ]
-      }
-    ).subscribe(value => {
-      this.testplanCases = value[0];
-      this.tpCasesDataSource = new MatTableDataSource<testplanCases>(this.testplanCases);
-      console.log(this.tpCasesDataSource.filteredData);
     });
 
   }
@@ -133,28 +119,31 @@ export class CreatePlanComponent implements OnInit {
       }
     ).subscribe(value => {
       this.testCases = value[0];
-      this.testCasesdataSource = new MatTableDataSource<testCase>(this.testCases);
+      this.casesDataSource = new MatTableDataSource<testCase>(this.testCases);
       // console.log(this.testCases);
-      console.log(this.testCasesdataSource);
-      console.log(this.testCasesdataSource.filteredData)
+      // console.log(this.testCasesdataSource);
+      // console.log(this.testCasesdataSource.filteredData)
       // console.log(this.S_ID);
     });
   }
 
   selectCase($event: any, ID: number, Name: string){
-    // alert(event.checked);
     if($event.checked){
-      alert(ID)
-      // alert(Name)
-
-    }
-    else{
+      this.addCases.push(ID)
+      this.addCases = [...new Set(this.addCases)]
+      this.addCasesLength = this.addCases.length
 
     }
   }
 
-  getSelectedCaseID(ID: number){
-    alert(ID);
+  getSelectedCase(){
+    // this.router.navigate(["/projects/plan/createplan"])
+    this.finalAddCases = "[" + this.addCases + "]"
+    this.ACLength = this.addCasesLength
+  }
+
+  closeAddCases(){
+    this.addCases = [];
   }
 
   updateInsertTestPlan() {
@@ -184,28 +173,7 @@ export class CreatePlanComponent implements OnInit {
           },
           {
             Param: '@Case_ID',
-            Value: "[29,28]"
-          }
-        ]
-      }
-    ).subscribe({
-      error: (e) => console.error(e),
-      complete: () => this.router.navigate(["/projects/plan"])
-    });
-  }
-
-  updateInsertTestPlanCases(){
-    this.api.UniCall(
-      {
-        CommandText: 'egsQATestPlanCasesInsertUpdate',
-        Params: [
-          {
-            Param: '@TestPlan_ID',
-            Value: this.TestPlan_ID.toString()
-          },
-          {
-            Param: '@Case_ID',
-            Value: this.Case_ID.toString()
+            Value: this.finalAddCases.toString()
           }
         ]
       }

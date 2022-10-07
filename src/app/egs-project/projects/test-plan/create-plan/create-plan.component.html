@@ -41,7 +41,7 @@
             </div>
             <div class="row">
                 <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
-                    <p class="page-something">0 test cases selected</p>
+                    <p class="page-something">{{ACLength}} test cases selected</p>
                     <button class="add-cases button-blue-transparent btn  b-0 p-0" type="button" data-bs-toggle="modal" data-bs-target="#addcases">
                         <i class="bi bi-plus-circle-fill"></i> 
                         Add cases
@@ -62,7 +62,7 @@
 </div>
 
 <!-- Add cases modal -->
-<div class="modal fade" id="addcases" tabindex="-1">
+<div class="modal fade" id="addcases" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
             <!-- Modal Header -->
@@ -98,9 +98,9 @@
                         </div>
                     </div>
                 </div>
-                <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closeAddCases()"></button>
                 <div class="modal-select-cases-stats">
-                    <p class="cases-count">0 test cases selected</p>
+                    <p class="cases-count">{{addCasesLength}} test cases selected</p>
                 </div>
             </div>
 
@@ -166,7 +166,7 @@
                         </div>
                         <div class="cases-block">
                             <div class="row ps-3 r-col-table">
-                                <table mat-table [dataSource]="testCasesdataSource" class="mat-elevation-z0" cellspacing="0">
+                                <table mat-table [dataSource]="casesDataSource" class="mat-elevation-z0" cellspacing="0">
                                     <ng-container matColumnDef="TestCase_CheckBox">
                                         <tr mat-header-row *matHeaderCellDef></tr>
                                         <td mat-cell *matCellDef="let element;">
@@ -223,8 +223,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button id="select-cases-done-button" class="btn btn-primary">Done</button>
-                <button class="btn btn-invisible-danger b-0" data-bs-dismiss="modal">Cancel</button>
+                <button class="btn btn-primary" data-bs-dismiss="modal" (click)="getSelectedCase()">Done</button>
+                <button class="btn btn-invisible-danger b-0" data-bs-dismiss="modal" (click)="closeAddCases()">Cancel</button>
             </div>
         </div>
     </div>
