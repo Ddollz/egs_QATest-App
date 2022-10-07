@@ -26,7 +26,7 @@ export class AppComponent implements OnInit {
     private api: ApiService, public router: Router
   ) {
     //theme toggle
-    document.body.classList.toggle("dark-theme");
+    document.body.classList.toggle("light-theme");
   }
   ngOnInit(): void {
     this.initializeTheme();
