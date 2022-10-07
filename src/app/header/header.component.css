@@ -15,7 +15,7 @@ a,
 a:hover,
 a:focus,
 a:active {
-  color: inherit;
+  color: var(--c-text-primary);
   text-decoration: none;
   font-size: 0.875rem;
   vertical-align: top;

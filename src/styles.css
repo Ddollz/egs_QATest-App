@@ -1,8 +1,9 @@
 @import "~bootstrap-icons/font/bootstrap-icons.css";
 
 :root {
-  --shadow-color-primary: rgb(9 30 66 / 25%);
-  --shadow-color-secondary: rgb(9 30 66 / 31%);
+  --shadow-color: rgb(0 0 0 / 25%);
+  --shadow-color-primary: rgba(0, 0, 0, 0.25);
+  --shadow-color-secondary: rgba(0, 0, 0, 0.31);
   --popup-border: 1px solid transparent;
   --popup-shadow: 0px 4px 8px var(--shadow-color-primary), 0px 0px 1px var(--shadow-color-secondary);
 
@@ -25,6 +26,7 @@
   --bg-color: #fff;
   --bg-color-header: #fff;
   --bg-color-header-secondary: rgb(33, 31, 31);
+  --bg-color-submenu: rgb(244, 245, 247);
   --bg-dropdown: #272727;
 
   --black-100: rgba(37, 32, 32, 1);
@@ -37,6 +39,7 @@
   --fs-default: 0.775rem;
 
   --c-text: #7a7a83;
+  --c-text-primary: #ffffffde;
   --c-text-secondary: rgba(19, 38, 71, 0.5);
   --c-text-table-head: #ababab;
   --app-header-height: 2.5rem;
@@ -50,15 +53,19 @@
   --bg-color-header: #fff;
   --c-text-table-head: #382F2F;
   --bg-dropdown: #fff;
+  --c-text-primary: #382F2F;
   --c-text: #382F2F;
+  --bg-color-submenu: rgb(244, 245, 247);
 }
 
 .dark-theme {
   --bg-color: #2d2d2d;
   --bg-color-header: rgb(33, 31, 31);
-  --c-text: #fff;
+  --c-text: rgba(255, 255, 255, 0.75);
+  --c-text-primary: #ffffffde;
   --c-text-table-head: #7a7a83;
   --bg-dropdown: #272727;
+  --bg-color-submenu: rgb(39, 39, 39);
 }
 
 .mat-table {
@@ -116,7 +123,7 @@ a,
 a:hover,
 a:focus,
 a:active {
-  color: inherit;
+  color: var(--c-text-primary);
   text-decoration: none;
 }
 
@@ -127,7 +134,7 @@ h4,
 h5 {
   font-family: "Nunito", sans-serif;
   font-weight: 400;
-  color: var(--c-text);
+  color: var(--c-text-primary);
 
 }
 
@@ -517,6 +524,7 @@ li:active>.dropdown-Tag {
 .button-blue-transparent {
   white-space: nowrap;
   font-size: .875rem;
+  color: var(--c-text);
   background-color: transparent !important;
   border: none !important;
 
