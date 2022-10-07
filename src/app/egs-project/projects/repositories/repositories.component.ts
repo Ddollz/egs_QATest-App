@@ -892,7 +892,6 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
     }
   }
   checkPrev(item: any) {
-    console.log("hgse")
     var child = this.stepHistory.filter((x: any) => x.Case_StepID === item.Case_StepID);
     if (child.length > 1) {
       return true
@@ -1078,6 +1077,7 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
 
   postComment() {
     let currentDateTime = new Date();
+    console.log(this.htmlstring);
     this.api.UniCall(
       {
         CommandText: 'egsQATestCaseCommentInsertUpdate',
