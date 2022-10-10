@@ -5,7 +5,7 @@
 .r-col-header {
   width: 100%;
   border-radius: 6px;
-  background-color: var(--black-5);
+  background: var(--bg-color-secondary);
   padding: 0.5rem;
 }
 
@@ -27,11 +27,11 @@
 }
 
 .suite-buttons i {
-  color: var(--black-50);
+  color: var(--button-icon-secondary-color)
 }
 
 .suite-buttons:hover i {
-  color: var(--c-text);
+  color: var(--button-icon-secondary-color-hover);
 }
 
 .suite-buttons:hover {

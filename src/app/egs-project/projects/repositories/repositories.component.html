@@ -12,11 +12,14 @@
       </div>
       <div class="col d-flex justify-content-end align-items-center">
         <div class="dropdown">
-          <button class="btn btn-light page-button" data-bs-toggle="dropdown" aria-expanded="false">
+          <button class="btn btn-light page-button trashbin" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="bi bi-three-dots"></i>
           </button>
+
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" [routerLink]="'../trashbin/' + LinkParamID "><i class="bi bi-trash2"></i> Trash bin</a></li>
+            <li class = "">
+              <a class="dropdown-Tag" [routerLink]="'../trashbin/' + LinkParamID "><i class="bi bi-trash2"></i> Trash bin</a>
+            </li>
           </ul>
         </div>
       </div>
@@ -106,10 +109,9 @@
                         <a class="button-blue-transparent">{{project.Project_Name}}</a>
                         <div class="caseDescription">{{testCase.Case_Title}}</div>
                       </div>
-                      <div class="border-bottom"></div>
                     </ng-container>
                   </ng-container>
-                  <input class="ms-5 mb-3 clearedInput" placeholder="+ Create quick test" [attr.suiteAttri]="suite.Suite_ID" (keyup.enter)="onQuickCaseEnter($event)">
+                  <input class="ms-5 mb-3 clearedInput" (focus)="onFocusIn($event)" (focusout)="onFocusOut($event)" placeholder="+ Create quick test" [attr.suiteAttri]="suite.Suite_ID" (keyup.enter)="onQuickCaseEnter($event)">
                 </div>
                 <!-- Run Template to display looping Leaf -->
                 <div class="ms-3">
@@ -698,13 +700,13 @@
                 <button class="btn three-dots" data-bs-toggle="dropdown">
                   <i class="bi bi-three-dots"></i>
                   <div class="dropdown-menu">
-                    <div class="dropdown-item">View</div>
-                    <div class="dropdown-item">Assign to me</div>
-                    <div class="dropdown-item">In Progress</div>
-                    <div class="dropdown-item">Resolve</div>
-                    <div class="dropdown-item">Invalid</div>
-                    <div class="dropdown-item">Edit</div>
-                    <div class="dropdown-item">Delete</div>
+                    <div class="dropdown-Tag">View</div>
+                    <div class="dropdown-Tag">Assign to me</div>
+                    <div class="dropdown-Tag">In Progress</div>
+                    <div class="dropdown-Tag">Resolve</div>
+                    <div class="dropdown-Tag">Invalid</div>
+                    <div class="dropdown-Tag">Edit</div>
+                    <div class="dropdown-Tag">Delete</div>
                   </div>
                 </button>
               </div>

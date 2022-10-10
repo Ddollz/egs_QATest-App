@@ -13,7 +13,7 @@ export type Theme = 'light-theme' | 'dark-theme';
 })
 export class AppComponent implements OnInit {
 
-  theme: Theme = 'light-theme';
+  theme: string = 'light-theme';
 
   roleList$!: Observable<any[]>;
 
@@ -21,15 +21,24 @@ export class AppComponent implements OnInit {
   showSide: boolean = false;
 
   constructor(
+
     @Inject(DOCUMENT) private document: Document,
     private renderer: Renderer2,
     private api: ApiService, public router: Router
   ) {
     //theme toggle
-    document.body.classList.toggle("light-theme");
+    var localTheme = localStorage.getItem('theme');
+    if (localTheme != undefined) {
+      this.theme = localTheme
+      document.body.classList.toggle(localTheme);
+    }
+    else {
+      document.body.classList.toggle("light-theme");
+      console.log("awda")
+    }
   }
   ngOnInit(): void {
-    this.initializeTheme();
+    this.themeSwitch(this.theme);
     //Sample Post Methods
     // this.api.UniCall(
     //   {
@@ -50,8 +59,8 @@ export class AppComponent implements OnInit {
     //     complete() { console.log('Finished sequence'); }
     //   })
   }
-  themeSwitch() {
+  themeSwitch(value: any) {
+    this.theme = value;
     this.document.body.classList.replace(this.theme, this.theme === 'light-theme' ? (this.theme = 'dark-theme') : (this.theme = 'light-theme'))
   }
-  initializeTheme = (): void => this.renderer.addClass(this.document.body, this.theme);
 }

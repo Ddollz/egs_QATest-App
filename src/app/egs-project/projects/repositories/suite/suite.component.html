@@ -10,19 +10,19 @@
     <button type="button" class="button-blue-transparent" (click)="settingOpen($event)" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots"></i></button>
     <ul class="dropdown-menu pt-2 pb-2" id="dropdown">
       <div class="dropdown-group">
-        <li><a class="dropdown-item" (click)="editSuite(Suite.Suite_ID)" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="bi bi-pencil"></i>Edit</a></li>
-        <li><a class="dropdown-item" href="#"><i class="bi bi-clipboard"></i>Clone</a></li>
+        <li><a class="dropdown-Tag" (click)="editSuite(Suite.Suite_ID)" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="bi bi-pencil"></i>Edit</a></li>
+        <li><a class="dropdown-Tag" href="#"><i class="bi bi-clipboard"></i>Clone</a></li>
       </div>
       <!-- <div class="dropdown-group">
         <li><a class="dropdown-item" href="#"><i class="bi bi-check-square"></i>Select All</a></li>
         <li><a class="dropdown-item" href="#"><i class="bi bi-square"></i>Unselect All</a></li>
       </div> -->
       <div class="dropdown-group">
-        <li><a class="dropdown-item" (click)="createChildSuite(Suite.Suite_ID)" data-bs-toggle="modal" data-bs-target="#exampleModal" href="#"><i class="bi bi-plus"></i>Create Suite</a></li>
-        <li><a class="dropdown-item create" [routerLink]="'../create/'+Suite.Project_ID" [queryParams]="{create:true,suite:Suite.Suite_ID}"><i class="bi bi-plus"></i>Create Case</a></li>
+        <li><a class="dropdown-Tag" (click)="createChildSuite(Suite.Suite_ID)" data-bs-toggle="modal" data-bs-target="#exampleModal" href="#"><i class="bi bi-plus"></i>Create Suite</a></li>
+        <li><a class="dropdown-Tag create" [routerLink]="'../create/'+Suite.Project_ID" [queryParams]="{create:true,suite:Suite.Suite_ID}"><i class="bi bi-plus"></i>Create Case</a></li>
       </div>
       <div class="dropdown-group delete">
-        <li><a class="dropdown-item" (click)="deleteSuite(Suite.Suite_ID)"><i class="bi bi-trash"></i>Delete</a></li>
+        <li><a class="dropdown-Tag" (click)="deleteSuite(Suite.Suite_ID)"><i class="bi bi-trash"></i>Delete</a></li>
       </div>
     </ul>
   </div>

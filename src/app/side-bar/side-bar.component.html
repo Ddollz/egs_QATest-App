@@ -2,7 +2,7 @@
   <div class="sidebar__Title">
     <p>Calcmenu Philippines</p>
   </div>
-  
+
   <div class="mb-3 mt-2">
     <div class="dropdown__title collapsed" data-bs-toggle="collapse" data-bs-target="#workspace-collapse" aria-expanded="true" (click)="ddWorkspace = !ddWorkspace" [ngClass]="ddWorkspace? '':'open'">
       <p>WORKSPACE</p>
@@ -31,7 +31,7 @@
 
 <ng-container *ngIf="router.url.includes('/projects')">
   <div class="sidebar__Title">
-    <p>Project Name</p>
+    <p>{{project.Project_Name}}</p>
   </div>
 
   <div class="mb-3 mt-2">

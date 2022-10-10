@@ -10,11 +10,14 @@
   background-color: var(--bg-color-header);
 }
 
+.nav{
+  flex-direction: column;
+}
 
-a,
-a:hover,
-a:focus,
-a:active {
+.nav-link,
+.nav-link:hover,
+.nav-link:focus,
+.nav-link:active {
   color: var(--c-text-primary);
   text-decoration: none;
   font-size: 0.875rem;

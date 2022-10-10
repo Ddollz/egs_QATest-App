@@ -6,17 +6,28 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  @Output() toggleMode = new EventEmitter<boolean>();
-  theme: boolean = false;
+  @Output() toggleMode = new EventEmitter<string>();
+  theme: string = 'light-theme';
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
   }
-  toggle(value: boolean) {
-    this.theme = !value;
-    console.log(this.theme)
-    this.toggleMode.emit(value);
+  toggle(value: string) {
+
+
+    var localTheme = localStorage.getItem('theme');
+    if (localTheme != undefined)
+      if (localTheme == 'light-theme')
+        this.theme = 'dark-theme'
+      else
+        this.theme = 'light-theme'
+    else
+      this.theme = 'light-theme'
+    localStorage.setItem('theme', this.theme);
+    this.toggleMode.emit(this.theme);
+
   }
 
 }

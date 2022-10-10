@@ -49,8 +49,9 @@
 }
 
 .dropdown-group {
-  border-bottom: 1px solid rgb(224, 225, 228);
+  border-bottom: 1px solid var(--delimiter-color);
   padding: 8px 0;
+  position: relative;
 }
 .delete{
   border-bottom: unset;
@@ -65,6 +66,7 @@
 
 .dropdown-group i {
   margin-right: 8px;
+  width: 100%;
 }
 .dropdown-menu {
   font-size: 0.875rem;
@@ -74,6 +76,4 @@
   min-width: 100px;
 }
 
-.dropdown-item{
-  padding: 8px 16px;
-}
+

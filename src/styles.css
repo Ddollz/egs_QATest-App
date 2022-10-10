@@ -7,7 +7,6 @@
   --popup-border: 1px solid transparent;
   --popup-shadow: 0px 4px 8px var(--shadow-color-primary), 0px 0px 1px var(--shadow-color-secondary);
 
-  /* --bg-color-default: #fff; */
   --bs-blue-prime: #286efa;
   --bs-blue-second: #609de6;
 
@@ -22,11 +21,14 @@
 
   --delimiter-color: rgb(240, 240, 240);
   --delimiter-color-secondary: rgb(229, 229, 229);
+  --tabs-border: 2px solid var(--delimiter-color);
 
   --bg-color: #fff;
+  --bg-color-secondary: rgb(52, 52, 52);
   --bg-color-header: #fff;
   --bg-color-header-secondary: rgb(33, 31, 31);
   --bg-color-submenu: rgb(244, 245, 247);
+  --bg-color-secondary-emphasized: rgb(61, 61, 61);
   --bg-dropdown: #272727;
 
   --black-100: rgba(37, 32, 32, 1);
@@ -37,6 +39,7 @@
   --black-5: rgba(37, 32, 32, 0.05);
 
   --fs-default: 0.775rem;
+  --fs-default-second: 0.875rem;
 
   --c-text: #7a7a83;
   --c-text-primary: #ffffffde;
@@ -44,37 +47,97 @@
   --c-text-table-head: #ababab;
   --app-header-height: 2.5rem;
 
+
+  --button-icon-secondary-color: rgba(255, 255, 255, 0.5);
+  --button-icon-secondary-color-hover: rgba(255, 255, 255, 0.7);
+  --button-secondary-bg: var(--bg-color-secondary);
+  --button-secondary-bg-hover: var(--bg-color-secondary-emphasized);
+
   --c-sidebar-tag: #ff4742;
 
+  --checkbox-border-color: rgba(0, 0, 0, 0.54);
+  --bg-form-control: #211f1f;
 }
 
 .light-theme {
   --bg-color: #fff;
+  --bg-color-secondary: rgb(244, 245, 247);
   --bg-color-header: #fff;
-  --c-text-table-head: #382F2F;
   --bg-dropdown: #fff;
-  --c-text-primary: #382F2F;
-  --c-text: #382F2F;
   --bg-color-submenu: rgb(244, 245, 247);
+
+  --c-text-table-head: #382F2F;
+  --c-text-primary: #382F2F;
+  --c-text-secondary: rgba(19, 38, 71, 0.5);
+  --c-text: #382F2F;
+
+  --delimiter-color: rgb(240, 240, 240);
+  --delimiter-color-secondary: rgb(229, 229, 229);
+  --tabs-border: 2px solid var(--delimiter-color);
+
+  --bs-border-color: #dee2e6;
+  --bs-border-color: var(--delimiter-color);
+  --checkbox-border-color: rgba(0, 0, 0, 0.54);
+  --bg-form-control: #fcfcfc;
+  --bg-form-control-focus: #fcfcfc;
+
+  --button-icon-secondary-color: rgba(50, 66, 95, 0.5);
+  --button-icon-secondary-color-hover: rgb(50, 66, 95);
+
+  --button-secondary-bg: var(--bg-color-secondary);
+  --button-secondary-bg-hover: var(--bg-color-secondary-emphasized);
 }
 
 .dark-theme {
   --bg-color: #2d2d2d;
+  --bg-color-secondary: rgb(52, 52, 52);
   --bg-color-header: rgb(33, 31, 31);
-  --c-text: rgba(255, 255, 255, 0.75);
-  --c-text-primary: #ffffffde;
-  --c-text-table-head: #7a7a83;
   --bg-dropdown: #272727;
   --bg-color-submenu: rgb(39, 39, 39);
+
+  --c-text: rgba(255, 255, 255, 0.75);
+  --c-text-primary: #ffffffde;
+  --c-text-secondary: rgb(163, 163, 163);
+  --c-text-table-head: #7a7a83;
+
+  --delimiter-color: #464646;
+  --delimiter-color-secondary: #3d3d3d;
+  --tabs-border: 2px solid var(--delimiter-color);
+  --bs-border-color: var(--delimiter-color);
+
+  --checkbox-border-color: rgba(147, 155, 171, 0.5);
+  --bg-form-control: #211f1f;
+  --bg-form-control-focus: #111010;
+
+  --button-icon-secondary-color: rgba(255, 255, 255, 0.5);
+  --button-icon-secondary-color-hover: rgba(255, 255, 255, 0.7);
+  --button-secondary-bg: var(--bg-color-secondary);
+  --button-secondary-bg-hover: var(--bg-color-secondary-emphasized);
 }
 
 .mat-table {
   background-color: transparent;
   color: var(--bg-color);
 }
-
+mat-row, mat-header-row, mat-footer-row, th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
+  border-bottom-color: var(--delimiter-color);
+}
 .mat-header-cell {
   color: var(--c-text-table-head);
+}
+
+.mat-checkbox-frame {
+  border-color: var(--checkbox-border-color);
+  border-width: 5px;
+}
+.mat-select-panel {
+  background: var(--button-secondary-bg);
+}
+.mat-select-value {
+  color: var(--c-text);
+}
+.mat-select-arrow {
+  color: var(--c-text);
 }
 
 /* You can add global styles to this file, and also import other style files */
@@ -228,11 +291,17 @@ select {
 }
 
 .form-control {
-  border: 1px solid #b1adad;
+  background-color: var(--bg-form-control);
+  border: 1px solid var(--delimiter-color);
   border-radius: .25rem;
 }
 
+.form-control:hover {
+  background-color: var(--bg-form-control-focus);
+}
+
 .form-control:focus {
+  background-color: var(--bg-form-control-focus);
   box-shadow: 0 0 0 0.25rem var(--bs-red-5);
   border-color: var(--bs-red-100);
 }
@@ -373,8 +442,9 @@ select {
   border: none;
   padding: 0.5rem;
   font-size: .775;
+  color: var(--c-text);
+  background-color: transparent;
 }
-
 
 /* Dropdown Style */
 
@@ -445,7 +515,9 @@ select {
   color: var(--c-text);
   overflow: auto;
 }
-
+li a{
+  display: block
+}
 li>.dropdown-Tag,
 li>.dropdown-Tag:hover,
 li>.dropdown-Tag:active,
@@ -458,6 +530,7 @@ li>.dropdown-Tag:focus {
   margin-left: 0.125rem;
   font-weight: 500;
 }
+
 
 li:hover>.dropdown-Tag,
 li:active>.dropdown-Tag {

@@ -342,7 +342,19 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
     event.preventDefault();
     event.stopPropagation();
   }
+  onFocusIn(event:Event){
+    console.log(event)
+    var dom = event.currentTarget as HTMLElement;
+    console.log(dom)
+    dom.setAttribute('placeholder',"Test case title");
 
+  }
+
+  onFocusOut(event:Event){
+    console.log(event)
+    var dom = event.currentTarget as HTMLElement;
+    dom.setAttribute('placeholder',"+ Create quick test");
+  }
   onQuickCaseEnter(event: any) {
     var dom = event.currentTarget as HTMLElement;
     var sID = dom.getAttribute('suiteattri')
