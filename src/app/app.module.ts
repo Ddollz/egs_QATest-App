@@ -9,6 +9,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatDialogModule } from '@angular/material/dialog';
+import { AngularSplitModule } from 'angular-split';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -136,6 +137,7 @@ const appRoute: Routes = [
     MatCheckboxModule,
     MatRadioModule,
     MatDialogModule,
+    AngularSplitModule,
     RouterModule.forRoot(appRoute),
     QuillModule.forRoot({
       modules: {

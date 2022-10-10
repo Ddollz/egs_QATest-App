@@ -8,6 +8,9 @@ npm i @types/quill@1
 For Angular Material Error
 ng add @angular/material
 
+For Angular Split
+npm install angular-split
+
 Initial angular json production size
 - ng build
 "configurations": {

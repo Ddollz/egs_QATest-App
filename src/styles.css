@@ -115,13 +115,24 @@
   --button-secondary-bg-hover: var(--bg-color-secondary-emphasized);
 }
 
+.drag {
+  cursor: col-resize;
+}
+
 .mat-table {
   background-color: transparent;
   color: var(--bg-color);
 }
-mat-row, mat-header-row, mat-footer-row, th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
+
+mat-row,
+mat-header-row,
+mat-footer-row,
+th.mat-header-cell,
+td.mat-cell,
+td.mat-footer-cell {
   border-bottom-color: var(--delimiter-color);
 }
+
 .mat-header-cell {
   color: var(--c-text-table-head);
 }
@@ -130,12 +141,15 @@ mat-row, mat-header-row, mat-footer-row, th.mat-header-cell, td.mat-cell, td.mat
   border-color: var(--checkbox-border-color);
   border-width: 5px;
 }
+
 .mat-select-panel {
   background: var(--button-secondary-bg);
 }
+
 .mat-select-value {
   color: var(--c-text);
 }
+
 .mat-select-arrow {
   color: var(--c-text);
 }
@@ -262,6 +276,22 @@ select {
 }
 
 /* This is only Initial Css END*/
+
+/* Split pane */
+.as-split-gutter {
+  background-color: var(--delimiter-color) !important;
+  width: 10px !important;
+}
+
+.as-split-gutter:hover {
+  background-color: var(--bs-red-50) !important;
+}
+
+.as-split-gutter-icon {
+  background-image: unset !important;
+}
+
+/* Split End pane */
 
 /* App Body */
 .layout {
@@ -515,9 +545,11 @@ select {
   color: var(--c-text);
   overflow: auto;
 }
-li a{
+
+li a {
   display: block
 }
+
 li>.dropdown-Tag,
 li>.dropdown-Tag:hover,
 li>.dropdown-Tag:active,

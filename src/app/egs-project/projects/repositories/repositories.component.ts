@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Inject, Input, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { ActivatedRoute } from '@angular/router';
@@ -6,6 +6,8 @@ import { ApiService } from 'src/app/services/api.service';
 import { project, suite, testCase, step, testrun, defect } from '../../../models/project/project.model';
 import { reloadPage, sidebarService } from '../../../services/global-functions.service';
 import { BehaviorSubject, find, Observable } from 'rxjs';
+import { SplitComponent, SplitAreaDirective } from 'angular-split'
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-repositories',
@@ -133,6 +135,49 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
     true,   // multiple selection or not
   );
 
+  //split pane
+  @ViewChild('split') split?: SplitComponent
+  @ViewChild('area1') area1?: SplitAreaDirective
+  @ViewChild('area2') area2?: SplitAreaDirective
+  @ViewChildren(SplitAreaDirective) areasEl?: QueryList<SplitAreaDirective>
+  collapsed: boolean = false;
+
+  direction: any = 'horizontal'
+  sizes: any = {
+    area1: 15,
+    area2: 85,
+  }
+
+  dragStart() {
+    console.log(document.body.classList)
+    document.body.classList.add('drag');
+  }
+  dragEnd(sizes: any) {
+    if (sizes.sizes[0] <= 10) {
+      if (this.areasEl != undefined) {
+        this.areasEl.first.collapse(2)
+        this.collapsed = !this.collapsed;
+      }
+      console.log(sizes)
+    }
+    this.sizes.area1 = sizes.sizes[0];
+    this.sizes.area2 = sizes.sizes[1];
+    document.body.classList.remove('drag');
+    localStorage.setItem("dragsize", JSON.stringify(this.sizes))
+  }
+  onClose1(newSize = 0) {
+    if (this.areasEl != undefined) {
+      if (!this.collapsed) {
+        this.areasEl.first.collapse(newSize)
+        this.collapsed = !this.collapsed;
+      } else {
+        this.areasEl.first.expand()
+        this.collapsed = !this.collapsed;
+      }
+    }
+  }
+  //split end
+
   selectedSuiteCheck(event: number, bool: boolean = false) {
     if (bool) return this.suiteModel.deselect(event)
     this.suiteModel.toggle(event)
@@ -158,11 +203,10 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
       this.selectedSuiteCheck(sD, true);
     }
   }
-  constructor(private api: ApiService, private activatedRoute: ActivatedRoute, private sidebarServ: sidebarService) {
+  constructor(private api: ApiService, private activatedRoute: ActivatedRoute, private sidebarServ: sidebarService, @Inject(DOCUMENT) private document: Document) {
 
     this.LinkParamID = Number(this.activatedRoute.snapshot.paramMap.get('id')); //? 4
     // this.sidebarServ.fetchProjectID(this.LinkParamID);
-
     this.api.UniCall(
       {
         CommandText: 'egsQASuiteGet',
@@ -250,6 +294,11 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
       }
     })
     //END
+
+    var checkLocal = localStorage.getItem("dragsize");
+    if (checkLocal != undefined) {
+      this.sizes = JSON.parse(checkLocal);
+    }
   }
   confirmation() {
     if (this.confirmString === "CONFIRM") {
@@ -286,9 +335,20 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
     });
   }
   ngOnInit(): void {
+
   }
   ngAfterViewInit(): void {
 
+    // var checkLocal = localStorage.getItem("dragsize");
+    // if (checkLocal != undefined) {
+    //   if (this.sizes.expand) {
+    //     if (this.areasEl != undefined) {
+    //       this.areasEl.first.collapse(2)
+    //       this.collapsed = true
+    //     }
+    //   }
+    // }
+    // console.log(co)
   }
   collapseAllToggle(bol: boolean) {
     var dom = document.getElementById('list-container');
@@ -342,18 +402,18 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
     event.preventDefault();
     event.stopPropagation();
   }
-  onFocusIn(event:Event){
+  onFocusIn(event: Event) {
     console.log(event)
     var dom = event.currentTarget as HTMLElement;
     console.log(dom)
-    dom.setAttribute('placeholder',"Test case title");
+    dom.setAttribute('placeholder', "Test case title");
 
   }
 
-  onFocusOut(event:Event){
+  onFocusOut(event: Event) {
     console.log(event)
     var dom = event.currentTarget as HTMLElement;
-    dom.setAttribute('placeholder',"+ Create quick test");
+    dom.setAttribute('placeholder', "+ Create quick test");
   }
   onQuickCaseEnter(event: any) {
     var dom = event.currentTarget as HTMLElement;

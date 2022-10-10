@@ -1,4 +1,4 @@
-InputFile
+<!-- InputFile
 <input type="file" (change)="createFile($event)">
 <br>
 Delete File
@@ -6,9 +6,18 @@ Delete File
 <br>
 <br>
 <ng-container *ngFor="let item of displayImage">
-  <!-- <button (click)="createFile()">Create File</button> -->
-  <!-- {{item.byteFile}} -->
   <button (click)="downloadFile(item.Attachment_ID, item.Filename)">{{item.Filename}} - {{item.Attachment_ID}}</button>
 
   <img [src]="'data:image/png;base64,'+item.byteFile.fileContents" alt="" width="50%" height="auto">
-</ng-container>
+</ng-container> -->
+
+<div style="width: 500px; height: 500px;">
+  <as-split direction="horizontal">
+    <as-split-area [size]="40">
+      <p>LEFT</p>
+    </as-split-area>
+    <as-split-area [size]="60">
+      <p>RIGHT</p>
+    </as-split-area>
+  </as-split>
+</div>

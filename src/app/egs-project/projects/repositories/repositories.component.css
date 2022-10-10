@@ -50,9 +50,9 @@
   width: 100px;
 }
 
-.r-col {
+/* .r-col {
   border-left: var(--tabs-border);
-}
+} */
 
 .button-blue-transparent {
   font-size: 0.775rem;
@@ -193,6 +193,7 @@
   padding: 1rem 1.25rem;
   background: var(--bg-color);
   box-shadow: var(--popup-shadow);
+  /* resize: horizontal; */
 }
 
 .projectPanelTitle {
