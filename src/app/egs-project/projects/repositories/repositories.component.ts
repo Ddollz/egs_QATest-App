@@ -171,7 +171,6 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
     localStorage.setItem("dragsize", JSON.stringify(this.sizes))
   }
   onClose1(newSize = 0) {
-    console.log(this.sizes);
     if (this.areasEl != undefined && this.split != undefined) {
       if (!this.collapsed) {
         this.areasEl.first.collapse(newSize)
@@ -288,7 +287,6 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
         test = test.slice(0, -1) //'abcde'
         this.SelectedSuite = test;
         this.SelectedSuiteCount = this.suiteModel.selected.length;
-        console.log(this.SelectedSuite)
       }
     })
 
@@ -301,7 +299,6 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
         test = test.slice(0, -1) //'abcde'
         this.SelectedTestCase = test;
         this.SelectedTestCaseCount = this.testCaseModel.selected.length;
-        console.log(this.SelectedTestCase)
       }
     })
     //END
@@ -351,26 +348,13 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
   }
   ngAfterViewInit(): void {
 
-    // var checkLocal = localStorage.getItem("dragsize");
-    // if (checkLocal != undefined) {
-    //   if (this.sizes.expand) {
-    //     if (this.areasEl != undefined) {
-    //       this.areasEl.first.collapse(2)
-    //       this.collapsed = true
-    //     }
-    //   }
-    // }
-    // console.log(co)
   }
   collapseAllToggle(bol: boolean) {
     var dom = document.getElementById('list-container');
     if (dom) {
       var domCollapse = dom.getElementsByClassName('collapse');
       if (domCollapse) {
-        // console.log(dom);
         for (let index = 0; index < domCollapse.length; index++) {
-          // const element = array[index];
-          console.log(domCollapse[index])
           if (bol) {
             domCollapse[index].classList.remove('show');
 
@@ -415,15 +399,12 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
     event.stopPropagation();
   }
   onFocusIn(event: Event) {
-    console.log(event)
     var dom = event.currentTarget as HTMLElement;
-    console.log(dom)
     dom.setAttribute('placeholder', "Test case title");
 
   }
 
   onFocusOut(event: Event) {
-    console.log(event)
     var dom = event.currentTarget as HTMLElement;
     dom.setAttribute('placeholder', "+ Create quick test");
   }
@@ -533,7 +514,6 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
       this.Parent_SuiteID = splited[1];
       this.Suite_Root = this.LinkParamID.toString();
     }
-    // console.log(this.Parent_SuiteID);
     this.api.UniCall(
       {
         CommandText: 'egsQASuiteInsertUpdate',
@@ -599,7 +579,6 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
 
       //? Select Suite Delete
       this.preventSuiteID.push(currentSuite.Suite_ID);
-      console.log(this.preventSuiteID);
       //? Select/Filter if has a child
       var child = this.suites.filter(x => x.Parent_SuiteID === currentSuite?.Suite_ID);
       this.preventSuiteID.push(child[0].Suite_ID);

@@ -3,7 +3,7 @@
   <div class="revision-body">
     <div class="history-user">
       <div class="history-username">
-        <span style="font-weight: bold;">Rica Isidto</span> created a test case
+        <span style="font-weight: bold;">{{user.User_Firstname}} {{user.User_Lastname}}</span> created a test case
       </div>
       <div class="history-role">{{testCase.SysStartTime | date :"yyyy-MM-dd HH:MM:ss"}}</div>
     </div>
@@ -18,7 +18,7 @@
     <div class="revision-body">
       <div class="history-user">
         <div class="history-username">
-          <span style="font-weight: bold;">Rica Isidtos</span>
+          <span style="font-weight: bold;">{{user.User_Firstname}} {{user.User_Lastname}}</span>
           <ng-container *ngIf="index!=0 && !isFirst; else restore">
 
             <ng-container *ngIf="currentObj.Case_isLock == prevObj.Case_isLock; else restore">
@@ -273,7 +273,7 @@
 
         <div class="history-username">
 
-          <span style="font-weight: bold;">Rica Isidto</span>
+          <span style="font-weight: bold;">{{user.User_Firstname}} {{user.User_Lastname}}</span>
           <ng-container *ngIf="index!=0 && !isFirst; else restore">
 
 

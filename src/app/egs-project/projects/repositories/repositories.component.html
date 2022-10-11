@@ -50,6 +50,7 @@
       <!-- LEFT COLUMN   -->
       <as-split unit="percent" [gutterSize]="5" [direction]="direction" gutterAriaLabel="adjustable divider between two views" #split="asSplit" (dragStart)="dragStart()" (dragEnd)="dragEnd($event)">
         <as-split-area [size]="sizes.area1" [minSize]="minSizeLeft" #area1>
+
           <div class="col l-col me-2">
             <div class="d-flex flex-row justify-content-between mb-2">
               <button type="button" class="button-blue-transparent suite-burger p-0" (click)="onClose1(2)"><i class="bi bi-list me-1"></i>
@@ -64,7 +65,10 @@
                 </div>
               </ng-container>
             </div>
+
+
             <ng-container *ngIf="!collapsed">
+
               <!-- Display Nodes -->
               <ng-container *ngFor="let suite of suites;">
                 <ng-container *ngIf="suite.Project_ID == LinkParamID">
@@ -96,6 +100,7 @@
                 </ng-container>
               </ng-template>
             </ng-container>
+
           </div>
 
         </as-split-area>

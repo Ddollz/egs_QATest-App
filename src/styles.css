@@ -11,7 +11,7 @@
   --bs-blue-second: #609de6;
 
   --bs-green-prime: #198754;
-
+  /* #292929 */
   --bs-red-100: #e52325;
   --bs-red-75: rgba(229, 36, 39, 0.25);
   --bs-red-50: rgba(229, 35, 38, 0.25);
@@ -29,6 +29,7 @@
   --bg-color-header-secondary: rgb(33, 31, 31);
   --bg-color-submenu: rgb(244, 245, 247);
   --bg-color-secondary-emphasized: rgb(61, 61, 61);
+  --bg-color-modal: #fff;
   --bg-dropdown: #272727;
 
   --black-100: rgba(37, 32, 32, 1);
@@ -66,6 +67,7 @@
   --bg-color-submenu: rgb(244, 245, 247);
   --bg-color-secondary-emphasized: rgb(231, 231, 231);
   --bg-dropdown: #fff;
+  --bg-color-modal: #fff;
 
   --c-text-table-head: #382F2F;
   --c-text-primary: #382F2F;
@@ -95,6 +97,7 @@
   --bg-color-header: rgb(33, 31, 31);
   --bg-color-submenu: rgb(39, 39, 39);
   --bg-color-secondary-emphasized: rgb(61, 61, 61);
+  --bg-color-modal: #292929;
   --bg-dropdown: #272727;
 
   --c-text: rgba(255, 255, 255, 0.75);
@@ -326,24 +329,62 @@ select {
   background-color: var(--bg-form-control);
   border: 1px solid var(--delimiter-color);
   border-radius: .25rem;
+  color: var(--c-text);
 }
 
 .form-control:hover {
   background-color: var(--bg-form-control-focus);
+  color: var(--c-text);
 }
 
 .form-control:focus {
   background-color: var(--bg-form-control-focus);
   box-shadow: 0 0 0 0.25rem var(--bs-red-5);
   border-color: var(--bs-red-100);
+  color: var(--c-text);
 }
 
 .form-label {
   font-size: .75rem;
   line-height: 1rem;
-  color: #383b40;
+  color: var(--c-text);
   margin-bottom: .25rem;
   font-weight: 600;
+}
+
+.form-select,
+.form-select:hover,
+.form-select:focus,
+.form-select:active {
+  border: 1px solid var(--delimiter-color);
+  /* border-color: transparent; */
+  box-shadow: none;
+}
+
+.form-select {
+  background-color: var(--bg-form-control);
+  color: var(--c-text);
+}
+
+.form-select:hover {
+  background-color: var(--bg-form-control-focus);
+}
+
+.form-select option {
+  background-color: var(--bg-form-control);
+}
+
+.form-select option:hover {
+  background-color: var(--bg-form-control-focus);
+}
+
+.modal-content {
+  background-color: var(--bg-color-modal);
+}
+
+.modal-header,
+.modal-footer {
+  border: none;
 }
 
 .btn-primary {
@@ -420,7 +461,7 @@ select {
 }
 
 .btn-transparent {
-  color: #46484a;
+  color: var(--c-text);
   font-size: .875rem;
   font-weight: 500;
   background-color: transparent;
