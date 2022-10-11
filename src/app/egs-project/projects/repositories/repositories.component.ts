@@ -141,6 +141,7 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
   @ViewChild('area2') area2?: SplitAreaDirective
   @ViewChildren(SplitAreaDirective) areasEl?: QueryList<SplitAreaDirective>
   collapsed: boolean = false;
+  minSizeLeft: number = 10;
 
   direction: any = 'horizontal'
   sizes: any = {
@@ -149,16 +150,20 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
   }
 
   dragStart() {
-    console.log(document.body.classList)
     document.body.classList.add('drag');
+
   }
   dragEnd(sizes: any) {
-    if (sizes.sizes[0] <= 10) {
+    if (sizes.sizes[0] <= 11) {
       if (this.areasEl != undefined) {
-        this.areasEl.first.collapse(2)
-        this.collapsed = !this.collapsed;
+        setTimeout(() => {
+          this.onClose1(2)
+
+        }, 100);
       }
-      console.log(sizes)
+    }
+    if (sizes.sizes[0] > 11 && this.split) {
+      this.split.disabled = false;
     }
     this.sizes.area1 = sizes.sizes[0];
     this.sizes.area2 = sizes.sizes[1];
@@ -166,12 +171,18 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
     localStorage.setItem("dragsize", JSON.stringify(this.sizes))
   }
   onClose1(newSize = 0) {
-    if (this.areasEl != undefined) {
+    console.log(this.sizes);
+    if (this.areasEl != undefined && this.split != undefined) {
       if (!this.collapsed) {
         this.areasEl.first.collapse(newSize)
+        this.areasEl.last.collapse(100 - newSize)
         this.collapsed = !this.collapsed;
       } else {
         this.areasEl.first.expand()
+        this.areasEl.last.expand()
+        this.sizes.area1 = 15;
+        this.sizes.area2 = 85;
+
         this.collapsed = !this.collapsed;
       }
     }
@@ -299,6 +310,7 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
     if (checkLocal != undefined) {
       this.sizes = JSON.parse(checkLocal);
     }
+
   }
   confirmation() {
     if (this.confirmString === "CONFIRM") {

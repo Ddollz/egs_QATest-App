@@ -63,8 +63,9 @@
   --bg-color: #fff;
   --bg-color-secondary: rgb(244, 245, 247);
   --bg-color-header: #fff;
-  --bg-dropdown: #fff;
   --bg-color-submenu: rgb(244, 245, 247);
+  --bg-color-secondary-emphasized: rgb(231, 231, 231);
+  --bg-dropdown: #fff;
 
   --c-text-table-head: #382F2F;
   --c-text-primary: #382F2F;
@@ -92,8 +93,9 @@
   --bg-color: #2d2d2d;
   --bg-color-secondary: rgb(52, 52, 52);
   --bg-color-header: rgb(33, 31, 31);
-  --bg-dropdown: #272727;
   --bg-color-submenu: rgb(39, 39, 39);
+  --bg-color-secondary-emphasized: rgb(61, 61, 61);
+  --bg-dropdown: #fff;
 
   --c-text: rgba(255, 255, 255, 0.75);
   --c-text-primary: #ffffffde;
