@@ -3,11 +3,14 @@ import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
-import { project, suite, testCase, step, testrun, defect } from '../../../models/project/project.model';
+import { project, suite, testCase, step, testrun, defect, ExampleFlatNode } from '../../../models/project/project.model';
 import { reloadPage, sidebarService } from '../../../services/global-functions.service';
 import { BehaviorSubject, find, Observable } from 'rxjs';
 import { SplitComponent, SplitAreaDirective } from 'angular-split'
 import { DOCUMENT } from '@angular/common';
+import { FlatTreeControl } from '@angular/cdk/tree';
+import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-repositories',
@@ -118,6 +121,7 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
   Description: string = '';
   Preconditions: string = '';
   Suite_isLock: number = 0;
+  Suite_Order: number = 1;
   Suite_TempUserID: number = 1; //! This is only temporary change/remove this when token/auth is on
 
   // Selection variables
@@ -213,8 +217,102 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
       this.selectedSuiteCheck(sD, true);
     }
   }
-  constructor(private api: ApiService, private activatedRoute: ActivatedRoute, private sidebarServ: sidebarService, @Inject(DOCUMENT) private document: Document) {
 
+  //? Tree Builder START (BETA MODE)
+  Tree_Suite: any = [];
+
+  SuiteTreeBuilder() {
+    console.log(this.suites)
+    for (let index = 0; index < this.suites.length; index++) {
+      this.suites[index].Child = []
+
+      if ((this.suites[index].Parent_SuiteID == undefined || this.suites[index].Parent_SuiteID == 0) && this.suites[index].Project_ID != undefined) {
+        this.Tree_Suite.push(this.suites[index]);
+      }
+
+    }
+    for (let index = 0; index < this.Tree_Suite.length; index++) {
+
+      var child = this.suites.filter((x: any) => x.Parent_SuiteID === this.Tree_Suite[index].Suite_ID);
+      for (let o = 0; o < child.length; o++) {
+        if (child.length > 0) {
+          child[o].Child = this.getNestedChild(child[o]);
+        }
+      }
+      this.Tree_Suite[index].Child = child;
+    }
+    console.log(this.Tree_Suite)
+    this.dataSource.data = this.Tree_Suite;
+    this.treeControl.expandAll()
+
+  }
+  getNestedChild(parent: any) {
+
+    var child = this.suites.filter((x: any) => x.Parent_SuiteID === parent.Suite_ID);
+    for (let o = 0; o < child.length; o++) {
+      if (child.length > 0) {
+        child[o].Child = this.getNestedChild(child[o]);
+      }
+    }
+    return child
+
+  }
+  private _transformer = (node: suite, level: number) => {
+    return {
+      expandable: !!node.Child && node.Child.length > 0,
+      name: node.Suite_Name,
+      suite: node,
+      level: level,
+    };
+  };
+
+  treeControl = new FlatTreeControl<ExampleFlatNode>(
+    node => node.level,
+    node => node.expandable,
+  );
+
+  treeFlattener = new MatTreeFlattener(
+    this._transformer,
+    node => node.level,
+    node => node.expandable,
+    node => node.Child,
+  );
+
+  dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
+
+  hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
+
+  getLevel(node: ExampleFlatNode) {
+
+
+    // console.log(node.level + ":" + node.name);
+    if (node.level == 0) {
+      return
+    } else
+      return true
+
+  }
+  getLeveldiv(node: ExampleFlatNode) {
+
+    var temparray: any = [];
+    for (let index = 0; index < node.level; index++) {
+      temparray.push(index);
+    }
+    return temparray
+
+  }
+  // getLevel(data: any, node: suite) {
+  //   let path = data.find(branch => {
+  //     return this.treeControl
+  //       .getDescendants(branch)
+  //       .some(n => n.name === node.name);
+  //   });
+
+  //   return path ? this.getLevel(path.children, node) + 1 : 0;
+  // }
+  //? Tree Builder END
+
+  constructor(private api: ApiService, private activatedRoute: ActivatedRoute, private sidebarServ: sidebarService, @Inject(DOCUMENT) private document: Document) {
     this.LinkParamID = Number(this.activatedRoute.snapshot.paramMap.get('id')); //? 4
     // this.sidebarServ.fetchProjectID(this.LinkParamID);
     this.api.UniCall(
@@ -228,8 +326,36 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
         ],
       }
     ).subscribe(value => {
-      this.suites = value[0];
+      var suiteOrderTemp = Math.max(...value[0].map((o: any) => o.Suite_Order));
+      if (suiteOrderTemp) {
+        suiteOrderTemp = 1;
+      }
+      for (let index = 0; index < value[0].length; index++) {
+        // const element = array[index];
+        if (!value[0][index].Suite_Order || value[0][index].Suite_Order == "") {
+          suiteOrderTemp += 1;
+          value[0][index].Suite_Order = suiteOrderTemp
+        }
+      }
+      if (value[0].filter((x: any) => x.Suite_Order == null)) {
+        this.api.UniCall(
+          {
+            CommandText: 'egsQASuiteOrderUpdate',
+            Params: [
+              {
+                Param: '@Suite_Lists',
+                Value: JSON.stringify(value[0])
+              }
+            ],
+          }
+        ).subscribe(
 
+        )
+      }
+      this.suites = value[0];
+      // console.log(JSON.stringify(value[0]));
+      console.log(this.suites)
+      this.SuiteTreeBuilder();
       //Dropdown
       if (this.suites) {
         this.Suite_Root = 'ProjectRoot|' + this.project.Project_ID;
@@ -309,6 +435,24 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
     }
 
   }
+
+
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.suites, event.previousIndex, event.currentIndex);
+    this.suites[event.currentIndex].Suite_Order = event.currentIndex + 1
+    this.api.UniCall(
+      {
+        CommandText: 'egsQASuiteOrderUpdate',
+        Params: [
+          {
+            Param: '@Suite_Lists',
+            Value: JSON.stringify(this.suites)
+          }
+        ],
+      }
+    ).subscribe()
+  }
+
   confirmation() {
     if (this.confirmString === "CONFIRM") {
       this.allowBoolSelected = true;
@@ -344,7 +488,6 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
     });
   }
   ngOnInit(): void {
-
   }
   ngAfterViewInit(): void {
 
@@ -376,13 +519,14 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
     }
   }
   toggleDropdown(event: Event, suite: any) {
+    console.log(this.dataSource.data)
     var element = event.currentTarget as HTMLElement;
     var dropdownLeft = element.getAttribute('data-bs-target')
     var dropdownRight = element.getAttribute('data-bs-target') + '-case';
     if (dropdownLeft != null && dropdownRight != null) {
       var dropdownDomLeft = document.getElementById(dropdownLeft.toString())
       var dropdownDomRight = document.getElementById(dropdownRight.toString())
-      if (dropdownDomLeft?.classList.contains("show")) {
+      if (dropdownDomRight?.classList.contains("show") || dropdownDomLeft?.classList.contains("show")) {
         dropdownDomLeft?.classList.remove("show")
         dropdownDomRight?.classList.remove("show")
       }
@@ -549,6 +693,10 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
           {
             Param: '@Parent_SuiteID',
             Value: this.Parent_SuiteID.toString() || null
+          },
+          {
+            Param: '@Suite_Order',
+            Value: this.Suite_Order.toString()
           }
         ],
       }

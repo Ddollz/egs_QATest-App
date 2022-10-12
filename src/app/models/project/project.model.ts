@@ -21,6 +21,15 @@ export interface suite {
   Case_Count: number;
   SuiteChild_Count: number;
   carretOpen: boolean;
+  Suite_Order?: number;
+  Child?: suite[];
+}
+/** Flat node with expandable and level information */
+export interface ExampleFlatNode {
+  expandable: boolean;
+  name: string;
+  suite: suite;
+  level: number;
 }
 
 export interface testCase {

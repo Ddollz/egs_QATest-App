@@ -9,6 +9,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatTreeModule } from '@angular/material/tree';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { AngularSplitModule } from 'angular-split';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -137,6 +139,8 @@ const appRoute: Routes = [
     MatCheckboxModule,
     MatRadioModule,
     MatDialogModule,
+    MatTreeModule,
+    DragDropModule,
     AngularSplitModule,
     RouterModule.forRoot(appRoute),
     QuillModule.forRoot({

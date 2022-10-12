@@ -68,37 +68,19 @@
 
 
             <ng-container *ngIf="!collapsed">
+              <mat-tree #tree [dataSource]="dataSource" [treeControl]="treeControl">
+                <!-- This is the tree node template for expandable nodes matTreeNodePadding matTreeNodePaddingIndent="10" -->
+                <mat-tree-node *matTreeNodeDef="let node;when: hasChild;">
+                  <ng-container *ngIf="getLevel(node)">
+                    <ng-container *ngFor="let item of getLeveldiv(node)">
+                      <div class="suite-delimiter">&#8203;</div>
+                    </ng-container>
+                  </ng-container>
 
-              <!-- Display Nodes -->
-              <ng-container *ngFor="let suite of suites;">
-                <ng-container *ngIf="suite.Project_ID == LinkParamID">
-                  <ng-container *ngIf="suite.Parent_SuiteID == 0">
-                    <div class="collapsed" (click)="toggleDropdown($event, suite)" [attr.data-bs-target]="'collapse-'+suite.Suite_ID" aria-expanded="true">
-                      <app-suite [Suite]="suite" [carretOpen]="suite.carretOpen" (createNewEvent)="createChildSuites($event)" (newItemEvent)="editSuite($event)" (newDeleteEvent)="deleteSuite($event)"></app-suite>
-                    </div>
-                    <div class="collapse show" [id]="'collapse-'+suite.Suite_ID">
-                      <!-- Run Template to display looping Leaf -->
-                      <ng-container *ngTemplateOutlet="tree; context:{ $implicit: suite}"></ng-container>
-                    </div>
-                  </ng-container>
-                </ng-container>
-              </ng-container>
-              <!-- Display Leaf -->
-              <ng-template #tree let-data>
-                <ng-container *ngFor="let s of suites">
-                  <!-- Check if leaf exist display the leaf and loop again.-->
-                  <!-- Check if leaf does not exist end the loop.-->
-                  <ng-container *ngIf="data.Suite_ID == s.Parent_SuiteID">
-                    <div class="collapsed" (click)="toggleDropdown($event, s)" [attr.data-bs-target]="'collapse-'+s.Suite_ID" aria-expanded="true">
-                      <app-suite [Suite]="s" [carretOpen]="s.carretOpen" (createNewEvent)="createChildSuites($event)" (newItemEvent)="editSuite($event)" (newDeleteEvent)="deleteSuite($event)"></app-suite>
-                    </div>
-                    <div class="collapse show" [id]="'collapse-'+s.Suite_ID">
-                      <!-- Run the template leaf again -->
-                      <ng-container *ngTemplateOutlet="tree; context: {$implicit:s}"></ng-container>
-                    </div>
-                  </ng-container>
-                </ng-container>
-              </ng-template>
+                  <app-suite mat-icon-button matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.name" (click)="toggleDropdown($event, node.suite)" [attr.data-bs-target]="'collapse-'+node.suite.Suite_ID" aria-expanded="true" [Suite]="node.suite" [carretOpen]="node.suite.carretOpen" (createNewEvent)="createChildSuites($event)" (newItemEvent)="editSuite($event)" (newDeleteEvent)="deleteSuite($event)"></app-suite>
+                </mat-tree-node>
+              </mat-tree>
+
             </ng-container>
 
           </div>
@@ -193,7 +175,7 @@
   <div class="panel-container">
     <div class="panelControl">
       <a class="btns " [routerLink]="'../create/'+project.Project_ID" [queryParams]="{case:testCase.Case_ID}"><i class="bi bi-pencil"></i> Edit</a>
-      <button class="btns "><i class="bi bi-clipboard"></i> Clone</button>
+      <!-- <button class="btns "><i class="bi bi-clipboard"></i> Clone</button> -->
       <button class="btns " (click)="deleteCase(testCase.Case_ID)"><i class="bi bi-trash2"></i> Delete</button>
     </div>
     <div class="panelNav" #panelNav>
