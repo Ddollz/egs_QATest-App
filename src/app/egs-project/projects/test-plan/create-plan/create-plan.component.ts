@@ -20,6 +20,7 @@ export class CreatePlanComponent implements OnInit {
   addCasesLength = 0;
   ACLength = 0;
   finalAddCases ='';
+  isCasesChecked: boolean = false;
 
   //Activated Route
   index: number = 0;
@@ -94,6 +95,16 @@ export class CreatePlanComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  selectAll($event: any) {
+    if($event.checked){
+      this.isCasesChecked = true;
+    }
+    else{
+      this.isCasesChecked = false;
+    }
+    console.log(this.isCasesChecked)
+  }
+
   receiveName($event: string){
     this.S_Name = $event
   }
@@ -105,6 +116,7 @@ export class CreatePlanComponent implements OnInit {
 
   receiveID($event: number){
     this.S_ID = $event
+    console.log(this.S_ID)
 
     this.api.UniCall(
       {
@@ -130,20 +142,29 @@ export class CreatePlanComponent implements OnInit {
   selectCase($event: any, ID: number, Name: string){
     if($event.checked){
       this.addCases.push(ID)
+      console.log(this.addCases)
       this.addCases = [...new Set(this.addCases)]
       this.addCasesLength = this.addCases.length
+      console.log(this.addCasesLength)
 
+    }
+    else {
+      this.addCases.splice(this.addCases.indexOf(ID), 1)
+      console.log(this.addCases)
+      this.addCasesLength = this.addCases.length
+      console.log(this.addCasesLength)
     }
   }
 
   getSelectedCase(){
     // this.router.navigate(["/projects/plan/createplan"])
     this.finalAddCases = "[" + this.addCases + "]"
+    console.log(this.finalAddCases)
     this.ACLength = this.addCasesLength
   }
 
   closeAddCases(){
-    this.addCases = [];
+    // this.addCases = [];
   }
 
   updateInsertTestPlan() {
