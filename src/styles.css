@@ -925,3 +925,8 @@ li:active>.dropdown-Tag {
 .cdk-overlay-container {
   z-index: 99999 !important;
 }
+
+.three-dots {
+  color: var(--c-text);
+  padding: 0 8px;
+}
