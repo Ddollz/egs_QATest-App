@@ -563,7 +563,7 @@ select {
   position: relative;
   white-space: nowrap;
   text-decoration: none;
-  color: var(--c-text);
+  color: #fff;
   font-weight: 500;
   background: transparent;
   border: none;
