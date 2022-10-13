@@ -141,7 +141,21 @@ td.mat-footer-cell {
 .mat-header-cell {
   color: var(--c-text-table-head);
 }
+.mat-paginator{
+  background-color: var(--bg-color);
+  color: var(--c-text);
+}
+.mat-option {
 
+  background-color: var(--bg-color);
+  color: var(--c-text);
+}
+.mat-paginator-icon{
+  color: var(--c-text);
+}
+.mat-cell, .mat-footer-cell {
+  color: var(--c-text);
+}
 .mat-checkbox-frame {
   border-color: var(--checkbox-border-color);
   border-width: 5px;
@@ -549,12 +563,12 @@ select {
   position: relative;
   white-space: nowrap;
   text-decoration: none;
-  color: #393939;
+  color: var(--c-text);
   font-weight: 500;
   background: transparent;
   border: none;
   white-space: nowrap;
-  background: #f3f3f3;
+  background: var(--bs-red-100);
   padding: .4375rem .75rem;
   border-radius: .25rem;
   cursor: pointer;
