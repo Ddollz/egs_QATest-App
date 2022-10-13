@@ -222,7 +222,7 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
   Tree_Suite: any = [];
 
   SuiteTreeBuilder() {
-    console.log(this.suites)
+    this.Tree_Suite = [];
     for (let index = 0; index < this.suites.length; index++) {
       this.suites[index].Child = []
 
@@ -241,7 +241,6 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
       }
       this.Tree_Suite[index].Child = child;
     }
-    console.log(this.Tree_Suite)
     this.dataSource.data = this.Tree_Suite;
     this.treeControl.expandAll()
 
@@ -301,15 +300,6 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
     return temparray
 
   }
-  // getLevel(data: any, node: suite) {
-  //   let path = data.find(branch => {
-  //     return this.treeControl
-  //       .getDescendants(branch)
-  //       .some(n => n.name === node.name);
-  //   });
-
-  //   return path ? this.getLevel(path.children, node) + 1 : 0;
-  // }
   //? Tree Builder END
 
   constructor(private api: ApiService, private activatedRoute: ActivatedRoute, private sidebarServ: sidebarService, @Inject(DOCUMENT) private document: Document) {
@@ -326,6 +316,8 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
         ],
       }
     ).subscribe(value => {
+      //? Ordering Update Start
+      //? For Safety measures
       var suiteOrderTemp = Math.max(...value[0].map((o: any) => o.Suite_Order));
       if (suiteOrderTemp) {
         suiteOrderTemp = 1;
@@ -352,9 +344,8 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
 
         )
       }
+      //? Ordering Update End
       this.suites = value[0];
-      // console.log(JSON.stringify(value[0]));
-      console.log(this.suites)
       this.SuiteTreeBuilder();
       //Dropdown
       if (this.suites) {
@@ -436,9 +427,22 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
 
   }
 
+  dragStartTree(event: any, node: any) {
+    this.treeControl.collapseAll();
+  }
 
+  dragEndTree(event: any, node: any) {
+    this.treeControl.expandAll();
+
+  }
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.suites, event.previousIndex, event.currentIndex);
+    // this.suites[event.currentIndex].Suite_Order = event.currentIndex + 1
+    if (event.currentIndex > event.previousIndex)
+      this.suites[event.currentIndex - 1].Suite_Order = event.previousIndex + 1
+    else if (event.currentIndex < event.previousIndex)
+      this.suites[event.currentIndex + 1].Suite_Order = event.previousIndex + 1
+
     this.suites[event.currentIndex].Suite_Order = event.currentIndex + 1
     this.api.UniCall(
       {
@@ -450,7 +454,29 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
           }
         ],
       }
-    ).subscribe()
+    ).subscribe(
+      {
+        complete: () => {
+          this.api.UniCall(
+            {
+              CommandText: 'egsQASuiteGet',
+              Params: [
+                {
+                  Param: '@Project_ID',
+                  Value: this.LinkParamID.toString() //Project ID = 4
+                }
+              ],
+            }
+          ).subscribe(
+            {
+              next: (e) => {
+                this.suites = e[0];
+                this.SuiteTreeBuilder();
+              }
+            })
+        }
+      })
+
   }
 
   confirmation() {

@@ -68,15 +68,14 @@
 
 
             <ng-container *ngIf="!collapsed">
-              <mat-tree #tree [dataSource]="dataSource" [treeControl]="treeControl">
+              <mat-tree #tree [dataSource]="dataSource" [treeControl]="treeControl" cdkDropList (cdkDropListDropped)="drop($event)" >
                 <!-- This is the tree node template for expandable nodes matTreeNodePadding matTreeNodePaddingIndent="10" -->
-                <mat-tree-node *matTreeNodeDef="let node;when: hasChild;">
+                <mat-tree-node cdkDrag *matTreeNodeDef="let node;when: hasChild;" (cdkDragStarted)="dragStartTree($event, node)" (cdkDragEnded)="dragEndTree($event, node)">
                   <ng-container *ngIf="getLevel(node)">
                     <ng-container *ngFor="let item of getLeveldiv(node)">
                       <div class="suite-delimiter">&#8203;</div>
                     </ng-container>
                   </ng-container>
-
                   <app-suite mat-icon-button matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.name" (click)="toggleDropdown($event, node.suite)" [attr.data-bs-target]="'collapse-'+node.suite.Suite_ID" aria-expanded="true" [Suite]="node.suite" [carretOpen]="node.suite.carretOpen" (createNewEvent)="createChildSuites($event)" (newItemEvent)="editSuite($event)" (newDeleteEvent)="deleteSuite($event)"></app-suite>
                 </mat-tree-node>
               </mat-tree>
