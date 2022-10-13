@@ -13,6 +13,7 @@
   flex-direction: column;
   overflow: hidden;
   height: 100%;
+  background: var(--bg-color);
 }
 
 /* Labels */
@@ -28,7 +29,7 @@
 }
 
 .column-title {
-  color: #222;
+  color: var(--c-text);
   font-size: 14px;
   font-weight: 600;
   margin-bottom: 5px;
@@ -62,6 +63,7 @@
 
 .mat-column-AttachedTo {
   width: 50%;
+  color: var(--c-text);
 }
 
 .mat-column-ThreeDots {

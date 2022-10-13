@@ -438,7 +438,7 @@ select {
 
 
 .btn-secondary {
-  color: black;
+  color: var(--c-text);
   font-size: .875rem;
   border-radius: .25rem;
   padding: .2rem .75rem;
@@ -454,7 +454,7 @@ select {
   background-color: var(--black-5) !important;
   border-color: var(--black-5) !important;
   box-shadow: none;
-  color: black;
+  color: var(--c-text);
 }
 
 .btn-secondary:active,
@@ -694,7 +694,7 @@ li:active>.dropdown-Tag {
   white-space: nowrap;
   font-size: .875rem;
   background-color: transparent !important;
-  color: var(--black-50);
+  color: var(--c-text-secondary);
   border: none !important;
   transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
   transition-property: color, background-color, border-color, box-shadow;
