@@ -46,6 +46,7 @@ export interface testCase {
   Attachments_ID?: string;
   LastModifiedUser: number;
   Project_ID: number;
+  Case_Result: number;
 }
 
 export interface testCaseComment {
@@ -133,5 +134,9 @@ export interface testrun {
   TestRun_Status: number;
   TestRun_Passed: number;
   TestRun_Failed: number;
+  TestRun_Blocked: number;
+  TestRun_Invalid: number;
+  TestRun_Skipped: number;
   TestRun_Untested: number;
+  TestRun_CaseCount: number;
 }

@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { reloadPage } from '../../../../services/global-functions.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { sidebarService } from '../../../../services/global-functions.service';
+import Chart from 'chart.js/auto';
 
 export interface stat {
   user: string;
@@ -31,6 +32,13 @@ const statData: stat[] = [
 export class RunDashboardComponent implements OnInit {
 
   LinkParamID: number = 0;
+  Passed: number = 0;
+  Failed: number = 0;
+  Blocked: number = 0;
+  Invalid: number = 0;
+  Skipped: number = 0;
+  Untested: number = 0;
+  Completed: number = 0;
   Result: string = '';
 
   TestRun_ID: string = '';
@@ -48,13 +56,18 @@ export class RunDashboardComponent implements OnInit {
   TestRun_Failed: string = '';
   TestRun_Untested: string = '';
 
+  Project_ID: string = '';
+  Project_Name: string = '';
+
+  Suite_Name: string = '';
+
   Case_ID: string = '';
   Case_Title: string = '';
   Case_Desc: string = '';
   Case_Result: string = '';
   Case_Comment: string = '';
 
-  projects: project[] = [];
+  project: project[] = [];
   suites: suite[] = [];
   testcases: testCase[] = [];
   testplans: testplan[] = [];
@@ -73,6 +86,8 @@ export class RunDashboardComponent implements OnInit {
   @ViewChild('casePanel') casePanel!: ElementRef;
   @ViewChild('caseRunPanel') caseRunPanel!: ElementRef;
 
+  public chart: any;
+
   constructor(private api: ApiService, private route: ActivatedRoute, private sidebarServ: sidebarService) { }
 
   ngOnInit(): void {
@@ -82,6 +97,7 @@ export class RunDashboardComponent implements OnInit {
     }
     this.LinkParamID = this.sidebarServ.projectID;
     this.getProject();
+    this.getSuite();
     this.getCase();
     this.getDefect();
   }
@@ -122,12 +138,14 @@ export class RunDashboardComponent implements OnInit {
         Params: [
           {
             Param: '@Project_ID',
-            Value: this.LinkParamID.toString()
+            Value: Number(localStorage.getItem('currentProjectID')).toString()
           }
-        ]
+        ],
       }
     ).subscribe(value => {
-      this.projects = value[0];
+      this.project = value[0];
+      this.Project_ID = this.project[0].Project_ID.toString();
+      this.Project_Name = this.project[0].Project_Name;
     });
   }
 
@@ -144,6 +162,7 @@ export class RunDashboardComponent implements OnInit {
       }
     ).subscribe(value => {
       this.suites = value[0];
+      this.Suite_Name = this.suites[0].Suite_Name;
     });
   }
 
@@ -161,6 +180,7 @@ export class RunDashboardComponent implements OnInit {
     ).subscribe(value => {
       this.testcases = value[0];
       this.caseDataSource = new MatTableDataSource<testCase>(this.testcases);
+      this.getCaseStatus();
     });
   }
 
@@ -235,6 +255,50 @@ export class RunDashboardComponent implements OnInit {
     });
   }
 
+  updateProgress() {
+    this.api.UniCall(
+      {
+        CommandText: 'egsQATestRunInsertUpdate',
+        Params: [
+          {
+            Param: '@TestRun_ID',
+            Value: this.TestRun_ID.toString()
+          },
+          {
+            Param: '@TestRun_Passed',
+            Value: this.Passed.toString()
+          },
+          {
+            Param: '@TestRun_Failed',
+            Value: this.Failed.toString()
+          },
+          {
+            Param: '@TestRun_Blocked',
+            Value: this.Blocked.toString()
+          },
+          {
+            Param: '@TestRun_Invalid',
+            Value: this.Invalid.toString()
+          },
+          {
+            Param: '@TestRun_Skipped',
+            Value: this.Skipped.toString()
+          },
+          {
+            Param: '@TestRun_Untested',
+            Value: this.Untested.toString()
+          },
+          {
+            Param: '@TestRun_CaseCount',
+            Value: this.testcases.length.toString()
+          },
+        ]
+      }
+    ).subscribe({
+      error: (e) => console.error(e)
+    });
+  }
+
   openCasePanel() {
     this.casePanel.nativeElement.style.display = "flex";
     this.closeCaseRunPanel();
@@ -250,11 +314,77 @@ export class RunDashboardComponent implements OnInit {
     this.Case_Title = title;
     this.Case_Desc = desc;
     this.Case_Comment = comment;
-    this.getSuite();
     this.closeCasePanel();
   }
 
   closeCaseRunPanel() {
     this.caseRunPanel.nativeElement.style.display = "none";
+  }
+
+  formatDate(date: string) {
+    return date.substring(0, 10) + ' ' + date.substring(11, 21);
+  }
+
+  getCaseStatus() {
+    for (let i = 0; i < this.testcases.length; i++) {
+      if (this.testcases[i].Case_Result == 1)
+        this.Passed++;
+      else if (this.testcases[i].Case_Result == 2)
+        this.Failed++;
+      else if (this.testcases[i].Case_Result == 3)
+        this.Blocked++;
+      else if (this.testcases[i].Case_Result == 4)
+        this.Invalid++;
+      else if (this.testcases[i].Case_Result == 5)
+        this.Skipped++;
+      else
+        this.Untested++;
+    }
+    this.getCompleted();
+    this.createChart();
+    this.updateProgress();
+  }
+
+  getCompleted() {
+    var num = ((this.testcases.length-this.Untested)/this.testcases.length)*100;
+    this.Completed = +parseFloat(num.toString()).toFixed(2);
+  }
+
+  getProgress(num: number) {
+    return (num/this.testcases.length)*100;
+  }
+
+  createChart() {
+    this.chart = new Chart("chart", {
+      type: 'doughnut',
+      options: {
+        plugins: {
+          legend: {
+            display: false
+          }
+        }
+      },
+      data: {
+        labels: [
+          'Passed',
+          'Failed',
+          'Blocked',
+          'Invalid',
+          'Skipped',
+          'Untested',
+        ],
+        datasets: [{
+          data: [this.Passed, this.Failed, this.Blocked, this.Invalid, this.Skipped, this.Untested],
+          backgroundColor: [
+            '#94c64a',
+            '#f66384',
+            'rgb(221, 181, 10)',
+            'rgb(95, 1, 185)',
+            'rgb(175, 175, 175)',
+            '#c1c1c1'
+          ]
+        }]
+      }
+    });
   }
 }

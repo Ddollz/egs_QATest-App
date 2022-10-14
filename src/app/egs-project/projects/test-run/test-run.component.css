@@ -153,6 +153,9 @@ input[type="checkbox"]:checked {
 .cancel-span,
 .passed-pb,
 .failed-pb,
+.blocked-pb,
+.skipped-pb,
+.invalid-pb,
 .untested-pb {
   cursor: pointer;
 }
@@ -172,6 +175,18 @@ input[type="checkbox"]:checked {
 
 .failed-pb {
   background-color: #f66384;
+}
+
+.blocked-pb {
+  background-color: rgb(221, 181, 10);
+}
+
+.invalid-pb {
+  background-color: rgb(95, 1, 185);
+}
+
+.skipped-pb {
+  background-color: rgb(175, 175, 175);
 }
 
 .untested-pb {

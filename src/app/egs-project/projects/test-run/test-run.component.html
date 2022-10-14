@@ -69,11 +69,17 @@
             <td mat-cell *matCellDef="let element">
               <div class="progress">
                 <div class="progress-bar passed-pb" data-bs-toggle="tooltip" title="Passed"
-                  [ngStyle]="{'width.%': 33.33}">3</div>
+                [style.width.%]="(element.TestRun_Passed/element.TestRun_CaseCount)*100">{{element.TestRun_Passed}}</div>
                 <div class="progress-bar failed-pb" data-bs-toggle="tooltip" title="Failed"
-                  [ngStyle]="{'width.%': 33.33}">3</div>
+                [style.width.%]="(element.TestRun_Failed/element.TestRun_CaseCount)*100">{{element.TestRun_Failed}}</div>
+                <div class="progress-bar blocked-pb" data-bs-toggle="tooltip" title="Blocked"
+                [style.width.%]="(element.TestRun_Blocked/element.TestRun_CaseCount)*100">{{element.TestRun_Blocked}}</div>
+                <div class="progress-bar invalid-pb" data-bs-toggle="tooltip" title="Invalid"
+                [style.width.%]="(element.TestRun_Invalid/element.TestRun_CaseCount)*100">{{element.TestRun_Invalid}}</div>
+                <div class="progress-bar skipped-pb" data-bs-toggle="tooltip" title="Skipped"
+                [style.width.%]="(element.TestRun_Skipped/element.TestRun_CaseCount)*100">{{element.TestRun_Skipped}}</div>
                 <div class="progress-bar untested-pb" data-bs-toggle="tooltip" title="Untested"
-                  [ngStyle]="{'width.%': 33.33}">3</div>
+                [style.width.%]="(element.TestRun_Untested/element.TestRun_CaseCount)*100">{{element.TestRun_Untested}}</div>
               </div>
             </td>
           </ng-container>

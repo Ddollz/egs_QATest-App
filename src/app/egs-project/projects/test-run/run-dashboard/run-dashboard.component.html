@@ -11,8 +11,8 @@
         </div>
         <div class="col d-flex justify-content-end align-items-center">
           <ng-template [ngIf]="TestRun_Status == '0'">
-            <button class="btn btn-primary me-2" (click)="openCasePanel()"><i
-                class="bi bi-play-circle-fill me-2"></i>Open wizard</button>
+            <button class="btn btn-primary me-2">
+              <i class="bi bi-play-circle-fill me-2"></i>Open wizard</button>
             <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#completeModal">
               <i class="bi bi-check-lg me-2"></i>Complete</button>
           </ng-template>
@@ -25,7 +25,7 @@
           <button class="filter-item me-2"><i class="bi bi-upload me-2"></i>Export</button>
           <button class="filter-item" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></button>
           <div class="dropdown-menu">
-            <div class="dropdown-item">Edit</div>
+            <div class="dropdown-item" routerLink="/projects/run/edit/{{TestRun_ID}}">Edit</div>
             <div class="dropdown-item" data-bs-toggle="modal" data-bs-target="#abortModal">Abort</div>
           </div>
         </div>
@@ -74,12 +74,22 @@
           <!-- CASES TABLE -->
           <!-- <ng-template> -->
           <div class="d-flex align-items-center mb-2">
-            <h6 class="mb-1 me-1">Login</h6>
+            <h6 class="mb-1 me-1">{{Suite_Name}}</h6>
             <i class="bi bi-chevron-down me-3"></i>
 
             <div class="progress">
+              <div class="progress-bar passed-pb" data-bs-toggle="tooltip" title="Passed"
+              [style.width.%]="getProgress(Passed)"></div>
+              <div class="progress-bar failed-pb" data-bs-toggle="tooltip" title="Failed"
+              [style.width.%]="getProgress(Failed)"></div>
+              <div class="progress-bar blocked-pb" data-bs-toggle="tooltip" title="Blocked"
+              [style.width.%]="getProgress(Blocked)"></div>
+              <div class="progress-bar invalid-pb" data-bs-toggle="tooltip" title="Invalid"
+              [style.width.%]="getProgress(Invalid)"></div>
+              <div class="progress-bar skipped-pb" data-bs-toggle="tooltip" title="Skipped"
+              [style.width.%]="getProgress(Skipped)"></div>
               <div class="progress-bar untested-pb" data-bs-toggle="tooltip" title="Untested"
-                [ngStyle]="{'width.%': 100}"></div>
+              [style.width.%]="getProgress(Untested)"></div>
             </div>
           </div>
 
@@ -135,7 +145,8 @@
               <ng-container matColumnDef="TimeSpent">
                 <th mat-header-cell *matHeaderCellDef>Time spent</th>
                 <td mat-cell *matCellDef="let element"
-                  (click)="openCaseRunPanel(element.Case_ID, element.Case_Title, element.Case_Desc, element.Case_Comment)"></td>
+                  (click)="openCaseRunPanel(element.Case_ID, element.Case_Title, element.Case_Desc, element.Case_Comment)">
+                </td>
               </ng-container>
 
               <ng-container matColumnDef="ThreeDots">
@@ -303,24 +314,13 @@
     <div class="col-2 right-col">
       <h5 class="my-3">Test Run Details</h5>
 
-      <h6 class="mb-1">Passed</h6>
       <div class="mb-3">
-        <span>{{TestRun_Passed}}</span>
-      </div>
-
-      <h6 class="mb-1">Failed</h6>
-      <div class="mb-3">
-        <span>{{TestRun_Failed}}</span>
-      </div>
-
-      <h6 class="mb-1">Untested</h6>
-      <div class="mb-3">
-        <span>{{TestRun_Untested}}</span>
+        <canvas id="chart" style="max-height: 200px !important;">{{chart}}</canvas>
       </div>
 
       <h6 class="mb-1">Completion rate</h6>
       <div class="mb-3">
-        <span>0%</span>
+        <span>{{Completed}}%</span>
       </div>
 
       <h6 class="mb-1">Started by</h6>
@@ -331,7 +331,7 @@
 
       <h6 class="mb-1">Start time</h6>
       <div class="mb-3">
-        <span>{{TestRun_DateCreated}}</span>
+        <span>{{formatDate(TestRun_DateCreated)}}</span>
       </div>
 
       <ng-template [ngIf]="TestRun_Status == '1'">
@@ -528,7 +528,7 @@
   <div class="row">
     <div class="col">
       <div class="mb-1">
-        <span class="project-title">Project QAs</span>
+        <span class="project-title">{{Project_Name}}</span>
       </div>
       <h2 class="page-title mb-2">{{Case_Title}}</h2>
     </div>
@@ -540,7 +540,8 @@
   <div class="row my-1">
     <div class="d-flex">
       <button class="filter-item me-2"><i class="bi bi-eye me-2"></i>View</button>
-      <button class="filter-item me-2"><i class="bi bi-pencil me-2"></i>Edit Case</button>
+      <button class="filter-item me-2" [routerLink]="'/projects/repository/create/'+Project_ID"
+        [queryParams]="{case:Case_ID}"><i class="bi bi-pencil me-2"></i>Edit Case</button>
     </div>
   </div>
 
@@ -593,10 +594,44 @@
           <span class="small-text-italic">{{Case_Desc}}</span>
         </div>
 
+        <ng-template [ngIf]="Case_Comment != ''">
+          <div class="row mb-3">
+            <h6 class="small-text-bold mb-1">Comment:</h6>
+            <span class="small-text">{{Case_Comment}}</span>
+          </div>
+        </ng-template>
+
         <div class="row">
-          <h6 class="small-text-bold mb-1">Comment:</h6>
-          <span class="small-text">{{Case_Comment}}</span>
+          <div class="col-auto mt-3">
+            <span class="step-number">1</span>
+          </div>
+          <div class="col mt-3">
+            <div class="mb-3">
+              <span class="small-text">1. Login to your account</span>
+            </div>
+
+            <div class="mb-3">
+              <h6 class="small-text-bold mb-0">Expected result:</h6>
+              <span class="small-text">Account must be login</span>
+            </div>
+
+            <div class="d-flex mb-3">
+              <button class="btn btn-outline-primary px-2 py-1 me-2">Passed</button>
+              <button class="btn btn-outline-primary px-2 py-1 me-2">Failed</button>
+              <button class="btn btn-outline-primary px-2 py-1 me-2">Blocked</button>
+              <button class="btn btn-outline-primary px-2 py-1 me-2">Invalid</button>
+              <button class="btn btn-outline-primary px-2 py-1 me-2">Skipped</button>
+            </div>
+
+            <div class="mb-3">
+              <textarea class="form-control"></textarea>
+            </div>
+
+            <span class="add-attach-span small-text"><i class="bi bi-plus-circle-fill me-2"></i>Add attachment</span>
+
+          </div>
         </div>
+
       </ng-template>
     </div>
 

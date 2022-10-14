@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Inject, LOCALE_ID } from '@angular/core';
-import { suite, testCase, testrun, testplan, milestone } from '../../../../models/project/project.model';
+import { suite, testCase, testrun, testplan, step, milestone } from '../../../../models/project/project.model';
 import { ApiService } from '../../../../services/api.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { formatDate } from '@angular/common';
@@ -23,6 +23,7 @@ export class RunCreateComponent implements OnInit {
   addCasesLength = 0;
   ACLength = 0;
   finalAddCases ='';
+  finalAddSteps = '';
 
   TestRun_ID: string = '';
   TestRun_Title: string = '';
@@ -37,14 +38,20 @@ export class RunCreateComponent implements OnInit {
   TestRun_Status: string = '';
   TestRun_Passed: string = '';
   TestRun_Failed: string = '';
+  TestRun_Blocked: string = '';
+  TestRun_Invalid: string = '';
+  TestRun_Skipped: string = '';
   TestRun_Untested: string = '';
+  TestRun_CaseCount: string = '';
 
   suites: suite[] = [];
   testcases: testCase[] = [];
   testruns: testrun[] = [];
   testplans: testplan[] = [];
   milestones: milestone[] = [];
-  addCases : number[] = []
+  steps: step[] = [];
+  addCases : number[] = [];
+  addSteps : number[] = [];
 
   displayedColumns: string[] = ['Checkbox', 'Title'];
   dataSource = new MatTableDataSource<testCase>();
@@ -72,7 +79,11 @@ export class RunCreateComponent implements OnInit {
     this.TestRun_Status = '0';
     this.TestRun_Passed = '0';
     this.TestRun_Failed = '0';
+    this.TestRun_Blocked = '0';
+    this.TestRun_Invalid = '0';
+    this.TestRun_Skipped = '0';
     this.TestRun_Untested = '0';
+    this.TestRun_CaseCount = '0';
     this.User_ID = '1';
   }
 
@@ -101,7 +112,11 @@ export class RunCreateComponent implements OnInit {
       this.TestRun_Status = value[0][0].TestRun_Status;
       this.TestRun_Passed = value[0][0].TestRun_Passed;
       this.TestRun_Failed = value[0][0].TestRun_Failed;
+      this.TestRun_Blocked = value[0][0].TestRun_Blocked;
+      this.TestRun_Invalid = value[0][0].TestRun_Invalid;
+      this.TestRun_Skipped = value[0][0].TestRun_Skipped;
       this.TestRun_Untested = value[0][0].TestRun_Untested;
+      this.TestRun_CaseCount = value[0][0].TestRun_CaseCount;
     });
   }
 
@@ -184,25 +199,39 @@ export class RunCreateComponent implements OnInit {
     });
   }
 
-  selectCase($event: any, ID: number){
-    if($event.checked){
+  selectCase($event: any, ID: number) {
+    if ($event.checked) {
       this.addCases.push(ID)
       this.addCases = [...new Set(this.addCases)]
       this.addCasesLength = this.addCases.length
+      this.getStep(ID)
     }
   }
 
-  getSelectedCase(){
+  getSelectedCase() {
     this.finalAddCases = "[" + this.addCases + "]"
     this.ACLength = this.addCasesLength
   }
 
-  closeAddCases(){
+  closeAddCases() {
     this.addCases = [];
   }
 
   updateInsertTestRun() {
-    console.log(this.finalAddCases);
+    var case_count = '0';
+    var untested = '0';
+
+    if (this.addCasesLength == 0) {
+      case_count = this.TestRun_CaseCount;
+      untested = this.TestRun_Untested;
+    }
+    else {
+      case_count = this.addCasesLength.toString();
+      untested = case_count;
+    }
+
+    console.log('add steps:' + this.addSteps);
+
     this.api.UniCall(
       {
         CommandText: 'egsQATestRunInsertUpdate',
@@ -260,19 +289,59 @@ export class RunCreateComponent implements OnInit {
             Value: this.TestRun_Failed
           },
           {
+            Param: '@TestRun_Blocked',
+            Value: this.TestRun_Blocked
+          },
+          {
+            Param: '@TestRun_Invalid',
+            Value: this.TestRun_Invalid
+          },
+          {
+            Param: '@TestRun_Skipped',
+            Value: this.TestRun_Skipped
+          },
+          {
             Param: '@TestRun_Untested',
-            Value: this.TestRun_Untested
+            Value: untested
+          },
+          {
+            Param: '@TestRun_CaseCount',
+            Value: case_count
           },
           {
             Param: '@Case_ID',
             Value: this.finalAddCases.toString()
           },
+          {
+            Param: '@Step_ID',
+            Value: '[' + this.addSteps + ']'
+          }
         ]
       }
     ).subscribe({
       error: (e) => console.error(e),
       complete: () => this.router.navigate(["/projects/run"])
     });
+  }
+
+  getStep(id: number) {
+    this.api.UniCall(
+      {
+        CommandText: 'egsQAStepGet',
+        Params: [
+          {
+            Param: '@Case_ID',
+            Value: id.toString()
+          }
+        ]
+      }
+    ).subscribe(value => {
+      this.steps = value[0];
+    });
+
+    for (let i = 0; i < this.steps.length; i++) {
+      this.addSteps.push(this.steps[i].Case_StepID);
+    }
   }
 
   applyFilter(event?: Event) {
