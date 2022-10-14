@@ -11,6 +11,9 @@ ng add @angular/material
 For Angular Split
 npm install angular-split
 
+For Chart.js
+npm install chart.js
+
 Initial angular json production size
 - ng build
 "configurations": {
