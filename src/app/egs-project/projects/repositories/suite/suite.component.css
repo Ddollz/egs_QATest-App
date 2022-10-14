@@ -25,8 +25,14 @@
 .suite:hover {
   background-color: var(--black-5);
 }
-
+.item-suite{
+  color: var(--c-text);
+  font-size: 0.775rem;
+  font-weight: bold;
+}
 .suite-setting {
+  color: var(--c-text);
+  font-weight: bold;
   font-size: 0.775rem;
 }
 

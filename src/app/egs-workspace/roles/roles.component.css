@@ -11,13 +11,14 @@
   flex-direction: column;
   overflow: hidden;
   height: 100%;
+  background: var(--bg-color);
 }
 
 
 .mat-column-Role_Code {
   width: 100px;
   font-size: .8rem;
-  color: #222222DE;
+  color: var(--c-text);
 
 }
 
@@ -25,7 +26,7 @@
   width: 100px;
   font-size: .8rem;
   font-weight: 400;
-  color: #222222DE;
+  color: var(--c-text);
 }
 
 .mat-column-setting {

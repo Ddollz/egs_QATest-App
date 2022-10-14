@@ -103,7 +103,7 @@
                     <p class="cases-count">{{addCasesLength}} test cases selected</p>
                 </div>
             </div>
-
+            <hr class="divider">
             <div class="modal-body">
                 <div class="row cases-row">
                     <!-- LEFT COLUMN -->
@@ -113,9 +113,18 @@
                             <ng-container *ngIf="suite.Project_ID == LinkParamID">
                             <ng-container *ngIf="suite.Parent_SuiteID == 0">
                                 
-                                <app-suites-plan [Suite]="suite" (sendSuiteID)="receiveID($event)" (sendSuiteName)="receiveName($event)" (sendSuiteDesc)="receiveDesc($event)"></app-suites-plan>
+                                <!-- <app-suites-plan [Suite]="suite" (click)="selectAll()" (sendSuiteID)="receiveID($event)" (sendSuiteName)="receiveName($event)" (sendSuiteDesc)="receiveDesc($event)"></app-suites-plan> -->
+                                <div class="d-flex justify-content-between suite w-100">
+                                    <mat-checkbox (change)="selectAll($event)"></mat-checkbox>
+                                      <div class="d-flex align-items-center item-suite">
+                                        <!-- ID is temporary -->
+                                        <a type="button" class="button-blue-transparent suite-name" (click)="receiveID(suite.Suite_ID); receiveName(suite.Suite_Name); receiveDesc(suite.Suite_Desc)">{{suite.Suite_Name}}</a>
+                                      </div>
+                                      <div class="suite-setting">
+                                        <span class="me-1">0/{{suite.Case_Count}}</span>
+                                      </div>
+                                  </div>
 
-                                <!-- <div class="collapse show" [id]="'collapse-'+suite.Suite_ID"> -->
                                 <!-- Run Template to display looping Leaf -->
                                 <div class="ms-3">
                                     <ng-container *ngTemplateOutlet="tree; context:{ $implicit: suite}"></ng-container>
@@ -130,7 +139,17 @@
                             <!-- Check if leaf exist display the leaf and loop again.-->
                             <!-- Check if leaf does not exist end the loop.-->
                             <ng-container *ngIf="data.Suite_ID == s.Parent_SuiteID">
-                                <app-suites-plan [Suite]="s" (sendSuiteID)="receiveID($event)" (sendSuiteName)="receiveName($event)" (sendSuiteDesc)="receiveDesc($event)"></app-suites-plan>
+                                <!-- <app-suites-plan [Suite]="s" (click)="selectAll()" (sendSuiteID)="receiveID($event)" (sendSuiteName)="receiveName($event)" (sendSuiteDesc)="receiveDesc($event)"></app-suites-plan> -->
+                                <div class="d-flex justify-content-between suite w-100">
+                                    <mat-checkbox (change)="selectAll($event)"></mat-checkbox>
+                                      <div class="d-flex align-items-center item-suite">
+                                        <!-- ID is temporary -->
+                                        <a type="button" class="button-blue-transparent suite-name" (click)="receiveID(s.Suite_ID); receiveName(s.Suite_Name);  receiveDesc(s.Suite_Desc)">{{s.Suite_Name}}</a>
+                                      </div>
+                                      <div class="suite-setting">
+                                        <span class="me-1">0/{{s.Case_Count}}</span>
+                                      </div>
+                                  </div>
                                 <!-- Run the template leaf again -->
                                     <div class="ms-3">
                                         <ng-container *ngTemplateOutlet="tree; context: {$implicit:s}"></ng-container>
@@ -171,7 +190,7 @@
                                         <tr mat-header-row *matHeaderCellDef></tr>
                                         <td mat-cell *matCellDef="let element;">
                                             <!-- {{element.Case_ID}} -->
-                                            <mat-checkbox (change)="selectCase($event, element.Case_ID, S_Name)"></mat-checkbox>
+                                            <mat-checkbox [checked]="isCasesChecked" (change)="selectCase($event, element.Case_ID, S_Name)"></mat-checkbox>
                                         </td>
                                     </ng-container>
                                     <ng-container matColumnDef="TestCase_Add">
@@ -222,6 +241,7 @@
                     </div>
                 </div>
             </div>
+            <hr class="divider">
             <div class="modal-footer">
                 <button class="btn btn-primary" data-bs-dismiss="modal" (click)="getSelectedCase()">Done</button>
                 <button class="btn btn-invisible-danger b-0" data-bs-dismiss="modal" (click)="closeAddCases()">Cancel</button>

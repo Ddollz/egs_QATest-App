@@ -96,10 +96,6 @@ input[type="checkbox"]:checked {
   font-size: 18px;
 }
 
-.three-dots {
-  color: var(--c-text);
-  padding: 0 8px;
-}
 
 /* Columns */
 .mat-header-cell {
