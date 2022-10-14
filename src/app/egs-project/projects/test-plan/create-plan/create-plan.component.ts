@@ -88,6 +88,7 @@ export class CreatePlanComponent implements OnInit {
       }
     ).subscribe(value => {
       this.suites = value[0];
+      console.log(this.suites)
     });
 
   }
