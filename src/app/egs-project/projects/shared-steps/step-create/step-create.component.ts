@@ -30,7 +30,7 @@ export class StepCreateComponent implements OnInit {
   addingAttachmentTo?: number;
 
   constructor(private api: ApiService, private router: Router, private route: ActivatedRoute) {
-
+    console.log(this.route.snapshot.params['i']);
     if (this.route.snapshot.params['i']) {
       this.index = this.route.snapshot.params['i'];
       this.Page_title = 'Edit shared step';

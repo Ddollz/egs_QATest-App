@@ -65,7 +65,7 @@ export class RunDashboardComponent implements OnInit {
   Case_Title: string = '';
   Case_Desc: string = '';
   Case_Result: string = '';
-  Case_Comment: string = '';
+  Case_Comment?: string = '';
 
   project: project[] = [];
   suites: suite[] = [];
@@ -83,7 +83,7 @@ export class RunDashboardComponent implements OnInit {
   statColumns: string[] = ['Image', 'User', 'StatTimeSpent', 'Passed', 'Failed', 'Blocked', 'Skipped', 'Invalid'];
   statDataSource = new MatTableDataSource<stat>(statData);
 
-  @ViewChild('casePanel') casePanel!: ElementRef;
+  @ViewChild('caseResultPanel') caseResultPanel!: ElementRef;
   @ViewChild('caseRunPanel') caseRunPanel!: ElementRef;
 
   public chart: any;
@@ -179,6 +179,7 @@ export class RunDashboardComponent implements OnInit {
       }
     ).subscribe(value => {
       this.testcases = value[0];
+      console.log(this.testcases)
       this.caseDataSource = new MatTableDataSource<testCase>(this.testcases);
       this.getCaseStatus();
     });
@@ -299,23 +300,38 @@ export class RunDashboardComponent implements OnInit {
     });
   }
 
-  openCasePanel() {
-    this.casePanel.nativeElement.style.display = "flex";
+  openCasePanel(row: testCase) {
+    this.caseResultPanel.nativeElement.style.display = "flex";
     this.closeCaseRunPanel();
   }
 
   closeCasePanel() {
-    this.casePanel.nativeElement.style.display = "none";
+    this.caseResultPanel.nativeElement.style.display = "none";
   }
 
-  openCaseRunPanel(id: string, title: string, desc: string, comment: string) {
-    this.caseRunPanel.nativeElement.style.display = "flex";
-    this.Case_ID = id;
-    this.Case_Title = title;
-    this.Case_Desc = desc;
-    this.Case_Comment = comment;
-    this.closeCasePanel();
+  // openCaseRunPanel(id: string, title: string, desc: string, comment: string) {
+  //   this.caseRunPanel.nativeElement.style.display = "flex";
+  //   this.Case_ID = id;
+  //   this.Case_Title = title;
+  //   this.Case_Desc = desc;
+  //   this.Case_Comment = comment;
+  //   this.closeCasePanel();
+  // }
+  openCaseRunPanel(row: testCase) {
+    if (row.Case_Result > 0) {
+      this.openCasePanel(row)
+      this.closeCaseRunPanel()
+    }
+    if (row.Case_Result === 0) {
+      this.caseRunPanel.nativeElement.style.display = "flex";
+      this.Case_ID = row.Case_ID.toString();
+      this.Case_Title = row.Case_Title;
+      this.Case_Desc = row.Case_Desc;
+      this.Case_Comment = row.Case_Comment;
+      this.closeCasePanel();
+    }
   }
+
 
   closeCaseRunPanel() {
     this.caseRunPanel.nativeElement.style.display = "none";
@@ -346,12 +362,12 @@ export class RunDashboardComponent implements OnInit {
   }
 
   getCompleted() {
-    var num = ((this.testcases.length-this.Untested)/this.testcases.length)*100;
+    var num = ((this.testcases.length - this.Untested) / this.testcases.length) * 100;
     this.Completed = +parseFloat(num.toString()).toFixed(2);
   }
 
   getProgress(num: number) {
-    return (num/this.testcases.length)*100;
+    return (num / this.testcases.length) * 100;
   }
 
   createChart() {

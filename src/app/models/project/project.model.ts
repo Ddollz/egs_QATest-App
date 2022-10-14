@@ -56,6 +56,7 @@ export interface testCase {
   LastModifiedUser: number;
   Project_ID: number;
   Case_Result: number;
+  Case_Comment?: string;
 }
 
 export interface testCaseComment {

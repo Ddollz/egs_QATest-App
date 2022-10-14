@@ -12,6 +12,8 @@ import { MatTableDataSource } from '@angular/material/table';
 })
 export class TestRunComponent implements OnInit {
 
+  Project_ID: number = 0;
+
   TestRun_ID: string = '';
   TestRun_Title: string = '';
 
@@ -24,7 +26,10 @@ export class TestRunComponent implements OnInit {
     this.dataSource.paginator = paginator;
   }
 
-  constructor(private api: ApiService) { }
+  constructor(private api: ApiService) {
+    this.Project_ID = Number(localStorage.getItem('currentProjectID'));
+
+  }
 
   ngOnInit(): void {
     this.getTestRun();
@@ -36,8 +41,8 @@ export class TestRunComponent implements OnInit {
         CommandText: 'egsQATestRunGet',
         Params: [
           {
-            Param: '@TestRun_ID',
-            Value: null
+            Param: '@Project_ID',
+            Value: this.Project_ID.toString()
           }
         ]
       }

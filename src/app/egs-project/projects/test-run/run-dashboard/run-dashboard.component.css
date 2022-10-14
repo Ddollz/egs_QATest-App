@@ -323,6 +323,9 @@
 }
 
 /* Case Columns */
+.casesTable td{
+  cursor: pointer;
+}
 .mat-column-Checkbox {
   width: 5%;
 }

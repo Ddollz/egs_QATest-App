@@ -16,13 +16,13 @@ export class RunCreateComponent implements OnInit {
   Page_title: string = 'Start test run';
   Button_title: string = 'Start run';
 
-  LinkParamID: number = 0;
+  Project_ID: number = 0;
   Suite_ID: string = '';
   Suite_Name: string = '';
   Suite_Desc: string = '';
   addCasesLength = 0;
   ACLength = 0;
-  finalAddCases ='';
+  finalAddCases = '';
   finalAddSteps = '';
 
   TestRun_ID: string = '';
@@ -50,22 +50,24 @@ export class RunCreateComponent implements OnInit {
   testplans: testplan[] = [];
   milestones: milestone[] = [];
   steps: step[] = [];
-  addCases : number[] = [];
-  addSteps : number[] = [];
+  addCases: number[] = [];
+  addSteps: number[] = [];
 
   displayedColumns: string[] = ['Checkbox', 'Title'];
   dataSource = new MatTableDataSource<testCase>();
 
-  constructor(private api: ApiService, private router: Router, private route: ActivatedRoute, private sidebarServ: sidebarService, @Inject(LOCALE_ID) private locale: string) { }
+  constructor(private api: ApiService, private router: Router, private route: ActivatedRoute, private sidebarServ: sidebarService, @Inject(LOCALE_ID) private locale: string) {
+    this.Project_ID = Number(localStorage.getItem('currentProjectID'));
+  }
 
   ngOnInit(): void {
+
     if (this.route.snapshot.params['id']) {
       this.TestRun_ID = this.route.snapshot.params['id'];
       this.Page_title = 'Edit test run';
       this.Button_title = 'Save';
       this.getTestRun();
     }
-    this.LinkParamID = this.sidebarServ.projectID;
     this.getSuite();
     this.getTestCase();
     this.getTestPlan();
@@ -141,7 +143,7 @@ export class RunCreateComponent implements OnInit {
         Params: [
           {
             Param: '@Project_ID',
-            Value: this.LinkParamID.toString()
+            Value: this.Project_ID.toString()
           }
         ],
       }
@@ -313,8 +315,8 @@ export class RunCreateComponent implements OnInit {
             Value: this.finalAddCases.toString()
           },
           {
-            Param: '@Step_ID',
-            Value: '[' + this.addSteps + ']'
+            Param: '@Project_ID',
+            Value: this.Project_ID.toString()
           }
         ]
       }

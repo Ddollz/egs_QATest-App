@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
+import { ActivatedRoute } from '@angular/router';
 import { sharedStep } from 'src/app/models/project/project.model';
 import { ApiService } from '../../../services/api.service';
 import { reloadPage } from '../../../services/global-functions.service';
@@ -11,6 +12,7 @@ import { reloadPage } from '../../../services/global-functions.service';
 })
 export class SharedStepsComponent implements OnInit {
 
+  Project_ID: number;
   SharedStep_ID: string = '';
   SharedStep_Title: string = '';
 
@@ -20,13 +22,15 @@ export class SharedStepsComponent implements OnInit {
   dataSource = new MatTableDataSource<sharedStep>();
 
   constructor(private api: ApiService) {
+    this.Project_ID = Number(localStorage.getItem('currentProjectID'));
+    console.log(this.Project_ID)
     this.api.UniCall(
       {
         CommandText: 'egsQASharedStepGet',
         Params: [
           {
-            Param: '@SharedStep_ID',
-            Value: null
+            Param: '@Project_ID',
+            Value: this.Project_ID.toString()
           }
         ]
       }
@@ -37,7 +41,7 @@ export class SharedStepsComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   openDeleteModal(id: string, title: string) {
     this.SharedStep_ID = id;
@@ -63,7 +67,7 @@ export class SharedStepsComponent implements OnInit {
   }
 
   applyFilter(event?: Event) {
-    this.dataSource.filterPredicate = function(data, filter: string): boolean {
+    this.dataSource.filterPredicate = function (data, filter: string): boolean {
       return data.SharedStep_Title.toLowerCase().includes(filter) == filter.trim().toLowerCase().includes(filter);
     }
     if (event != null) {
