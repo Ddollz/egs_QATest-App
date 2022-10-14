@@ -530,6 +530,7 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
             for (let index = 0; index < this.suites.length; index++) {
               this.suites[index]['carretOpen'] = false;
             }
+            this.treeControl.collapseAll()
           }
           if (!bol) {
             domCollapse[index].classList.add('show');
@@ -537,6 +538,7 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
             for (let index = 0; index < this.suites.length; index++) {
               this.suites[index]['carretOpen'] = true;
             }
+            this.treeControl.expandAll()
           }
 
         }
