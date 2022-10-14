@@ -102,21 +102,23 @@
                                     </div>
                                     <div class="row">
                                         <table mat-table [dataSource]="casesDataSource" class="mat-elevation-z0">
+
                                             <ng-container matColumnDef="Title">
                                               <th mat-header-cell *matHeaderCellDef>Title</th>
-                                              <td mat-cell *matCellDef="let element" (click)="openCasePanel()">{{element.Case_Title}}</td>
+                                              <td mat-cell *matCellDef="let testCase of testCases" (click)="openCasePanel($event, testCase)">{{testCase.Case_Title}}</td>
                                             </ng-container>
-                              
+
+                                        
                                             <ng-container matColumnDef="Assignee">
                                               <th mat-header-cell *matHeaderCellDef>Assignee</th>
-                                              <td mat-cell *matCellDef="let element" (click)="openCasePanel()">
+                                              <td mat-cell *matCellDef="let testCase of testCases" (click)="openCasePanel($event, testCase)">
                                                 <span>Unassigned</span>
                                               </td>
                                             </ng-container>
-                              
+                                            
                                             <ng-container matColumnDef="Expected_Duration">
                                               <th mat-header-cell *matHeaderCellDef>Expected Duration</th>
-                                              <td mat-cell *matCellDef="let element" (click)="openCasePanel()">0:00:00</td>
+                                              <td mat-cell *matCellDef="let testCase of testCases" (click)="openCasePanel($event, testCase)">0:00:00</td>
                                             </ng-container>
                             
                                             <tr mat-header-row *matHeaderRowDef="casesColumns"></tr>
@@ -172,9 +174,9 @@
     <div class="row">
         <div class="col-11">
             <div class="mb-1">
-                <span class="project-title">Testplan Sample</span>
+                <span class="project-title">{{case_Desc}}</span>
             </div>
-            <h2 class="page-title mb-2">Access Shopping List Module</h2>
+            <h2 class="page-title mb-2">{{case_Name}}</h2>
         </div>
         <div class="col d-flex justify-content-end">
             <i class="bi bi-x-lg" (click)="closeCasePanel()"></i>
@@ -198,7 +200,7 @@
             <button class="nav-link" data-bs-toggle="tab" data-bs-target="#defectsPanelTab">Defects</button>
         </li>
         <li class="nav-item">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#commentTab">Comments</button>
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#commentsTab">Comments</button>
         </li>
     </ul>
 
@@ -206,112 +208,332 @@
 
     <!-- General Tab -->
     <div class="tab-pane show active" id="generalTab">
-        <!-- <div class="row mt-3 mb-3">
-            <h6 class="small-text-bold mb-1">Suite description</h6>
-            <span class="small-text">Login user</span>
-        </div>
-
-        <div class="row mb-3">
-            <h6 class="small-text-bold mb-1">Description</h6>
-            <h6 class="small-text-bold mb-1">Expected:</h6>
-            <span class="small-text-italic">User should be able to login in the application without any errors.</span>
-        </div>
-
-        <div class="row">
-            <h6 class="small-text-bold mb-1">Pre-conditions</h6>
-            <span class="small-text">Must have internet connection</span>
-        </div>
-
-        <div class="row my-2 text-center">
-            <span class="small-text-bold defect-span">Show less</span>
-        </div>
-
-        <ng-container>
-        <div class="row g-0">
-            <div class="col d-flex align-items-center">
-                <span class="small-text-bold me-2">Open ActivMenu site - QA</span>
-                <i class="bi bi-chevron-down"></i>
+        <section class="mt-3">
+            <label for="0-description" class="panelLabel">Description</label>
+            <div class="markdown-area">
+              {{case_Desc}}
             </div>
-            <div class="col-auto d-flex align-items-center justify-content-end">
-                <i class="bi bi-box me-2" data-bs-toggle="tooltip" title="Input Data"></i>
-                <i class="bi bi-list-ul" data-bs-toggle="tooltip" title="Expected Result"></i>
+          </section>
+          <section class="mt-3">
+            <label for="0-precondition" class="panelLabel">Pre-conditions</label>
+            <div class="markdown-area">
+              {{case_PreCon}}
             </div>
-        </div>
-        </ng-container>
-
-        <ng-container>
-        <div class="row g-0">
-            <div class="col d-flex align-items-center">
-                <span class="small-text-bold me-2">Click create an account</span>
-                <i class="bi bi-chevron-down"></i>
+          </section>
+          <section class="mt-3">
+            <label for="0-postcondition" class="panelLabel">Post-conditions</label>
+            <div class="markdown-area">
+              {{case_PostCon}}
             </div>
-            <div class="col-auto d-flex align-items-center justify-content-end">
-                <i class="bi bi-list-ul" data-bs-toggle="tooltip" title="Expected Result"></i>
+          </section>
+  
+          <section class="mt-3">
+            <label for="0-postcondition" class="panelLabel">Attachments</label>
+            <div class="d-flex flex-wrap">
+  
+              <ng-container *ngFor="let attachment of testCaseAttachment">
+                <ng-container *ngIf="attachment.byteFile.contentType.split('/')[0] == 'image'; else notImage">
+  
+                  <div class="suitecase-attachment">
+                    <div class="suitecase-attachment-container">
+                      <div class="suitecase-attachment-image" (click)="downloadFile(attachment.Attachment_ID,attachment.Filename)" style="background: url(&quot;data:image/png;base64,{{attachment.byteFile.fileContents}}&quot;)">
+                        <a class="suitecase-attachment-link is-image"></a>
+                        <div class="suitecase-attachment-overlay">
+                          <p class="suitecase-attachment-filename">{{attachment.Filename}}</p>
+                          <div class="suitecase-attachment-overlay-bottom">
+                            <p class="suitecase-attachment-size"> {{attachment.Filesize}}</p>
+                            <button type="button" class="suitecase-attachment-remove"><i class="bi bi-x"></i></button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+  
+                </ng-container>
+                <ng-template #notImage>
+  
+  
+                  <div class="suitecase-attachment">
+                    <div class="suitecase-attachment-container">
+                      <div data-disable="false" class="suitecase-attachment-file" (click)="downloadFile(attachment.Attachment_ID,attachment.Filename)">
+                        <a class="suitecase-attachment-link"></a>
+                        <span class="suitecase-attachment-extension">{{attachment.byteFile.contentType.split('/')[0]}}</span>
+                        <div class="suitecase-attachment-overlay">
+                          <p class="suitecase-attachment-filename">{{attachment.Filename}}</p>
+                          <div class="suitecase-attachment-overlay-bottom">
+                            <p class="suitecase-attachment-size"> {{attachment.Filesize}}</p>
+                            <button type="button" class="suitecase-attachment-remove"><i class="bi bi-x"></i></button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+              </ng-container>
+  
             </div>
-        </div>
-        </ng-container> -->
-
+  
+  
+          </section>
+          <section class="mt-3">
+            <label for="0-steps" class="panelLabel">Steps</label>
+            <div class="row">
+            <table mat-table [dataSource]="stepdataSource" class="mat-elevation-z0 table-steps">
+              <ng-container matColumnDef="Step">
+                <th mat-header-cell *matHeaderCellDef> Step </th>
+                <td mat-cell *matCellDef="let element">
+                  <div class="markdown-area">{{element.Step_number}}</div>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="Action">
+                <th mat-header-cell *matHeaderCellDef> Action </th>
+                <td mat-cell *matCellDef="let element">
+                  <div class="markdown-area">{{element.Step_Action}}</div>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="Input">
+                <th mat-header-cell *matHeaderCellDef> Input Data </th>
+                <td mat-cell *matCellDef="let element">
+                  <div class="markdown-area">{{element.Step_InputData}}</div>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="Expected">
+                <th mat-header-cell *matHeaderCellDef> Expected Result </th>
+                <td mat-cell *matCellDef="let element">
+                  <div class="markdown-area">{{element.Step_ExpectedResult}}</div>
+                  <div class="attachments attachments-small">
+                    <ng-container *ngFor="let a of stepAttachments">
+                      <ng-container *ngIf="a.Step_ID == element.Case_StepID">
+                        <ng-container *ngIf="a.byteFile.contentType.split('/')[0] == 'image'; else notImage">
+                          <div class="attachment">
+                            <a href="" target="_blank" rel="noreferrer">
+                              <div class="attachment-image" [ngStyle]="{'background': 'url(&quot;data:image/png;base64,'+a.byteFile.fileContents+'&quot;)'}"></div>
+                            </a>
+                          </div>
+                        </ng-container>
+                      </ng-container>
+  
+                      <ng-template #notImage>
+                        <div class="attachment">
+                          <a href="#" target="_blank" rel="noreferrer">
+                            <div class="attachment-file"><span class="attachment-extension">{{a.byteFile.contentType.split('/')[0]}}</span></div>
+                          </a>
+                        </div>
+                      </ng-template>
+  
+                    </ng-container>
+                  </div>
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+            </div>
+          </section>
     </div>
 
     <!-- Properties Tab -->
     <div class="tab-pane show" id="propertiesTab">
-        <!-- <div class="row mt-3 mb-3">
-            <h6 class="small-text-bold mb-1">Test Case</h6>
-            <span class="small-text-case">CASE NAME</span>
-        </div>
+        <div class="row mt-3">
 
-        <div class="row mb-3">
-            <h6 class="small-text-bold mb-1">Executed by</h6>
-            <span class="small-text">User</span>
-        </div>
-
-        <div class="row mb-3">
-            <h6 class="small-text-bold mb-1">Started at</h6>
-            <div class="d-flex align-items-center">
-                <i class="bi bi-calendar4 me-1"></i>
-                <span class="small-text">2022-08-14 20:16:19</span>
+            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 form-group">
+              <label class="panelLabel">Severity</label>
+              <mat-select class="select-item" [(ngModel)]="Case_Severity" (ngModelChange)="onChangePanel('@Case_Severity',$event)">
+                <mat-option value="1" class="select-item">
+                  Not set
+                </mat-option>
+                <mat-option value="2" class="select-item">
+                  Blocker
+                </mat-option>
+                <mat-option value="3" class="select-item">
+                  Critical
+                </mat-option>
+                <mat-option value="4" class="select-item">
+                  Major
+                </mat-option>
+                <mat-option value="5" class="select-item">
+                  Normal
+                </mat-option>
+                <mat-option value="6" class="select-item">
+                  Minor
+                </mat-option>
+                <mat-option value="7" class="select-item">
+                  Trival
+                </mat-option>
+              </mat-select>
             </div>
-        </div>
-
-        <div class="row mb-3">
-            <h6 class="small-text-bold mb-1">Duration</h6>
-            <div class="d-flex align-items-center">
-                <i class="bi bi-clock me-1"></i>
-                <span class="small-text">00:00:10</span>
+  
+            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 form-group">
+              <label class="panelLabel">Priority</label>
+              <mat-select class="select-item" [(ngModel)]="Case_Priority" (ngModelChange)="onChangePanel('@Case_Priority',$event)">
+                <mat-option value="1" class="select-item">
+                  Not set
+                </mat-option>
+                <mat-option value="2" class="select-item">
+                  High
+                </mat-option>
+                <mat-option value="3" class="select-item">
+                  Medium
+                </mat-option>
+                <mat-option value="4" class="select-item">
+                  Low
+                </mat-option>
+              </mat-select>
             </div>
-        </div>
-
-        <div class="row mb-3">
-            <h6 class="small-text-bold mb-1">Finished at</h6>
-            <div class="d-flex align-items-center">
-                <i class="bi bi-calendar4 me-1"></i>
-                <span class="small-text">2022-08-14 20:16:19</span>
+  
+            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 form-group">
+              <label class="panelLabel">Type</label>
+              <mat-select class="select-item" [(ngModel)]="Case_Type" (ngModelChange)="onChangePanel('@Case_Type',$event)">
+                <mat-option value="Other" class="select-item">
+                  Other
+                </mat-option>
+                <mat-option value="Functional" class="select-item">
+                  Functional
+                </mat-option>
+                <mat-option value="Smoke" class="select-item">
+                  Smoke
+                </mat-option>
+                <mat-option value="Regression" class="select-item">
+                  Regression
+                </mat-option>
+                <mat-option value="Security" class="select-item">
+                  Security
+                </mat-option>
+                <mat-option value="Usability" class="select-item">
+                  Usability
+                </mat-option>
+                <mat-option value="Performance" class="select-item">
+                  Performance
+                </mat-option>
+                <mat-option value="Acceptance" class="select-item">
+                  Acceptance
+                </mat-option>
+                <mat-option value="Compatibility" class="select-item">
+                  Compatibility
+                </mat-option>
+                <mat-option value="Integration" class="select-item">
+                  Integration
+                </mat-option>
+                <mat-option value="Exploratory" class="select-item">
+                  Exploratory
+                </mat-option>
+              </mat-select>
             </div>
-        </div>
-
-        <div class="row mb-3">
-            <h6 class="small-text-bold mb-1">Result type</h6>
-            <div class="d-flex align-items-center">
-                <i class="bi bi-person me-1"></i>
-                <span class="small-text">Manual</span>
+  
+            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 form-group">
+              <label class="panelLabel">Layer</label>
+              <mat-select class="select-item" [(ngModel)]="Case_Layer" (ngModelChange)="onChangePanel('@Case_Layer',$event)">
+                <mat-option value="1" class="select-item">
+                  Not set
+                </mat-option>
+                <mat-option value="2" class="select-item">
+                  E2E
+                </mat-option>
+                <mat-option value="3" class="select-item">
+                  API
+                </mat-option>
+                <mat-option value="4" class="select-item">
+                  Unit
+                </mat-option>
+              </mat-select>
             </div>
-        </div> -->
+  
+            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 form-group">
+              <label class="panelLabel">Is flaky</label>
+              <mat-select class="select-item" [(ngModel)]="Case_Flaky" (ngModelChange)="onChangePanel('@Case_Flaky',$event)">
+                <mat-option value="1" class="select-item">
+                  No
+                </mat-option>
+                <mat-option value="2" class="select-item">
+                  Yes
+                </mat-option>
+              </mat-select>
+            </div>
+  
+            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 form-group">
+              <label class="panelLabel">Milestone</label>
+              <mat-select class="select-item" [(ngModel)]="Case_Milestone" (ngModelChange)="onChangePanel('@Case_Milestone',$event)">
+                <mat-option value="1" class="select-item">
+                  Not set
+                </mat-option>
+              </mat-select>
+            </div>
+  
+            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 form-group">
+              <label class="panelLabel">Behavior</label>
+              <mat-select class="select-item" [(ngModel)]="Case_Behavior" (ngModelChange)="onChangePanel('@Case_Behavior',$event)">
+                <mat-option value="1" class="select-item" selected>
+                  Not set
+                </mat-option>
+                <mat-option value="2" class="select-item">
+                  Positive
+                </mat-option>
+                <mat-option value="3" class="select-item">
+                  Negative
+                </mat-option>
+                <mat-option value="4" class="select-item">
+                  Destructive
+                </mat-option>
+              </mat-select>
+            </div>
+  
+            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 form-group">
+              <label class="panelLabel">Automation status</label>
+              <mat-select class="select-item" [(ngModel)]="Case_AutoStat" (ngModelChange)="onChangePanel('@Case_AutoStat',$event)">
+                <mat-option value="1" class="select-item" selected>
+                  Not automated
+                </mat-option>
+                <mat-option value="2" class="select-item">
+                  To be automated
+                </mat-option>
+                <mat-option value="3" class="select-item">
+                  Automated
+                </mat-option>
+              </mat-select>
+            </div>
+          </div>
     </div>
 
     <!-- Runs Tab -->
     <div class="tab-pane show" id="runsTab">
-        <!-- <ng-container>
-        <div class="row p-1 g-0 history-row">
-            <div class="col d-flex align-items-center">
-                <span class="small-text me-2">R-8</span>
-                <span class="small-text-bold">Test run 2022/05/24</span>
-            </div>
-            <div class="col-auto d-flex align-items-center justify-content-end">
-                <span class="small-text me-2">00:00:11</span>
-                <span class="badge bg-primary passed-bg small-text">Passed</span>
+        <div class="mt-1 p-1">
+            <div class="row">
+                <table mat-table [dataSource]="runDataSource" class="mat-elevation-z0 panelTable">
+                    <ng-container matColumnDef="title">
+                    <th mat-header-cell *matHeaderCellDef> Title </th>
+                    <td mat-cell *matCellDef="let element">
+                        <div class="column-title">{{element.title}}</div>
+                        <div class="column-subtitle">{{element.datestart}}</div>
+                    </td>
+                    </ng-container>
+        
+                    <ng-container matColumnDef="environment">
+                    <th mat-header-cell *matHeaderCellDef> Environment </th>
+                    <td mat-cell *matCellDef="let element"> {{element.environment}} </td>
+                    </ng-container>
+        
+                    <ng-container matColumnDef="time">
+                    <th mat-header-cell *matHeaderCellDef> Time </th>
+                    <td mat-cell *matCellDef="let element"> {{element.time}} </td>
+                    </ng-container>
+        
+                    <ng-container matColumnDef="status">
+                    <th mat-header-cell *matHeaderCellDef> Status </th>
+                    <td mat-cell *matCellDef="let element">
+                        <div class="progress">
+                        <div class="progress-bar" role="progressbar" aria-label="Example with label" [ngStyle]="{'width.%': element.status }" attr.aria-valuenow="{{element.status}}" aria-valuemin="0" aria-valuemax="100">{{element.status}}%</div>
+                        </div>
+                    </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="runDisplayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: runDisplayedColumns;"></tr>
+        
+                    <tr *matNoDataRow="">
+                    <td class="mat-cell" colspan="4"> No run result yet. </td>
+                    </tr>
+                </table>
             </div>
         </div>
-        </ng-container> -->
     </div>
 
     <!-- History Tab -->
@@ -333,14 +555,113 @@
     <!-- Defects Tab -->
     <div class="tab-pane show" id="defectsPanelTab">
         <div class="mt-1 p-1">
-            <span class="project-title">No defects yet.</span>
+            <div class="row">
+            <table mat-table [dataSource]="defectsDataSource" class="mat-elevation-z0 panelTable">
+                <ng-container matColumnDef="Defect">
+                  <th mat-header-cell *matHeaderCellDef>Defect</th>
+                  <td mat-cell *matCellDef="let element">
+                  </td>
+                </ng-container>
+      
+                <ng-container matColumnDef="Author">
+                  <th mat-header-cell *matHeaderCellDef>Author</th>
+                  <td mat-cell *matCellDef="let element">
+                  </td>
+                </ng-container>
+      
+                <ng-container matColumnDef="Assignee">
+                  <th mat-header-cell *matHeaderCellDef>Assignee
+                  <th>
+                  <td mat-cell *matCellDef="let element">
+                    <span>No test runs</span>
+                  </td>
+                </ng-container>
+      
+                <ng-container matColumnDef="Severity">
+                  <th mat-header-cell *matHeaderCellDef>Severity</th>
+                  <td mat-cell *matCellDef="let element">
+                  </td>
+                </ng-container>
+      
+                <ng-container matColumnDef="Milestone">
+                  <th mat-header-cell *matHeaderCellDef>Milestone</th>
+                  <td mat-cell *matCellDef="let element">
+                  </td>
+                </ng-container>
+      
+                <ng-container matColumnDef="External">
+                  <th mat-header-cell *matHeaderCellDef>External</th>
+                  <td mat-cell *matCellDef="let element">
+                  </td>
+                </ng-container>
+      
+                <ng-container matColumnDef="ThreeDots">
+                  <th mat-header-cell *matHeaderCellDef></th>
+                  <td mat-cell *matCellDef="let element">
+                    <div class="d-flex justify-content-end">
+                      <button class="btn three-dots" data-bs-toggle="dropdown">
+                        <i class="bi bi-three-dots"></i>
+                        <div class="dropdown-menu">
+                          <div class="dropdown-Tag">View</div>
+                          <div class="dropdown-Tag">Assign to me</div>
+                          <div class="dropdown-Tag">In Progress</div>
+                          <div class="dropdown-Tag">Resolve</div>
+                          <div class="dropdown-Tag">Invalid</div>
+                          <div class="dropdown-Tag">Edit</div>
+                          <div class="dropdown-Tag">Delete</div>
+                        </div>
+                      </button>
+                    </div>
+                  </td>
+                </ng-container>
+      
+                <tr *matNoDataRow="">
+                  <td class="mat-cell" colspan="7"> No defects yet. </td>
+                </tr>
+      
+                <tr mat-header-row *matHeaderRowDef=" defectsDisplayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: defectsDisplayedColumns;"></tr>
+              </table>
+            </div>
         </div>
     </div>
 
     <!-- Comments Tab -->
     <div class="tab-pane show" id="commentsTab">
         <div class="mt-1 p-1">
-            <span class="project-title">No defects yet.</span>
+            <div class="d-flex align-items-center  mt-3 ">
+                <div class=" me-2"><img class="lazy avatar-sm" src="../../../../assets/img/placeholder.jpg"></div>
+                <div class="comment-user">
+                  <div class="comment-username">Rica Isidto</div>
+                  <div class="comment-role">Software Quality Assurance Analyst</div>
+      
+                </div>
+                <button id="addComment" class="btn btn-primary" style="margin-left: auto;" (click)="postComment()">Send</button>
+              </div>
+              <div class="mt-1">
+                <quill-editor [styles]="{width: '100%'}" [modules]="editorOptions" (onContentChanged)="commentContent($event)">
+      
+                </quill-editor>
+              </div>
+      
+              <div class="mt-4">
+                <ng-container *ngFor="let comment of caseComments">
+                  <div class="d-flex w-100 mt-3">
+                    <div class="me-2 comment-avatar">
+                      <img class="lazy avatar-sm" src="../../../../assets/img/placeholder.jpg">
+                    </div>
+                    <div class="d-flex flex-column w-100">
+                      <div class="comment-user">
+                        <div class="comment-username">{{comment.User_Firstname}} {{comment.User_Lastname}}</div>
+                        <div class="comment-role">{{comment.RoleTitle}}</div>
+                      </div>
+                      <quill-view (onEditorCreated)="displayCommentContent($event, comment.Comment_Content)" [modules]="{}"> </quill-view>
+                      <div class="comment-date">{{comment.Comment_Date}}</div>
+                    </div>
+                  </div>
+                </ng-container>
+      
+              </div>
         </div>
     </div>
 

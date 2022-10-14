@@ -68,6 +68,11 @@
     position: static;
 }
 
+hr.divider{ 
+   margin-top: 0em;
+   margin-bottom: 0em;
+} 
+
 .modal-xl {
     max-width: 95%;
     max-height: 90%;
