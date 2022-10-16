@@ -90,18 +90,19 @@ export class RunDashboardComponent implements OnInit {
 
   public chart: any;
 
-  constructor(private api: ApiService, private route: ActivatedRoute, private sidebarServ: sidebarService) { }
+  constructor(private api: ApiService, private route: ActivatedRoute, private sidebarServ: sidebarService) {
 
-  ngOnInit(): void {
     if (this.route.snapshot.params['id']) {
       this.TestRun_ID = this.route.snapshot.params['id'];
       this.getTestRun();
     }
     this.LinkParamID = this.sidebarServ.projectID;
     this.getProject();
-    // this.getSuite();
     this.getCase();
     this.getDefect();
+  }
+
+  ngOnInit(): void {
   }
 
   getTestRun() {
@@ -270,7 +271,10 @@ export class RunDashboardComponent implements OnInit {
         }
       }
       this.caseDataSource = new MatTableDataSource<testCase>(this.testcases);
+      this.getCompleted();
       this.getSuite(temp);
+      this.createChart();
+
     });
   }
   originalOrder = (a: KeyValue<any, any>, b: KeyValue<any, any>): number => {
@@ -433,7 +437,7 @@ export class RunDashboardComponent implements OnInit {
   }
 
   getCompleted() {
-    var num = ((this.testcases.length - this.Untested) / this.testcases.length) * 100;
+    var num = ((this.testcases.length - this.testcases.filter((n: any) => n.Case_Result <= 0).length) / this.testcases.length) * 100;
     this.Completed = +parseFloat(num.toString()).toFixed(2);
   }
 
@@ -457,7 +461,14 @@ export class RunDashboardComponent implements OnInit {
           'Untested',
         ],
         datasets: [{
-          data: [this.Passed, this.Failed, this.Blocked, this.Invalid, this.Skipped, this.Untested],
+          data: [
+            this.testcases.filter((n: any) => n.Case_Result === 1).length,
+            this.testcases.filter((n: any) => n.Case_Result === 2).length,
+            this.testcases.filter((n: any) => n.Case_Result === 3).length,
+            this.testcases.filter((n: any) => n.Case_Result === 4).length,
+            this.testcases.filter((n: any) => n.Case_Result === 5).length,
+            this.testcases.filter((n: any) => n.Case_Result <= 0).length
+          ],
           backgroundColor: [
             '#94c64a',
             '#f66384',
