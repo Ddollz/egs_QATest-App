@@ -169,8 +169,9 @@ export class RunDashboardComponent implements OnInit {
       }
     ).subscribe(value => {
       this.suites = value[0];
-      var temp = this.suites.filter(n => n.Parent_SuiteID)
 
+      //? For sub desc
+      var temp = this.suites.filter(n => n.Parent_SuiteID)
       for (let index = 0; index < temp.length; index++) {
         var parent = this.suites.filter(x => x.Suite_ID === temp[index].Parent_SuiteID);
         this.SuiteID_List.push(temp[index].Suite_ID);
@@ -193,7 +194,9 @@ export class RunDashboardComponent implements OnInit {
         Filtered = {};
         this.SuiteID_List = [];
       }
-      console.log(id);
+      //? For sub desc
+
+      //? For progressbar per suites
       var idsInArray = id.split(" ").filter((a: any) => a);
       for (let index = 0; index < idsInArray.length; index++) {
         this.getCaseStatus(idsInArray[index]);
@@ -209,7 +212,7 @@ export class RunDashboardComponent implements OnInit {
         Filtereds[idsInArray[index]] = barFilled
         this.suiteBar_List.push(Filtereds)
       }
-      // console.log(idsInArray)
+      //? For progressbar per suites
 
     });
   }
@@ -346,12 +349,16 @@ export class RunDashboardComponent implements OnInit {
         ]
       }
     ).subscribe({
+
       error: (e) => console.error(e),
-      complete: () => reloadPage()
+      complete: () => {
+        this.updateProgress()
+      }
     });
   }
 
   updateProgress() {
+
     this.api.UniCall(
       {
         CommandText: 'egsQATestRunInsertUpdate',
@@ -362,27 +369,27 @@ export class RunDashboardComponent implements OnInit {
           },
           {
             Param: '@TestRun_Passed',
-            Value: this.Passed.toString()
+            Value: this.testcases.filter((n: any) => n.Case_Result === 1).length.toString()
           },
           {
             Param: '@TestRun_Failed',
-            Value: this.Failed.toString()
+            Value: this.testcases.filter((n: any) => n.Case_Result === 2).length.toString()
           },
           {
             Param: '@TestRun_Blocked',
-            Value: this.Blocked.toString()
+            Value: this.testcases.filter((n: any) => n.Case_Result === 3).length.toString()
           },
           {
             Param: '@TestRun_Invalid',
-            Value: this.Invalid.toString()
+            Value: this.testcases.filter((n: any) => n.Case_Result === 4).length.toString()
           },
           {
             Param: '@TestRun_Skipped',
-            Value: this.Skipped.toString()
+            Value: this.testcases.filter((n: any) => n.Case_Result === 5).length.toString()
           },
           {
             Param: '@TestRun_Untested',
-            Value: this.Untested.toString()
+            Value: this.testcases.filter((n: any) => n.Case_Result === 0).length.toString()
           },
           {
             Param: '@TestRun_CaseCount',
@@ -391,7 +398,9 @@ export class RunDashboardComponent implements OnInit {
         ]
       }
     ).subscribe({
-      error: (e) => console.error(e)
+      error: (e) => console.error(e),
+      complete: () => reloadPage()
+
     });
   }
 

@@ -48,6 +48,7 @@ export class TestRunComponent implements OnInit {
       }
     ).subscribe(value => {
       this.testruns = value[0];
+      console.log(this.testruns)
       this.dataSource = new MatTableDataSource<testrun>(this.testruns);
     });
   }

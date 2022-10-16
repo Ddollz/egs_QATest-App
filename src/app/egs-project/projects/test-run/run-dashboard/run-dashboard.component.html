@@ -1,6 +1,5 @@
 <div class="app__content">
   <div class="row h-100">
-
     <!-- LEFT COL -->
     <div class="col-10">
 
@@ -89,12 +88,12 @@
 
                       <ng-container *ngFor="let sbl of suiteBar_List | keyvalue: originalOrder">
                         <ng-container *ngFor="let test of sbl.value | keyvalue: originalOrder">
-                          <div class="progress-bar passed-pb" data-bs-toggle="tooltip" title="Passed" *ngIf="o.Suite_ID.toString() === test.key.toString()" [style.width.%]="test.value.Passed"></div>
-                          <div class="progress-bar failed-pb" data-bs-toggle="tooltip" title="Passed" *ngIf="o.Suite_ID.toString() === test.key.toString()" [style.width.%]="test.value.Failed"></div>
-                          <div class="progress-bar blocked-pb" data-bs-toggle="tooltip" title="Passed" *ngIf="o.Suite_ID.toString() === test.key.toString()" [style.width.%]="test.value.Blocked"></div>
-                          <div class="progress-bar invalid-pb" data-bs-toggle="tooltip" title="Passed" *ngIf="o.Suite_ID.toString() === test.key.toString()" [style.width.%]="test.value.Invalid"></div>
-                          <div class="progress-bar skipped-pb" data-bs-toggle="tooltip" title="Passed" *ngIf="o.Suite_ID.toString() === test.key.toString()" [style.width.%]="test.value.Skipped"></div>
-                          <div class="progress-bar untested-pb" data-bs-toggle="tooltip" title="Passed" *ngIf="o.Suite_ID.toString() === test.key.toString()" [style.width.%]="test.value.Untested"></div>
+                          <div class="progress-bar passed-pb" matTooltip="Passed" *ngIf="o.Suite_ID.toString() === test.key.toString()" [style.width.%]="test.value.Passed"></div>
+                          <div class="progress-bar failed-pb" matTooltip="Failed" *ngIf="o.Suite_ID.toString() === test.key.toString()" [style.width.%]="test.value.Failed"></div>
+                          <div class="progress-bar blocked-pb" matTooltip="Blocked" *ngIf="o.Suite_ID.toString() === test.key.toString()" [style.width.%]="test.value.Blocked"></div>
+                          <div class="progress-bar invalid-pb" matTooltip="Invalid" *ngIf="o.Suite_ID.toString() === test.key.toString()" [style.width.%]="test.value.Invalid"></div>
+                          <div class="progress-bar skipped-pb" matTooltip="Skipped" *ngIf="o.Suite_ID.toString() === test.key.toString()" [style.width.%]="test.value.Skipped"></div>
+                          <div class="progress-bar untested-pb" matTooltip="Untested" *ngIf="o.Suite_ID.toString() === test.key.toString()" [style.width.%]="test.value.Untested"></div>
                         </ng-container>
                       </ng-container>
                     </div>
