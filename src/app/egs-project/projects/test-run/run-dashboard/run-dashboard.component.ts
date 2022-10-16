@@ -447,7 +447,7 @@ export class RunDashboardComponent implements OnInit {
 
   getCompleted() {
     var num = ((this.testcases.length - this.testcases.filter((n: any) => n.Case_Result <= 0).length) / this.testcases.length) * 100;
-    this.Completed = +parseFloat(num.toString()).toFixed(2);
+    this.Completed = +parseFloat(num.toString()).toFixed(0);
   }
 
   createChart() {
