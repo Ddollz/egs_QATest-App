@@ -167,9 +167,7 @@ export class RunDashboardComponent implements OnInit {
       }
     ).subscribe(value => {
       this.suites = value[0];
-      console.log(this.suites)
       var temp = this.suites.filter(n => n.Parent_SuiteID)
-      console.log(temp)
 
       for (let index = 0; index < temp.length; index++) {
         //?
@@ -196,7 +194,6 @@ export class RunDashboardComponent implements OnInit {
         Filtered = {};
         this.SuiteID_List = [];
       }
-      console.log(this.SuiteName_List)
     });
   }
 
