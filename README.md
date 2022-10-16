@@ -7,6 +7,7 @@ npm i @types/quill@1
 
 For Angular Material Error
 ng add @angular/material
+npm i @angular/cdk
 
 For Angular Split
 npm install angular-split

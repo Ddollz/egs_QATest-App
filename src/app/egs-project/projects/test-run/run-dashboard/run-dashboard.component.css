@@ -85,23 +85,28 @@
   color: var(--bs-red-100) !important;
 }
 
-.passed-bg, .passed-pb {
+.passed-bg,
+.passed-pb {
   background-color: #94c64a !important;
 }
 
-.failed-bg, .failed-pb {
+.failed-bg,
+.failed-pb {
   background-color: #f66384 !important;
 }
 
-.blocked-bg, .blocked-pb {
+.blocked-bg,
+.blocked-pb {
   background-color: rgb(221, 181, 10) !important;
 }
 
-.invalid-bg, .invalid-pb {
+.invalid-bg,
+.invalid-pb {
   background-color: rgb(95, 1, 185) !important;
 }
 
-.skipped-bg, .skipped-pb {
+.skipped-bg,
+.skipped-pb {
   background-color: rgb(175, 175, 175) !important;
 }
 
@@ -323,9 +328,10 @@
 }
 
 /* Case Columns */
-.casesTable td{
+.casesTable td {
   cursor: pointer;
 }
+
 .mat-column-Checkbox {
   width: 5%;
 }
@@ -385,4 +391,21 @@
 
 .dropdown-item:active {
   background-color: white;
+}
+
+.run-suite-header-title {
+  font-size: .875rem;
+  font-weight: 600;
+  margin-right: 1rem;
+}
+
+.run-suite-header-collapse {
+  font-size: .875rem;
+  margin-left: 0.25rem;
+  cursor: pointer;
+}
+
+.run-suite-crumbs {
+  font-size: .75rem;
+  opacity: .5;
 }

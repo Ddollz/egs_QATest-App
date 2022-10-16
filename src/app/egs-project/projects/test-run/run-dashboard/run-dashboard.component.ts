@@ -6,6 +6,7 @@ import { reloadPage } from '../../../../services/global-functions.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { sidebarService } from '../../../../services/global-functions.service';
 import Chart from 'chart.js/auto';
+import { KeyValue } from '@angular/common';
 
 export interface stat {
   user: string;
@@ -76,6 +77,7 @@ export class RunDashboardComponent implements OnInit {
 
   caseColumns: string[] = ['Checkbox', 'Result', 'Title', 'Assignee', 'TimeSpent', 'ThreeDots'];
   caseDataSource = new MatTableDataSource<testCase>();
+  finalCaseDataSource: any = {};
 
   defectColumns: string[] = ['ID', 'Title', 'ReportedBy', 'DefectAssignee', 'External', 'Status', 'ThreeDots'];
   defectDataSource = new MatTableDataSource<defect>();
@@ -97,7 +99,7 @@ export class RunDashboardComponent implements OnInit {
     }
     this.LinkParamID = this.sidebarServ.projectID;
     this.getProject();
-    this.getSuite();
+    // this.getSuite();
     this.getCase();
     this.getDefect();
   }
@@ -149,23 +151,72 @@ export class RunDashboardComponent implements OnInit {
     });
   }
 
-  getSuite() {
+  SuiteID_List: any = [];
+  SuiteName_List: any = [];
+
+  getSuite(id: any) {
     this.api.UniCall(
       {
         CommandText: 'egsQASuiteGet',
         Params: [
           {
-            Param: '@Project_ID',
-            Value: this.LinkParamID.toString()
+            Param: '@Suite_List',
+            Value: id
           }
         ],
       }
     ).subscribe(value => {
       this.suites = value[0];
-      this.Suite_Name = this.suites[0].Suite_Name;
+      console.log(this.suites)
+      var temp = this.suites.filter(n => n.Parent_SuiteID)
+      console.log(temp)
+
+      for (let index = 0; index < temp.length; index++) {
+        //?
+        var parent = this.suites.filter(x => x.Suite_ID === temp[index].Parent_SuiteID);
+        this.SuiteID_List.push(temp[index].Suite_ID);
+
+        if (parent.length > 0) {
+          this.SuiteID_List.push(parent[0].Suite_ID);
+          this.getChildTreeSuite(parent[0])
+        }
+        //?
+        var Filtered: any = {};
+        var mapped = this.SuiteID_List.map((obj: any) => {
+          return this.suites.find(n => n.Suite_ID === obj)?.Suite_Name
+        })
+        const item = mapped.reverse().map((n: any, i: any, arr: any) => {
+          if (arr.length - 1 === i) return n
+          return n + " > "
+        });
+        const html = item.join('')
+        Filtered[temp[index].Suite_ID] = html
+        // console.log(this.testinggval);
+        this.SuiteName_List.push(Filtered)
+        Filtered = {};
+        this.SuiteID_List = [];
+      }
+      console.log(this.SuiteName_List)
     });
   }
 
+
+  //? Looping child
+  getChildTreeSuite(id: any) {
+    var parent = this.suites.filter(x => x.Suite_ID === id.Parent_SuiteID);
+    if (parent.length > 0) {
+      this.SuiteID_List.push(parent[0].Suite_ID);
+      this.getChildTreeSuite(parent[0])
+    }
+  }
+
+  collapseSuite(event: Event) {
+    var dom = event.currentTarget as HTMLElement;
+    if (dom.querySelector('i')?.classList.contains('bi-chevron-down'))
+      dom.querySelector('i')?.classList.replace('bi-chevron-down', 'bi-chevron-right')
+    else
+      dom.querySelector('i')?.classList.replace('bi-chevron-right', 'bi-chevron-down')
+  }
   getCase() {
     this.api.UniCall(
       {
@@ -179,12 +230,28 @@ export class RunDashboardComponent implements OnInit {
       }
     ).subscribe(value => {
       this.testcases = value[0];
-      console.log(this.testcases)
+      var temp = '';
+      for (let index = 0; index < this.testcases.length; index++) {
+        if (this.finalCaseDataSource.hasOwnProperty(this.testcases[index].Suite_ID)) {
+          this.finalCaseDataSource[this.testcases[index].Suite_ID].push(this.testcases[index]);
+        } else {
+          temp = temp + ' ' + this.testcases[index].Suite_ID;
+          this.finalCaseDataSource[this.testcases[index].Suite_ID] = [];
+          this.finalCaseDataSource[this.testcases[index].Suite_ID].push(this.testcases[index]);
+        }
+      }
       this.caseDataSource = new MatTableDataSource<testCase>(this.testcases);
       this.getCaseStatus();
+      this.getSuite(temp);
     });
   }
-
+  originalOrder = (a: KeyValue<any, any>, b: KeyValue<any, any>): number => {
+    return 0;
+  }
+  testf(v: any) {
+    console.log("ha")
+    console.log(v)
+  }
   getDefect() {
     this.api.UniCall(
       {

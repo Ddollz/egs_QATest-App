@@ -68,7 +68,7 @@
 
 
             <ng-container *ngIf="!collapsed">
-              <mat-tree #tree [dataSource]="dataSource" [treeControl]="treeControl" cdkDropList (cdkDropListDropped)="drop($event)" >
+              <mat-tree #tree [dataSource]="dataSource" [treeControl]="treeControl" cdkDropList (cdkDropListDropped)="drop($event)">
                 <!-- This is the tree node template for expandable nodes matTreeNodePadding matTreeNodePaddingIndent="10" -->
                 <mat-tree-node cdkDrag *matTreeNodeDef="let node;when: hasChild;" (cdkDragStarted)="dragStartTree($event, node)" (cdkDragEnded)="dragEndTree($event, node)">
                   <ng-container *ngIf="getLevel(node)">
