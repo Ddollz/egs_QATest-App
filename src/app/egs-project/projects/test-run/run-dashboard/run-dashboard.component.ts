@@ -153,6 +153,7 @@ export class RunDashboardComponent implements OnInit {
 
   SuiteID_List: any = [];
   SuiteName_List: any = [];
+  suiteBar_List: any = [];
 
   getSuite(id: any) {
     this.api.UniCall(
@@ -170,10 +171,8 @@ export class RunDashboardComponent implements OnInit {
       var temp = this.suites.filter(n => n.Parent_SuiteID)
 
       for (let index = 0; index < temp.length; index++) {
-        //?
         var parent = this.suites.filter(x => x.Suite_ID === temp[index].Parent_SuiteID);
         this.SuiteID_List.push(temp[index].Suite_ID);
-
         if (parent.length > 0) {
           this.SuiteID_List.push(parent[0].Suite_ID);
           this.getChildTreeSuite(parent[0])
@@ -189,13 +188,45 @@ export class RunDashboardComponent implements OnInit {
         });
         const html = item.join('')
         Filtered[temp[index].Suite_ID] = html
-        // console.log(this.testinggval);
         this.SuiteName_List.push(Filtered)
         Filtered = {};
         this.SuiteID_List = [];
       }
+      console.log(id);
+      var idsInArray = id.split(" ").filter((a: any) => a);
+      for (let index = 0; index < idsInArray.length; index++) {
+        this.getCaseStatus(idsInArray[index]);
+        var barFilled: any = {};
+        barFilled['Passed'] = this.getProgress(this.Passed, idsInArray[index])
+        barFilled['Failed'] = this.getProgress(this.Failed, idsInArray[index])
+        barFilled['Blocked'] = this.getProgress(this.Blocked, idsInArray[index])
+        barFilled['Invalid'] = this.getProgress(this.Invalid, idsInArray[index])
+        barFilled['Skipped'] = this.getProgress(this.Skipped, idsInArray[index])
+        barFilled['Untested'] = this.getProgress(this.Untested, idsInArray[index])
+        var Filtereds: any = {};
+
+        Filtereds[idsInArray[index]] = barFilled
+        this.suiteBar_List.push(Filtereds)
+      }
+      // console.log(idsInArray)
+
     });
   }
+
+
+  getProgress(num: number, id: number) {
+    return (num / this.testcases.filter((n: any) => n.Suite_ID.toString() == id.toString()).length) * 100;
+  }
+
+  getCaseStatus(id: number) {
+    this.Passed = this.testcases.filter((n: any) => n.Case_Result == 1 && n.Suite_ID.toString() === id.toString()).length
+    this.Failed = this.testcases.filter((n: any) => n.Case_Result == 2 && n.Suite_ID.toString() === id.toString()).length
+    this.Blocked = this.testcases.filter((n: any) => n.Case_Result == 3 && n.Suite_ID.toString() === id.toString()).length
+    this.Invalid = this.testcases.filter((n: any) => n.Case_Result == 4 && n.Suite_ID.toString() === id.toString()).length
+    this.Skipped = this.testcases.filter((n: any) => n.Case_Result == 5 && n.Suite_ID.toString() === id.toString()).length
+    this.Untested = this.testcases.filter((n: any) => n.Case_Result <= 0 && n.Suite_ID.toString() === id.toString()).length
+  }
+
 
 
   //? Looping child
@@ -227,6 +258,7 @@ export class RunDashboardComponent implements OnInit {
       }
     ).subscribe(value => {
       this.testcases = value[0];
+
       var temp = '';
       for (let index = 0; index < this.testcases.length; index++) {
         if (this.finalCaseDataSource.hasOwnProperty(this.testcases[index].Suite_ID)) {
@@ -238,16 +270,11 @@ export class RunDashboardComponent implements OnInit {
         }
       }
       this.caseDataSource = new MatTableDataSource<testCase>(this.testcases);
-      this.getCaseStatus();
       this.getSuite(temp);
     });
   }
   originalOrder = (a: KeyValue<any, any>, b: KeyValue<any, any>): number => {
     return 0;
-  }
-  testf(v: any) {
-    console.log("ha")
-    console.log(v)
   }
   getDefect() {
     this.api.UniCall(
@@ -405,33 +432,9 @@ export class RunDashboardComponent implements OnInit {
     return date.substring(0, 10) + ' ' + date.substring(11, 21);
   }
 
-  getCaseStatus() {
-    for (let i = 0; i < this.testcases.length; i++) {
-      if (this.testcases[i].Case_Result == 1)
-        this.Passed++;
-      else if (this.testcases[i].Case_Result == 2)
-        this.Failed++;
-      else if (this.testcases[i].Case_Result == 3)
-        this.Blocked++;
-      else if (this.testcases[i].Case_Result == 4)
-        this.Invalid++;
-      else if (this.testcases[i].Case_Result == 5)
-        this.Skipped++;
-      else
-        this.Untested++;
-    }
-    this.getCompleted();
-    this.createChart();
-    this.updateProgress();
-  }
-
   getCompleted() {
     var num = ((this.testcases.length - this.Untested) / this.testcases.length) * 100;
     this.Completed = +parseFloat(num.toString()).toFixed(2);
-  }
-
-  getProgress(num: number) {
-    return (num / this.testcases.length) * 100;
   }
 
   createChart() {
