@@ -77,7 +77,7 @@
               <ng-container *ngFor="let o of  suites; let i = index">
                 <ng-container *ngIf="o.Suite_ID.toString() === item.key.toString()">
 
-                  <div class="d-flex align-items-center text-center" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse-'+item.key" aria-expanded="false" aria-controls="collapseExample" (click)="collapseSuite($event)">
+                  <div class="d-flex align-items-center text-center" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse-'+item.key" aria-expanded="false" aria-controls="collapseExample" (click)="collapseChevronIcon($event)">
                     <div class="run-suite-header-title">{{o.Suite_Name}}
                       <a class="run-suite-header-collapse">
                         <i class="bi bi-chevron-down"></i>
@@ -368,16 +368,56 @@
   <div class="row">
     <div class="col-11">
       <div class="mb-1">
-        <i class="bi bi-check-square-fill me-2"></i>
-        <span class="passed-span">Passed</span>
+        <ng-container *ngIf="currentCase.Case_Result === 1">
+          <i class="bi bi-check-square-fill me-2"></i>
+          <span class="passed-span">
+            Passed
+          </span>
+        </ng-container>
+
+        <ng-container *ngIf="currentCase.Case_Result === 2">
+          <i class="bi bi-x-square-fill me-2"></i>
+          <span class="failed-span">
+            Failed
+          </span>
+        </ng-container>
+        <ng-container *ngIf="currentCase.Case_Result === 3">
+          <i class="bi bi-x-circle me-2"></i>
+          <span class="blocked-span">
+            Blocked
+          </span>
+        </ng-container>
+        <ng-container *ngIf="currentCase.Case_Result === 4">
+          <i class="bi bi-slash-square-fill me-2"></i>
+          <span class="invalid-span">
+            Invalid
+          </span>
+        </ng-container>
+        <ng-container *ngIf="currentCase.Case_Result === 5">
+          <i class="bi bi-dash-square-fill  me-2"></i>
+          <span class="skipped-span">
+            Skipped
+          </span>
+        </ng-container>
       </div>
       <div class="mb-1">
-        <span class="project-title">Project QAs</span>
+        <span class="project-title">{{Project_Name}}</span>
+
       </div>
-      <h2 class="page-title mb-2">{{Case_Title}}</h2>
+      <h2 class="page-title mb-2">{{currentCase.Case_Title}}</h2>
     </div>
+
     <div class="col d-flex justify-content-end">
       <i class="bi bi-x-lg" (click)="closeCasePanel()"></i>
+    </div>
+    <div class="panelControl">
+
+      <button class="btns" (click)="runAgainCase(currentCase.Result_ID)">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" style="width: 16px; height: 16px;">
+          <path d="M272 416c17.7 0 32-14.3 32-32s-14.3-32-32-32H160c-17.7 0-32-14.3-32-32V192h32c12.9 0 24.6-7.8 29.6-19.8s2.2-25.7-6.9-34.9l-64-64c-12.5-12.5-32.8-12.5-45.3 0l-64 64c-9.2 9.2-11.9 22.9-6.9 34.9s16.6 19.8 29.6 19.8l32 0 0 128c0 53 43 96 96 96H272zM304 96c-17.7 0-32 14.3-32 32s14.3 32 32 32l112 0c17.7 0 32 14.3 32 32l0 128H416c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l64 64c12.5 12.5 32.8 12.5 45.3 0l64-64c9.2-9.2 11.9-22.9 6.9-34.9s-16.6-19.8-29.6-19.8l-32 0V192c0-53-43-96-96-96L304 96z" />
+        </svg>
+        Run Again
+      </button>
     </div>
   </div>
 
@@ -403,49 +443,90 @@
 
     <!-- EXECUTION TAB -->
     <div class="tab-pane show active" id="executionTab">
-      <div class="row mt-3 mb-3">
-        <h6 class="small-text-bold mb-1">Suite description</h6>
-        <!-- <span class="small-text">{{this.suites[0].Suite_Desc}}</span> -->
-      </div>
 
-      <div class="row mb-3">
-        <h6 class="small-text-bold mb-1">Description</h6>
-        <span class="small-text-italic">{{Case_Desc}}</span>
-      </div>
-
-      <div class="row">
-        <h6 class="small-text-bold mb-1">Pre-conditions</h6>
-        <!-- <span class="small-text">{{this.suites[0].Suite_PreCondition}}</span> -->
-      </div>
-
-      <div class="row my-2 text-center">
-        <span class="small-text-bold defect-span">Show less</span>
-      </div>
-
-      <ng-container>
-        <div class="row g-0">
-          <div class="col d-flex align-items-center">
-            <span class="small-text-bold me-2">Open ActivMenu site - QA</span>
-            <i class="bi bi-chevron-down"></i>
-          </div>
-          <div class="col-auto d-flex align-items-center justify-content-end">
-            <i class="bi bi-box me-2" data-bs-toggle="tooltip" title="Input Data"></i>
-            <i class="bi bi-list-ul" data-bs-toggle="tooltip" title="Expected Result"></i>
-          </div>
+      <section class="mt-3" *ngIf="currentSuite?.Suite_Desc">
+        <label for="0-description" class="panelLabel">Suite Description</label>
+        <div class="markdown-area">
+          {{currentSuite?.Suite_Desc}}
         </div>
-      </ng-container>
-
-      <ng-container>
-        <div class="row g-0">
-          <div class="col d-flex align-items-center">
-            <span class="small-text-bold me-2">Click create an account</span>
-            <i class="bi bi-chevron-down"></i>
-          </div>
-          <div class="col-auto d-flex align-items-center justify-content-end">
-            <i class="bi bi-list-ul" data-bs-toggle="tooltip" title="Expected Result"></i>
-          </div>
+      </section>
+      <section class="mt-3" *ngIf="currentCase.Case_Desc">
+        <label for="0-description" class="panelLabel">Description</label>
+        <div class="markdown-area">
+          {{currentCase.Case_Desc}}
         </div>
-      </ng-container>
+      </section>
+      <section class="mt-3" *ngIf="currentCase.Case_PreCondition">
+        <label for="0-precondition" class="panelLabel">Pre-conditions</label>
+        <div class="markdown-area">
+          {{currentCase.Case_PreCondition}}
+        </div>
+      </section>
+      <section class="mt-3" *ngIf="currentCase.Case_PostCondition">
+        <label for="0-postcondition" class="panelLabel">Post-conditions</label>
+        <div class="markdown-area">
+          {{currentCase.Case_PostCondition}}
+        </div>
+      </section>
+
+      <div class="mt-3">
+        <ng-container *ngFor="let step of steps">
+          <div class="row g-0" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapseStep-'+step.Case_StepID" aria-expanded="false" aria-controls="collapseStep" (click)="collapseChevronIcon($event)">
+            <div class="col d-flex align-items-center">
+
+              <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" fill="currentColor" class="bi bi-dash-square-dotted me-1" *ngIf="!step.Step_Result" viewBox="0 0 16 16">
+                <path d="M2.5 0c-.166 0-.33.016-.487.048l.194.98A1.51 1.51 0 0 1 2.5 1h.458V0H2.5zm2.292 0h-.917v1h.917V0zm1.833 0h-.917v1h.917V0zm1.833 0h-.916v1h.916V0zm1.834 0h-.917v1h.917V0zm1.833 0h-.917v1h.917V0zM13.5 0h-.458v1h.458c.1 0 .199.01.293.029l.194-.981A2.51 2.51 0 0 0 13.5 0zm2.079 1.11a2.511 2.511 0 0 0-.69-.689l-.556.831c.164.11.305.251.415.415l.83-.556zM1.11.421a2.511 2.511 0 0 0-.689.69l.831.556c.11-.164.251-.305.415-.415L1.11.422zM16 2.5c0-.166-.016-.33-.048-.487l-.98.194c.018.094.028.192.028.293v.458h1V2.5zM.048 2.013A2.51 2.51 0 0 0 0 2.5v.458h1V2.5c0-.1.01-.199.029-.293l-.981-.194zM0 3.875v.917h1v-.917H0zm16 .917v-.917h-1v.917h1zM0 5.708v.917h1v-.917H0zm16 .917v-.917h-1v.917h1zM0 7.542v.916h1v-.916H0zm15 .916h1v-.916h-1v.916zM0 9.375v.917h1v-.917H0zm16 .917v-.917h-1v.917h1zm-16 .916v.917h1v-.917H0zm16 .917v-.917h-1v.917h1zm-16 .917v.458c0 .166.016.33.048.487l.98-.194A1.51 1.51 0 0 1 1 13.5v-.458H0zm16 .458v-.458h-1v.458c0 .1-.01.199-.029.293l.981.194c.032-.158.048-.32.048-.487zM.421 14.89c.183.272.417.506.69.689l.556-.831a1.51 1.51 0 0 1-.415-.415l-.83.556zm14.469.689c.272-.183.506-.417.689-.69l-.831-.556c-.11.164-.251.305-.415.415l.556.83zm-12.877.373c.158.032.32.048.487.048h.458v-1H2.5c-.1 0-.199-.01-.293-.029l-.194.981zM13.5 16c.166 0 .33-.016.487-.048l-.194-.98A1.51 1.51 0 0 1 13.5 15h-.458v1h.458zm-9.625 0h.917v-1h-.917v1zm1.833 0h.917v-1h-.917v1zm1.834 0h.916v-1h-.916v1zm1.833 0h.917v-1h-.917v1zm1.833 0h.917v-1h-.917v1zM4.5 7.5a.5.5 0 0 0 0 1h7a.5.5 0 0 0 0-1h-7z"/>
+              </svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" fill="currentColor" class="bi bi-check-square-fill me-1" viewBox="0 0 16 16" *ngIf="step.Step_Result==1">
+                <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm10.03 4.97a.75.75 0 0 1 .011 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.75.75 0 0 1 1.08-.022z"/>
+              </svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" fill="currentColor" class="bi bi-x-square-fill me-1" viewBox="0 0 16 16" *ngIf="step.Step_Result==2">
+                <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm10.03 4.97a.75.75 0 0 1 .011 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.75.75 0 0 1 1.08-.022z"/>
+              </svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" fill="currentColor" class="bi bi-slash-square-fill me-1" viewBox="0 0 16 16" *ngIf="step.Step_Result==3">
+                <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm9.354 5.354-6 6a.5.5 0 0 1-.708-.708l6-6a.5.5 0 0 1 .708.708z"/>
+              </svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" fill="currentColor" class="bi bi-dash-square-fill me-1" viewBox="0 0 16 16" *ngIf="step.Step_Result==4">
+                <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm2.5 7.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1 0-1z"/>
+              </svg>
+              <span class="small-text-bold me-2">{{step.Step_Action}}</span>
+              <i class="bi bi-chevron-down" *ngIf="step.Step_InputData || step.Step_ExpectedResult"></i>
+            </div>
+            <div class="col-auto d-flex align-items-center justify-content-end">
+              <i class="bi bi-displayport me-2" *ngIf="step.Step_InputData"></i>
+              <i class="bi bi-list-ul"></i>
+            </div>
+          </div>
+          <div class="collapse " [id]="'collapseStep-'+step.Case_StepID">
+            <div class="stepcontainer">
+              <section *ngIf="step.Step_InputData">
+                <label class="panelLabel">Input data</label>
+                <div class="markdown-area">
+                  <div>
+                    <div class="toastui-editor-contents" style="overflow-wrap: break-word;">
+                      <p data-nodeid="1657">{{step.Step_InputData}}</p>
+
+                    </div>
+                  </div>
+                </div>
+              </section>
+              <section *ngIf="step.Step_ExpectedResult">
+                <label class="panelLabel">Expected result</label>
+                <div class="markdown-area">
+                  <div>
+                    <div class="toastui-editor-contents" style="overflow-wrap: break-word;">
+                      <p data-nodeid="1659">{{step.Step_ExpectedResult}}</p>
+
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+
+
 
     </div>
 
@@ -543,7 +624,7 @@
       <div class="mb-1">
         <span class="project-title">{{Project_Name}}</span>
       </div>
-      <h2 class="page-title mb-2">{{Case_Title}}</h2>
+      <h2 class="page-title mb-2">{{currentCase.Case_Title}}</h2>
     </div>
     <div class="col-auto d-flex justify-content-end">
       <i class="bi bi-x-lg" (click)="closeCaseRunPanel()"></i>
@@ -567,13 +648,12 @@
   </ul>
 
   <div class="tab-content">
-
     <!-- EXECUTION TAB -->
     <div class="tab-pane show active" id="runExecutionTab">
       <ng-template [ngIf]="TestRun_Status != '2'">
         <div class="row mt-3 mb-3">
           <div class="d-flex">
-            <button class="btn btn-primary passed-btn px-2 py-1 me-2" data-bs-toggle="modal" data-bs-target="#resultModal" (click)="openCaseModal('1')">
+            <button class="btn btn-primary passed-btn px-2 py-1 me-2" (click)="changeCaseResult(1)">
               <i class="bi bi-check me-1"></i>
               <span>Passed</span>
             </button>
@@ -586,57 +666,62 @@
               <span>Blocked</span>
             </button>
             <button class="btn btn-primary invalid-btn px-2 py-1 me-2" data-bs-toggle="modal" data-bs-target="#resultModal" (click)="openCaseModal('4')">
-              <i class="bi bi-heartbreak me-1"></i>
+              <i class="bi bi-slash me-1"></i>
               <span>Invalid</span>
             </button>
-            <button class="btn btn-primary skipped-btn px-2 py-1" data-bs-toggle="modal" data-bs-target="#resultModal" (click)="openCaseModal('5')">
-              <i class="bi bi-arrow-bar-right me-1"></i>
+            <button class="btn btn-primary skipped-btn px-2 py-1" (click)="changeCaseResult(5)">
+              <i class="bi bi-dash me-1"></i>
               <span>Skipped</span>
             </button>
           </div>
         </div>
 
-        <div class="row mb-3">
+        <div class="row mb-3" *ngIf="currentCase.Case_Desc">
           <h6 class="small-text-bold mb-1">Description:</h6>
-          <span class="small-text-italic">{{Case_Desc}}</span>
+          <span class="small-text-italic">{{currentCase.Case_Desc}}</span>
         </div>
 
-        <ng-template [ngIf]="Case_Comment != ''">
+        <ng-template *ngIf="currentCase.Case_Comment">
           <div class="row mb-3">
             <h6 class="small-text-bold mb-1">Comment:</h6>
-            <span class="small-text">{{Case_Comment}}</span>
+            <span class="small-text">{{currentCase.Case_Comment}}</span>
           </div>
         </ng-template>
 
         <div class="row">
-          <div class="col-auto mt-3">
-            <span class="step-number">1</span>
-          </div>
-          <div class="col mt-3">
-            <div class="mb-3">
-              <span class="small-text">1. Login to your account</span>
+          <ng-container *ngFor="let step of steps; let i = index">
+            <div class="col-auto mt-3">
+              <span class="step-number">{{step.Step_number}}</span>
             </div>
+            <div class="col-10 mt-3">
+              <div class="mb-3">
+                <span class="small-text">{{step.Step_Action}} </span>
+              </div>
 
-            <div class="mb-3">
-              <h6 class="small-text-bold mb-0">Expected result:</h6>
-              <span class="small-text">Account must be login</span>
+              <div class="mb-3">
+                <h6 class="small-text-bold mb-0">Expected result:</h6>
+                <span class="small-text">{{step.Step_ExpectedResult}}</span>
+              </div>
+
+              <div class="d-flex mb-3">
+                <input type="radio" class="btn-check" [name]="'options-'+step.Case_StepID" [id]="'option1-'+step.Case_StepID" autocomplete="off" (click)="updateResult(1,step)" [checked]="step.Step_Result == 1">
+                <label class="btn btn-outline-primary px-2 py-1 me-2" [for]="'option1-'+step.Case_StepID">Passed</label>
+                <input type="radio" class="btn-check" [name]="'options-'+step.Case_StepID" [id]="'option2-'+step.Case_StepID" autocomplete="off" (click)="updateResult(2,step)" [checked]="step.Step_Result == 2" data-bs-toggle="modal" data-bs-target="#resultModal">
+                <label class="btn btn-outline-primary px-2 py-1 me-2" [for]="'option2-'+step.Case_StepID">Failed</label>
+                <input type="radio" class="btn-check" [name]="'options-'+step.Case_StepID" [id]="'option3-'+step.Case_StepID" autocomplete="off" (click)="updateResult(3,step)" [checked]="step.Step_Result == 3">
+                <label class="btn btn-outline-primary px-2 py-1 me-2" [for]="'option3-'+step.Case_StepID">Blocked</label>
+                <input type="radio" class="btn-check" [name]="'options-'+step.Case_StepID" [id]="'option4-'+step.Case_StepID" autocomplete="off" (click)="updateResult(4,step)" [checked]="step.Step_Result == 4">
+                <label class="btn btn-outline-primary px-2 py-1 me-2" [for]="'option4-'+step.Case_StepID">Skipped</label>
+              </div>
+              <div class="mb-3" [ngClass]="{'hide':step.Step_Result != 2}">
+                <textarea class="form-control" [(ngModel)]='step.Step_Comment' (ngModelChange)="stepResultInsertUpdate(step)"></textarea>
+              </div>
+
+              <span class="add-attach-span small-text" [ngClass]="{'hide':step.Step_Result != 2}"><i class="bi bi-plus-circle-fill me-2"></i>Add attachment</span>
+
             </div>
+          </ng-container>
 
-            <div class="d-flex mb-3">
-              <button class="btn btn-outline-primary px-2 py-1 me-2">Passed</button>
-              <button class="btn btn-outline-primary px-2 py-1 me-2">Failed</button>
-              <button class="btn btn-outline-primary px-2 py-1 me-2">Blocked</button>
-              <button class="btn btn-outline-primary px-2 py-1 me-2">Invalid</button>
-              <button class="btn btn-outline-primary px-2 py-1 me-2">Skipped</button>
-            </div>
-
-            <div class="mb-3">
-              <textarea class="form-control"></textarea>
-            </div>
-
-            <span class="add-attach-span small-text"><i class="bi bi-plus-circle-fill me-2"></i>Add attachment</span>
-
-          </div>
         </div>
 
       </ng-template>

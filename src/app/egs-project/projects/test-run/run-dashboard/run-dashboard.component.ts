@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { project, suite, testCase, testplan, testrun, defect } from '../../../../models/project/project.model';
+import { project, suite, testCase, testplan, testrun, defect, step } from '../../../../models/project/project.model';
 import { ApiService } from '../../../../services/api.service';
 import { ActivatedRoute } from '@angular/router';
 import { reloadPage } from '../../../../services/global-functions.service';
@@ -68,13 +68,17 @@ export class RunDashboardComponent implements OnInit {
   Case_Result: string = '';
   Case_Comment?: string = '';
 
+  currentCase = {} as testCase;
+  currentSuite?: suite;
+
   project: project[] = [];
   suites: suite[] = [];
   testcases: testCase[] = [];
   testplans: testplan[] = [];
   testruns: testrun[] = [];
   defects: defect[] = [];
-
+  steps: any[] = [];
+  stepAttachments: any = [];
   caseColumns: string[] = ['Checkbox', 'Result', 'Title', 'Assignee', 'TimeSpent', 'ThreeDots'];
   caseDataSource = new MatTableDataSource<testCase>();
   finalCaseDataSource: any = {};
@@ -169,8 +173,6 @@ export class RunDashboardComponent implements OnInit {
       }
     ).subscribe(value => {
       this.suites = value[0];
-
-      //? For sub desc
       var temp = this.suites.filter(n => n.Parent_SuiteID)
       for (let index = 0; index < temp.length; index++) {
         var parent = this.suites.filter(x => x.Suite_ID === temp[index].Parent_SuiteID);
@@ -242,7 +244,7 @@ export class RunDashboardComponent implements OnInit {
     }
   }
 
-  collapseSuite(event: Event) {
+  collapseChevronIcon(event: Event) {
     var dom = event.currentTarget as HTMLElement;
     if (dom.querySelector('i')?.classList.contains('bi-chevron-down'))
       dom.querySelector('i')?.classList.replace('bi-chevron-down', 'bi-chevron-right')
@@ -262,7 +264,6 @@ export class RunDashboardComponent implements OnInit {
       }
     ).subscribe(value => {
       this.testcases = value[0];
-
       var temp = '';
       for (let index = 0; index < this.testcases.length; index++) {
         if (this.finalCaseDataSource.hasOwnProperty(this.testcases[index].Suite_ID)) {
@@ -325,7 +326,33 @@ export class RunDashboardComponent implements OnInit {
     this.Case_Result = result;
   }
 
-  changeCaseResult() {
+  runAgainCase(id?: number) {
+    console.log(this.currentCase)
+    if (id != null)
+      this.api.UniCall(
+        {
+          CommandText: 'egsQATestRunCasesUpdate',
+          Params: [
+            {
+              Param: '@Result_ID',
+              Value: id.toString()
+            },
+            {
+              Param: '@Case_Result',
+              Value: '0'
+            }
+          ]
+        }
+      ).subscribe({
+
+        error: (e) => console.error(e),
+        complete: () => {
+          this.updateProgress()
+        }
+      });
+  }
+
+  changeCaseResult(result?: number) {
     this.api.UniCall(
       {
         CommandText: 'egsQATestRunCasesUpdate',
@@ -340,7 +367,7 @@ export class RunDashboardComponent implements OnInit {
           },
           {
             Param: '@Case_Result',
-            Value: this.Case_Result.toString()
+            Value: result?.toString() || this.Case_Result.toString()
           },
           {
             Param: '@Case_Comment',
@@ -408,20 +435,39 @@ export class RunDashboardComponent implements OnInit {
     this.caseResultPanel.nativeElement.style.display = "flex";
     this.closeCaseRunPanel();
   }
-
+  getCurrentSuite(id: number) {
+    return this.suites.find(n => n.Suite_ID === id);
+  }
   closeCasePanel() {
     this.caseResultPanel.nativeElement.style.display = "none";
   }
-
-  // openCaseRunPanel(id: string, title: string, desc: string, comment: string) {
-  //   this.caseRunPanel.nativeElement.style.display = "flex";
-  //   this.Case_ID = id;
-  //   this.Case_Title = title;
-  //   this.Case_Desc = desc;
-  //   this.Case_Comment = comment;
-  //   this.closeCasePanel();
-  // }
   openCaseRunPanel(row: testCase) {
+
+    this.currentCase = row;
+    this.currentSuite = this.getCurrentSuite(row.Suite_ID);
+    this.api.UniCall(
+      {
+        CommandText: 'egsQATestRunStepsGet',
+        Params: [
+          {
+            Param: '@TestRun_ID',
+            Value: this.TestRun_ID.toString()
+          },
+          {
+            Param: '@Case_ID',
+            Value: row.Case_ID.toString()
+          }
+        ],
+      }
+    ).subscribe(value => {
+      if (!value[0]) {
+        this.steps = []
+        return
+      }
+      this.steps = value[0];
+      console.log(this.steps)
+    });
+
     if (row.Case_Result > 0) {
       this.openCasePanel(row)
       this.closeCaseRunPanel()
@@ -432,6 +478,7 @@ export class RunDashboardComponent implements OnInit {
       this.Case_Title = row.Case_Title;
       this.Case_Desc = row.Case_Desc;
       this.Case_Comment = row.Case_Comment;
+
       this.closeCasePanel();
     }
   }
@@ -490,4 +537,55 @@ export class RunDashboardComponent implements OnInit {
       }
     });
   }
+
+  updateResult(result: number, step: any) {
+    var index = this.steps.indexOf(step);
+    this.steps[index].Step_Result = result;
+    this.stepResultInsertUpdate(this.steps[index]);
+    if (result == 2) {
+      this.Case_Result = result.toString();
+      // this.changeCaseResult()
+    }
+    console.log(step);
+
+  }
+  stepResultInsertUpdate(step: any) {
+
+    this.api.UniCall(
+      {
+        CommandText: 'egsQATestRunSteps',
+        Params: [
+          {
+            Param: '@Result_ID',
+            Value: step.Result_ID.toString() || null
+          },
+          {
+            Param: '@TestRun_ID',
+            Value: this.TestRun_ID.toString()
+          },
+          {
+            Param: '@Step_ID',
+            Value: step.Case_StepID.toString()
+          },
+          {
+            Param: '@Step_Result',
+            Value: step.Step_Result.toString()
+          },
+          {
+            Param: '@Step_Comment',
+            Value: step.Step_Comment.toString() || null
+          }
+        ]
+      }
+    ).subscribe({
+      next: (e) => {
+        if (e[0]) {
+          var index = this.steps.indexOf(step);
+          this.steps[index].Result_ID = e[0][0].Result_ID;
+        }
+      },
+      error: (e) => console.error(e)
+    });
+  }
 }
+
