@@ -4,6 +4,7 @@ import { ApiService } from '../../../services/api.service';
 import { reloadPage } from '../../../services/global-functions.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatRadioChange } from '@angular/material/radio';
 
 @Component({
   selector: 'app-defect',
@@ -140,13 +141,17 @@ export class DefectComponent implements OnInit {
     });
   }
 
-  applyFilter(event?: Event) {
+  applyFilter(event?: Event, valueFilter?: MatRadioChange) {
     this.dataSource.filterPredicate = function (data, filter: string): boolean {
-      return data.Defect_Title.toLowerCase().includes(filter) == filter.trim().toLowerCase().includes(filter);
+      return data.Defect_Title.toLowerCase().includes(filter) == filter.trim().toLowerCase().includes(filter)
+      || data.Defect_Status.toString().includes(filter);
     }
     if (event != null) {
       const filterValue = (event.target as HTMLInputElement).value;
       this.dataSource.filter = filterValue.trim().toLowerCase();
+    }
+    else if (valueFilter != null) {
+      this.dataSource.filter = valueFilter.value;
     }
   }
 }
