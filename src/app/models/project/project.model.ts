@@ -58,6 +58,8 @@ export interface testCase {
   Case_Result: number;
   Case_Comment?: string;
   Result_ID?: number;
+  Date_Started?: string;
+  Date_Ended?: string;
 }
 
 export interface testCaseComment {

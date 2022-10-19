@@ -158,6 +158,9 @@
                   <ng-container matColumnDef="TimeSpent">
                     <th mat-header-cell *matHeaderCellDef>Time spent</th>
                     <td mat-cell *matCellDef="let element">
+                      <ng-container *ngIf="element.Date_Started && element.Date_Ended">
+                        {{element.Date_Started | date :"HH:MM:ss"}} <br> {{element.Date_Ended | date :"HH:MM:ss"}}
+                      </ng-container>
                     </td>
                   </ng-container>
                   <ng-container matColumnDef="ThreeDots">

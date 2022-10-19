@@ -327,6 +327,7 @@ export class RunDashboardComponent implements OnInit {
   }
 
   runAgainCase(id?: number) {
+    let currentDateTime = new Date();
     console.log(this.currentCase)
     if (id != null)
       this.api.UniCall(
@@ -340,6 +341,10 @@ export class RunDashboardComponent implements OnInit {
             {
               Param: '@Case_Result',
               Value: '0'
+            },
+            {
+              Param: '@Date_Ended',
+              Value: currentDateTime
             }
           ]
         }
@@ -353,6 +358,7 @@ export class RunDashboardComponent implements OnInit {
   }
 
   changeCaseResult(result?: number) {
+    let currentDateTime = new Date();
     this.api.UniCall(
       {
         CommandText: 'egsQATestRunCasesUpdate',
@@ -372,6 +378,10 @@ export class RunDashboardComponent implements OnInit {
           {
             Param: '@Case_Comment',
             Value: this.Case_Comment
+          },
+          {
+            Param: '@Date_Ended',
+            Value: currentDateTime
           }
         ]
       }
@@ -445,28 +455,6 @@ export class RunDashboardComponent implements OnInit {
 
     this.currentCase = row;
     this.currentSuite = this.getCurrentSuite(row.Suite_ID);
-    this.api.UniCall(
-      {
-        CommandText: 'egsQATestRunStepsGet',
-        Params: [
-          {
-            Param: '@TestRun_ID',
-            Value: this.TestRun_ID.toString()
-          },
-          {
-            Param: '@Case_ID',
-            Value: row.Case_ID.toString()
-          }
-        ],
-      }
-    ).subscribe(value => {
-      if (!value[0]) {
-        this.steps = []
-        return
-      }
-      this.steps = value[0];
-      console.log(this.steps)
-    });
 
     if (row.Case_Result > 0) {
       this.openCasePanel(row)
@@ -478,11 +466,29 @@ export class RunDashboardComponent implements OnInit {
       this.Case_Title = row.Case_Title;
       this.Case_Desc = row.Case_Desc;
       this.Case_Comment = row.Case_Comment;
-
+      let currentDateTime = new Date();
+      this.api.UniCall(
+        {
+          CommandText: 'egsQATestRunCasesUpdate',
+          Params: [
+            {
+              Param: '@TestRun_ID',
+              Value: this.TestRun_ID.toString()
+            },
+            {
+              Param: '@Case_ID',
+              Value: this.Case_ID.toString()
+            },
+            {
+              Param: '@Date_Started',
+              Value: currentDateTime
+            }
+          ]
+        }
+      ).subscribe();
       this.closeCasePanel();
     }
   }
-
 
   closeCaseRunPanel() {
     this.caseRunPanel.nativeElement.style.display = "none";
