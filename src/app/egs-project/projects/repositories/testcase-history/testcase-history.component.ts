@@ -39,7 +39,6 @@ export class TestcaseHistoryComponent implements OnInit {
       ).subscribe({
         next: (e) => {
           this.user = e[0][0]
-          console.log(this.user)
         }
       })
   }

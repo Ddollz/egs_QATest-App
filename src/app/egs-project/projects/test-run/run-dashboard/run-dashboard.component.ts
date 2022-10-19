@@ -32,6 +32,8 @@ const statData: stat[] = [
 })
 export class RunDashboardComponent implements OnInit {
 
+  TemporaryUser_ID: number = 1 //! Change and remove this when login is working;
+
   LinkParamID: number = 0;
   Passed: number = 0;
   Failed: number = 0;
@@ -77,6 +79,7 @@ export class RunDashboardComponent implements OnInit {
   testplans: testplan[] = [];
   testruns: testrun[] = [];
   defects: defect[] = [];
+  testrunStat: any = [];
   steps: any[] = [];
   stepAttachments: any = [];
   caseColumns: string[] = ['Checkbox', 'Result', 'Title', 'Assignee', 'TimeSpent', 'ThreeDots'];
@@ -87,7 +90,7 @@ export class RunDashboardComponent implements OnInit {
   defectDataSource = new MatTableDataSource<defect>();
 
   statColumns: string[] = ['Image', 'User', 'StatTimeSpent', 'Passed', 'Failed', 'Blocked', 'Skipped', 'Invalid'];
-  statDataSource = new MatTableDataSource<stat>(statData);
+  statDataSource = new MatTableDataSource<stat>();
 
   @ViewChild('caseResultPanel') caseResultPanel!: ElementRef;
   @ViewChild('caseRunPanel') caseRunPanel!: ElementRef;
@@ -104,6 +107,25 @@ export class RunDashboardComponent implements OnInit {
     this.getProject();
     this.getCase();
     this.getDefect();
+
+
+    this.api.UniCall(
+      {
+        CommandText: 'egsQATestRunStatGet',
+        Params: [
+          {
+            Param: '@TestRun_ID',
+            Value: this.TestRun_ID.toString()
+          }
+        ]
+      }
+    ).subscribe(value => {
+      this.testrunStat = value[0];
+      this.statDataSource = new MatTableDataSource<any>(this.testrunStat);
+
+      console.log(this.testrunStat)
+    });
+
   }
 
   ngOnInit(): void {
@@ -389,6 +411,55 @@ export class RunDashboardComponent implements OnInit {
 
       error: (e) => console.error(e),
       complete: () => {
+      }
+    });
+    var tempString = "";
+    var tempNumber = 0;
+    if (result == 1) {
+      tempString = "@Passed"
+      tempNumber = this.testrunStat.find((n: any) => n.User_ID === this.currentCase.User_ID).Passed || 0
+    }
+    if (Number(this.Case_Result) == 2) {
+      tempString = "@Failed"
+      tempNumber = this.testrunStat.find((n: any) => n.User_ID === this.currentCase.User_ID).Failed || 0
+    }
+    if (Number(this.Case_Result) == 3) {
+      tempString = "@Blocked"
+      tempNumber = this.testrunStat.find((n: any) => n.User_ID === this.currentCase.User_ID).Blocked || 0
+    }
+    if (Number(this.Case_Result) == 4) {
+      tempString = "@Invalid"
+      tempNumber = this.testrunStat.find((n: any) => n.User_ID === this.currentCase.User_ID).Invalid || 0
+    }
+    if (result == 5) {
+      tempString = "@Skipped"
+      tempNumber = this.testrunStat.find((n: any) => n.User_ID === this.currentCase.User_ID).Skipped || 0
+    }
+    tempNumber += 1;
+    console.log(tempNumber)
+    console.log(tempString)
+    this.api.UniCall(
+      {
+        CommandText: 'egsQATestRunStatInsertUpdate',
+        Params: [
+          {
+            Param: '@TestRun_ID',
+            Value: this.TestRun_ID.toString()
+          },
+          {
+            Param: '@User_ID',
+            Value: this.currentCase.User_ID.toString()
+          },
+          {
+            Param: tempString,
+            Value: tempNumber.toString()
+          }
+        ]
+      }
+    ).subscribe({
+
+      error: (e) => console.error(e),
+      complete: () => {
         this.updateProgress()
       }
     });
@@ -476,6 +547,10 @@ export class RunDashboardComponent implements OnInit {
               Value: this.TestRun_ID.toString()
             },
             {
+              Param: '@User_ID',
+              Value: this.TemporaryUser_ID.toString()
+            },
+            {
               Param: '@Case_ID',
               Value: this.Case_ID.toString()
             },
@@ -486,6 +561,29 @@ export class RunDashboardComponent implements OnInit {
           ]
         }
       ).subscribe();
+
+      this.api.UniCall(
+        {
+          CommandText: 'egsQATestRunStatInsertUpdate',
+          Params: [
+            {
+              Param: '@TestRun_ID',
+              Value: this.TestRun_ID.toString()
+            },
+            {
+              Param: '@User_ID',
+              Value: this.TemporaryUser_ID.toString()
+            },
+            {
+              Param: '@Date_Started',
+              Value: currentDateTime
+            }
+          ]
+        }
+      ).subscribe({
+        next: (e) => {
+        }
+      });
       this.closeCasePanel();
     }
   }
@@ -592,6 +690,10 @@ export class RunDashboardComponent implements OnInit {
       },
       error: (e) => console.error(e)
     });
+  }
+  threedots(e: Event) {
+    e.preventDefault();
+    e.stopPropagation();
   }
 }
 

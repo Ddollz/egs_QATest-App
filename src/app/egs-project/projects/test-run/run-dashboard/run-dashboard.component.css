@@ -262,10 +262,15 @@
   cursor: pointer;
 }
 
-.btn-primary,
-.filter-span {
-  white-space: nowrap;
+.dropdown-menu
+{
+  text-align: center;
 }
+
+.dropdown-group {
+  padding: 0 0;
+}
+
 
 .progress {
   width: 10rem;
@@ -294,7 +299,8 @@
 .bi-dash-square-fill {
   color: rgb(175, 175, 175);
 }
-.CasePanel .tab-content{
+
+.CasePanel .tab-content {
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -469,15 +475,6 @@
   flex-direction: column;
 }
 
-/* Dropdown */
-.dropdown-item:hover {
-  background-color: white;
-  color: #eb7374;
-}
-
-.dropdown-item:active {
-  background-color: white;
-}
 
 .run-suite-header-title {
   font-size: .875rem;

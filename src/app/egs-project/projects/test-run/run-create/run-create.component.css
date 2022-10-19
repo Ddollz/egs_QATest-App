@@ -56,6 +56,13 @@
   font-weight: 600;
 }
 
+.add-attach-span-sub {
+  margin-top: 0;
+  font-size: .75rem;
+  color: #d0011b;
+  padding: 0.25rem 0;
+}
+
 .cancel-span:hover,
 .add-attach-span:hover,
 .filter-span:hover {

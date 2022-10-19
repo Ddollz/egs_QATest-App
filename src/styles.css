@@ -624,6 +624,14 @@ li>.dropdown-Tag:focus {
 }
 
 
+.dropdown-group {
+  border-bottom: 1px solid var(--delimiter-color);
+  padding: 8px 0;
+  position: relative;
+}
+
+
+
 li:hover>.dropdown-Tag,
 li:active>.dropdown-Tag {
   color: var(--bs-blue-prime);

@@ -54,11 +54,6 @@
   transform: rotate(90deg);
 }
 
-.dropdown-group {
-  border-bottom: 1px solid var(--delimiter-color);
-  padding: 8px 0;
-  position: relative;
-}
 .delete{
   border-bottom: unset;
 }

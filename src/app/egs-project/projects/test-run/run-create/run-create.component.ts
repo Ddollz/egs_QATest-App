@@ -5,6 +5,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { formatDate } from '@angular/common';
 import { sidebarService } from '../../../../services/global-functions.service';
 import { MatTableDataSource } from '@angular/material/table';
+import { user } from 'src/app/models/workspace/workspace.model';
 
 @Component({
   selector: 'app-run-create',
@@ -31,7 +32,7 @@ export class RunCreateComponent implements OnInit {
   TestPlan_ID: string = '';
   TestRun_Environment: string = '';
   TestRun_Milestone: string = '';
-  User_ID: string = '';
+  User_ID: number = 1;
   TestRun_Tags: string = '';
   TestRun_CompletionRange: string = '';
   TestRun_DateCreated: string = '';
@@ -52,12 +53,16 @@ export class RunCreateComponent implements OnInit {
   steps: step[] = [];
   addCases: number[] = [];
   addSteps: number[] = [];
+  users: user[] = [];
 
   displayedColumns: string[] = ['Checkbox', 'Title'];
   dataSource = new MatTableDataSource<testCase>();
 
+  incompletefield: boolean = true;
+
   constructor(private api: ApiService, private router: Router, private route: ActivatedRoute, private sidebarServ: sidebarService, @Inject(LOCALE_ID) private locale: string) {
     this.Project_ID = Number(localStorage.getItem('currentProjectID'));
+
   }
 
   ngOnInit(): void {
@@ -86,7 +91,23 @@ export class RunCreateComponent implements OnInit {
     this.TestRun_Skipped = '0';
     this.TestRun_Untested = '0';
     this.TestRun_CaseCount = '0';
-    this.User_ID = '1';
+
+    this.api.UniCall(
+      {
+        CommandText: 'egsQAAccountGet',
+        Params: [
+          {
+            Param: '@User_Email',
+            Value: null
+          }
+        ]
+      }
+    ).subscribe({
+      next: (e) => {
+        this.users = e[0]
+        console.log(this.users);
+      }
+    });
   }
 
   getTestRun() {
@@ -212,7 +233,17 @@ export class RunCreateComponent implements OnInit {
 
   getSelectedCase() {
     this.finalAddCases = "[" + this.addCases + "]"
+    console.log(this.finalAddCases);
     this.ACLength = this.addCasesLength
+
+    if (this.finalAddCases == '' || !this.finalAddCases) {
+      this.incompletefield = true;
+      return
+    }else{
+      this.incompletefield = false;
+    }
+
+    //! DITO
   }
 
   closeAddCases() {
@@ -220,6 +251,7 @@ export class RunCreateComponent implements OnInit {
   }
 
   updateInsertTestRun() {
+    if(this.incompletefield) return
     var case_count = '0';
     var untested = '0';
 
@@ -231,9 +263,7 @@ export class RunCreateComponent implements OnInit {
       case_count = this.addCasesLength.toString();
       untested = case_count;
     }
-
-    console.log('add steps:' + this.addSteps);
-
+    console.log(this.finalAddCases);
     this.api.UniCall(
       {
         CommandText: 'egsQATestRunInsertUpdate',
@@ -264,7 +294,7 @@ export class RunCreateComponent implements OnInit {
           },
           {
             Param: '@User_ID',
-            Value: this.User_ID
+            Value: this.User_ID.toString()
           },
           {
             Param: '@TestRun_Tags',
@@ -312,7 +342,7 @@ export class RunCreateComponent implements OnInit {
           },
           {
             Param: '@Case_ID',
-            Value: this.finalAddCases.toString()
+            Value: this.finalAddCases.toString() || null
           },
           {
             Param: '@Project_ID',
