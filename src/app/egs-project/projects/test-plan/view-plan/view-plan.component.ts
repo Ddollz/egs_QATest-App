@@ -40,6 +40,7 @@ export class ViewPlanComponent implements OnInit {
   // Suite
   Suite_TempUserID: number = 1; //! This is only temporary change/remove this when token/auth is on
 
+  // Utilities
   Case_Severity: string = '';
   Case_Priority: string = '';
   Case_Type: string = '';
@@ -48,6 +49,16 @@ export class ViewPlanComponent implements OnInit {
   Case_Milestone: string = '';
   Case_Behavior: string = '';
   Case_AutoStat: string = '';
+  Project_ID: number = 0;
+
+  testCase_History: any = [];
+  testCase_HistoryAttachment: any = [];
+  displayHistoryData: any = []
+  displayHistoryDataNumber: number = 5;
+  displayHistoryDataAttachment: any = []
+  displayHistoryDataAttachmentNumber: number = 5;
+  istestCase_HistoryNull: boolean = false;
+  istestCase_HistoryAttachmentNull: boolean = false;
 
   //Update and Insert Variables
   TestPlan_ID: string = '';
@@ -61,6 +72,7 @@ export class ViewPlanComponent implements OnInit {
   steps: step[] = [];
   testplan: testplan[] = [];
   testCases: testCase[] = [];
+  testruns: testrun[] = [];
 
   // Test cases table
   casesColumns: string[] = ['Title', 'Assignee', 'Expected_Duration'];
@@ -82,6 +94,8 @@ export class ViewPlanComponent implements OnInit {
   //Table test runs
   runDisplayedColumns: string[] = ['title', 'environment', 'time', 'status'];
   runDataSource = new MatTableDataSource<testrun>();
+  viewRunDisplayedColumns: string[] = ['Status', 'Title', 'Author', 'Time', 'Progress', 'ThreeDots'];
+  viewRunDataSource = new MatTableDataSource<testrun>();
 
   @ViewChild('casePanel') casePanel!: ElementRef;
   // @ViewChild('caseRunPanel') caseRunPanel!: ElementRef;
@@ -110,11 +124,13 @@ export class ViewPlanComponent implements OnInit {
       // console.log(this.casesDataSource.filteredData)
     });
 
+    this.Project_ID = Number(localStorage.getItem('currentProjectID'));
+
    }
 
    
   ngOnInit(): void {
-    
+    this.getTestRun();
   }
 
   getTestPlan(){
@@ -171,6 +187,11 @@ export class ViewPlanComponent implements OnInit {
     this.case_PostCon = testc.Case_PostCondition
     this.testCaseFinal = testc;
     console.log(this.testCaseFinal)
+
+    this.displayHistoryDataNumber = 5;
+    this.displayHistoryData = [];
+    this.stepHistoryDisplay = [];
+    this.stepHistoryLimit = 5;
     // console.log(testc)
     // alert(testc)
     // alert(testp_title)
@@ -308,6 +329,127 @@ export class ViewPlanComponent implements OnInit {
       }
     )
     //? END
+
+    //? Get History
+    this.api.UniCall(
+      {
+        CommandText: 'egsQATestCaseHistoryGet',
+        Params: [
+          {
+            Param: '@Case_ID',
+            Value: this.testCaseFinal.Case_ID.toString()
+          }
+        ],
+      }
+    ).subscribe(value => {
+      if (value.length === 0) {
+        this.istestCase_HistoryNull = true;
+        this.testCase_History = [];
+
+        //? START STEP HISTORY
+        this.api.UniCall(
+          {
+            CommandText: 'egsQAStepHistoryGet',
+            Params: [
+              {
+                Param: '@Case_ID',
+                Value: this.testCaseFinal.Case_ID.toString()
+              }
+            ],
+          }
+        ).subscribe(
+          {
+            next: (v) => {
+              console.log(this.stepHistoryDisplay);
+
+              if (v.length === 0) {
+                this.isstepHistoryNull = true;
+                this.stepHistory = [];
+              }
+              else {
+                this.isstepHistoryNull = false;
+                this.stepHistory = v[0]
+                this.stepHistoryDisplay = this.stepHistory.slice(0, this.stepHistoryLimit);
+              }
+            },
+            error: (e) => console.error(e),
+          }
+        )
+        //? END
+
+      }
+      else {
+        this.istestCase_HistoryNull = false;
+
+        this.testCase_History = value[0];
+        this.displayHistoryData = this.testCase_History.slice(0, this.displayHistoryDataNumber);
+        var Params =
+          [
+
+            {
+              Param: '@Case_ID',
+              Value: this.testCaseFinal.Case_ID.toString()
+            }
+
+          ];
+
+        var formData = new FormData();
+        formData.append("CommandText", 'egsAttachmentMasterHistoryGet');
+        formData.append("Params", JSON.stringify(Params));
+
+        //? API CALL
+        this.api.UniAttachmentlist(formData).subscribe({
+          next: (value) => {
+
+            if (value.length === 0) {
+              this.istestCase_HistoryAttachmentNull = true;
+              this.testCase_HistoryAttachment = [];
+            }
+            else {
+              this.istestCase_HistoryAttachmentNull = false;
+              this.testCase_HistoryAttachment = value[0]
+            }
+          },
+          error: (msg) => {
+            console.log(msg);
+            alert("500 Internal Server Errors")
+          }
+        })
+
+
+      }
+
+    });
+
+    // END of Open case panel
+  }
+
+  showMoreHistory(value: string) {
+    if (value == '1') {
+      this.displayHistoryDataNumber = this.displayHistoryDataNumber + 3;
+      if (this.displayHistoryDataNumber > this.testCase_History.length) {
+        this.displayHistoryDataNumber = this.testCase_History.length
+      }
+      this.displayHistoryData = this.testCase_History.slice(0, this.displayHistoryDataNumber);
+    }
+    if (value == '2') {
+
+      this.displayHistoryDataAttachmentNumber = this.displayHistoryDataAttachmentNumber + 3;
+      if (this.displayHistoryDataAttachmentNumber > this.testCase_HistoryAttachment.length) {
+        this.displayHistoryDataAttachmentNumber = this.testCase_HistoryAttachment.length
+      }
+      this.displayHistoryDataAttachment = this.testCase_HistoryAttachment.slice(0, this.displayHistoryDataAttachmentNumber);
+    }
+    if (value == '3') {
+
+      this.stepHistoryLimit = this.stepHistoryLimit + 3;
+      if (this.stepHistoryLimit > this.stepHistory.length) {
+        this.stepHistoryLimit = this.stepHistory.length
+      }
+      this.stepHistoryDisplay = this.stepHistory.slice(0, this.stepHistoryLimit);
+      console.log(this.stepHistoryDisplay)
+
+    }
   }
 
   closeCasePanel() {
@@ -465,5 +607,27 @@ export class ViewPlanComponent implements OnInit {
     event.setContents(JSON.parse(content));
   }
 
+  getTestRun() {
+    this.api.UniCall(
+      {
+        CommandText: 'egsQATestRunGet',
+        Params: [
+          {
+            Param: '@Project_ID',
+            Value: this.Project_ID.toString()
+          }
+        ]
+      }
+    ).subscribe(value => {
+      this.testruns = value[0];
+      console.log(this.testruns)
+      console.log(this.Project_ID)
+      this.viewRunDataSource = new MatTableDataSource<testrun>(this.testruns);
+    });
+  }
+
+  formatDate(date: string) {
+    return date.substring(0, 10) + ' ' + date.substring(11, 21);
+  }
 
 }

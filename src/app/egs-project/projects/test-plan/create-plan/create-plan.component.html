@@ -100,7 +100,7 @@
                 </div>
                 <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closeAddCases()"></button>
                 <div class="modal-select-cases-stats">
-                    <p class="cases-count">{{addCasesLength}} test cases selected</p>
+                    <p class="cases-count">{{SelectedTestCaseCount}} test cases selected</p>
                 </div>
             </div>
             <hr class="divider">
@@ -115,7 +115,7 @@
                                 
                                 <!-- <app-suites-plan [Suite]="suite" (click)="selectAll()" (sendSuiteID)="receiveID($event)" (sendSuiteName)="receiveName($event)" (sendSuiteDesc)="receiveDesc($event)"></app-suites-plan> -->
                                 <div class="d-flex justify-content-between suite w-100">
-                                    <mat-checkbox (change)="selectAll($event)"></mat-checkbox>
+                                    <mat-checkbox (click)="checkbox($event, suite.Suite_ID)" [checked]="suiteModel.isSelected(suite.Suite_ID)"></mat-checkbox>
                                       <div class="d-flex align-items-center item-suite">
                                         <!-- ID is temporary -->
                                         <a type="button" class="button-blue-transparent suite-name" (click)="receiveID(suite.Suite_ID); receiveName(suite.Suite_Name); receiveDesc(suite.Suite_Desc)">{{suite.Suite_Name}}</a>
@@ -141,10 +141,10 @@
                             <ng-container *ngIf="data.Suite_ID == s.Parent_SuiteID">
                                 <!-- <app-suites-plan [Suite]="s" (click)="selectAll()" (sendSuiteID)="receiveID($event)" (sendSuiteName)="receiveName($event)" (sendSuiteDesc)="receiveDesc($event)"></app-suites-plan> -->
                                 <div class="d-flex justify-content-between suite w-100">
-                                    <mat-checkbox (change)="selectAll($event)"></mat-checkbox>
+                                    <mat-checkbox (click)="checkbox($event, s.Suite_ID)" [checked]="suiteModel.isSelected(s.Suite_ID)" ></mat-checkbox>
                                       <div class="d-flex align-items-center item-suite">
                                         <!-- ID is temporary -->
-                                        <a type="button" class="button-blue-transparent suite-name" (click)="receiveID(s.Suite_ID); receiveName(s.Suite_Name);  receiveDesc(s.Suite_Desc)">{{s.Suite_Name}}</a>
+                                        <a type="button" class="button-blue-transparent suite-name" (click)="receiveID(s.Suite_ID); receiveName(s.Suite_Name); receiveDesc(s.Suite_Desc)">{{s.Suite_Name}}</a>
                                       </div>
                                       <div class="suite-setting">
                                         <span class="me-1">0/{{s.Case_Count}}</span>
@@ -190,7 +190,7 @@
                                         <tr mat-header-row *matHeaderCellDef></tr>
                                         <td mat-cell *matCellDef="let element;">
                                             <!-- {{element.Case_ID}} -->
-                                            <mat-checkbox [checked]="isCasesChecked" (change)="selectCase($event, element.Case_ID, S_Name)"></mat-checkbox>
+                                            <mat-checkbox (change)="selectedTestCaseCheck(element.Case_ID, S_ID)" [checked]="testCaseModel.isSelected(element.Case_ID)"></mat-checkbox>
                                         </td>
                                     </ng-container>
                                     <ng-container matColumnDef="TestCase_Add">

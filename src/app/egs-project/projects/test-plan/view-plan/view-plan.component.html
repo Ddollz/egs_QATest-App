@@ -140,8 +140,89 @@
                                         <button class="add-filter-button">+ Add filter</button>
                                     </div>
                                 </div>
+                                <!-- <app-test-run></app-test-run> -->
+                                <!-- <div class="row mt-2 px-2">
+                                  <table mat-table [dataSource]="viewRunDataSource" class="mat-elevation-z0">
+                                    <ng-container matColumnDef="Status">
+                                      <th mat-header-cell *matHeaderCellDef></th>
+                                      <td mat-cell *matCellDef="let element">
+                                        <ng-template [ngIf]="element.TestRun_Status == 0">
+                                          <i class="bi bi-record-circle-fill"></i>
+                                        </ng-template>
+                                        <ng-template [ngIf]="element.TestRun_Status == 1">
+                                          <i class="bi bi-check-circle-fill"></i>
+                                        </ng-template>
+                                        <ng-template [ngIf]="element.TestRun_Status == 2">
+                                          <i class="bi bi-x-circle-fill"></i>
+                                        </ng-template>
+                                      </td>
+                                    </ng-container>
+                          
+                                    <ng-container matColumnDef="Title">
+                                      <th mat-header-cell *matHeaderCellDef>Title</th>
+                                      <td mat-cell *matCellDef="let element">
+                                        <div class="column-title" routerLink="/projects/run/dashboard/{{element.TestRun_ID}}">{{element.TestRun_Title}}</div>
+                                        <div class="column-subtitle">Started at {{formatDate(element.TestRun_DateCreated)}}</div>
+                                      </td>
+                                    </ng-container>
+                          
+                                    <ng-container matColumnDef="Environment">
+                                      <th mat-header-cell *matHeaderCellDef>Environment</th>
+                                      <td mat-cell *matCellDef="let element"></td>
+                                    </ng-container>
+                          
+                                    <ng-container matColumnDef="Time">
+                                      <th mat-header-cell *matHeaderCellDef>Time</th>
+                                      <td mat-cell *matCellDef="let element">00:00:00</td>
+                                    </ng-container>
+                          
+                                    <ng-container matColumnDef="Progress">
+                                      <th mat-header-cell *matHeaderCellDef>Status</th>
+                                      <td mat-cell *matCellDef="let element">
+                                        <div class="progress">
+                                          <div class="progress-bar passed-pb" matTooltip="Passed" [style.width.%]="(element.TestRun_Passed/element.TestRun_CaseCount)*100">{{element.TestRun_Passed}}</div>
+                                          <div class="progress-bar failed-pb" matTooltip="Failed" [style.width.%]="(element.TestRun_Failed/element.TestRun_CaseCount)*100">{{element.TestRun_Failed}}</div>
+                                          <div class="progress-bar blocked-pb" matTooltip="Blocked" [style.width.%]="(element.TestRun_Blocked/element.TestRun_CaseCount)*100">{{element.TestRun_Blocked}}</div>
+                                          <div class="progress-bar invalid-pb" matTooltip="Invalid" [style.width.%]="(element.TestRun_Invalid/element.TestRun_CaseCount)*100">{{element.TestRun_Invalid}}</div>
+                                          <div class="progress-bar skipped-pb" matTooltip="Skipped" [style.width.%]="(element.TestRun_Skipped/element.TestRun_CaseCount)*100">{{element.TestRun_Skipped}}</div>
+                                          <div class="progress-bar untested-pb" matTooltip="Untested" [style.width.%]="(element.TestRun_Untested/element.TestRun_CaseCount)*100">{{element.TestRun_Untested}}</div>
+                                        </div>
+                                      </td>
+                                    </ng-container>
+                          
+                                    <ng-container matColumnDef="ThreeDots">
+                                      <th mat-header-cell *matHeaderCellDef></th>
+                                      <td mat-cell *matCellDef="let element; let i = index">
+                                        <div class="d-flex justify-content-end">
+                                          <button class="btn three-dots" data-bs-toggle="dropdown">
+                                            <i class="bi bi-three-dots"></i>
+                                            <div class="dropdown-menu">
+                                              <div class="dropdown-item" routerLink="/projects/run/dashboard/{{element.TestRun_ID}}">Dashboard</div>
+                                              <div class="dropdown-item" routerLink="/projects/run/dashboard/{{element.TestRun_ID}}">Open Wizard</div>
+                                              <div class="dropdown-item">Clone run</div>
+                                              <div class="dropdown-item" routerLink="/projects/run/edit/{{element.TestRun_ID}}">Edit run</div>
+                                              <div class="dropdown-item" (click)="openDeleteModal(element.TestRun_ID, element.TestRun_Title)" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</div>
+                                            </div>
+                                          </button>
+                                        </div>
+                                      </td>
+                                    </ng-container>
+                          
+                                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                          
+                                    <tr class="mat-row" *matNoDataRow>
+                                      <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+                                        Looks like you don’t have any test runs yet.
+                                      </td>
+                                    </tr>
+                                  </table>
+                          
+                                  <ng-template [ngIf]="viewRunDataSource.filteredData.length > 5">
+                                  <mat-paginator [pageSizeOptions]="[10, 5, 20, 50]"></mat-paginator>
+                                  </ng-template>
+                                </div> -->
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -207,7 +288,7 @@
     <div class="tab-content">
 
     <!-- General Tab -->
-    <div class="tab-pane show active" id="generalTab">
+    <div class="panel-general tab-pane show active" id="generalTab">
         <section class="mt-3">
             <label for="0-description" class="panelLabel">Description</label>
             <div class="markdown-area">
@@ -537,19 +618,159 @@
     </div>
 
     <!-- History Tab -->
-    <div class="tab-pane show" id="historyTab">
-        <!-- <ng-container>
-        <div class="row p-1 g-0 history-row">
-            <div class="col d-flex align-items-center">
-                <span class="small-text me-2">R-8</span>
-                <span class="small-text-bold">Test run 2022/05/24</span>
-            </div>
-            <div class="col-auto d-flex align-items-center justify-content-end">
-                <span class="small-text me-2">00:00:11</span>
-                <span class="badge bg-primary passed-bg small-text">Passed</span>
-            </div>
+    <div class="panel-history tab-pane show" id="historyTab">
+      <ul class="nav nav-tabs nav-tabs-bordered-small">
+        <li class="nav-item">
+            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#descTab">Description</button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#attachmentsTab">Attachments</button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#stepsTab">Steps</button>
+        </li>
+      </ul>
+      <!-- <div class="panelNav sub" #panelNavsub>
+        <button (click)="changeSubPanelContent('Descriptions')" class="btns active" id="Descriptions"><span> </span>Descriptions</button>
+        <button (click)="changeSubPanelContent('Attachments')" class="btns" id="Attachments"><span> </span>Attachments</button>
+        <button (click)="changeSubPanelContent('Steps')" class="btns" id="Steps"><span></span>Steps</button>
+      </div> -->
+      <div class="tab-content">
+        <div class="tab-pane show active" id="descTab">
+          <div>
+            <ng-container *ngFor="let item of displayHistoryData; let i = index; last as isLast; first as isFirst">
+              <app-testcase-history [currentObj]="item" [prevObj]="displayHistoryData[i-1]" [index]="i" [isFirst]="isFirst" [isLast]="isLast" [testCase]="testCases">
+              </app-testcase-history>
+            </ng-container>
+          </div>
+          <ng-container *ngIf="displayHistoryDataNumber != this.testCase_History.length && displayHistoryDataNumber <= this.testCase_History.length ">
+            <button class="btn btn-secondary mt-5" (click)="showMoreHistory('1')">Show More</button>
+          </ng-container>
+
+          <ng-container *ngIf="displayHistoryDataNumber >= this.testCase_History.length">
+            <app-testcase-history [noChanges]="true" [testCase]="testCases">
+            </app-testcase-history>
+          </ng-container>
         </div>
-        </ng-container> -->
+        <div class="tab-pane show" id="attachmentsTab">
+          <div class="d-flex align-content-center mt-3">
+            <div class="revision-body">
+              <div class="element mt-3">
+                <div class="d-flex" style="align-items: baseline;">
+                  <div class="element-before justify-content-center">
+                    Current/Added
+                  </div>
+                  <div class="element-divider ms-3 me-3">=</div>
+                  <div class="element-after justify-content-center">
+                    Updated/Deleted
+                  </div>
+                </div>
+                <p class="element-title"></p>
+                <div class="d-flex" style="align-items: baseline;">
+                  <div class="element-before">
+                    <ng-container *ngFor="let tCA of testCaseAttachment">
+                      <div class="attachments attachments-small-half">
+                        <ng-container *ngIf="tCA.byteFile.contentType.split('/')[0] == 'image'; else notImage">
+                          <div class="attachment">
+                            <a href="" target="_blank" rel="noreferrer">
+                              <div class="attachment-image" [ngStyle]="{'background': 'url(&quot;data:image/png;base64,'+tCA.byteFile.fileContents+'&quot;)'}"></div>
+                            </a>
+                          </div>
+                        </ng-container>
+
+                        <ng-template #notImage>
+                          <div class="attachment">
+                            <a href="#" target="_blank" rel="noreferrer">
+                              <div class="attachment-file"><span class="attachment-extension">{{tCA.byteFile.contentType.split('/')[0]}}</span></div>
+                            </a>
+                          </div>
+                        </ng-template>
+                      </div>
+                    </ng-container>
+                  </div>
+                  <div class="element-divider ms-3 me-3"><i class="bi bi-arrow-right-short"></i></div>
+                  <div class="element-after">
+                    <ng-container *ngFor="let tCA of testCase_HistoryAttachment">
+                      <div class="attachments attachments-small-half">
+                        <ng-container *ngIf="tCA.byteFile.contentType.split('/')[0] == 'image'; else notImage">
+                          <div class="attachment">
+                            <a href="" target="_blank" rel="noreferrer">
+                              <div class="attachment-image" [ngStyle]="{'background': 'url(&quot;data:image/png;base64,'+tCA.byteFile.fileContents+'&quot;)'}"></div>
+                            </a>
+                          </div>
+                        </ng-container>
+
+                        <ng-template #notImage>
+                          <div class="attachment">
+                            <a href="#" target="_blank" rel="noreferrer">
+                              <div class="attachment-file"><span class="attachment-extension">{{tCA.byteFile.contentType.split('/')[0]}}</span></div>
+                            </a>
+                          </div>
+                        </ng-template>
+                      </div>
+                    </ng-container>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- <ng-container *ngIf="displayHistoryDataAttachmentNumber != testCase_HistoryAttachment.length && displayHistoryDataAttachmentNumber <= testCase_HistoryAttachment.length ">
+            <button class="btn btn-secondary mt-5" (click)="showMoreHistory('2')">Show More</button>
+          </ng-container> -->
+
+        </div>
+        <div class="tab-pane show" id="stepsTab">
+          <ng-container *ngFor="let item of stepHistoryDisplay; let i = index; last as isLast; first as isFirst">
+            <!-- <ng-container *ngIf="checkPrev(item)"> -->
+
+            <div class="d-flex align-content-center mt-3">
+              <div class="align-self-start me-2"><img class="lazy avatar-sm" src="../../../../assets/img/placeholder.jpg"></div>
+              <div class="revision-body">
+                <div class="history-user">
+                  <div class="history-username">
+                    <span style="font-weight: bold;">Rica Isidto</span>
+                  </div>
+                  <div class="history-role">{{item.SysStartTime | date :"yyyy-MM-dd HH:MM:ss"}}</div>
+                </div>
+                <div class="element mt-3">
+                  <p class="element-title">Updated Step No. {{item.Step_number}}
+                    <!-- - {{item.Case_StepID}}-->
+                  </p>
+                  <div class="d-flex" style="align-items: baseline;">
+
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">Action</th>
+                          <th scope="col">Input Data</th>
+                          <th scope="col">Expected Result</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td scope="row">{{item.Step_number}}</td>
+                          <td>{{item.Step_Action}}</td>
+                          <td>{{item.Step_InputData}}</td>
+                          <td>{{item.Step_ExpectedResult}}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- </ng-container> -->
+
+          </ng-container>
+
+
+          <ng-container *ngIf="stepHistoryLimit != stepHistory.length && stepHistoryLimit <= stepHistory.length ">
+            <button class="btn btn-secondary mt-5" (click)="showMoreHistory('3')">Show More</button>
+          </ng-container>
+        </div>
+      </div>
     </div>
 
     <!-- Defects Tab -->

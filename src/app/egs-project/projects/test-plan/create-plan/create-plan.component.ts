@@ -1,5 +1,6 @@
 import {  AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute} from '@angular/router';
+import { SelectionModel } from '@angular/cdk/collections';
 import { testplan, testCase, suite, project, testplanCases } from '../../../../models/project/project.model';
 import { ApiService } from '../../../../services/api.service';
 import { MatTableDataSource } from '@angular/material/table';
@@ -12,6 +13,19 @@ import { sidebarService } from '../../../../services/global-functions.service';
 })
 export class CreatePlanComponent implements OnInit {
 
+  // Selection Variables
+  SelectedTestCase: string = '';
+  SelectedTestCaseCount: number = 0;
+  SelectedSuite: string = '';
+  SelectedSuiteCount: number = 0;
+  suiteModel = new SelectionModel(
+    true,   // multiple selection or not
+  );
+
+  testCaseModel = new SelectionModel(
+    true,   // multiple selection or not
+  );
+
   //Utilities
   LinkParamID: number = 0;
   S_ID: number = 0;
@@ -21,6 +35,7 @@ export class CreatePlanComponent implements OnInit {
   ACLength = 0;
   finalAddCases ='';
   isCasesChecked: boolean = false;
+  checked: boolean = false;
 
   //Activated Route
   index: number = 0;
@@ -59,6 +74,34 @@ export class CreatePlanComponent implements OnInit {
       
     }
 
+    //CHECKBOX
+    this.suiteModel.changed.subscribe({
+      next: (e) => {
+        var test = '';
+        for (let index = 0; index < e.source.selected.length; index++) {
+          test = e.source.selected[index] + ',' + test
+
+        }
+        test = test.slice(0, -1) //'abcde'
+        this.SelectedSuite = test;
+        this.SelectedSuiteCount = this.suiteModel.selected.length;
+      }
+    })
+
+    this.testCaseModel.changed.subscribe({
+      next: (e) => {
+        var test = '';
+        for (let index = 0; index < e.source.selected.length; index++) {
+          test = e.source.selected[index] + ',' + test
+        }
+        test = test.slice(0, -1) //'abcde'
+        this.SelectedTestCase = test;
+        console.log(this.SelectedTestCase)
+        this.SelectedTestCaseCount = this.testCaseModel.selected.length;
+      }
+    })
+    //END
+
     this.LinkParamID = sidebarServ.projectID;
     // console.log(this.LinkParamID);
 
@@ -96,6 +139,42 @@ export class CreatePlanComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  selectedSuiteCheck(event: number, bool: boolean = false) {
+
+    if (bool) return this.suiteModel.deselect(event)
+    this.suiteModel.toggle(event)
+    if (this.suiteModel.isSelected(event)) {
+      let tempCases = this.testCases.filter(x => x.Suite_ID === event);
+      for (let index = 0; index < tempCases.length; index++) {
+        this.testCaseModel.select(tempCases[index].Case_ID)
+      }
+    } else {
+      let tempCases = this.testCases.filter(x => x.Suite_ID === event);
+      for (let index = 0; index < tempCases.length; index++) {
+        this.testCaseModel.deselect(tempCases[index].Case_ID)
+      }
+    }
+  }
+
+  selectedTestCaseCheck(event: number, sD: number) {
+    this.testCaseModel.toggle(event)
+    var child = this.testCases.filter(x => x.Suite_ID === sD);
+    if (child.length == this.testCaseModel.selected.length) {
+      this.selectedSuiteCheck(sD);
+    } else {
+      this.selectedSuiteCheck(sD, true);
+    }
+  }
+
+  checkbox(event: Event, num: number, bool: boolean = false) {
+    event.stopPropagation()
+    event.preventDefault()
+    // this.checked = !this.checked;
+
+    this.selectedSuiteCheck(num, bool)
+    // this.selectEvent.emit(this.Suite.Suite_ID);
+  }
+
   selectAll($event: any) {
     if($event.checked){
       this.isCasesChecked = true;
@@ -103,7 +182,6 @@ export class CreatePlanComponent implements OnInit {
     else{
       this.isCasesChecked = false;
     }
-    console.log(this.isCasesChecked)
   }
 
   receiveName($event: string){
@@ -117,7 +195,6 @@ export class CreatePlanComponent implements OnInit {
 
   receiveID($event: number){
     this.S_ID = $event
-    console.log(this.S_ID)
 
     this.api.UniCall(
       {
@@ -147,7 +224,7 @@ export class CreatePlanComponent implements OnInit {
       this.addCases = [...new Set(this.addCases)]
       this.addCasesLength = this.addCases.length
       console.log(this.addCasesLength)
-
+      
     }
     else {
       this.addCases.splice(this.addCases.indexOf(ID), 1)
@@ -159,9 +236,9 @@ export class CreatePlanComponent implements OnInit {
 
   getSelectedCase(){
     // this.router.navigate(["/projects/plan/createplan"])
-    this.finalAddCases = "[" + this.addCases + "]"
+    this.finalAddCases = "[" + this.SelectedTestCase + "]"
     console.log(this.finalAddCases)
-    this.ACLength = this.addCasesLength
+    this.ACLength = this.SelectedTestCaseCount
   }
 
   closeAddCases(){
