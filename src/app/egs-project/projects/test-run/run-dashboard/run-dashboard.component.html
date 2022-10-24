@@ -20,7 +20,7 @@
           </ng-template>
 
           <button class="filter-item me-2"><i class="bi bi-share-fill me-2"></i>Share report</button>
-          <button class="filter-item me-2"><i class="bi bi-upload me-2"></i>Export</button>
+          <button class="filter-item me-2" data-bs-toggle="modal" data-bs-target="#addDefectModal"><i class="bi bi-upload me-2"></i>Export</button>
           <button class="filter-item" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></button>
           <div class="dropdown-menu">
             <div class="dropdown-item" routerLink="/projects/run/edit/{{TestRun_ID}}">Edit</div>
@@ -173,7 +173,7 @@
                           <i class="bi bi-three-dots"></i>
                           <div class="dropdown-menu">
                             <div class="dropdown-group">
-                              <li><a class="dropdown-Tag">Assign</a></li>
+                              <li><a class="dropdown-Tag" data-bs-toggle="modal" data-bs-target="#assigneeModal" (click)="assignUser(element.Result_ID, element.User_ID)">Assign</a></li>
                             </div>
                             <li><a class="dropdown-Tag">View case</a></li>
                           </div>
@@ -694,8 +694,8 @@
             <span class="small-text">{{currentCase.Case_Comment}}</span>
           </div>
         </ng-template>
-
         <div class="row">
+
           <ng-container *ngFor="let step of steps; let i = index">
             <div class="col-auto mt-3">
               <span class="step-number">{{step.Step_number}}</span>
@@ -790,7 +790,7 @@
 </div>
 
 <!-- Result Modal -->
-<div class="modal" id="resultModal" tabindex="-1">
+<div class="modal" id="resultModal" data-bs-backdrop="static" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-body p-4">
@@ -826,7 +826,76 @@
 
         <div class="d-flex align-items-center justify-content-end">
           <span class="cancel-span me-2" data-bs-dismiss="modal">Cancel</span>
-          <button type="button" class="btn btn-primary" (click)="changeCaseResult()">Add result</button>
+          <button type="button" class="btn btn-primary" (click)="changeCaseResult()" *ngIf="Case_Result != '2'">Add result</button>
+          <button type="button" class="btn btn-primary" (click)="changeCaseResult()" *ngIf="Case_Result === '2'" data-bs-toggle="modal" data-bs-target="#addDefectModal">Add result</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="addDefectModal" data-bs-backdrop="static" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+        <h5 class="modal-title" id="exampleModalLabel">Defect</h5>
+
+        <div class="mb-3">
+          <label for="SuiteName" class="form-label">Defect Title</label>
+          <input type="text" class="form-control" value="{{currentCase.Case_Title}}" #defectTitle>
+        </div>
+
+        <div class="mb-3">
+          <label for="milestoneDefect" class="form-label">Milestone</label>
+          <select class="form-select" id="milestoneDefect" aria-label="Default select example" [ngModel]="currentCase.Case_Milestone" #defectMiles>
+            <ng-container *ngFor="let milestone of milestones">
+              <option value='{{milestone.Milestone_ID}}'>{{milestone.Milestone_Title}}</option>
+            </ng-container>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="milestoneDefect" class="form-label">Severity</label>
+          <select class="form-select" id="milestoneDefect" aria-label="Default select example" [ngModel]="currentCase.Case_Severity" #defectSeverity>
+            <option value='1'>Not set</option>
+            <option value='2'>Blocker</option>
+            <option value='3'>Critical</option>
+            <option value='4'>Major</option>
+            <option value='5'>Normal</option>
+            <option value='6'>Minor</option>
+            <option value='7'>Trival</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="milestoneDefect" class="form-label">Assignee</label>
+          <select class="form-select" id="milestoneDefect" aria-label="Default select example" #defectUser>
+            <ng-container *ngFor="let user of users">
+              <option value='{{user.User_ID}}'>{{user.User_Firstname}} {{user.User_Lastname}}</option>
+            </ng-container>
+          </select>
+        </div>
+        <div class="d-flex align-items-center justify-content-end">
+          <span class="cancel-span me-3" data-bs-dismiss="modal" (click)="updateProgress()">Cancel</span>
+          <button type="button" class="btn btn-primary" (click)="updateInsertDefect(defectTitle.value,defectUser.value,defectMiles.value, defectSeverity.value)">Assign</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="assigneeModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+        <h5 class="modal-title" id="exampleModalLabel">Assign to member</h5>
+        <select class="form-select" aria-label="Default select example" [(ngModel)]="Case_Assignee">
+          <ng-container *ngFor="let user of users">
+            <option value='{{user.User_ID}}'>{{user.User_Firstname}} {{user.User_Lastname}}</option>
+          </ng-container>
+        </select>
+        {{Case_Assignee}}
+        <div class="d-flex align-items-center justify-content-end">
+          <span class="cancel-span me-3" data-bs-dismiss="modal">Cancel</span>
+          <button type="button" class="btn btn-primary" (click)="confirmUser()">Assign</button>
         </div>
       </div>
     </div>

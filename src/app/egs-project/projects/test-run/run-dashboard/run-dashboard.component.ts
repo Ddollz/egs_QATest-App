@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { project, suite, testCase, testplan, testrun, defect, step } from '../../../../models/project/project.model';
+import { project, suite, testCase, testplan, testrun, defect, milestone } from '../../../../models/project/project.model';
 import { ApiService } from '../../../../services/api.service';
 import { ActivatedRoute } from '@angular/router';
 import { reloadPage } from '../../../../services/global-functions.service';
@@ -7,6 +7,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { sidebarService } from '../../../../services/global-functions.service';
 import Chart from 'chart.js/auto';
 import { KeyValue } from '@angular/common';
+import { user } from 'src/app/models/workspace/workspace.model';
 
 export interface stat {
   user: string;
@@ -19,11 +20,6 @@ export interface stat {
   invalid: number;
 }
 
-const statData: stat[] = [
-  { user: 'User 1', role: "Administrator", time: "00:00:12", passed: 1, failed: 1, blocked: 1, skipped: 1, invalid: 1 },
-  { user: 'User 2', role: "Administrator", time: "00:00:12", passed: 1, failed: 1, blocked: 1, skipped: 1, invalid: 1 },
-  { user: 'User 3', role: "Administrator", time: "00:00:12", passed: 1, failed: 1, blocked: 1, skipped: 1, invalid: 1 }
-];
 
 @Component({
   selector: 'app-run-dashboard',
@@ -70,6 +66,11 @@ export class RunDashboardComponent implements OnInit {
   Case_Result: string = '';
   Case_Comment?: string = '';
 
+  //?Assigning User
+  Result_ID?: number;
+  Case_Assignee?: number;
+  //?Assigning User
+
   currentCase = {} as testCase;
   currentSuite?: suite;
 
@@ -90,10 +91,21 @@ export class RunDashboardComponent implements OnInit {
   defectDataSource = new MatTableDataSource<defect>();
 
   statColumns: string[] = ['Image', 'User', 'StatTimeSpent', 'Passed', 'Failed', 'Blocked', 'Skipped', 'Invalid'];
+  users: user[] = [];
   statDataSource = new MatTableDataSource<stat>();
 
   @ViewChild('caseResultPanel') caseResultPanel!: ElementRef;
   @ViewChild('caseRunPanel') caseRunPanel!: ElementRef;
+
+  //milestones
+  milestones: milestone[] = [];
+
+  //Defect
+  user_id_defect: number = 0;
+  title_defect: string = "";
+  milestone_defect: number = 0;
+  severity_defect: number = 0;
+
 
   public chart: any;
 
@@ -123,7 +135,37 @@ export class RunDashboardComponent implements OnInit {
       this.testrunStat = value[0];
       this.statDataSource = new MatTableDataSource<any>(this.testrunStat);
 
-      console.log(this.testrunStat)
+    });
+
+
+
+    this.api.UniCall(
+      {
+        CommandText: 'egsQAAccountGet',
+        Params: [
+          {
+            Param: '@User_Email',
+            Value: ''
+          }
+        ],
+      }
+    ).subscribe(value => {
+      this.users = value[0];
+    }
+    );
+
+    this.api.UniCall(
+      {
+        CommandText: 'egsQAMilestoneGet',
+        Params: [
+          {
+            Param: '@Milestone_ID',
+            Value: null
+          }
+        ]
+      }
+    ).subscribe(value => {
+      this.milestones = value[0];
     });
 
   }
@@ -314,6 +356,10 @@ export class RunDashboardComponent implements OnInit {
           {
             Param: '@WithAll',
             Value: 'true'
+          },
+          {
+            Param: '@TestRun_ID',
+            Value: this.TestRun_ID
           }
         ]
       }
@@ -351,7 +397,14 @@ export class RunDashboardComponent implements OnInit {
   runAgainCase(id?: number) {
     let currentDateTime = new Date();
     console.log(this.currentCase)
-    if (id != null)
+    if (id != null) {
+      var temp = this.testcases.find((n: any) => n.Result_ID === id)
+      if (temp) {
+        let index = this.testcases.indexOf(temp);
+        this.testcases[index].Case_Result = 0;
+      }
+
+
       this.api.UniCall(
         {
           CommandText: 'egsQATestRunCasesUpdate',
@@ -377,6 +430,7 @@ export class RunDashboardComponent implements OnInit {
           this.updateProgress()
         }
       });
+    }
   }
 
   changeCaseResult(result?: number) {
@@ -415,25 +469,40 @@ export class RunDashboardComponent implements OnInit {
     });
     var tempString = "";
     var tempNumber = 0;
-    if (result == 1) {
+    if (result == 1 && this.testrunStat.hasOwnProperty('Passed')) {
       tempString = "@Passed"
-      tempNumber = this.testrunStat.find((n: any) => n.User_ID === this.currentCase.User_ID).Passed || 0
+      tempNumber = this.testrunStat.find((n: any) => n.User_ID === this.currentCase.User_ID).Passed
+    } else if (result == 1) {
+      tempString = "@Passed"
+      tempNumber = 0;
     }
-    if (Number(this.Case_Result) == 2) {
+    if (Number(this.Case_Result) == 2 && this.testrunStat.hasOwnProperty('Failed')) {
       tempString = "@Failed"
-      tempNumber = this.testrunStat.find((n: any) => n.User_ID === this.currentCase.User_ID).Failed || 0
+      tempNumber = this.testrunStat.find((n: any) => n.User_ID === this.currentCase.User_ID).Failed
+    } else if (Number(this.Case_Result) == 2) {
+      tempString = "@Failed"
+      tempNumber = 0;
     }
-    if (Number(this.Case_Result) == 3) {
+    if (Number(this.Case_Result) == 3 && this.testrunStat.hasOwnProperty('Blocked')) {
       tempString = "@Blocked"
-      tempNumber = this.testrunStat.find((n: any) => n.User_ID === this.currentCase.User_ID).Blocked || 0
+      tempNumber = this.testrunStat.find((n: any) => n.User_ID === this.currentCase.User_ID).Blocked
+    } else if (Number(this.Case_Result) == 3) {
+      tempString = "@Blocked"
+      tempNumber = 0;
     }
-    if (Number(this.Case_Result) == 4) {
+    if (Number(this.Case_Result) == 4 && this.testrunStat.hasOwnProperty('Invalid')) {
       tempString = "@Invalid"
-      tempNumber = this.testrunStat.find((n: any) => n.User_ID === this.currentCase.User_ID).Invalid || 0
+      tempNumber = this.testrunStat.find((n: any) => n.User_ID === this.currentCase.User_ID).Invalid
+    } else if (Number(this.Case_Result) == 4) {
+      tempString = "@Invalid"
+      tempNumber = 0;
     }
-    if (result == 5) {
+    if (result == 5 && this.testrunStat.hasOwnProperty('Skipped')) {
       tempString = "@Skipped"
-      tempNumber = this.testrunStat.find((n: any) => n.User_ID === this.currentCase.User_ID).Skipped || 0
+      tempNumber = this.testrunStat.find((n: any) => n.User_ID === this.currentCase.User_ID).Skipped
+    } else if (result == 5) {
+      tempString = "@Skipped"
+      tempNumber = 0;
     }
     tempNumber += 1;
     console.log(tempNumber)
@@ -459,14 +528,15 @@ export class RunDashboardComponent implements OnInit {
     ).subscribe({
 
       error: (e) => console.error(e),
-      complete: () => {
-        this.updateProgress()
-      }
+      // complete: () => {
+      //   this.updateProgress()
+      // }
     });
   }
 
   updateProgress() {
-
+    console.log(this.TestRun_ID);
+    console.log(this.testcases.filter((n: any) => n.Case_Result === 2));
     this.api.UniCall(
       {
         CommandText: 'egsQATestRunInsertUpdate',
@@ -526,6 +596,28 @@ export class RunDashboardComponent implements OnInit {
 
     this.currentCase = row;
     this.currentSuite = this.getCurrentSuite(row.Suite_ID);
+    this.api.UniCall(
+      {
+        CommandText: 'egsQATestRunStepsGet',
+        Params: [
+          {
+            Param: '@TestRun_ID',
+            Value: this.TestRun_ID.toString()
+          },
+          {
+            Param: '@Case_ID',
+            Value: row.Case_ID.toString()
+          }
+        ],
+      }
+    ).subscribe(value => {
+      if (!value[0]) {
+        this.steps = []
+        return
+      }
+      this.steps = value[0];
+      console.log(this.steps)
+    });
 
     if (row.Case_Result > 0) {
       this.openCasePanel(row)
@@ -695,5 +787,95 @@ export class RunDashboardComponent implements OnInit {
     e.preventDefault();
     e.stopPropagation();
   }
+
+  assignUser(Result_ID: number, User_ID: any) {
+    this.Case_Assignee = User_ID;
+    this.Result_ID = Result_ID;
+  }
+
+  confirmUser() {
+    if (this.Result_ID != null && this.Case_Assignee != null)
+      this.api.UniCall(
+        {
+          CommandText: 'egsQATestRunCasesUpdate',
+          Params: [
+            {
+              Param: '@Result_ID',
+              Value: this.Result_ID.toString()
+            },
+            {
+              Param: '@AddAssign',
+              Value: '1'
+            },
+            {
+              Param: '@User_ID',
+              Value: this.Case_Assignee.toString()
+            }
+          ]
+        }
+      ).subscribe({
+        error: (e) => console.error(e),
+        complete: () => reloadPage()
+      });
+  }
+
+  updateInsertDefect(title: string, userid: any, milestone: any, severity: any) {
+    console.log(title)
+    console.log(userid)
+    console.log(milestone)
+    console.log(severity)
+    let currentDateTime = new Date();
+    this.api.UniCall(
+      {
+        CommandText: 'egsQADefectInsertUpdate',
+        Params: [
+          {
+            Param: '@Defect_ID',
+            Value: null
+          },
+          {
+            Param: '@Defect_Title',
+            Value: title
+          },
+          {
+            Param: '@Defect_Milestone',
+            Value: milestone.toString()
+          },
+          {
+            Param: '@Defect_Severity',
+            Value: severity.toString()
+          },
+          {
+            Param: '@Defect_Assignee',
+            Value: userid.toString()
+          },
+          {
+            Param: '@Defect_Author',
+            Value: this.TemporaryUser_ID.toString()
+          },
+          {
+            Param: '@Defect_Status',
+            Value: '1'
+          },
+          {
+            Param: '@Defect_DateCreated',
+            Value: currentDateTime
+          },
+          {
+            Param: '@Case_ID',
+            Value: this.currentCase.Case_ID.toString()
+          },
+          {
+            Param: '@TestRun_ID',
+            Value: this.TestRun_ID.toString()
+          }
+        ]
+      }
+    ).subscribe({
+      error: (e) => console.error(e),
+      complete: () => reloadPage()
+    });
+  }
+
 }
 
