@@ -2,16 +2,14 @@
   <div class="row">
     <div class="col-lg-12">
 
-      <h2 class="page-title my-3"><i class="bi bi-arrow-left me-4" data-bs-toggle="tooltip" title="Go back"
-          routerLink="/projects/defect"></i>{{Defect_Title}}</h2>
+      <h2 class="page-title my-3"><i class="bi bi-arrow-left me-4" data-bs-toggle="tooltip" title="Go back" routerLink="/projects/defect"></i>{{Defect_Title}}</h2>
 
       <div class="row ">
         <div class="col-8">
           <div class="d-flex align-items-center mb-4">
             <ng-template [ngIf]="Defect_Status != '1'">
               <div class="me-2">
-                <button type="button" class="btn btn-primary" (click)="openStatusModal(Defect_ID, 1)"
-                  data-bs-toggle="modal" data-bs-target="#statusModal">
+                <button type="button" class="btn btn-primary" (click)="openStatusModal(Defect_ID, 1)" data-bs-toggle="modal" data-bs-target="#statusModal">
                   <i class="bi bi-arrow-bar-left"></i>
                   Open
                 </button>
@@ -19,8 +17,7 @@
             </ng-template>
             <ng-template [ngIf]="Defect_Status != '2'">
               <div class="me-2">
-                <button type="button" class="btn btn-primary" (click)="openStatusModal(Defect_ID, 2)"
-                  data-bs-toggle="modal" data-bs-target="#statusModal">
+                <button type="button" class="btn btn-primary" (click)="openStatusModal(Defect_ID, 2)" data-bs-toggle="modal" data-bs-target="#statusModal">
                   <i class="bi bi-arrow-bar-right"></i>
                   In Progress
                 </button>
@@ -28,8 +25,7 @@
             </ng-template>
             <ng-template [ngIf]="Defect_Status != '3'">
               <div class="me-2">
-                <button type="button" class="btn btn-primary" (click)="openStatusModal(Defect_ID, 3)"
-                  data-bs-toggle="modal" data-bs-target="#statusModal">
+                <button type="button" class="btn btn-primary" (click)="openStatusModal(Defect_ID, 3)" data-bs-toggle="modal" data-bs-target="#statusModal">
                   <i class="bi bi-x-lg"></i>
                   Invalid
                 </button>
@@ -37,8 +33,7 @@
             </ng-template>
             <ng-template [ngIf]="Defect_Status != '4'">
               <div class="me-2">
-                <button type="button" class="btn btn-primary" (click)="openStatusModal(Defect_ID, 4)"
-                  data-bs-toggle="modal" data-bs-target="#statusModal">
+                <button type="button" class="btn btn-primary" (click)="openStatusModal(Defect_ID, 4)" data-bs-toggle="modal" data-bs-target="#statusModal">
                   <i class="bi bi-check-lg"></i>
                   Resolve
                 </button>
@@ -57,9 +52,105 @@
             </ng-template>
           </div>
 
-          <h6 class="mb-1">Description</h6>
-          <div class="mb-3">
-            <span>{{Defect_ActualResult}}</span>
+          <div class="defect-result">
+            <h6 class="mb-1">Test Run Results</h6>
+            <div class="mb-3 defect-case">
+              <div class="defect-case-header" data-bs-toggle="collapse" data-bs-target="#showmore" aria-expanded="false" aria-controls="showmore" (click)="collapseChevronIcon($event)">
+                <div class="d-flex w-100">
+                  <div class="chevron-container">
+                    <i class="bi bi-chevron-down"></i>
+                  </div>
+                  <div class="run-case-result-sub">
+                    <span class="run-case-result-sub-header d-block">Test case</span>
+                    <div class="run-case-result-sub-body">
+                      <a href="/projects/run/dashboard/{{defect.TestRun_ID}}">
+                        <span class="testcase-code">{{Project?.Project_Name}}</span><span> {{defect?.Case_Title}}</span>
+                      </a>
+                    </div>
+                  </div>
+                  <div class="run-case-result-sub">
+                    <span class="run-case-result-sub-header d-block">Author</span>
+                    <div class="run-case-result-sub-body">
+                      {{defect?.DefectFname}} {{defect?.DefectLname}}
+                    </div>
+                  </div>
+                  <div class="run-case-result-sub">
+                    <span class="run-case-result-sub-header d-block">Found in run</span>
+                    <div class="run-case-result-sub-body">
+                      <a href="/projects/run/dashboard/{{defect.TestRun_ID}}">
+                        <span>{{defect?.TestRun_Title}}</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="defect-case-body mt-3 collapse" id="showmore">
+
+                <section class="mb-3" *ngIf="defect?.Case_Comment">
+                  <label for="0-description" class="panelLabel">Description</label>
+                  <div class="markdown-area">
+                    {{defect?.Case_Comment}}
+                  </div>
+                </section>
+
+                <section *ngIf="steps.length > 1">
+                  <label for="0-step" class="panelLabel">Steps to reproduce</label>
+                  <table mat-table [dataSource]="dataSource" class="mat-elevation-z0 table-steps">
+
+                    <ng-container matColumnDef="Step">
+                      <th mat-header-cell *matHeaderCellDef> Step </th>
+                      <td mat-cell *matCellDef="let element"> {{element.Step_number}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Action">
+                      <th mat-header-cell *matHeaderCellDef> Action </th>
+                      <td mat-cell *matCellDef="let element"> {{element.Step_Action}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Input">
+                      <th mat-header-cell *matHeaderCellDef> Input Data </th>
+                      <td mat-cell *matCellDef="let element"> {{element.Step_InputData}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Expected">
+                      <th mat-header-cell *matHeaderCellDef> Expected Result </th>
+                      <td mat-cell *matCellDef="let element"> {{element.Step_ExpectedResult}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Comment">
+                      <th mat-header-cell *matHeaderCellDef> Comment </th>
+                      <td mat-cell *matCellDef="let element"> {{element.Step_Comment}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Attachments">
+                      <th mat-header-cell *matHeaderCellDef> Attachments </th>
+                      <td mat-cell *matCellDef="let element"> N/a </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Status">
+                      <th mat-header-cell *matHeaderCellDef> Status </th>
+                      <td mat-cell *matCellDef="let element">
+                        <div class="passed-btn" *ngIf="element.Step_Result === 1">
+                          Passed
+                        </div>
+                        <div class="failed-btn" *ngIf="element.Step_Result === 2">
+                          Failed
+                        </div>
+                        <div class="blocked-btn" *ngIf="element.Step_Result === 3">
+                          Blocked
+                        </div>
+                        <div class="skipped-btn" *ngIf="element.Step_Result === 4">
+                          Skipped
+                        </div>
+                      </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                  </table>
+                </section>
+              </div>
+            </div>
           </div>
 
           <h6 class="mb-3">Comments</h6>
@@ -146,12 +237,12 @@
           <h6 class="mb-1">Reporter</h6>
           <div class="mb-3 d-flex align-items-center">
             <img class="author-img" src="../../assets/img/placeholder.jpg">
-            <span>User</span>
+            <span> {{defect?.DefectFname}} {{defect?.DefectLname}} </span>
           </div>
 
           <h6 class="mb-1">Assignee</h6>
           <div class="mb-3">
-            <span>Unassigned</span>
+            <span> {{defect?.DefectAsFname}} {{defect?.DefectAsLname}} </span>
           </div>
 
           <h6 class="mb-1">Created</h6>

@@ -1,9 +1,10 @@
 import { Component, Inject, LOCALE_ID, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services/api.service';
-import { defect, defectComment, milestone } from '../../../../models/project/project.model';
+import { defect, defectComment, milestone, project, step } from '../../../../models/project/project.model';
 import { ActivatedRoute } from '@angular/router';
 import { reloadPage } from '../../../../services/global-functions.service';
 import { formatDate } from '@angular/common';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-defect-view',
@@ -11,6 +12,8 @@ import { formatDate } from '@angular/common';
   styleUrls: ['./defect-view.component.css']
 })
 export class DefectViewComponent implements OnInit {
+  Project_ID: number;
+  Project?: project;
 
   statusTitle: string = '';
 
@@ -30,11 +33,33 @@ export class DefectViewComponent implements OnInit {
   User_ID: string = '1';
   Case_ID: string = '1';
 
-  defects: defect[] = [];
+
+  defect: any;
   defectComments: defectComment[] = [];
   milestones: milestone[] = [];
 
-  constructor(private api: ApiService, private route: ActivatedRoute, @Inject(LOCALE_ID) private locale: string) { }
+  steps: step[] = [];
+  displayedColumns: string[] = ['Step', 'Action', 'Input', 'Expected', 'Comment', 'Attachments', 'Status'];
+  dataSource: any;
+
+  constructor(private api: ApiService, private route: ActivatedRoute, @Inject(LOCALE_ID) private locale: string) {
+    this.Project_ID = Number(localStorage.getItem('currentProjectID'));
+
+    this.api.UniCall(
+      {
+        CommandText: 'egsQAProjectGet',
+        Params: [
+          {
+            Param: '@Project_ID',
+            Value: this.Project_ID.toString()
+          }
+        ]
+      }
+    ).subscribe(value => {
+      this.Project = value[0][0];
+      console.log(this.Project)
+    });
+  }
 
   ngOnInit(): void {
     if (this.route.snapshot.params['id']) {
@@ -57,7 +82,7 @@ export class DefectViewComponent implements OnInit {
         ]
       }
     ).subscribe(value => {
-      this.defects = value[0];
+      this.defect = value[0][0];
       this.Defect_ID = value[0][0].Defect_ID;
       this.Defect_Title = value[0][0].Defect_Title;
       this.Defect_ActualResult = value[0][0].Defect_ActualResult;
@@ -67,6 +92,30 @@ export class DefectViewComponent implements OnInit {
       this.Defect_Author = value[0][0].Defect_Author;
       this.Defect_Status = value[0][0].Defect_Status;
       this.Defect_DateCreated = value[0][0].Defect_DateCreated;
+      console.log(this.defect)
+      this.api.UniCall(
+        {
+          CommandText: 'egsQATestRunStepsGet',
+          Params: [
+            {
+              Param: '@Case_ID',
+              Value: this.defect.Case_ID.toString()
+            }, {
+              Param: '@TestRun_ID',
+              Value: this.defect.TestRun_ID.toString()
+            }
+          ],
+        }
+      ).subscribe(value => {
+        if (!value[0]) {
+          this.steps = []
+          return
+        }
+        this.steps = value[0];
+        this.dataSource = new MatTableDataSource<any>(this.steps);
+        console.log(this.steps)
+      });
+
     });
   }
 
@@ -107,7 +156,7 @@ export class DefectViewComponent implements OnInit {
   }
 
   insertComment() {
-    this.Comment_Date = formatDate(Date.now(),'yyyy-MM-dd HH:mm:ss', this.locale);
+    this.Comment_Date = formatDate(Date.now(), 'yyyy-MM-dd HH:mm:ss', this.locale);
 
     this.api.UniCall(
       {
@@ -179,4 +228,19 @@ export class DefectViewComponent implements OnInit {
       complete: () => reloadPage()
     });
   }
+
+  collapseChevronIcon(event: Event) {
+    var dom = event.currentTarget as HTMLElement;
+    console.log(dom);
+    if (dom.querySelector('i')?.classList.contains('bi-chevron-down')) {
+      dom.querySelector('i')?.classList.replace('bi-chevron-down', 'bi-chevron-up')
+      dom.classList.add("show");
+    }
+    else {
+      dom.querySelector('i')?.classList.replace('bi-chevron-up', 'bi-chevron-down')
+      dom.classList.remove("show");
+
+    }
+  }
+
 }

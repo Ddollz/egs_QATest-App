@@ -84,7 +84,7 @@
             <th mat-header-cell *matHeaderCellDef>Author</th>
             <td mat-cell *matCellDef="let element">
               <img class="author-img" src="../../assets/img/placeholder.jpg">
-              <span>User</span>
+              <span>{{element.DefectFname}} {{element.DefectLname}}</span>
             </td>
           </ng-container>
 
@@ -92,7 +92,10 @@
             <th mat-header-cell *matHeaderCellDef>Assignee
             <th>
             <td mat-cell *matCellDef="let element">
-              <div>Unassigned</div>
+              <div *ngIf="element.Defect_Assignee > 0">
+                <span>{{element.DefectAsFname}} {{element.DefectAsLname}}</span>
+              </div>
+              <div *ngIf="element.Defect_Assignee <= 0">Unassigned</div>
             </td>
           </ng-container>
 

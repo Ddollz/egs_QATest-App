@@ -20,11 +20,11 @@ export class DefectCreateComponent implements OnInit {
   Defect_Milestone: string = '';
   Defect_Severity: string = '';
   Defect_Assignee: string = '';
-  Defect_Author: string = '';
+  Defect_Author: string = '1'; //! Change and remove this when login is working;
   Defect_Status: string = '';
   Defect_DateCreated: string = '';
 
-  defects: defect[] = [];
+
   milestones: milestone[] = [];
 
   constructor(private api: ApiService, private router: Router, private route: ActivatedRoute, @Inject(LOCALE_ID) private locale: string) { }

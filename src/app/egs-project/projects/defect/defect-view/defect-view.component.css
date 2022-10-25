@@ -4,6 +4,7 @@
   flex: 1;
   overflow: auto;
   position: relative;
+  font-size: .875rem;
 }
 
 .app__content {
@@ -78,15 +79,13 @@
 }
 
 /* Icons */
-.bi-exclamation-circle-fill,
-.bi-chevron-down {
+.bi-exclamation-circle-fill {
   color: #ffc107;
 }
 
 .bi-x-circle,
 .bi-x-circle-fill,
-.bi-chevron-double-up,
-.bi-chevron-up {
+.bi-chevron-double-up {
   color: var(--bs-red-100);
 }
 
@@ -117,4 +116,137 @@
   font-weight: 400;
   line-height: 1.5;
   border-radius: .25rem;
+}
+
+
+.defect-case {
+  border: 1px solid #dedede;
+  border-radius: 6px;
+}
+
+.defect-case-header {
+  padding: 0.5rem;
+  cursor: pointer;
+  /* border-bottom: 1px solid #dedede; */
+}
+
+.defect-case-header.show {
+  border-bottom: 1px solid #dedede;
+}
+
+.chevron-container {
+  align-items: flex-end;
+  display: flex;
+  padding: 0.325rem 0.5rem;
+}
+
+.run-case-result-sub {
+  flex: 1;
+}
+
+.run-case-result-sub-header {
+  font-weight: 500;
+  font-size: .75rem;
+  opacity: .5;
+}
+
+.run-case-result-sub-body a {
+  color: var(--bs-blue-second);
+  font-size: .875rem;
+  font-weight: 500;
+}
+
+.run-case-result-sub-body .testcase-code {
+  font-size: .75rem;
+}
+
+.run-case-result-sub-body:hover a {
+  color: var(--bs-blue-prime);
+}
+
+.defect-case-body {
+  padding: 1.5rem;
+  padding-top: 0;
+}
+
+.panelLabel {
+  font-size: 1rem;
+  margin-bottom: 5px;
+  font-weight: 600;
+}
+
+.markdown-area {
+  word-break: break-word;
+  font-size: var(--fs-default);
+  color: var(--c-text);
+}
+
+.table-steps {
+  width: 100%;
+}
+
+.mat-cell,
+.mat-footer-cell {
+  font-size: .75rem;
+}
+
+.mat-column-Step {
+  width: 5%;
+}
+
+.mat-column-Action {
+  width: 23%;
+}
+
+.mat-column-Input {
+  width: 23%;
+}
+
+.mat-column-Expected {
+  width: 26%;
+}
+
+.mat-column-Comment {
+  width: 6%;
+}
+
+.mat-column-Attachments {
+  width: 10%;
+}
+
+.mat-column-Status {
+  width: 3%;
+}
+
+.passed-btn,
+.failed-btn,
+.blocked-btn,
+.skipped-btn {
+  display: inline-block;
+  padding: 0.25em 0.5em;
+  font-size: .75rem;
+  font-weight: 500;
+  line-height: 1;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: 0.25rem;
+}
+
+.passed-btn {
+  background-color: rgb(41, 185, 95);
+}
+
+.failed-btn {
+  background-color: rgb(246, 99, 132);
+}
+
+.blocked-btn {
+  background-color: rgb(232, 167, 62);
+}
+
+
+.skipped-btn {
+  background-color: rgb(115, 115, 118);
 }
