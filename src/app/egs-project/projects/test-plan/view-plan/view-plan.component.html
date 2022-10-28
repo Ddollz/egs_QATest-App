@@ -14,7 +14,7 @@
     
                 <div class="view-plan-header-buttons mt-3">
                     <div class="start-run">
-                        <button type="button" class="btn btn-primary" routerLink="/projects/run">
+                        <button type="button" class="btn btn-primary" routerLink="/projects/run/create">
                             Start run
                         </button>
                     </div>
@@ -84,7 +84,7 @@
                             </div>
 
                             <!-- Test Cases -->
-                            <div id="tab2" class="tab-pane">
+                            <!-- <div id="tab2" class="tab-pane">
                                 <div class="filters-block">
                                     <div class="filters-block-items">
                                         <div class="case-search-input me-2">
@@ -126,6 +126,76 @@
                                           </table>
                                     </div>
                                 </div>
+                            </div> -->
+                            <div id="tab2" class="row casesTable tab-pane">
+                              <div class="filters-block">
+                                <div class="filters-block-items">
+                                    <div class="case-search-input me-2">
+                                        <input type="text" name="title" class="form-control form-control-sm" placeholder="Search for test cases" value="">
+                                    </div>
+                                </div>
+                                <div class="add-filter-outer">
+                                    <button class="add-filter-button">+ Add filter</button>
+                                </div>
+                              </div>
+
+                              <div class="cases-content mt-2">
+                              <ng-container *ngFor="let item of finalCaseDataSource | keyvalue: originalOrder">
+                  
+                                <ng-container *ngFor="let o of  suites; let i = index">
+                                  <ng-container *ngIf="o.Suite_ID.toString() === item.key.toString()">
+                  
+                                    <div class="d-flex align-items-center text-center" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse-'+item.key" aria-expanded="false" aria-controls="collapseExample" (click)="collapseChevronIcon($event)">
+                                      <div class="run-suite-header-title">{{o.Suite_Name}}
+                                        <a class="run-suite-header-collapse">
+                                          <i class="bi bi-chevron-down"></i>
+                                        </a>
+                                      </div>
+                                    </div>
+                  
+                                    <ng-container *ngFor="let snl of SuiteName_List | keyvalue: originalOrder">
+                                      <ng-container *ngFor="let name of snl.value | keyvalue: originalOrder">
+                                        <div class="run-suite-crumbs" *ngIf="o.Suite_ID.toString() === name.key.toString()">
+                                          {{name.value}}
+                                        </div>
+                                      </ng-container>
+                                    </ng-container>
+                                  </ng-container>
+                  
+                                </ng-container>
+                  
+                  
+                                <div [id]="'collapse-'+item.key" class="show row">
+
+                                  <table mat-table [dataSource]="item.value" class="mat-elevation-z0 mb-3">
+                                    <ng-container matColumnDef="Title">
+                                      <th mat-header-cell *matHeaderCellDef>Title</th>
+                                      <td mat-cell *matCellDef="let element">
+                                        {{element.Case_Title}}</td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="Assignee">
+                                      <th mat-header-cell *matHeaderCellDef>Assignee</th>
+                                      <td mat-cell *matCellDef="let element">
+                                        <div *ngIf="element.User_Firstname && element.User_Lastname">
+                                          <img class="assignee-img" src="../../assets/img/placeholder.jpg">
+                                          <span>{{element.User_Firstname}} {{element.User_Lastname}}</span>
+                                        </div>
+                                      </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="TimeSpent">
+                                      <th mat-header-cell *matHeaderCellDef>Time spent</th>
+                                      <td mat-cell *matCellDef="let element">
+                                        <ng-container *ngIf="element.Date_Started && element.Date_Ended">
+                                          {{element.Date_Started | date :"HH:MM:ss"}} <br> {{element.Date_Ended | date :"HH:MM:ss"}}
+                                        </ng-container>
+                                      </td>
+                                    </ng-container>
+                                    <tr mat-header-row *matHeaderRowDef="casesColumns"></tr>
+                                    <tr (click)="openCasePanel($event, testCase)" mat-row *matRowDef="let row; let testCase of testCases; columns: casesColumns;" class="cases-row"></tr>
+                                  </table>
+                                </div>
+                              </ng-container>
+                            </div>
                             </div>
 
                             <!-- Test Runs -->

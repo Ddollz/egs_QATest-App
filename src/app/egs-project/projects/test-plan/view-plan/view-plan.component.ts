@@ -4,6 +4,8 @@ import { testplan, testCase, suite, step, testrun, defect } from '../../../../mo
 import { ApiService } from '../../../../services/api.service';
 import { reloadPage } from '../../../../services/global-functions.service';
 import { MatTableDataSource } from '@angular/material/table';
+import { KeyValue } from '@angular/common';
+import Chart from 'chart.js/auto';
 
 @Component({
   selector: 'app-view-plan',
@@ -49,7 +51,12 @@ export class ViewPlanComponent implements OnInit {
   Case_Milestone: string = '';
   Case_Behavior: string = '';
   Case_AutoStat: string = '';
+  Case_Result: string = '';
+
   Project_ID: number = 0;
+  Completed: number = 0;
+
+  public chart: any;
 
   testCase_History: any = [];
   testCase_HistoryAttachment: any = [];
@@ -67,16 +74,23 @@ export class ViewPlanComponent implements OnInit {
   TestPlan_CaseCount: string = '';
   TestPlan_RunTime: string = '';
   Case_ID: string = '';
+
+  //?Assigning User
+  Result_ID?: number;
+  Case_Assignee?: number;
+  //?Assigning User
   
   // Project Modals
   steps: step[] = [];
   testplan: testplan[] = [];
   testCases: testCase[] = [];
   testruns: testrun[] = [];
+  suites: suite[] = [];
 
   // Test cases table
-  casesColumns: string[] = ['Title', 'Assignee', 'Expected_Duration'];
+  casesColumns: string[] = ['Title', 'Assignee', 'TimeSpent'];
   casesDataSource = new MatTableDataSource<testCase>();
+  finalCaseDataSource: any = {};
 
   // Steps table
   displayedColumns: string[] = ['Step', 'Action', 'Input', 'Expected'];
@@ -126,6 +140,7 @@ export class ViewPlanComponent implements OnInit {
 
     this.Project_ID = Number(localStorage.getItem('currentProjectID'));
 
+    this.getCase();
    }
 
    
@@ -565,6 +580,136 @@ export class ViewPlanComponent implements OnInit {
 
   }
 
+  SuiteID_List: any = [];
+  SuiteName_List: any = [];
+  suiteBar_List: any = [];
+
+  getSuite(id: any) {
+    console.log(id)
+    this.api.UniCall(
+      {
+        CommandText: 'egsQASuiteGet',
+        Params: [
+          {
+            Param: '@Suite_List',
+            Value: id
+          }
+        ],
+      }
+    ).subscribe(value => {
+      this.suites = value[0];
+      var temp = this.suites.filter(n => n.Parent_SuiteID)
+      for (let index = 0; index < temp.length; index++) {
+        var parent = this.suites.filter(x => x.Suite_ID === temp[index].Parent_SuiteID);
+        this.SuiteID_List.push(temp[index].Suite_ID);
+        if (parent.length > 0) {
+          this.SuiteID_List.push(parent[0].Suite_ID);
+          this.getChildTreeSuite(parent[0])
+        }
+        //?
+        var Filtered: any = {};
+        var mapped = this.SuiteID_List.map((obj: any) => {
+          return this.suites.find(n => n.Suite_ID === obj)?.Suite_Name
+        })
+        const item = mapped.reverse().map((n: any, i: any, arr: any) => {
+          if (arr.length - 1 === i) return n
+          return n + " > "
+        });
+        const html = item.join('')
+        Filtered[temp[index].Suite_ID] = html
+        this.SuiteName_List.push(Filtered)
+        Filtered = {};
+        this.SuiteID_List = [];
+      }
+      //? For sub desc
+
+      //? For progressbar per suites
+      // var idsInArray = id.split(" ").filter((a: any) => a);
+      // for (let index = 0; index < idsInArray.length; index++) {
+      //   this.getCaseStatus(idsInArray[index]);
+      //   var barFilled: any = {};
+      //   barFilled['Passed'] = this.getProgress(this.Passed, idsInArray[index])
+      //   barFilled['Failed'] = this.getProgress(this.Failed, idsInArray[index])
+      //   barFilled['Blocked'] = this.getProgress(this.Blocked, idsInArray[index])
+      //   barFilled['Invalid'] = this.getProgress(this.Invalid, idsInArray[index])
+      //   barFilled['Skipped'] = this.getProgress(this.Skipped, idsInArray[index])
+      //   barFilled['Untested'] = this.getProgress(this.Untested, idsInArray[index])
+      //   var Filtereds: any = {};
+
+      //   Filtereds[idsInArray[index]] = barFilled
+      //   this.suiteBar_List.push(Filtereds)
+      // }
+      //? For progressbar per suites
+
+    });
+  }
+
+  //? Looping child
+  getChildTreeSuite(id: any) {
+    var parent = this.suites.filter(x => x.Suite_ID === id.Parent_SuiteID);
+    if (parent.length > 0) {
+      this.SuiteID_List.push(parent[0].Suite_ID);
+      this.getChildTreeSuite(parent[0])
+    }
+  }
+
+  collapseChevronIcon(event: Event) {
+    var dom = event.currentTarget as HTMLElement;
+    if (dom.querySelector('i')?.classList.contains('bi-chevron-down'))
+      dom.querySelector('i')?.classList.replace('bi-chevron-down', 'bi-chevron-right')
+    else
+      dom.querySelector('i')?.classList.replace('bi-chevron-right', 'bi-chevron-down')
+  }
+
+  getCase() {
+    this.api.UniCall(
+      {
+        CommandText: 'egsQATestPlanCasesGet',
+        Params: [
+          {
+            Param: '@TestPlan_ID',
+            Value: this.index.toString()
+          }
+        ]
+      }
+    ).subscribe(value => {
+      this.testCases = value[0];
+      var temp = '';
+      for (let index = 0; index < this.testCases.length; index++) {
+        if (this.finalCaseDataSource.hasOwnProperty(this.testCases[index].Suite_ID)) {
+          console.log(this.testCases[index].Suite_ID)
+          this.finalCaseDataSource[this.testCases[index].Suite_ID].push(this.testCases[index]);
+        } else {
+          temp = temp + ' ' + this.testCases[index].Suite_ID;
+          this.finalCaseDataSource[this.testCases[index].Suite_ID] = [];
+          this.finalCaseDataSource[this.testCases[index].Suite_ID].push(this.testCases[index]);
+        }
+      }
+      this.casesDataSource = new MatTableDataSource<testCase>(this.testCases);
+      this.getCompleted();
+      this.getSuite(temp);
+      this.createChart();
+
+      console.log(this.testCases)
+      console.log(temp)
+
+    });
+  }
+
+  originalOrder = (a: KeyValue<any, any>, b: KeyValue<any, any>): number => {
+    return 0;
+  }
+
+  threedots(e: Event) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+
+  assignUser(Result_ID: number, User_ID: any) {
+    this.Case_Assignee = User_ID;
+    this.Result_ID = Result_ID;
+  }
+
   postComment() {
     let currentDateTime = new Date();
     // console.log(this.htmlstring);
@@ -628,6 +773,52 @@ export class ViewPlanComponent implements OnInit {
 
   formatDate(date: string) {
     return date.substring(0, 10) + ' ' + date.substring(11, 21);
+  }
+
+  getCompleted() {
+    var num = ((this.testCases.length - this.testCases.filter((n: any) => n.Case_Result <= 0).length) / this.testCases.length) * 100;
+    this.Completed = +parseFloat(num.toString()).toFixed(0);
+  }
+
+  createChart() {
+    this.chart = new Chart("chart", {
+      type: 'doughnut',
+      options: {
+        plugins: {
+          legend: {
+            display: false
+          }
+        }
+      },
+      data: {
+        labels: [
+          'Passed',
+          'Failed',
+          'Blocked',
+          'Invalid',
+          'Skipped',
+          'Untested',
+        ],
+        datasets: [{
+          data: [
+            this.testCases.filter((n: any) => n.Case_Result === 1).length,
+            this.testCases.filter((n: any) => n.Case_Result === 2).length,
+            this.testCases.filter((n: any) => n.Case_Result === 3).length,
+            this.testCases.filter((n: any) => n.Case_Result === 4).length,
+            this.testCases.filter((n: any) => n.Case_Result === 5).length,
+            this.testCases.filter((n: any) => n.Case_Result <= 0).length
+          ],
+          backgroundColor: [
+            '#94c64a',
+            '#f66384',
+            'rgb(221, 181, 10)',
+            'rgb(95, 1, 185)',
+            'rgb(175, 175, 175)',
+            '#c1c1c1'
+          ]
+        }]
+      }
+    });
   }
 
 }
