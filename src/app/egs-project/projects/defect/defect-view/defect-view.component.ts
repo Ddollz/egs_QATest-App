@@ -57,17 +57,18 @@ export class DefectViewComponent implements OnInit {
       }
     ).subscribe(value => {
       this.Project = value[0][0];
+
+      if (this.route.snapshot.params['id']) {
+        this.Defect_ID = this.route.snapshot.params['id'];
+        this.getDefect();
+        this.getDefectComment();
+        this.getMilestone();
+      }
       console.log(this.Project)
     });
   }
 
   ngOnInit(): void {
-    if (this.route.snapshot.params['id']) {
-      this.Defect_ID = this.route.snapshot.params['id'];
-      this.getDefect();
-      this.getDefectComment();
-      this.getMilestone();
-    }
   }
 
   getDefect() {
