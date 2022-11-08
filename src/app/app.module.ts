@@ -54,6 +54,7 @@ import { RunDashboardComponent } from './egs-project/projects/test-run/run-dashb
 import { SuitesPlanComponent } from './egs-project/projects/test-plan/suites-plan/suites-plan.component';
 import { CasePlanComponent } from './egs-project/projects/test-plan/case-plan/case-plan.component';
 import { TestcaseHistoryComponent } from './egs-project/projects/repositories/testcase-history/testcase-history.component';
+import { ViewCaseComponent } from './egs-project/projects/repositories/view-case/view-case.component';
 
 
 //Link Routes
@@ -64,6 +65,7 @@ const appRoute: Routes = [
   { path: 'projects/repository/:id', component: RepositoriesComponent },
   { path: 'projects/repository/create/:id', component: CaseCreateComponent },
   { path: 'projects/repository/trashbin/:id', component: TrashBinComponent },
+  { path: 'projects/repository/view/:id', component: ViewCaseComponent },
   { path: 'projects/run', component: TestRunComponent },
   { path: 'projects/run/create', component: RunCreateComponent },
   { path: 'projects/run/edit/:id', component: RunCreateComponent },
@@ -126,6 +128,7 @@ const appRoute: Routes = [
     SuitesPlanComponent,
     CasePlanComponent,
     TestcaseHistoryComponent,
+    ViewCaseComponent,
   ],
   imports: [
     BrowserModule,
