@@ -2,10 +2,7 @@
   <div class="row">
     <div class="col-lg-12 mb-3">
       <h3 class="m-0">
-        <a routerLink="../../4">
-          <i class="bi bi-arrow-left-short"></i>
-        </a>
-        Create case
+        {{testCase.Case_Title}}
       </h3>
     </div>
     <div class="content">
@@ -16,13 +13,509 @@
         <button class="btns" id="Run">Delete</button>
       </div>
 
-      <div class="d-flex gap-2 content_header">
-        <button class="btns active" id="General">General</button>
-        <button class="btns" id="Properties">Properties</button>
-        <button class="btns" id="Run">Runs</button>
-        <button class="btns" id="History">History</button>
-        <button class="btns" id="Defects">Defects</button>
-        <button class="btns" id="Comments">Comments</button>
+      <div class="d-flex gap-2 content_header" #contenthead>
+        <button (click)="changePanelContent('General')" class="btns active" id="General"><span> </span>General</button>
+        <button (click)="changePanelContent('Properties')" class="btns" id="Properties"><span> </span>Properties</button>
+        <button (click)="changePanelContent('Run')" class="btns" id="Run"><span></span>Runs</button>
+        <button (click)="changePanelContent('History')" class="btns" id="History"><span></span>History</button>
+        <button (click)="changePanelContent('Defects')" class="btns" id="Defects"><span></span>Defects</button>
+        <button (click)="changePanelContent('Comments')" class="btns" id="Comments"><span></span>Comments</button>
+      </div>
+      <div class="content_container" #content_container>
+
+        <div class="content_general" id="General" #General>
+          <section class="mt-3">
+            <label for="0-description" class="content_label">Description</label>
+            <div class="markdown-area">
+              {{testCase.Case_Desc || 'Empty Value'}}
+            </div>
+          </section>
+          <section class="mt-3">
+            <label for="0-precondition" class="content_label">Pre-conditions</label>
+            <div class="markdown-area">
+              {{testCase.Case_PreCondition || 'Empty Value'}}
+            </div>
+          </section>
+          <section class="mt-3">
+            <label for="0-postcondition" class="content_label">Post-conditions</label>
+            <div class="markdown-area">
+              {{testCase.Case_PostCondition || 'Empty Value'}}
+            </div>
+          </section>
+
+          <section class="mt-3">
+            <label for="0-postcondition" class="content_label">Attachments</label>
+            <div class="d-flex flex-wrap">
+
+              <ng-container *ngFor="let attachment of testCaseAttachment">
+                <ng-container *ngIf="attachment.byteFile.contentType.split('/')[0] == 'image'; else notImage">
+
+                  <div class="suitecase-attachment">
+                    <div class="suitecase-attachment-container">
+                      <div class="suitecase-attachment-image" (click)="downloadFile(attachment.Attachment_ID,attachment.Filename)" style="background: url(&quot;data:image/png;base64,{{attachment.byteFile.fileContents}}&quot;)">
+                        <a class="suitecase-attachment-link is-image"></a>
+                        <div class="suitecase-attachment-overlay">
+                          <p class="suitecase-attachment-filename">{{attachment.Filename}}</p>
+                          <div class="suitecase-attachment-overlay-bottom">
+                            <p class="suitecase-attachment-size"> {{attachment.Filesize}}</p>
+                            <button type="button" class="suitecase-attachment-remove"><i class="bi bi-x"></i></button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </ng-container>
+                <ng-template #notImage>
+
+
+                  <div class="suitecase-attachment">
+                    <div class="suitecase-attachment-container">
+                      <div data-disable="false" class="suitecase-attachment-file" (click)="downloadFile(attachment.Attachment_ID,attachment.Filename)">
+                        <a class="suitecase-attachment-link"></a>
+                        <span class="suitecase-attachment-extension">{{attachment.byteFile.contentType.split('/')[0]}}</span>
+                        <div class="suitecase-attachment-overlay">
+                          <p class="suitecase-attachment-filename">{{attachment.Filename}}</p>
+                          <div class="suitecase-attachment-overlay-bottom">
+                            <p class="suitecase-attachment-size"> {{attachment.Filesize}}</p>
+                            <button type="button" class="suitecase-attachment-remove"><i class="bi bi-x"></i></button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+              </ng-container>
+
+            </div>
+
+
+          </section>
+
+          <section class="mt-3">
+            <label for="0-steps" class="content_label">Steps</label>
+            <table mat-table [dataSource]="stepdataSource" class="mat-elevation-z0 table-steps">
+              <ng-container matColumnDef="Step">
+                <th mat-header-cell *matHeaderCellDef> Step </th>
+                <td mat-cell *matCellDef="let element">
+                  <div class="markdown-area">{{element.Step_number}}</div>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="Action">
+                <th mat-header-cell *matHeaderCellDef> Action </th>
+                <td mat-cell *matCellDef="let element">
+                  <div class="markdown-area">{{element.Step_Action}}</div>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="Input">
+                <th mat-header-cell *matHeaderCellDef> Input Data </th>
+                <td mat-cell *matCellDef="let element">
+                  <div class="markdown-area">{{element.Step_InputData}}</div>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="Expected">
+                <th mat-header-cell *matHeaderCellDef> Expected Result </th>
+                <td mat-cell *matCellDef="let element">
+                  <div class="markdown-area">{{element.Step_ExpectedResult}}</div>
+                  <div class="attachments attachments-small">
+                    <ng-container *ngFor="let a of stepAttachments">
+                      <ng-container *ngIf="a.Step_ID == element.Case_StepID">
+                        <ng-container *ngIf="a.byteFile.contentType.split('/')[0] == 'image'; else notImage">
+                          <div class="attachment">
+                            <a href="" target="_blank" rel="noreferrer">
+                              <div class="attachment-image" [ngStyle]="{'background': 'url(&quot;data:image/png;base64,'+a.byteFile.fileContents+'&quot;)'}"></div>
+                            </a>
+                          </div>
+                        </ng-container>
+                      </ng-container>
+
+                      <ng-template #notImage>
+                        <div class="attachment">
+                          <a href="#" target="_blank" rel="noreferrer">
+                            <div class="attachment-file"><span class="attachment-extension">{{a.byteFile.contentType.split('/')[0]}}</span></div>
+                          </a>
+                        </div>
+                      </ng-template>
+
+                    </ng-container>
+                  </div>
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="stepdisplayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: stepdisplayedColumns;"></tr>
+            </table>
+          </section>
+        </div>
+
+        <div class="content_properties" id="Properties" #Properties>
+          <div class="row mt-3">
+
+            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 form-group">
+              <label class="panelLabel">Severity{{testCase.Case_Severity}}</label>
+              <mat-select class="select-item" [(ngModel)]="testCase.Case_Severity" (ngModelChange)="onChangePanel('@Case_Severity',$event)">
+                <mat-option [value]="1" class="select-item">
+                  Not set
+                </mat-option>
+                <mat-option [value]="2" class="select-item">
+                  Blocker
+                </mat-option>
+                <mat-option [value]="3" class="select-item">
+                  Critical
+                </mat-option>
+                <mat-option [value]="4" class="select-item">
+                  Major
+                </mat-option>
+                <mat-option [value]="5" class="select-item">
+                  Normal
+                </mat-option>
+                <mat-option [value]="6" class="select-item">
+                  Minor
+                </mat-option>
+                <mat-option [value]="7" class="select-item">
+                  Trival
+                </mat-option>
+              </mat-select>
+            </div>
+
+            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 form-group">
+              <label class="panelLabel">Priority {{testCase.Case_Priority}}</label>
+              <mat-select class="select-item" [(ngModel)]="testCase.Case_Priority" (ngModelChange)="onChangePanel('@Case_Priority',$event)">
+                <mat-option [value]="1" class="select-item">
+                  Not set
+                </mat-option>
+                <mat-option [value]="2" class="select-item">
+                  High
+                </mat-option>
+                <mat-option [value]="3" class="select-item">
+                  Medium
+                </mat-option>
+                <mat-option [value]="4" class="select-item">
+                  Low
+                </mat-option>
+              </mat-select>
+            </div>
+
+            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 form-group">
+              <label class="panelLabel">Type</label>
+              <mat-select class="select-item" [(ngModel)]="testCase.Case_Type" (ngModelChange)="onChangePanel('@Case_Type',$event)">
+                <mat-option value="Other" class="select-item">
+                  Other
+                </mat-option>
+                <mat-option value="Functional" class="select-item">
+                  Functional
+                </mat-option>
+                <mat-option value="Smoke" class="select-item">
+                  Smoke
+                </mat-option>
+                <mat-option value="Regression" class="select-item">
+                  Regression
+                </mat-option>
+                <mat-option value="Security" class="select-item">
+                  Security
+                </mat-option>
+                <mat-option value="Usability" class="select-item">
+                  Usability
+                </mat-option>
+                <mat-option value="Performance" class="select-item">
+                  Performance
+                </mat-option>
+                <mat-option value="Acceptance" class="select-item">
+                  Acceptance
+                </mat-option>
+                <mat-option value="Compatibility" class="select-item">
+                  Compatibility
+                </mat-option>
+                <mat-option value="Integration" class="select-item">
+                  Integration
+                </mat-option>
+                <mat-option value="Exploratory" class="select-item">
+                  Exploratory
+                </mat-option>
+              </mat-select>
+            </div>
+
+            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 form-group">
+              <label class="panelLabel">Layer</label>
+              <mat-select class="select-item" [(ngModel)]="testCase.Case_Layer" (ngModelChange)="onChangePanel('@Case_Layer',$event)">
+                <mat-option [value]="1" class="select-item">
+                  Not set
+                </mat-option>
+                <mat-option [value]="2" class="select-item">
+                  E2E
+                </mat-option>
+                <mat-option [value]="3" class="select-item">
+                  API
+                </mat-option>
+                <mat-option [value]="4" class="select-item">
+                  Unit
+                </mat-option>
+              </mat-select>
+            </div>
+
+            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 form-group">
+              <label class="panelLabel">Is flaky</label>
+              <mat-select class="select-item" [(ngModel)]="testCase.Case_Flaky" (ngModelChange)="onChangePanel('@Case_Flaky',$event)">
+                <mat-option [value]="1" class="select-item">
+                  No
+                </mat-option>
+                <mat-option [value]="2" class="select-item">
+                  Yes
+                </mat-option>
+              </mat-select>
+            </div>
+
+            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 form-group">
+              <label class="panelLabel">Milestone</label>
+              <mat-select class="select-item" [(ngModel)]="testCase.Case_Milestone" (ngModelChange)="onChangePanel('@Case_Milestone',$event)">
+                <mat-option [value]="1" class="select-item">
+                  Not set
+                </mat-option>
+              </mat-select>
+            </div>
+
+            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 form-group">
+              <label class="panelLabel">Behavior</label>
+              <mat-select class="select-item" [(ngModel)]="testCase.Case_Behavior" (ngModelChange)="onChangePanel('@Case_Behavior',$event)">
+                <mat-option [value]="1" class="select-item" selected>
+                  Not set
+                </mat-option>
+                <mat-option [value]="2" class="select-item">
+                  Positive
+                </mat-option>
+                <mat-option [value]="3" class="select-item">
+                  Negative
+                </mat-option>
+                <mat-option [value]="4" class="select-item">
+                  Destructive
+                </mat-option>
+              </mat-select>
+            </div>
+
+            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 form-group">
+              <label class="panelLabel">Automation status</label>
+              <mat-select class="select-item" [(ngModel)]="testCase.Case_AutoStat" (ngModelChange)="onChangePanel('@Case_AutoStat',$event)">
+                <mat-option [value]="1" class="select-item" selected>
+                  Not automated
+                </mat-option>
+                <mat-option [value]="2" class="select-item">
+                  To be automated
+                </mat-option>
+                <mat-option [value]="3" class="select-item">
+                  Automated
+                </mat-option>
+              </mat-select>
+            </div>
+          </div>
+        </div>
+
+        <div class="content_history" id="History" #History>
+
+          <div class="content_header sub" #historyhead>
+            <button (click)="changeSubPanelContent('Descriptions')" class="btns active" id="Descriptions"><span> </span>Descriptions</button>
+            <button (click)="changeSubPanelContent('Attachments')" class="btns" id="Attachments"><span> </span>Attachments</button>
+            <button (click)="changeSubPanelContent('Steps')" class="btns" id="Steps"><span></span>Steps</button>
+          </div>
+          <div class="panelContent" #subpanelContent>
+            <div class="Descriptions" id="Descriptions-sub" #Descriptions>
+              <div>
+                <ng-container *ngFor="let item of displayHistoryData; let i = index; last as isLast; first as isFirst">
+                  <app-testcase-history [currentObj]="item" [prevObj]="displayHistoryData[i-1]" [index]="i" [isFirst]="isFirst" [isLast]="isLast" [testCase]="testCase">
+                  </app-testcase-history>
+                </ng-container>
+              </div>
+              <ng-container *ngIf="displayHistoryDataNumber != this.testCase_History.length && displayHistoryDataNumber <= this.testCase_History.length ">
+                <button class="btn btn-secondary mt-5" (click)="showMoreHistory('1')">Show More</button>
+              </ng-container>
+
+              <ng-container *ngIf="displayHistoryDataNumber >= this.testCase_History.length">
+                <app-testcase-history [noChanges]="true" [testCase]="testCase">
+                </app-testcase-history>
+              </ng-container>
+            </div>
+            <div class="Attachments" id="Attachments-sub" #Attachments>
+              <div class="d-flex align-content-center mt-3">
+                <div class="revision-body">
+                  <div class="element mt-3">
+                    <div class="d-flex" style="align-items: baseline;">
+                      <div class="element-before justify-content-center">
+                        Current/Added
+                      </div>
+                      <div class="element-divider ms-3 me-3">=</div>
+                      <div class="element-after justify-content-center">
+                        Updated/Deleted
+                      </div>
+                    </div>
+                    <p class="element-title"></p>
+                    <div class="d-flex" style="align-items: baseline;">
+                      <div class="element-before">
+                        <ng-container *ngFor="let tCA of testCaseAttachment">
+                          <div class="attachments attachments-small-half">
+                            <ng-container *ngIf="tCA.byteFile.contentType.split('/')[0] == 'image'; else notImage">
+                              <div class="attachment">
+                                <a href="" target="_blank" rel="noreferrer">
+                                  <div class="attachment-image" [ngStyle]="{'background': 'url(&quot;data:image/png;base64,'+tCA.byteFile.fileContents+'&quot;)'}"></div>
+                                </a>
+                              </div>
+                            </ng-container>
+
+                            <ng-template #notImage>
+                              <div class="attachment">
+                                <a href="#" target="_blank" rel="noreferrer">
+                                  <div class="attachment-file"><span class="attachment-extension">{{tCA.byteFile.contentType.split('/')[0]}}</span></div>
+                                </a>
+                              </div>
+                            </ng-template>
+                          </div>
+                        </ng-container>
+                      </div>
+                      <div class="element-divider ms-3 me-3"><i class="bi bi-arrow-right-short"></i></div>
+                      <div class="element-after">
+                        <ng-container *ngFor="let tCA of testCase_HistoryAttachment">
+                          <div class="attachments attachments-small-half">
+                            <ng-container *ngIf="tCA.byteFile.contentType.split('/')[0] == 'image'; else notImage">
+                              <div class="attachment">
+                                <a href="" target="_blank" rel="noreferrer">
+                                  <div class="attachment-image" [ngStyle]="{'background': 'url(&quot;data:image/png;base64,'+tCA.byteFile.fileContents+'&quot;)'}"></div>
+                                </a>
+                              </div>
+                            </ng-container>
+
+                            <ng-template #notImage>
+                              <div class="attachment">
+                                <a href="#" target="_blank" rel="noreferrer">
+                                  <div class="attachment-file"><span class="attachment-extension">{{tCA.byteFile.contentType.split('/')[0]}}</span></div>
+                                </a>
+                              </div>
+                            </ng-template>
+                          </div>
+                        </ng-container>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- <ng-container *ngIf="displayHistoryDataAttachmentNumber != testCase_HistoryAttachment.length && displayHistoryDataAttachmentNumber <= testCase_HistoryAttachment.length ">
+                <button class="btn btn-secondary mt-5" (click)="showMoreHistory('2')">Show More</button>
+              </ng-container> -->
+
+            </div>
+            <div class="Steps" id="Steps-sub" #Steps>
+              <ng-container *ngFor="let item of stepHistoryDisplay; let i = index; last as isLast; first as isFirst">
+                <!-- <ng-container *ngIf="checkPrev(item)"> -->
+
+                <div class="d-flex align-content-center mt-3">
+                  <div class="align-self-start me-2"><img class="lazy avatar-sm" src="../../../../assets/img/placeholder.jpg"></div>
+                  <div class="revision-body">
+                    <div class="history-user">
+                      <div class="history-username">
+                        <span style="font-weight: bold;">Rica Isidto</span>
+                      </div>
+                      <div class="history-role">{{item.SysStartTime | date :"yyyy-MM-dd HH:MM:ss"}}</div>
+                    </div>
+                    <div class="element mt-3">
+                      <p class="element-title">Updated Step No. {{item.Step_number}}
+                        <!-- - {{item.Case_StepID}}-->
+                      </p>
+                      <div class="d-flex" style="align-items: baseline;">
+
+                        <table class="table">
+                          <thead>
+                            <tr>
+                              <th scope="col">#</th>
+                              <th scope="col">Action</th>
+                              <th scope="col">Input Data</th>
+                              <th scope="col">Expected Result</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td scope="row">{{item.Step_number}}</td>
+                              <td>{{item.Step_Action}}</td>
+                              <td>{{item.Step_InputData}}</td>
+                              <td>{{item.Step_ExpectedResult}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- </ng-container> -->
+
+              </ng-container>
+
+
+              <ng-container *ngIf="stepHistoryLimit != stepHistory.length && stepHistoryLimit <= stepHistory.length ">
+                <button class="btn btn-secondary mt-5" (click)="showMoreHistory('3')">Show More</button>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel-defects" id="Defects" #Defects>
+          <table mat-table [dataSource]="defectsDataSource" class="mat-elevation-z0 Table mt-3">
+            <ng-container matColumnDef="ID">
+              <th mat-header-cell *matHeaderCellDef>ID</th>
+              <td mat-cell *matCellDef="let element">
+                {{element.Defect_ID}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="Defect">
+              <th mat-header-cell *matHeaderCellDef>Defect</th>
+              <td mat-cell *matCellDef="let element">
+                {{element.Defect_Title}}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Author">
+              <th mat-header-cell *matHeaderCellDef>Author</th>
+              <td mat-cell *matCellDef="let element">
+                {{element.DefectFname}}
+                {{element.DefectLname}}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Assignee">
+              <th mat-header-cell *matHeaderCellDef>Assignee
+              <th>
+              <td mat-cell *matCellDef="let element">
+                <ng-container *ngIf="element.DefectAsFname || element.DefectAsLname else elseBlock">
+                  {{element.DefectAsFname}}
+                  {{element.DefectAsLname}}
+                </ng-container>
+                <ng-template #elseBlock>Unassigned</ng-template>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="Status">
+              <th mat-header-cell *matHeaderCellDef>Status
+              <th>
+              <td mat-cell *matCellDef="let element">
+                <ng-template [ngIf]="element.Defect_Status == 1">
+                  <span class="badge bg-primary open-bg">Open</span>
+                </ng-template>
+                <ng-template [ngIf]="element.Defect_Status == 2">
+                  <span class="badge bg-primary in-progress-bg">In Progress</span>
+                </ng-template>
+                <ng-template [ngIf]="element.Defect_Status == 3">
+                  <span class="badge bg-primary invalid-d-bg">Invalid</span>
+                </ng-template>
+                <ng-template [ngIf]="element.Defect_Status == 4">
+                  <span class="badge bg-primary resolved-bg">Resolved</span>
+                </ng-template>
+              </td>
+            </ng-container>
+
+            <tr *matNoDataRow="">
+              <td class="mat-cell" colspan="7"> No defects yet. </td>
+            </tr>
+
+            <tr mat-header-row *matHeaderRowDef=" defectsDisplayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: defectsDisplayedColumns;"></tr>
+          </table>
+        </div>
+
+
       </div>
     </div>
   </div>

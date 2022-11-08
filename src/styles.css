@@ -361,6 +361,12 @@ select {
   color: var(--c-text);
 }
 
+.markdown-area {
+  word-break: break-word;
+  font-size: var(--fs-default);
+  color: var(--c-text);
+}
+
 .form-label {
   font-size: .75rem;
   line-height: 1rem;

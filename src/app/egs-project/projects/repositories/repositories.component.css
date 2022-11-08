@@ -423,17 +423,8 @@
   align-items: center;
 }
 
-.example-viewport {
-  height: 100%;
-  width: 100%;
-}
 
 
-.markdown-area {
-  word-break: break-word;
-  font-size: var(--fs-default);
-  color: var(--c-text);
-}
 
 .table-steps {
   width: 100%;

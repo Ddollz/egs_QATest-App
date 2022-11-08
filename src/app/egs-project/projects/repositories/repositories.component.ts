@@ -1023,6 +1023,7 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
         ],
       }
     ).subscribe(value => {
+      console.log(value)
       if (value.length === 0) {
         this.istestCase_HistoryNull = true;
         this.testCase_History = [];
@@ -1097,6 +1098,38 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
           }
         })
 
+
+            //? START STEP HISTORY
+            this.api.UniCall(
+              {
+                CommandText: 'egsQAStepHistoryGet',
+                Params: [
+                  {
+                    Param: '@Case_ID',
+                    Value: this.testCase.Case_ID.toString()
+                  }
+                ],
+              }
+            ).subscribe(
+              {
+                next: (v) => {
+                  console.log(v)
+                  console.log(this.stepHistoryDisplay);
+
+                  if (v.length === 0) {
+                    this.isstepHistoryNull = true;
+                    this.stepHistory = [];
+                  }
+                  else {
+                    this.isstepHistoryNull = false;
+                    this.stepHistory = v[0]
+                    this.stepHistoryDisplay = this.stepHistory.slice(0, this.stepHistoryLimit);
+                  }
+                },
+                error: (e) => console.error(e),
+              }
+            )
+            //? END
 
       }
 
