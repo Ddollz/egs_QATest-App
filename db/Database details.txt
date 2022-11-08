@@ -13,8 +13,9 @@ Password: LarEdhgIdxdXu0
 
 EGS_QATest_API
 
-
+https://qase.io/
+Username
 ricamae.isidto@eg-software.com
-
+Password
 C4lcm3nu!!!
 
