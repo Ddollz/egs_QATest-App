@@ -177,7 +177,7 @@
                                       <th mat-header-cell *matHeaderCellDef>Assignee</th>
                                       <td mat-cell *matCellDef="let element">
                                         <div *ngIf="element.User_Firstname && element.User_Lastname">
-                                          <img class="assignee-img" src="../../assets/img/placeholder.jpg">
+                                          <!-- <img class="assignee-img" src="../../assets/img/placeholder.jpg"> -->
                                           <span>{{element.User_Firstname}} {{element.User_Lastname}}</span>
                                         </div>
                                       </td>
@@ -790,7 +790,7 @@
           </ng-container> -->
 
         </div>
-        <div class="tab-pane show" id="stepsTab">
+        <div class="Steps tab-pane show" id="stepsTab">
           <ng-container *ngFor="let item of stepHistoryDisplay; let i = index; last as isLast; first as isFirst">
             <!-- <ng-container *ngIf="checkPrev(item)"> -->
 

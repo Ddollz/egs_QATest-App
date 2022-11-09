@@ -119,7 +119,7 @@ export class ViewPlanComponent implements OnInit {
       this.index = this.route.snapshot.params['i'];
       this.getTestPlan();
     }
-    // console.log(this.index.toString())
+    console.log(this.index.toString())
 
     this.api.UniCall(
       {
@@ -135,7 +135,7 @@ export class ViewPlanComponent implements OnInit {
       // console.log(this.index);
       this.testCases = value[0];
       this.casesDataSource = new MatTableDataSource<testCase>(this.testCases);
-      // console.log(this.casesDataSource.filteredData)
+      console.log(this.testCases)
     });
 
     this.Project_ID = Number(localStorage.getItem('currentProjectID'));
@@ -688,7 +688,7 @@ export class ViewPlanComponent implements OnInit {
       this.casesDataSource = new MatTableDataSource<testCase>(this.testCases);
       this.getCompleted();
       this.getSuite(temp);
-      this.createChart();
+      // this.createChart();
 
       console.log(this.testCases)
       console.log(temp)
@@ -780,45 +780,45 @@ export class ViewPlanComponent implements OnInit {
     this.Completed = +parseFloat(num.toString()).toFixed(0);
   }
 
-  createChart() {
-    this.chart = new Chart("chart", {
-      type: 'doughnut',
-      options: {
-        plugins: {
-          legend: {
-            display: false
-          }
-        }
-      },
-      data: {
-        labels: [
-          'Passed',
-          'Failed',
-          'Blocked',
-          'Invalid',
-          'Skipped',
-          'Untested',
-        ],
-        datasets: [{
-          data: [
-            this.testCases.filter((n: any) => n.Case_Result === 1).length,
-            this.testCases.filter((n: any) => n.Case_Result === 2).length,
-            this.testCases.filter((n: any) => n.Case_Result === 3).length,
-            this.testCases.filter((n: any) => n.Case_Result === 4).length,
-            this.testCases.filter((n: any) => n.Case_Result === 5).length,
-            this.testCases.filter((n: any) => n.Case_Result <= 0).length
-          ],
-          backgroundColor: [
-            '#94c64a',
-            '#f66384',
-            'rgb(221, 181, 10)',
-            'rgb(95, 1, 185)',
-            'rgb(175, 175, 175)',
-            '#c1c1c1'
-          ]
-        }]
-      }
-    });
-  }
+  // createChart() {
+  //   this.chart = new Chart("chart", {
+  //     type: 'doughnut',
+  //     options: {
+  //       plugins: {
+  //         legend: {
+  //           display: false
+  //         }
+  //       }
+  //     },
+  //     data: {
+  //       labels: [
+  //         'Passed',
+  //         'Failed',
+  //         'Blocked',
+  //         'Invalid',
+  //         'Skipped',
+  //         'Untested',
+  //       ],
+  //       datasets: [{
+  //         data: [
+  //           this.testCases.filter((n: any) => n.Case_Result === 1).length,
+  //           this.testCases.filter((n: any) => n.Case_Result === 2).length,
+  //           this.testCases.filter((n: any) => n.Case_Result === 3).length,
+  //           this.testCases.filter((n: any) => n.Case_Result === 4).length,
+  //           this.testCases.filter((n: any) => n.Case_Result === 5).length,
+  //           this.testCases.filter((n: any) => n.Case_Result <= 0).length
+  //         ],
+  //         backgroundColor: [
+  //           '#94c64a',
+  //           '#f66384',
+  //           'rgb(221, 181, 10)',
+  //           'rgb(95, 1, 185)',
+  //           'rgb(175, 175, 175)',
+  //           '#c1c1c1'
+  //         ]
+  //       }]
+  //     }
+  //   });
+  // }
 
 }

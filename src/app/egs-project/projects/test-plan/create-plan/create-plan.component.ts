@@ -273,6 +273,10 @@ export class CreatePlanComponent implements OnInit {
           {
             Param: '@Case_ID',
             Value: this.finalAddCases.toString()
+          },
+          {
+            Param: '@User_ID',
+            Value: '1' //assignee
           }
         ]
       }

@@ -62,7 +62,7 @@
 </div>
 
 <!-- Add cases modal -->
-<div class="modal fade" id="addcases" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+<div class="modal fade" id="addcases" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
             <!-- Modal Header -->
@@ -114,16 +114,34 @@
                             <ng-container *ngIf="suite.Parent_SuiteID == 0">
                                 
                                 <!-- <app-suites-plan [Suite]="suite" (click)="selectAll()" (sendSuiteID)="receiveID($event)" (sendSuiteName)="receiveName($event)" (sendSuiteDesc)="receiveDesc($event)"></app-suites-plan> -->
-                                <div class="d-flex justify-content-between suite w-100">
-                                    <mat-checkbox (click)="checkbox($event, suite.Suite_ID)" [checked]="suiteModel.isSelected(suite.Suite_ID)"></mat-checkbox>
-                                      <div class="d-flex align-items-center item-suite">
-                                        <!-- ID is temporary -->
-                                        <a type="button" class="button-blue-transparent suite-name" (click)="receiveID(suite.Suite_ID); receiveName(suite.Suite_Name); receiveDesc(suite.Suite_Desc)">{{suite.Suite_Name}}</a>
-                                      </div>
-                                      <div class="suite-setting">
-                                        <span class="me-1">0/{{suite.Case_Count}}</span>
-                                      </div>
-                                  </div>
+                                <div class="item-suite">
+                                    <div class="suite-left">
+                                        <mat-checkbox (click)="checkbox($event, suite.Suite_ID)" [checked]="suiteModel.isSelected(suite.Suite_ID)"></mat-checkbox>
+                                        <div class="d-flex align-items-center ms-3">
+                                            <!-- ID is temporary -->
+                                            <a type="button" class="button-blue-transparent suite-name" (click)="receiveID(suite.Suite_ID); receiveName(suite.Suite_Name); receiveDesc(suite.Suite_Desc)">{{suite.Suite_Name}}</a>
+                                        </div>
+                                    </div>
+
+                                    <div class="suite-right">
+                                        <div class="suite-setting">
+                                            <span class="me-1">0/{{suite.Case_Count}}</span>
+                                        </div>
+                                        <div class="dropdown">
+                                            <a class="btn btn-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="bi bi-three-dots"></i>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-end" data-popper-placement="bottom-end">
+                                                <div class="dropdown-item">
+                                                    <a routerLink="" class="assign-button">Assign all to...</a>
+                                                </div>
+                                                <div class="dropdown-item">
+                                                    <a routerLink="" class="assign-button">Unassign</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
                                 <!-- Run Template to display looping Leaf -->
                                 <div class="ms-3">
@@ -140,16 +158,25 @@
                             <!-- Check if leaf does not exist end the loop.-->
                             <ng-container *ngIf="data.Suite_ID == s.Parent_SuiteID">
                                 <!-- <app-suites-plan [Suite]="s" (click)="selectAll()" (sendSuiteID)="receiveID($event)" (sendSuiteName)="receiveName($event)" (sendSuiteDesc)="receiveDesc($event)"></app-suites-plan> -->
-                                <div class="d-flex justify-content-between suite w-100">
-                                    <mat-checkbox (click)="checkbox($event, s.Suite_ID)" [checked]="suiteModel.isSelected(s.Suite_ID)" ></mat-checkbox>
-                                      <div class="d-flex align-items-center item-suite">
-                                        <!-- ID is temporary -->
-                                        <a type="button" class="button-blue-transparent suite-name" (click)="receiveID(s.Suite_ID); receiveName(s.Suite_Name); receiveDesc(s.Suite_Desc)">{{s.Suite_Name}}</a>
-                                      </div>
-                                      <div class="suite-setting">
-                                        <span class="me-1">0/{{s.Case_Count}}</span>
-                                      </div>
-                                  </div>
+                                <div class="item-suite">
+                                    <div class="suite-left">
+                                        <mat-checkbox (click)="checkbox($event, s.Suite_ID)" [checked]="suiteModel.isSelected(s.Suite_ID)" ></mat-checkbox>
+                                        <div class="d-flex align-items-center ms-3">
+                                            <!-- ID is temporary -->
+                                            <a type="button" class="button-blue-transparent suite-name" (click)="receiveID(s.Suite_ID); receiveName(s.Suite_Name); receiveDesc(s.Suite_Desc)">{{s.Suite_Name}}</a>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="suite-right">
+                                        <div class="suite-setting">
+                                            <span class="me-1">0/{{s.Case_Count}}</span>
+                                        </div>
+
+                                        <a class="btn btn-dropdown">
+                                            <i class="bi bi-three-dots"></i>
+                                        </a>
+                                    </div>
+                                </div>
                                 <!-- Run the template leaf again -->
                                     <div class="ms-3">
                                         <ng-container *ngTemplateOutlet="tree; context: {$implicit:s}"></ng-container>
@@ -175,7 +202,7 @@
                                     Unselect all
                                 </button>
                         
-                                <button type="button" class="btn btn-secondary btn-col">
+                                <button type="button" class="btn btn-secondary btn-col" data-bs-toggle="modal" data-bs-target="#selectAssignee">
                                     Assign selected
                                 </button>
                             </div>
@@ -248,4 +275,20 @@
             </div>
         </div>
     </div>
+</div>
+
+<div class="modal fade modal-case" id="selectAssignee" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="saHeader-title">
+                    Select Assignee
+                </div> 
+            </div>
+            <div class="modal-body">
+
+            </div>
+        </div>
+    </div>
+
 </div>

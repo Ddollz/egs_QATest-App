@@ -56,6 +56,69 @@
 }
 
 /* Modal */
+.item-suite{
+    padding: 6px 5px;
+    border-radius: 3px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-top: 0;
+}
+
+.suite-left {
+    display: flex;
+    align-items: flex-start;
+}
+
+.suite-right {
+    display: flex;
+    align-items: center;
+    margin-left: 8px;
+}
+
+.btn-dropdown {
+    line-height: 12px;
+    padding: 2px;
+    display: block;
+    font-size: 12px;
+    border: 1px solid rgba(18,18,18,.15);
+    border-radius: 3px;
+    margin-left: 8px;
+}
+
+.dd-menu {
+    border-radius: .5rem;
+    box-shadow: 0 0 12px rgb(207 207 207 / 50%);
+    background: #fff;
+    border: 1px solid #dedede;
+    padding: 0;
+    margin-top: 10px;
+}
+
+.dropdown-menu-end {
+    --bs-position: end;
+}
+
+.dropdown-item {
+    cursor: pointer;
+    border-bottom: 1px solid #f0f0f0;
+    color: var(--font-color-default) !important;
+}
+
+.dropdown-item {
+    display: block;
+    width: 100%;
+    padding: .25rem 1rem;
+    clear: both;
+    font-weight: 400;
+    color: #212529;
+    text-align: inherit;
+    text-decoration: none;
+    white-space: nowrap;
+    background-color: transparent;
+    border: 0;
+}
+
 .cases-row{
     height: 100%;
     width: 100%;
@@ -87,10 +150,9 @@ hr.divider{
     align-items: stretch;
 }
 
-.modal-body {
+/* .modal-body {
    height: 50%;
-}
-
+} */
 
 .modal-select-cases-stats {
     float: right;
@@ -149,6 +211,25 @@ hr.divider{
     cursor: pointer;
     white-space: nowrap;
     outline: none;
+}
+
+/* Select Assignee Modal */
+.modal-case{
+    right: auto;
+    bottom: auto;
+    width: 465px;
+    max-width: 80vw;
+    position: absolute;
+    background-color: #fff;
+    padding: 25px 29px 27px 32px;
+    border: 1px solid #000;
+    border-radius: 6px;
+    overflow: auto;
+    max-height: 90vh;
+}
+
+.saHeader-title{
+    font-weight: 600;
 }
 
 /* Modal Suites Column */

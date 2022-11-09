@@ -283,9 +283,9 @@ opacity: .5;
 .panel-history {
     position: relative;
     /* display: flex; */
-    flex-direction: column;
+    /* flex-direction: column; */
     height: 100%;
-    overflow-y: auto;
+    overflow-y: hidden; /* Temporary solution */
     overflow-x: hidden;
 }
 
@@ -353,6 +353,22 @@ word-break: break-all;
 display: flex;
 flex-wrap: wrap;
 align-items: center;
+}
+
+/* History steps */
+/* .Steps {
+    display: flex;
+    flex-direction: column;
+} */
+
+.Steps .table {
+font-size: .775rem;
+}
+
+.Steps .table th {
+font-size: 12px;
+font-weight: 500;
+color: rgba(0, 0, 0, 0.54);
 }
 
 /* End */
