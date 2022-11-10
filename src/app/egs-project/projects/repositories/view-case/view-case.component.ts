@@ -3,7 +3,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { defect, step, testCase } from 'src/app/models/project/project.model';
 import { ApiService } from 'src/app/services/api.service';
-import { reloadPage } from 'src/app/services/global-functions.service';
+import { reloadPage, sidebarService } from 'src/app/services/global-functions.service';
 
 @Component({
   selector: 'app-view-case',
@@ -12,6 +12,7 @@ import { reloadPage } from 'src/app/services/global-functions.service';
 })
 export class ViewCaseComponent implements OnInit {
   temporaryUser: Number = 3; //!Karl User Account in database This is Temporary
+  Project_ID: Number = 0;
 
   case_id: number = 0
   testCase = {} as testCase;
@@ -49,7 +50,9 @@ export class ViewCaseComponent implements OnInit {
   @ViewChild('subpanelContent') subpanelContent?: ElementRef;
   @ViewChild('Descriptions') Descriptions?: ElementRef;
 
-  constructor(private api: ApiService, private activatedRoute: ActivatedRoute) {
+  constructor(private api: ApiService, private activatedRoute: ActivatedRoute, private sidebarServ: sidebarService) {
+    this.Project_ID = Number(this.activatedRoute.snapshot.paramMap.get('id')); //? 4
+    this.Project_ID = this.sidebarServ.projectID;
     this.case_id = Number(this.activatedRoute.snapshot.paramMap.get('id'));
     console.log(this.case_id)
     this.api.UniCall(

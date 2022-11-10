@@ -8,7 +8,7 @@
     <div class="content">
 
       <div class="d-flex gap-2 mb-3">
-        <button class="btns active" id="General">Edit</button>
+        <a class="btns active" [routerLink]="'/projects/repository/create/'+Project_ID" [queryParams]="{case:testCase.Case_ID}" id="General">Edit</a>
         <button class="btns" id="Properties">Clone</button>
         <button class="btns" id="Run">Delete</button>
       </div>
