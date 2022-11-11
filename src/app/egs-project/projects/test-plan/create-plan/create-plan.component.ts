@@ -16,6 +16,8 @@ export class CreatePlanComponent implements OnInit {
   // Selection Variables
   SelectedTestCase: string = '';
   SelectedTestCaseCount: number = 0;
+  CurrentTestCase: string = '';
+  CurrentTestCaseCount: number = 0;
   SelectedSuite: string = '';
   SelectedSuiteCount: number = 0;
   suiteModel = new SelectionModel(
@@ -54,6 +56,7 @@ export class CreatePlanComponent implements OnInit {
   suites: suite[] = [];
   testplans: testplan[] = [];
   testCases: testCase[] = [];
+  newTestCases: testCase[] = [];
   testplanCases: testplanCases [] = [];
   addCases : number[] = []
   @Input() project = {} as project;
@@ -65,13 +68,47 @@ export class CreatePlanComponent implements OnInit {
   tpCasesDataSource = new MatTableDataSource<testplanCases>();
 
   constructor(private router: Router, private route: ActivatedRoute, private api: ApiService, private sidebarServ: sidebarService) {
+    this.LinkParamID = sidebarServ.projectID;
+
+    console.log(this.LinkParamID.toString())
     
     if (this.route.snapshot.params['i']) {
       this.index = this.route.snapshot.params['i'];
       this.Page_title = 'Edit Test Plan';
       this.Button_title = 'Save';
-      this.getTestPlan();
       
+      this.api.UniCall(
+        {
+          CommandText: 'egsQASuiteGet',
+          Params: [
+            {
+              Param: '@Project_ID',
+              Value: this.LinkParamID.toString()
+            }
+          ],
+        }
+      ).subscribe(value => {
+        this.suites = value[0];
+        console.log(this.suites)
+        
+        this.api.UniCall(
+          {
+            CommandText: 'egsQATestCaseGet',
+            Params: [
+              {
+                Param: '@Project_ID',
+                Value: this.LinkParamID.toString()
+              }
+            ],
+          }
+        ).subscribe(value => {
+          this.newTestCases = value[0];
+          this.getTestPlan();
+
+        });
+
+        
+      });
     }
 
     //CHECKBOX
@@ -80,7 +117,6 @@ export class CreatePlanComponent implements OnInit {
         var test = '';
         for (let index = 0; index < e.source.selected.length; index++) {
           test = e.source.selected[index] + ',' + test
-
         }
         test = test.slice(0, -1) //'abcde'
         this.SelectedSuite = test;
@@ -96,14 +132,10 @@ export class CreatePlanComponent implements OnInit {
         }
         test = test.slice(0, -1) //'abcde'
         this.SelectedTestCase = test;
-        console.log(this.SelectedTestCase)
         this.SelectedTestCaseCount = this.testCaseModel.selected.length;
       }
     })
     //END
-
-    this.LinkParamID = sidebarServ.projectID;
-    // console.log(this.LinkParamID);
 
     this.api.UniCall(
       {
@@ -119,21 +151,6 @@ export class CreatePlanComponent implements OnInit {
       this.project = value[0][0];
     });
 
-    this.api.UniCall(
-      {
-        CommandText: 'egsQASuiteGet',
-        Params: [
-          {
-            Param: '@Project_ID',
-            Value: this.LinkParamID.toString()
-          }
-        ],
-      }
-    ).subscribe(value => {
-      this.suites = value[0];
-      console.log(this.suites)
-    });
-
   }
 
   ngOnInit(): void {
@@ -145,8 +162,10 @@ export class CreatePlanComponent implements OnInit {
     this.suiteModel.toggle(event)
     if (this.suiteModel.isSelected(event)) {
       let tempCases = this.testCases.filter(x => x.Suite_ID === event);
+      // console.log(tempCases)
       for (let index = 0; index < tempCases.length; index++) {
         this.testCaseModel.select(tempCases[index].Case_ID)
+        // console.log(this.testCaseModel.select(tempCases[index].Case_ID))
       }
     } else {
       let tempCases = this.testCases.filter(x => x.Suite_ID === event);
@@ -159,11 +178,33 @@ export class CreatePlanComponent implements OnInit {
   selectedTestCaseCheck(event: number, sD: number) {
     this.testCaseModel.toggle(event)
     var child = this.testCases.filter(x => x.Suite_ID === sD);
-    if (child.length == this.testCaseModel.selected.length) {
+    console.log(this.suites)
+    console.log(sD)
+    console.log(child)
+    // console.log(this.testCaseModel.selected)
+    // this.currentTestCaseModel.selected.length = child.length;
+    // console.log(this.testCaseModel.selected.length)
+    // for (let index = 0; index < child.length; index++) {
+    //   // console.log(value[0][index])
+    //   this.testCaseModel.deselect(child[index].Case_ID)
+    // }
+    var temporaryTestCase = this.testCaseModel.selected.filter((x: any) => {
+      if (child.some((item) => item.Case_ID == x)) {
+        return x
+      }
+      })
+    console.log(temporaryTestCase) 
+
+    if (child.length == temporaryTestCase.length) {
       this.selectedSuiteCheck(sD);
     } else {
       this.selectedSuiteCheck(sD, true);
     }
+
+    // console.log(sD)
+    console.log(child.length)
+    console.log(this.testCaseModel.selected.length)
+    console.log(this.CurrentTestCaseCount)
   }
 
   checkbox(event: Event, num: number, bool: boolean = false) {
@@ -194,8 +235,11 @@ export class CreatePlanComponent implements OnInit {
   }
 
   receiveID($event: number){
+    // this.CurrentTestCase = '';
+    // this.CurrentTestCaseCount = 0;
     this.S_ID = $event
 
+    // console.log(this.CurrentTestCaseCount)
     this.api.UniCall(
       {
         CommandText: 'egsQATestCaseGet',
@@ -307,6 +351,48 @@ export class CreatePlanComponent implements OnInit {
       this.TestPlan_Desc = value[0][0].TestPlan_Desc;
       this.TestPlan_CaseCount = value[0][0].TestPlan_CaseCount;
     });
+
+    this.api.UniCall(
+      {
+        CommandText: 'egsQATestPlanCasesGet',
+        Params: [
+          {
+            Param: '@TestPlan_ID',
+            Value: this.index.toString()
+          }
+        ],
+      }
+    ).subscribe(value => {
+      // console.log(value)
+      
+      for (let index = 0; index < value[0].length; index++) {
+        // console.log(value[0][index])
+        this.testCaseModel.select(value[0][index].Case_ID);
+      }
+      // this.selectedSuiteCheck(sD);
+      for (let index = 0; index < this.suites.length; index++) {
+        // console.log(this.suites[index].Suite_ID)
+        // console.log(this.newTestCases)
+        var child = this.newTestCases.filter(x => 
+          x.Suite_ID === this.suites[index].Suite_ID
+          // console.log(x.Suite_ID)
+        );
+        // console.log(child)
+        var temporaryTestCase = this.testCaseModel.selected.filter((x: any) => {
+          if (child.some((item) => item.Case_ID == x)) {
+            return x
+          }
+          })
+        // console.log(temporaryTestCase) 
+
+        if (child.length == temporaryTestCase.length) {
+          this.selectedSuiteCheck(this.suites[index].Suite_ID);
+        } 
+          
+        }
+      // console.log(this.testCaseModel.selected)
+    });
+
   }
 
   applyFilter(event?: Event) {

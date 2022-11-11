@@ -160,7 +160,7 @@
                                 <!-- <app-suites-plan [Suite]="s" (click)="selectAll()" (sendSuiteID)="receiveID($event)" (sendSuiteName)="receiveName($event)" (sendSuiteDesc)="receiveDesc($event)"></app-suites-plan> -->
                                 <div class="item-suite">
                                     <div class="suite-left">
-                                        <mat-checkbox (click)="checkbox($event, s.Suite_ID)" [checked]="suiteModel.isSelected(s.Suite_ID)" ></mat-checkbox>
+                                        <mat-checkbox (click)="checkbox($event, s.Suite_ID)" [checked]="suiteModel.isSelected(s.Suite_ID)"></mat-checkbox>
                                         <div class="d-flex align-items-center ms-3">
                                             <!-- ID is temporary -->
                                             <a type="button" class="button-blue-transparent suite-name" (click)="receiveID(s.Suite_ID); receiveName(s.Suite_Name); receiveDesc(s.Suite_Desc)">{{s.Suite_Name}}</a>
