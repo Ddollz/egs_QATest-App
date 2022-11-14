@@ -1,3 +1,4 @@
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 <div class="container-fluid">
   <div class="row p-3">
     <div class="col-lg-12">
@@ -16,26 +17,81 @@
               (keyup)="applyFilter($event)">
           </div>
           <div class="me-3">
-            <div class="filter-item btn btn-primary" data-bs-toggle="dropdown">Status</div>
+            <div class="btn btn-primary" data-bs-toggle="dropdown">
+              Status: <span id = 'filter-status'>Multiple</span>
+            </div>
             <div class="dropdown-menu">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="">
-                <label class="form-check-label">Active</label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="">
-                <label class="form-check-label">Archived</label>
-              </div>
-              <button type="button" class="filter-item mt-2">Select all</button>
+              <mat-radio-group aria-label="Select an option" class="d-flex flex-column" [(ngModel)]="statusSelect" (change) = "changeDropdownText()">
+                <mat-radio-button value="" class="mb-2" (change)="applyFilter(undefined,$event)">All</mat-radio-button>
+                <mat-radio-button value="Active" class="mb-2" (change)="applyFilter(undefined,$event)">Active</mat-radio-button>
+                <mat-radio-button value="Archived" (change)="applyFilter(undefined,$event)">Archived</mat-radio-button>
+              </mat-radio-group>
             </div>
           </div>
-          <div class="d-flex align-items-center">
-            <span class="filter-span" data-bs-toggle="dropdown">+ Add filter</span>
+
+          <!-- toggle(n) n = items in +Filter , for dynamic show/hide button and filter options -->
+          <!-- 1 Defects -->
+          <!-- 2 Test Runs -->
+          <!-- 3 Milestones -->
+          <!-- Member -->
+          
+          <div class="me-3" [hidden] = "hideDefects"> 
+            <div class="btn btn-primary" data-bs-toggle="dropdown">
+              Defects: <span id = 'filter-defects'></span><button class="filter-remove" (click)="toggle(1)">X</button>
+            </div>
             <div class="dropdown-menu">
-              <div class="dropdown-item">Defects</div>
-              <div class="dropdown-item">Test runs</div>
-              <div class="dropdown-item">Milestones</div>
-              <div class="dropdown-item">Member</div>
+              <mat-radio-group aria-label="Select an option" class="d-flex flex-column" [(ngModel)]="defectsSelect" (change) = "changeDropdownText()">
+                <mat-radio-button value="Without defects" class="mb-2" (change)="applyFilter(undefined,$event)">Without defects</mat-radio-button>
+                <mat-radio-button value="Has defects" (change)="applyFilter(undefined,$event)">Has defects</mat-radio-button>
+              </mat-radio-group>
+            </div>
+          </div>
+
+          <div class="me-3" [hidden] = "hideTest"> 
+            <div class="btn btn-primary" data-bs-toggle="dropdown">
+              Test runs: <span id = 'filter-test'></span><button class="filter-remove" (click)="toggle(2)">X</button>
+            </div>
+            <div class="dropdown-menu">
+              <mat-radio-group aria-label="Select an option" class="d-flex flex-column" [(ngModel)]="testSelect" (change) = "changeDropdownText()">
+                <mat-radio-button value="Without runs" class="mb-2" (change)="applyFilter(undefined,$event)">Without runs</mat-radio-button>
+                <mat-radio-button value="Has active runs" (change)="applyFilter(undefined,$event)">Has active runs</mat-radio-button>
+                <mat-radio-button value="Has any runs" (change)="applyFilter(undefined,$event)">Has any runs</mat-radio-button>
+              </mat-radio-group>
+            </div>
+          </div>
+
+          <div class="me-3" [hidden] = "hideMilestones">
+            <div class="btn btn-primary" data-bs-toggle="dropdown">
+              Milestones: <span id = 'filter-milestones'></span><button class="filter-remove" (click)="toggle(3)">X</button>
+            </div>
+            <div class="dropdown-menu">
+              <mat-radio-group aria-label="Select an option" class="d-flex flex-column" [(ngModel)]="milestonesSelect" (change) = "changeDropdownText()">
+                <mat-radio-button value="Without milestones" class="mb-2" (change)="applyFilter(undefined,$event)">Without milestones</mat-radio-button>
+                <mat-radio-button value="Has milestones" (change)="applyFilter(undefined,$event)">Has milestones</mat-radio-button>
+              </mat-radio-group>
+            </div>
+          </div>
+
+          <div class="me-3" [hidden] = "hideMember"> 
+            <div class="btn btn-primary" data-bs-toggle="dropdown">
+              Member: <span id = 'filter-member'></span><button class="filter-remove" (click)="toggle(4)">X</button>
+            </div>
+            <div class="dropdown-menu">
+              <mat-radio-group aria-label="Select an option" class="d-flex flex-column" [(ngModel)]="memberSelect" (change) = "changeDropdownText()">
+                <mat-radio-button value="Without runs" class="mb-2" (change)="applyFilter(undefined,$event)">Without runs</mat-radio-button>
+                <mat-radio-button value="Has active runs" (change)="applyFilter(undefined,$event)">Has active runs</mat-radio-button>
+                <mat-radio-button value="Has any runs" (change)="applyFilter(undefined,$event)">Has any runs</mat-radio-button>
+              </mat-radio-group>
+            </div>
+          </div>
+      
+          <div class="d-flex align-items-center">
+            <span class="filter-span" data-bs-toggle="dropdown" [hidden] = "!hideAddFilter">+ Add filter</span>
+            <div class="dropdown-menu">
+              <div class="dropdown-item" [hidden] = "!hideDefects" (click)="toggle(1)">Defects</div>
+              <div class="dropdown-item" [hidden] = "!hideTest" (click)="toggle(2)">Test runs</div>
+              <div class="dropdown-item" [hidden] = "!hideMilestones" (click)="toggle(3)">Milestones</div>
+              <div class="dropdown-item" [hidden] = "!hideMember" (click)="toggle(4)">Member</div>
             </div>
           </div>
         </div>
@@ -67,9 +123,9 @@
           <ng-container matColumnDef="Unresolved">
             <th mat-header-cell *matHeaderCellDef>Unresolved Defects</th>
             <td mat-cell *matCellDef="let element">
-              <div>
+              <div class="column-defects">
                 <i class="bi bi-check me-1"></i>
-                <span>No open defects</span>
+                <span id="defects">No open defects</span>
               </div>
             </td>
           </ng-container>

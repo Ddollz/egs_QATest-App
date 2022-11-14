@@ -96,7 +96,6 @@ input[type="checkbox"]:checked {
   font-size: 18px;
 }
 
-
 /* Columns */
 .mat-header-cell {
   padding: 0 10px;
@@ -173,4 +172,14 @@ td {
 
 .dropdown-item:active {
   background-color: white;
+}
+
+/*filter remove button X*/
+.filter-remove{
+  background: transparent;
+  color: #fff;
+  border-color: transparent;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 0 0 0 10px;
 }
