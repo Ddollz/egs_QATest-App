@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
-import { defect, step, testCase } from 'src/app/models/project/project.model';
+import { defect, step, testCase, testrun } from 'src/app/models/project/project.model';
 import { ApiService } from 'src/app/services/api.service';
 import { reloadPage, sidebarService } from 'src/app/services/global-functions.service';
 
@@ -17,8 +17,21 @@ export class ViewCaseComponent implements OnInit {
   case_id: number = 0
   testCase = {} as testCase;
   testCaseAttachment: any = [];
+  caseComments: any = [];
+  Suite_TempUserID: number = 1; //! This is only temporary change/remove this when token/auth is on
   steps: step[] = [];
   stepAttachments: any = [];
+  htmlstring: any;
+
+  //toolbar
+  editorOptions = {
+    toolbar: [
+      ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+      [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+      ['link', 'image', 'video']                         // link and image, video
+    ]
+  };
 
   stepdisplayedColumns: string[] = ['Step', 'Action', 'Input', 'Expected'];
   stepdataSource = new MatTableDataSource<step>();
@@ -26,6 +39,11 @@ export class ViewCaseComponent implements OnInit {
   stepHistoryDisplay: any = [];
   stepHistoryLimit: number = 5;
   isstepHistoryNull: boolean = false;
+
+
+  //Table test runs
+  runDisplayedColumns: string[] = ['title', 'environment', 'time', 'status'];
+  runDataSource = new MatTableDataSource<testrun>();
 
 
   testCase_History: any = [];
@@ -101,7 +119,6 @@ export class ViewCaseComponent implements OnInit {
       });
       //? END
 
-      console.log("he")
       this.changePanelContent('General');
       this.changeSubPanelContent('Descriptions');
       this.api.UniCall(
@@ -176,7 +193,7 @@ export class ViewCaseComponent implements OnInit {
         ).subscribe(
           {
             next: (e) => {
-              console.log(value)
+              // console.log(value)
               if (value.length === 0) {
                 this.istestCase_HistoryNull = true;
                 this.testCase_History = [];
@@ -195,8 +212,8 @@ export class ViewCaseComponent implements OnInit {
                 ).subscribe(
                   {
                     next: (v) => {
-                      console.log(v)
-                      console.log(this.stepHistoryDisplay);
+                      // console.log(v)
+                      // console.log(this.stepHistoryDisplay);
 
                       if (v.length === 0) {
                         this.isstepHistoryNull = true;
@@ -267,8 +284,8 @@ export class ViewCaseComponent implements OnInit {
                 ).subscribe(
                   {
                     next: (v) => {
-                      console.log(v)
-                      console.log(this.stepHistoryDisplay);
+                      // console.log(v)
+                      // console.log(this.stepHistoryDisplay);
 
                       if (v.length === 0) {
                         this.isstepHistoryNull = true;
@@ -310,10 +327,36 @@ export class ViewCaseComponent implements OnInit {
           ]
         }
       ).subscribe(value => {
-        console.log(value)
+        // console.log(value)
         this.defects = value[0];
         this.defectsDataSource = new MatTableDataSource<defect>(this.defects);
       });
+
+
+      //? Get Case Comment
+      //? START
+      this.api.UniCall(
+        {
+          CommandText: 'egsQATestCaseCommentGet',
+          Params: [
+            {
+              Param: '@Case_ID',
+              Value: this.testCase.Case_ID.toString()
+            }
+          ],
+        }
+      ).subscribe(
+        {
+          next: (v) => {
+            this.caseComments = v[0];
+            console.log('haha')
+            console.log(v[0])
+          },
+          error: (e) => console.error(e),
+        }
+      )
+      //? END
+
     }
     );
 
@@ -523,5 +566,44 @@ export class ViewCaseComponent implements OnInit {
       console.log(this.stepHistoryDisplay)
 
     }
+  }
+  postComment() {
+    let currentDateTime = new Date();
+    console.log(this.htmlstring);
+    this.api.UniCall(
+      {
+        CommandText: 'egsQATestCaseCommentInsertUpdate',
+        Params: [
+          {
+            Param: '@Comment_Content',
+            Value: this.htmlstring
+          },
+          {
+            Param: '@Comment_Date',
+            Value: currentDateTime
+          },
+          {
+            Param: '@User_ID',
+            Value: this.Suite_TempUserID.toString()
+          },
+          {
+            Param: '@Case_ID',
+            Value: this.testCase.Case_ID.toString()
+          },
+        ],
+      }
+    ).subscribe(
+      {
+        // next: (v) => console.log(v),
+        error: (e) => { console.error(e); alert("500 Internal Server Errors") },
+        complete: () => reloadPage()
+      }
+    )
+  }
+  commentContent(event: any) {
+    this.htmlstring = JSON.stringify(event.content);
+  }
+  displayCommentContent(event: any, content: any) {
+    event.setContents(JSON.parse(content));
   }
 }

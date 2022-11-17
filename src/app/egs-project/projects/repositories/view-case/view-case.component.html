@@ -151,7 +151,7 @@
           <div class="row mt-3">
 
             <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 form-group">
-              <label class="panelLabel">Severity{{testCase.Case_Severity}}</label>
+              <label class="panelLabel">Severity</label>
               <mat-select class="select-item" [(ngModel)]="testCase.Case_Severity" (ngModelChange)="onChangePanel('@Case_Severity',$event)">
                 <mat-option [value]="1" class="select-item">
                   Not set
@@ -178,7 +178,7 @@
             </div>
 
             <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 form-group">
-              <label class="panelLabel">Priority {{testCase.Case_Priority}}</label>
+              <label class="panelLabel">Priority</label>
               <mat-select class="select-item" [(ngModel)]="testCase.Case_Priority" (ngModelChange)="onChangePanel('@Case_Priority',$event)">
                 <mat-option [value]="1" class="select-item">
                   Not set
@@ -306,6 +306,49 @@
               </mat-select>
             </div>
           </div>
+        </div>
+
+        <div class="content_runs" id="Run" #Run>
+          <table mat-table [dataSource]="runDataSource" class="mat-elevation-z0 panelTable mt-3">
+
+
+            <ng-container matColumnDef="title">
+              <th mat-header-cell *matHeaderCellDef> Title </th>
+              <td mat-cell *matCellDef="let element">
+
+                <div class="column-title">{{element.title}}</div>
+                <div class="column-subtitle">{{element.datestart}}</div>
+
+
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="environment">
+              <th mat-header-cell *matHeaderCellDef> Environment </th>
+              <td mat-cell *matCellDef="let element"> {{element.environment}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="time">
+              <th mat-header-cell *matHeaderCellDef> Time </th>
+              <td mat-cell *matCellDef="let element"> {{element.time}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef> Status </th>
+              <td mat-cell *matCellDef="let element">
+                <div class="progress">
+                  <div class="progress-bar" role="progressbar" aria-label="Example with label" [ngStyle]="{'width.%': element.status }" attr.aria-valuenow="{{element.status}}" aria-valuemin="0" aria-valuemax="100">{{element.status}}%</div>
+                </div>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="runDisplayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: runDisplayedColumns;"></tr>
+
+            <tr *matNoDataRow="">
+              <td class="mat-cell" colspan="4"> No run result yet. </td>
+            </tr>
+          </table>
+
         </div>
 
         <div class="content_history" id="History" #History>
@@ -516,6 +559,27 @@
         </div>
 
 
+        <div class="content_comments" id="Comments" #Comments>
+
+          <div class="mt-4">
+            <ng-container *ngFor="let comment of caseComments">
+              <div class="d-flex w-100 mt-3">
+                <div class="me-2 comment-avatar">
+                  <img class="lazy avatar-sm" src="../../../../assets/img/placeholder.jpg">
+                </div>
+                <div class="d-flex flex-column w-100">
+                  <div class="comment-user">
+                    <div class="comment-username">{{comment.User_Firstname}} {{comment.User_Lastname}}</div>
+                    <div class="comment-role">{{comment.RoleTitle}}</div>
+                  </div>
+                  <quill-view (onEditorCreated)="displayCommentContent($event, comment.Comment_Content)" [modules]="{}"> </quill-view>
+                  <div class="comment-date">{{comment.Comment_Date}}</div>
+                </div>
+              </div>
+            </ng-container>
+
+          </div>
+        </div>
       </div>
     </div>
   </div>

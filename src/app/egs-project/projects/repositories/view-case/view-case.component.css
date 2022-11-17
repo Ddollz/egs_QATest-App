@@ -196,6 +196,42 @@
   opacity: .75;
 }
 
+
+.content-comments {
+  font-size: 0.875rem;
+}
+
+.comment-username {
+  font-size: 0.8rem;
+}
+
+.comment-role {
+  font-size: .75rem;
+  opacity: .75;
+}
+
+.comment-avatar {
+  position: relative;
+}
+
+.comment-date {
+  font-size: .75rem;
+  opacity: .75;
+}
+
+.comment-avatar::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  width: 1px;
+  height: 100%;
+  background-color: rgb(224, 225, 228);
+  ;
+}
+.content_runs table{
+  width: 100%;
+}
+
 .revision-body {
   padding-right: 1.5rem;
   flex: 1;
