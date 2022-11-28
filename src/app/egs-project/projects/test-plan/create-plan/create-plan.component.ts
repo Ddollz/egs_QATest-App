@@ -103,13 +103,41 @@ export class CreatePlanComponent implements OnInit {
           }
         ).subscribe(value => {
           this.newTestCases = value[0];
+          console.log(this.newTestCases)
           this.getTestPlan();
-
         });
-
-        
       });
     }
+
+    this.api.UniCall(
+      {
+        CommandText: 'egsQASuiteGet',
+        Params: [
+          {
+            Param: '@Project_ID',
+            Value: this.LinkParamID.toString()
+          }
+        ],
+      }
+    ).subscribe(value => {
+      this.suites = value[0];
+      console.log(this.suites)
+      
+      this.api.UniCall(
+        {
+          CommandText: 'egsQATestCaseGet',
+          Params: [
+            {
+              Param: '@Project_ID',
+              Value: this.LinkParamID.toString()
+            }
+          ],
+        }
+      ).subscribe(value => {
+        this.newTestCases = value[0];
+        console.log(this.newTestCases)
+      });
+    });
 
     //CHECKBOX
     this.suiteModel.changed.subscribe({
